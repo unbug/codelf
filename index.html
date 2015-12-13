@@ -169,7 +169,7 @@
           allStr.push(rkey.lines[lkey]);
         }
       });
-      $.each([].slice.call(allStr.join('').replace(/\r\n/g,' ').match(els.valReg)), function(i, el){
+      $.each(allStr.join('').replace(/\r\n/g,' ').match(els.valReg)||[], function(i, el){
         if($.inArray(el, vals) === -1) vals.push(el);
       });
       vals.forEach(function(key){
