@@ -11,27 +11,189 @@
     .main-container{
       padding: 40px;
     }
+    .search-form .title{
+      text-align: center;
+      padding: 20px 100px;
+    }
+    .search-result{
+      padding: 40px 0;
+    }
+    blockquote{
+      text-align: center;
+    }
   </style>
 </head>
 <body>
 <section class="main-container">
-  <div class="row">
+  <section class="row search-form">
+    <header class="title">
+      <header><h1>Codelf</h1></header>
+      <h5>Search over projects from Github, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Projec to find a <span class="label label-success">variable name</span> for you!</h5>
+    </header>
     <div class="col-lg-12">
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search for...e.g.product">
+        <input type="text" class="form-control" placeholder="Search a variable name...e.g.product">
       <span class="input-group-btn">
         <button class="btn btn-secondary" type="button">Search</button>
       </span>
       </div>
     </div>
-  </div>
+  </section>
+  <section class="row search-result">
+    <div class="col-lg-12">
+      <div class="alert alert-success bd" role="alert">
+        <blockquote>
+          <p>"There are only two hard things in Computer Science: cache invalidation and naming things."  -- Phil Karlton</p>
+        </blockquote>
+        <script type="text/html">
+          <span class="label label-{type}"  data-toggle="tooltip" data-placement="top" title="{val}">{val}</span>
+        </script>
+      </div>
+    </div>
+  </section>
 </section>
+<script src="src/lib/tether/js/tether.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
         integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
         crossorigin="anonymous"></script>
 <script>
+  $(function () {
+    function randomList(list, len, verify, ratio) {
+      var rs = [], _list = list.slice(0);
+      len = len || _list.length;
+      ratio = ratio ? ratio : 0;
+      function rd(_array) {
+        _array = _array.sort(function () {
+          return (0.5 - Math.random());
+        });
+      }
 
+      while (ratio) {
+        rd(_list);
+        ratio--;
+      }
+      if (_list.length <= len) {
+        rs = _list;
+      } else {
+        while (rs.length < len) {
+          var index = Math.floor(Math.random() * _list.length),
+            item = _list[index];
+          if (( verify && verify.call(this, item, _list) ) || !verify) {
+            rs.push(item);
+            _list.splice(index, 1);
+          }
+        }
+      }
+      return rs;
+    }
+    function searchPage(){
+      var page = 1;
+      var lastVal;
+      var searchRequestCallback;
+      this.resetPage = function(){
+        page = 1;
+      }
+      this.request = function(val,callback){
+        if(val==lastVal){
+          this.resetPage();
+        }
+        lastVal = val;
+        searchRequestCallback = callback;
+        lastVal && $.ajax({
+          type: 'GET',
+          url: 'https://searchcode.com/api/jsonp_codesearch_I/?q=soup&lan=html,sass,js&p=1&callback=afterSearch',
+          dataType: 'jsonp',
+          jsonp: false,
+          jsonpCallback: false,
+          contentType: "application/json",
+          data: {
+            q: lastVal,
+            p: page,
+            per_page: 100,
+            callback: 'afterSearchRequest'
+          }
+        });
+      }
+      window.afterSearchRequest = function(data){
+        if(data){
+          page++;
+          searchRequestCallback && searchRequestCallback(data);
+        }
+      }
+    }
+
+    var els = {
+      searchForm: $('.search-form'),
+      searchInput: $('.search-form input'),
+      searchBtn: $('.search-form button'),
+
+      searchResult: $('.search-result'),
+      searchResultTpl: $('.search-result script').html(),
+      searchResultBd: $('.search-result .bd'),
+
+      lastVal: ''
+    },
+    searchObj;
+
+    function bindEvent(){
+      els.searchInput.on('keyup',renderSearchBtn);
+      els.searchBtn.on('click',onSearch);
+      els.searchInput.keypress(function (e) {
+        if (e.which == 13) {
+          onSearch();
+          return false;
+        }
+      });
+    }
+    function init(){
+      bindEvent();
+      searchObj = new searchPage(renderSearchResult);
+    }
+
+    function onSearch(){
+      var val = els.searchInput.val().trim();
+      if(val){
+        els.lastVal = val;
+        els.valReg = new RegExp('(([-_\w\d]*)?'+els.lastVal+'([-_\w\d]*)?)','ig');
+        searchObj.request(els.lastVal,renderSearchResult);
+        renderSearchBtn();
+      }
+    }
+
+    function renderSearchResult(data){
+      var vals = [],labels = [],allStr = [];
+      data.results.forEach(function(rkey){
+        for(var lkey in rkey.lines){
+          allStr.push(rkey.lines[lkey]);
+        }
+      });
+      $.each([].slice.call(allStr.join('').match(els.valReg)), function(i, el){
+        if($.inArray(el, vals) === -1) vals.push(el);
+      });
+      vals.forEach(function(key){
+        labels.push(els.searchResultTpl.replace('{type}',getRandomLabelType()).replace(/\{val\}/g,key));
+      });
+      if(labels.length){
+        els.searchResultBd.html(labels.join(''));
+        els.searchResult.find('[data-toggle="tooltip"]').tooltip();
+        els.searchResult.show();
+      }else{
+        els.searchResult.hide();
+      }
+    }
+
+    function renderSearchBtn(){
+      els.searchBtn.html(els.searchInput.val().trim()==els.lastVal?'Next Group':'Search');
+    }
+
+    function getRandomLabelType(){
+      var types = ['default','primary','success','info','warning','warning','danger'];
+      return randomList(types,1,null,10)[0];
+    }
+
+    init();
+  })
 </script>
 </body>
 </html>
