@@ -46,7 +46,7 @@
           <p>"There are only two hard things in Computer Science: cache invalidation and naming things."  -- Phil Karlton</p>
         </blockquote>
         <script type="text/html">
-          <span class="label label-{type}"  data-toggle="tooltip" data-placement="top" title="{val}">{val}</span>
+          <strong><span class="label label-{type}"  data-toggle="tooltip" data-placement="top" title="{val}">{val}</span></strong>
         </script>
       </div>
     </div>
@@ -158,6 +158,7 @@
         els.valReg = new RegExp('([\\-_\\w\\d]{0,}){0,1}'+els.lastVal+'([\\-_\\w\\d]{0,}){0,1}', 'gi');
         searchObj.request(els.lastVal,renderSearchResult);
         renderSearchBtn();
+        els.searchResultBd.html('Codelf is searching...');
       }
     }
 
