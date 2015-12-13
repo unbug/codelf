@@ -102,7 +102,7 @@
         searchRequestCallback = callback;
         lastVal && $.ajax({
           type: 'GET',
-          url: 'https://searchcode.com/api/jsonp_codesearch_I/?q=soup&lan=html,sass,js&p=1&callback=afterSearch',
+          url: 'https://searchcode.com/api/jsonp_codesearch_I/',
           dataType: 'jsonp',
           jsonp: false,
           jsonpCallback: false,
@@ -155,7 +155,7 @@
       var val = els.searchInput.val().trim();
       if(val){
         els.lastVal = val;
-        els.valReg = new RegExp('(([-_\w\d]*)?'+els.lastVal+'([-_\w\d]*)?)','ig');
+        els.valReg = new RegExp('([\\-_\\w\\d]{0,}){0,1}'+els.lastVal+'([\\-_\\w\\d]{0,}){0,1}', 'gi');
         searchObj.request(els.lastVal,renderSearchResult);
         renderSearchBtn();
       }
@@ -168,7 +168,7 @@
           allStr.push(rkey.lines[lkey]);
         }
       });
-      $.each([].slice.call(allStr.join('').match(els.valReg)), function(i, el){
+      $.each([].slice.call(allStr.join('').replace(/\r\n/g,' ').match(els.valReg)), function(i, el){
         if($.inArray(el, vals) === -1) vals.push(el);
       });
       vals.forEach(function(key){
