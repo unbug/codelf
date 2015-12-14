@@ -69,6 +69,15 @@
         crossorigin="anonymous"></script>
 <script>
   $(function () {
+    function randomColor() {
+      var letters = '0123456789ABCDEF'.split('');
+      var color = '#';
+      for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
     function randomList(list, len, verify, ratio) {
       var rs = [], _list = list.slice(0);
       len = len || _list.length;
@@ -135,6 +144,7 @@
 
     var els = {
       searchForm: $('.search-form'),
+      searchTitle: $('.search-form .title h1'),
       searchInput: $('.search-form input'),
       searchBtn: $('.search-form button'),
 
@@ -170,6 +180,11 @@
         renderSearchBtn();
         els.searchResultBd.html('Codelf is searching...');
       }
+      renderTitle();
+    }
+
+    function renderTitle(){
+      els.searchTitle.css({color: randomColor()})
     }
 
     function renderSearchResult(data){
@@ -191,6 +206,7 @@
       }else{
         els.searchResultBd.html('Codelf found nothing :(');
       }
+      renderTitle();
     }
 
     function renderSearchBtn(){
