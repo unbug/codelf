@@ -9,3 +9,4 @@ Thanks
 =================
   * API powerd by [shearchcode](http://searchcode.com/)
   * UI powerd by [Bootstrap v4.0](http://v4-alpha.getbootstrap.com/)
+  * Utils powerd by [generator-webappstarter](https://github.com/unbug/generator-webappstarter)
