@@ -232,6 +232,7 @@
       if(val.length){
         if(val != els.lastVal){
           HashHandler.set(encodeURIComponent(val));
+          renderAnalytics(val);
         }
         els.lastVal = val;
         els.valRegs = [];
