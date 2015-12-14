@@ -12,12 +12,15 @@
     .main-container{
       padding: 40px;
     }
-    .search-form .title{
+    .main-title{
       text-align: center;
-      padding: 20px;
+      padding: 0 20px;
+    }
+    .search-form{
+      padding: 20px 0;
     }
     .search-result{
-      padding: 40px 0;
+      padding-top: 10px;
     }
     .search-result .label-warp{
       display: inline-block;
@@ -25,28 +28,25 @@
     .blockquote{
       text-align: center;
     }
-    .quote-attribution{
-      text-align: right;
-    }
     .blockquote img{
       max-width: 100%;
       height: auto;
     }
 
     @media (min-width: 62em) {
-      .search-form .title{
-        padding: 20px 100px;
+      .main-title{
+        padding: 0 100px;
       }
     }
   </style>
 </head>
 <body>
 <section class="main-container">
+  <header class="main-title">
+    <header><h1>Codelf</h1></header>
+    <h5>Search over projects from Github, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Projec to find a <span class="label label-pill label-default">variable name</span> for you!</h5>
+  </header>
   <section class="row search-form">
-    <header class="title">
-      <header><h1>Codelf</h1></header>
-      <h5>Search over projects from Github, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Projec to find a <span class="label label-pill label-default">variable name</span> for you!</h5>
-    </header>
     <div class="col-lg-12">
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Search...e.g. elf">
@@ -60,7 +60,7 @@
     <div class="col-lg-12">
       <div class="jumbotron bd" role="alert">
         <blockquote class="blockquote">
-          <img src="resources/images/twohardtings.png">
+          <img src="resources/images/twohardtings.jpg">
         </blockquote>
         <script type="text/html">
           <h5 class="label-warp"><span class="label label-{type}"  data-toggle="tooltip" data-placement="top" title="{val}">{val}</span></h5>
@@ -150,8 +150,9 @@
     }
 
     var els = {
+      title: $('.main-title h1'),
+
       searchForm: $('.search-form'),
-      searchTitle: $('.search-form .title h1'),
       searchInput: $('.search-form input'),
       searchBtn: $('.search-form button'),
 
@@ -194,7 +195,7 @@
     }
 
     function renderTitle(){
-      els.searchTitle.css({color: randomColor()})
+      els.title.css({color: randomColor()})
     }
 
     function renderSearchResult(data){
