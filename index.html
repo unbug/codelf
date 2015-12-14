@@ -234,7 +234,9 @@
     }
 
     function renderAnalytics(){
-      els.body.append('<iframe src="http://www.mihtool.com/analytics.html?codelf" style="display: none;width: 0;height: 0;border: 0;"></iframe>');
+      setTimeout(function(){
+        els.body.append('<iframe src="http://www.mihtool.com/analytics.html?codelf" style="display: none;width: 0;height: 0;border: 0;"></iframe>');
+      },3000);
     }
 
     function getRandomLabelType(){
