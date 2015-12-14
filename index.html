@@ -172,7 +172,10 @@
       var val = els.searchInput.val().trim();
       if(val.length){
         els.lastVal = val;
-        els.valReg = new RegExp('([\\-_\\w\\d]{0,}){0,1}'+els.lastVal+'([\\-_\\w\\d]{0,}){0,1}', 'gi');
+        els.valRegs = [];
+        els.lastVal.replace(/\s+/ig,'+').split('+').forEach(function(key){
+          els.valRegs.push(new RegExp('([\\-_\\w\\d]{0,}){0,1}'+key+'([\\-_\\w\\d]{0,}){0,1}', 'gi'));
+        });
         searchObj.request(els.lastVal,renderSearchResult);
         els.searchResultBd.html('Codelf is searching...');
         renderSearchBtn();
@@ -191,8 +194,11 @@
           allStr.push(rkey.lines[lkey]);
         }
       });
-      $.each(allStr.join('').replace(/\r\n/g,' ').match(els.valReg)||[], function(i, el){
-        if($.inArray(el, vals) === -1) vals.push(el);
+      allStr = allStr.join('').replace(/\r\n/g,' ');
+      els.valRegs.forEach(function(key){
+        $.each(allStr.match(key)||[], function(i, el){
+          if($.inArray(el, vals) === -1) vals.push(el);
+        });
       });
       vals.forEach(function(key){
         labels.push(els.searchResultTpl.replace('{type}',getRandomLabelType()).replace(/\{val\}/g,key));
