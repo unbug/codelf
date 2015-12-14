@@ -124,7 +124,7 @@
         page = 1;
       }
       this.request = function(val,callback){
-        if(val==lastVal){
+        if(val!=lastVal){
           this.resetPage();
         }
         lastVal = val;
