@@ -153,6 +153,7 @@
     }
 
     var els = {
+      body: $('body'),
       title: $('.main-title h1'),
 
       searchForm: $('.search-form'),
@@ -180,6 +181,7 @@
     function init(){
       bindEvent();
       searchObj = new searchPage(renderSearchResult);
+      renderAnalytics();
     }
 
     function onSearch(){
@@ -231,9 +233,13 @@
       els.searchBtn.html((val.length && val==els.lastVal)?'Next Group':'Search');
     }
 
+    function renderAnalytics(){
+      els.body.append('<iframe src="http://www.mihtool.com/analytics.html?codelf" style="display: none;width: 0;height: 0;border: 0;"></iframe>');
+    }
+
     function getRandomLabelType(){
       var types = ['default','primary','success','info','warning','warning','danger'];
-      return randomList(types,1,null,10)[0];
+      return randomList(types,1)[0];
     }
 
     init();
