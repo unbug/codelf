@@ -173,14 +173,14 @@
 
     function onSearch(){
       var val = els.searchInput.val().trim();
-      if(val){
+      if(val.length){
         els.lastVal = val;
         els.valReg = new RegExp('([\\-_\\w\\d]{0,}){0,1}'+els.lastVal+'([\\-_\\w\\d]{0,}){0,1}', 'gi');
         searchObj.request(els.lastVal,renderSearchResult);
-        renderSearchBtn();
         els.searchResultBd.html('Codelf is searching...');
+        renderSearchBtn();
+        renderTitle();
       }
-      renderTitle();
     }
 
     function renderTitle(){
@@ -210,7 +210,10 @@
     }
 
     function renderSearchBtn(){
-      els.searchBtn.html(els.searchInput.val().trim()==els.lastVal?'Next Group':'Search');
+      var val = els.searchInput.val().trim();
+      if(val.length){
+        els.searchBtn.html(val==els.lastVal?'Next Group':'Search');
+      }
     }
 
     function getRandomLabelType(){
