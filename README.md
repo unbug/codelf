@@ -9,6 +9,6 @@ Search over projects from Github, Bitbucket, Google Code, Codeplex, Sourceforge,
 
 Thanks
 =================
-  * API powerd by [shearchcode](http://searchcode.com/)
+  * API powerd by [shearchcode](http://searchcode.com/) & [有道](http://fanyi.youdao.com/)
   * UI powerd by [Bootstrap v4.0](http://v4-alpha.getbootstrap.com/)
   * Utils powerd by [generator-webappstarter](https://github.com/unbug/generator-webappstarter)
