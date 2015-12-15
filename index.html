@@ -152,6 +152,7 @@
       }
       return rs;
     }
+
     function searchPage(){
       var page = 1;
       var lastVal;
@@ -188,6 +189,32 @@
       }
     }
 
+    function youdaoTranslate(){
+      var lastVal;
+      var translateRequestCallback;
+      this.request = function(val,callback){
+        lastVal = val;
+        translateRequestCallback = callback;
+        lastVal && $.ajax({
+          type: 'GET',
+          url: 'http://fanyi.youdao.com/openapi.do?keyfrom=Codelf&key=2023743559&type=data&doctype=jsonp&version=1.1',
+          dataType: 'jsonp',
+          jsonp: false,
+          jsonpCallback: false,
+          contentType: "application/json",
+          data: {
+            q: lastVal,
+            callback: 'afterYoudaoTranslateRequest'
+          }
+        });
+      }
+      window.afterYoudaoTranslateRequest = function(data){
+        if(data){
+          translateRequestCallback && translateRequestCallback(data);
+        }
+      }
+    }
+
     var els = {
       body: $('body'),
       title: $('.main-title h1'),
@@ -202,7 +229,7 @@
 
       lastVal: ''
     },
-    searchObj;
+    searchObj,translateObj;
 
     function bindEvent(){
       window.addEventListener('hashchange', onLocationHashChanged, false);
@@ -219,7 +246,8 @@
     }
     function init(){
       bindEvent();
-      searchObj = new searchPage(renderSearchResult);
+      searchObj = new searchPage();
+      translateObj = new youdaoTranslate();
       onLocationHashChanged();
       renderAnalytics();
     }
@@ -230,24 +258,58 @@
       hash && onSearch(decodeURIComponent(hash));
     }
     function onSearch(val){
-      if(val==els.lastVal){return;}
+      if(val && val==els.lastInputVal){return;}
       val = val || els.searchInput.val().trim();
       els.searchInput.val(val);
       if(val.length){
-        if(val != els.lastVal){
+        var isNext = val == els.lastInputVal;
+        els.lastInputVal = val;
+        if(!isNext){
           HashHandler.set(encodeURIComponent(val));
+          var tmpval = [],tmpch = [];
+
+          //ok,these code need optimize later
+          els.lastInputVal.replace(/\s+/ig,'+').split('+').forEach(function(key){
+            /[^\x00-\xff]/gi.test(key)?tmpch.push(key):tmpval.push(key);
+          });
+          els.lastVal = tmpval.join(' ');
+          if(tmpch.length){
+            translateObj.request(tmpch.join(' '),function(tdata){
+              if(tdata){
+                els.lastVal = els.lastVal + ' ' + tdata.translation.join(' ');
+                beforeDoSearch();
+              }else{
+                beforeDoSearch();
+              }
+            });
+          }else{
+            beforeDoSearch();
+          }
+        }else{
+          doSearch();
         }
-        els.lastVal = val;
-        els.valRegs = [];
-        els.lastVal.replace(/\s+/ig,'+').split('+').forEach(function(key){
-          els.valRegs.push(new RegExp('([\\-_\\w\\d]{0,}){0,1}'+key+'([\\-_\\w\\d]{0,}){0,1}', 'gi'));
-        });
-        searchObj.request(els.lastVal,renderSearchResult);
-        els.searchResultBd.html('Codelf is searching...');
-        renderSearchBtn();
-        renderTitle();
-        renderAnalytics(val);
       }
+    }
+
+    function setKeyWordReg(){
+      els.valRegs = [];
+      els.lastVal.replace(/\s+/ig,'+').split('+').forEach(function(key){
+        els.valRegs.push(getKeyWordReg(key));
+      });
+    }
+
+    function beforeDoSearch(){
+      setKeyWordReg();
+      doSearch();
+    }
+
+    function doSearch(){
+      console.log(els.lastVal);
+      searchObj.request(els.lastVal,renderSearchResult);
+      els.searchResultBd.html('Codelf is searching...');
+      renderSearchBtn();
+      renderTitle();
+      renderAnalytics(els.lastVal);
     }
 
     function renderTitle(){
@@ -293,6 +355,10 @@
     function getRandomLabelType(){
       var types = ['default','primary','success','info','warning','warning','danger'];
       return randomList(types,1)[0];
+    }
+
+    function getKeyWordReg(key){
+      return new RegExp('([\\-_\\w\\d]{0,}){0,1}'+key+'([\\-_\\w\\d]{0,}){0,1}', 'gi');
     }
 
     init();
