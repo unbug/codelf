@@ -286,7 +286,7 @@
 
     function renderAnalytics(param){
       setTimeout(function(){
-        els.body.append('<iframe src="http://www.mihtool.com/analytics.html?codelf'+(param?('&s='+param):'')+'" style="display: none;width: 0;height: 0;border: 0;"></iframe>');
+        els.body.append('<iframe src="http://www.mihtool.com/analytics.html?codelf'+(param?('&q='+param):'')+'" style="display: none;width: 0;height: 0;border: 0;"></iframe>');
       },param?500:3000);
     }
 
