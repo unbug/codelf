@@ -276,7 +276,10 @@
           if(tmpch.length){
             translateObj.request(tmpch.join(' '),function(tdata){
               if(tdata){
-                els.lastVal = els.lastVal + ' ' + tdata.translation.join(' ');
+                els.lastVal = els.lastVal + ' '
+                  + tdata.translation.filter(function(key){
+                    return !/^(a|an|the|that|this|those|these)$/ig.test(key);
+                  }).join(' ');
                 beforeDoSearch();
               }else{
                 beforeDoSearch();
@@ -291,7 +294,7 @@
       }
     }
     function beforeDoSearch(){
-      els.lastVal.trim();
+      els.lastVal = els.lastVal.trim();
       setKeyWordReg();
       doSearch();
     }
