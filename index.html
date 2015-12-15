@@ -290,17 +290,18 @@
         }
       }
     }
+    function beforeDoSearch(){
+      els.lastVal.trim();
+      setKeyWordReg();
+      doSearch();
+    }
 
     function setKeyWordReg(){
       els.valRegs = [];
       els.lastVal.replace(/\s+/ig,'+').split('+').forEach(function(key){
-        els.valRegs.push(getKeyWordReg(key));
+        key.length && els.valRegs.push(getKeyWordReg(key));
       });
-    }
-
-    function beforeDoSearch(){
-      setKeyWordReg();
-      doSearch();
+      console.log(els.lastVal,els.valRegs);
     }
 
     function doSearch(){
