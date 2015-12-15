@@ -279,7 +279,7 @@
           els.lastVal = tmpval.join(' ');
           if(tmpch.length){
             translateObj.request(tmpch.join(' '),function(tdata){
-              if(tdata){
+              if(tdata && tdata.translation){
                 els.lastVal = els.lastVal + ' '
                   + tdata.translation.join(' ')
                     .replace(/[!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/g,'')
@@ -351,7 +351,7 @@
 
     function renderSearchBtn(){
       var val = els.searchInput.val().trim();
-      els.searchBtn.html((val.length && val==els.lastVal)?'Next Group':'Search');
+      els.searchBtn.html((val.length && val==els.lastInputVal)?'Next Group':'Search');
     }
 
     function renderAnalytics(param){
