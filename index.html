@@ -301,11 +301,9 @@
       els.lastVal.replace(/\s+/ig,'+').split('+').forEach(function(key){
         key.length && els.valRegs.push(getKeyWordReg(key));
       });
-      console.log(els.lastVal,els.valRegs);
     }
 
     function doSearch(){
-      console.log(els.lastVal);
       searchObj.request(els.lastVal,renderSearchResult);
       els.searchResultBd.html('Codelf is searching...');
       renderSearchBtn();
