@@ -397,7 +397,7 @@
       Array.prototype.push.apply(his,els.valHistory);
       Array.prototype.push.apply(his,els.lastVal.split(' '));
       els.valHistory = his.filter(function(key,idx,inputArray){
-        var dup = inputArray.indexOf(key) == idx;
+        var dup = inputArray.indexOf(key) == idx && !/\s/ig.test(key);
         if(dup){
           labels.push(els.searchRelateTpl.replace(/\{val\}/g,key));
         }
