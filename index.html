@@ -396,7 +396,7 @@
       var his = [els.valHistory,els.lastVal],labels = [];
       console.log(his.join(' '));
       els.valHistory = his.join(' ')
-        .replace(/[!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/g,' ')
+        .replace(/[`~!@#$^&*()=|{}':;',\[\].<>\/?~！@#￥……&*（）——|\\{\\}【】‘；：”“’。，、？]/g,' ')
         .replace(/\s+/ig,'+').split('+')
         .filter(function(key,idx,inputArray){
           var dup = inputArray.indexOf(key) == idx && !/^(a|an|the|that|this|those|these|and)$/ig.test(key);
