@@ -31,6 +31,9 @@
     .search-form{
       padding: 20px 0;
     }
+    .search-relate a:hover{
+      text-decoration: underline;
+    }
     .search-result{
       padding-top: 10px;
     }
@@ -56,6 +59,9 @@
       .main-title{
         padding: 0 50px;
       }
+      .search-relate{
+        padding-bottom: 20px;
+      }
       .search-result .bd{
         overflow-x: auto;
       }
@@ -77,6 +83,13 @@
         <button class="btn btn-secondary" type="button">Search</button>
       </span>
       </div>
+    </div>
+  </section>
+  <section class="rwo search-relate">
+    <div class="col-lg-12 bd">
+      <script type="text/html">
+        <a class="label label-primary" href="#{val}">{val}</a>
+      </script>
     </div>
   </section>
   <section class="row search-result">
@@ -196,7 +209,7 @@
           searchRequestCallback && searchRequestCallback(data);
         }
       }
-    }
+    };
 
     var youdaoTranslate = new function (){
       var lastVal;
@@ -222,7 +235,7 @@
           translateRequestCallback && translateRequestCallback(data);
         }
       }
-    }
+    };
 
     function getRandomLabelType(){
       var types = ['default','primary','success','info','warning','warning','danger'];
@@ -237,6 +250,10 @@
     var els = {
       body: $('body'),
       title: $('.main-title h1'),
+
+      searchRelate: $('.search-relate'),
+      searchRelateBd: $('.search-relate .bd'),
+      searchRelateTpl: $('.search-relate script').html(),
 
       searchForm: $('.search-form'),
       searchInput: $('.search-form input'),
@@ -277,6 +294,7 @@
       if(val && val==els.lastInputVal){return;}
       val = val || els.searchInput.val().trim();
       els.searchInput.val(val);
+      els.valHistory = els.valHistory||[];
       if(val.length){
         var isNext = val == els.lastInputVal;
         els.lastInputVal = val;
@@ -291,12 +309,15 @@
           els.lastVal = tmpval.join(' ');
           if(tmpch.length){
             youdaoTranslate.request(tmpch.join(' '),function(tdata){
+              if(tdata.basic && tdata.basic.explains){
+                Array.prototype.push.apply(els.valHistory,tdata.basic.explains);
+              }
               if(tdata && tdata.translation){
                 els.lastVal = els.lastVal + ' '
                   + tdata.translation.join(' ')
                     .replace(/[!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/g,'')
-                    .split(' ').filter(function(key){
-                    return !/^(a|an|the|that|this|those|these)$/ig.test(key);
+                    .split(' ').filter(function(key,idx,inputArray){
+                    return inputArray.indexOf(key) == idx && !/^(a|an|the|that|this|those|these)$/ig.test(key);
                   }).join(' ');
                 beforeDoSearch();
               }else{
@@ -313,7 +334,11 @@
     }
     function beforeDoSearch(){
       els.lastVal = els.lastVal.trim();
+      els.lastVal = els.lastVal.split(' ').filter(function(key,idx,inputArray){
+        return inputArray.indexOf(key) == idx;
+      }).join(' ');
       setKeyWordReg();
+      renderHistory();
       doSearch();
     }
 
@@ -365,6 +390,20 @@
     function renderSearchBtn(){
       var val = els.searchInput.val().trim();
       els.searchBtn.html((val.length && val==els.lastInputVal)?'Next Group':'Search');
+    }
+
+    function renderHistory(){
+      var his = [],labels = [];
+      Array.prototype.push.apply(his,els.valHistory);
+      Array.prototype.push.apply(his,els.lastVal.split(' '));
+      els.valHistory = his.filter(function(key,idx,inputArray){
+        var dup = inputArray.indexOf(key) == idx;
+        if(dup){
+          labels.push(els.searchRelateTpl.replace(/\{val\}/g,key));
+        }
+        return dup;
+      });
+      els.searchRelateBd.html('<span class="label label-default">Suggestions ></span>'+labels.join(''));
     }
 
     function renderAnalytics(param){
