@@ -230,7 +230,7 @@
     }
 
     function getKeyWordReg(key){
-      return new RegExp('([\\-_\\w\\d]{0,}){0,1}'+key+'([\\-_\\w\\d]{0,}){0,1}', 'gi');
+      return new RegExp('([\\-_\\w\\d\\/]{0,}){0,1}'+key+'([\\-_\\w\\d]{0,}){0,1}', 'gi');
     }
 
     //view and render
@@ -346,7 +346,7 @@
       allStr = allStr.join('').replace(/\r\n/g,' ');
       els.valRegs.forEach(function(key){
         $.each(allStr.match(key)||[], function(i, el){
-          if($.inArray(el, vals) === -1) vals.push(el);
+          if($.inArray(el, vals) === -1 && !/\//g.test(el)) vals.push(el);
         });
       });
       vals.forEach(function(key){
