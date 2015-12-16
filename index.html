@@ -294,7 +294,7 @@
       if(val && val==els.lastInputVal){return;}
       val = val || els.searchInput.val().trim();
       els.searchInput.val(val);
-      els.valHistory = els.valHistory||[];
+      els.valHistory = els.valHistory||'';
       if(val.length){
         var isNext = val == els.lastInputVal;
         els.lastInputVal = val;
@@ -310,7 +310,7 @@
           if(tmpch.length){
             youdaoTranslate.request(tmpch.join(' '),function(tdata){
               if(tdata.basic && tdata.basic.explains){
-                Array.prototype.push.apply(els.valHistory,tdata.basic.explains);
+                els.valHistory = tdata.basic.explains.join(' ');
               }
               if(tdata && tdata.translation){
                 els.lastVal = els.lastVal + ' '
@@ -393,16 +393,19 @@
     }
 
     function renderHistory(){
-      var his = [],labels = [];
-      Array.prototype.push.apply(his,els.valHistory);
-      Array.prototype.push.apply(his,els.lastVal.split(' '));
-      els.valHistory = his.filter(function(key,idx,inputArray){
-        var dup = inputArray.indexOf(key) == idx && !/\s/ig.test(key);
-        if(dup){
-          labels.push(els.searchRelateTpl.replace(/\{val\}/g,key));
-        }
-        return dup;
-      });
+      var his = [els.valHistory,els.lastVal],labels = [];
+      console.log(his.join(' '));
+      els.valHistory = his.join(' ')
+        .replace(/[!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/g,' ')
+        .replace(/\s+/ig,'+').split('+')
+        .filter(function(key,idx,inputArray){
+          var dup = inputArray.indexOf(key) == idx && !/^(a|an|the|that|this|those|these|and)$/ig.test(key);
+          if(dup){
+            labels.push(els.searchRelateTpl.replace(/\{val\}/g,key));
+          }
+          return dup;
+        })
+        .join(' ');
       els.searchRelateBd.html('<span class="label label-default">History & Suggestion :</span>'+labels.join(''));
     }
 
