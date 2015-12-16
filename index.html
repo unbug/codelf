@@ -224,6 +224,16 @@
       }
     }
 
+    function getRandomLabelType(){
+      var types = ['default','primary','success','info','warning','warning','danger'];
+      return randomList(types,1)[0];
+    }
+
+    function getKeyWordReg(key){
+      return new RegExp('([\\-_\\w\\d]{0,}){0,1}'+key+'([\\-_\\w\\d]{0,}){0,1}', 'gi');
+    }
+
+    //view and render
     var els = {
       body: $('body'),
       title: $('.main-title h1'),
@@ -360,15 +370,6 @@
       setTimeout(function(){
         els.body.append('<iframe src="http://www.mihtool.com/analytics.html?codelf'+(param?('&q='+param):'')+'" style="display: none;width: 0;height: 0;border: 0;"></iframe>');
       },param?500:3000);
-    }
-
-    function getRandomLabelType(){
-      var types = ['default','primary','success','info','warning','warning','danger'];
-      return randomList(types,1)[0];
-    }
-
-    function getKeyWordReg(key){
-      return new RegExp('([\\-_\\w\\d]{0,}){0,1}'+key+'([\\-_\\w\\d]{0,}){0,1}', 'gi');
     }
 
     init();
