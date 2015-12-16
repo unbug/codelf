@@ -317,7 +317,7 @@
                   + tdata.translation.join(' ')
                     .replace(/[!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/g,'')
                     .split(' ').filter(function(key,idx,inputArray){
-                    return inputArray.indexOf(key) == idx && !/^(a|an|the|that|this|those|these)$/ig.test(key);
+                    return inputArray.indexOf(key) == idx && !/^(a|an|the|that|this|those|these|and)$/ig.test(key);
                   }).join(' ');
                 beforeDoSearch();
               }else{
