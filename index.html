@@ -157,7 +157,7 @@
       return rs;
     }
 
-    function searchPage(){
+    var searchcode = new function(){
       var page = 1;
       var lastVal;
       var searchRequestCallback;
@@ -193,7 +193,7 @@
       }
     }
 
-    function youdaoTranslate(){
+    var youdaoTranslate = new function (){
       var lastVal;
       var translateRequestCallback;
       this.request = function(val,callback){
@@ -232,8 +232,7 @@
       searchResultBd: $('.search-result .bd'),
 
       lastVal: ''
-    },
-    searchObj,translateObj;
+    };
 
     function bindEvent(){
       window.addEventListener('hashchange', onLocationHashChanged, false);
@@ -250,8 +249,6 @@
     }
     function init(){
       bindEvent();
-      searchObj = new searchPage();
-      translateObj = new youdaoTranslate();
       onLocationHashChanged();
       renderAnalytics();
     }
@@ -278,7 +275,7 @@
           });
           els.lastVal = tmpval.join(' ');
           if(tmpch.length){
-            translateObj.request(tmpch.join(' '),function(tdata){
+            youdaoTranslate.request(tmpch.join(' '),function(tdata){
               if(tdata && tdata.translation){
                 els.lastVal = els.lastVal + ' '
                   + tdata.translation.join(' ')
@@ -313,7 +310,7 @@
     }
 
     function doSearch(){
-      searchObj.request(els.lastVal,renderSearchResult);
+      searchcode.request(els.lastVal,renderSearchResult);
       els.searchResultBd.html('Codelf is searching...');
       renderSearchBtn();
       renderTitle();
