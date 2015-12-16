@@ -346,6 +346,7 @@
       allStr = allStr.join('').replace(/\r\n/g,' ');
       els.valRegs.forEach(function(key){
         $.each(allStr.match(key)||[], function(i, el){
+          //exclude links
           if($.inArray(el, vals) === -1 && !/\//g.test(el)) vals.push(el);
         });
       });
