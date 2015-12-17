@@ -372,7 +372,7 @@
       els.valRegs.forEach(function(key){
         $.each(allStr.match(key)||[], function(i, el){
           //exclude links
-          if($.inArray(el, vals) === -1 && !/\//g.test(el)) vals.push(el);
+          if(!/\//g.test(el) && $.inArray(el, vals) === -1 && $.inArray(el.toLowerCase(), vals) === -1 && $.inArray(el.toUpperCase(), vals) === -1) vals.push(el);
         });
       });
       vals.forEach(function(key){
