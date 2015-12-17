@@ -83,7 +83,7 @@
       <div class="input-group">
         <input type="text" class="form-control" placeholder="e.g. code 精灵">
       <span class="input-group-btn">
-        <button class="btn btn-secondary" type="button" data-toggle="tooltip" title="Click to show more!">Search</button>
+        <button class="btn btn-secondary" type="button" data-toggle="tooltip" data-placement="left" data-trigger="manual" title="Click here to show more!">Search</button>
       </span>
       </div>
     </div>
@@ -392,6 +392,9 @@
         if(now-els.showNextTipTimer>1000*300){
           els.showNextTipTimer = now;
           els.searchBtn.tooltip('show');
+          setTimeout(function(){
+            els.searchBtn.tooltip('dispose');
+          },3000);
         }
       }else{
         els.searchResultBd.html('Codelf found nothing, see "History & Suggestion" :)');
