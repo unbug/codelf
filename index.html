@@ -83,7 +83,7 @@
       <div class="input-group">
         <input type="text" class="form-control" placeholder="e.g. code 精灵">
       <span class="input-group-btn">
-        <button class="btn btn-secondary" type="button">Search</button>
+        <button class="btn btn-secondary" type="button" data-toggle="tooltip" title="Click to show more!">Search</button>
       </span>
       </div>
     </div>
@@ -385,7 +385,14 @@
       });
       if(labels.length){
         els.searchResultBd.html(labels.join(''));
+
         els.searchResult.find('[data-toggle="tooltip"]').tooltip();
+        els.showNextTipTimer = els.showNextTipTimer || 0;
+        var now = new Date().getTime();
+        if(now-els.showNextTipTimer>1000*300){
+          els.showNextTipTimer = now;
+          els.searchBtn.tooltip('show');
+        }
       }else{
         els.searchResultBd.html('Codelf found nothing, see "History & Suggestion" :)');
       }
