@@ -403,7 +403,7 @@
         .replace(/[`~!@#$^&*()=|{}':;',\[\].<>\/?~！@#￥……&*（）——|\\{\\}【】‘；：”“’。，、？]/g,' ')
         .replace(/\s+/ig,'+').split('+')
         .filter(function(key,idx,inputArray){
-          var dup = inputArray.indexOf(key) == idx && !/^(a|an|the|that|this|those|these|and)$/ig.test(key);
+          var dup = key.length>1 && inputArray.indexOf(key) == idx && !/^(a|an|the|that|this|those|these|and)$/ig.test(key);
           if(dup){
             labels.push(els.searchRelateTpl.replace(/\{val\}/g,key));
           }
