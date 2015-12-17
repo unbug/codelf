@@ -377,14 +377,23 @@
       var vals = [],labels = [],allStr = [];
       data.results.forEach(function(rkey){
         for(var lkey in rkey.lines){
-          allStr.push(rkey.lines[lkey]);
+          var lstr = rkey.lines[lkey];
+          !(/;base64,/g.test(lstr) && lstr.length>256) //no base64
+          && allStr.push(lstr);
         }
       });
       allStr = allStr.join('').replace(/\r\n/g,' ');
       els.valRegs.forEach(function(key){
         $.each(allStr.match(key)||[], function(i, el){
-          //exclude links
-          if(!/\//g.test(el) && $.inArray(el, vals) === -1 && $.inArray(el.toLowerCase(), vals) === -1 && $.inArray(el.toUpperCase(), vals) === -1) vals.push(el);
+          if(
+            !/\//g.test(el) //exclude links
+            && $.inArray(el, vals) === -1
+            && $.inArray(el.toLowerCase(), vals) === -1
+            && $.inArray(el.toUpperCase(), vals) === -1
+            && el.length<64 //too long
+            ){
+            vals.push(el)
+          };
         });
       });
       vals.forEach(function(key){
