@@ -115,6 +115,7 @@
 <script src="src/lib/bootstrap.min.js"></script>
 <script>
   $(function () {
+    //utils
     var HashHandler = (function () {
       var lc = window.location;
 
@@ -248,6 +249,7 @@
     function getKeyWordReg(key){
       return new RegExp('([\\-_\\w\\d\\/]{0,}){0,1}'+key+'([\\-_\\w\\d]{0,}){0,1}', 'gi');
     }
+    //end utils
 
     //view and render
     var els = {
@@ -418,7 +420,8 @@
     }
 
     init();
-  })
+    //end view and render
+  });
 </script>
 </body>
 </html>
