@@ -34,6 +34,9 @@
     .search-form{
       padding: 20px 0;
     }
+    .search-form .help{
+      display: none;
+    }
     .search-relate a:hover{
       text-decoration: underline;
     }
@@ -62,6 +65,9 @@
       .main-title{
         padding: 0 50px;
       }
+      .search-form .help{
+        display: inline-block;
+      }
       .search-relate{
         padding-bottom: 20px;
       }
@@ -83,7 +89,8 @@
       <div class="input-group">
         <input type="text" class="form-control" placeholder="e.g. code 精灵">
       <span class="input-group-btn">
-        <button class="btn btn-secondary" type="button" data-toggle="tooltip" data-placement="left" data-trigger="manual" title="Click here to show more!">Search</button>
+        <button class="btn btn-secondary search" type="button" data-toggle="tooltip" data-placement="left" data-trigger="manual" title="Click here to show more!">Search</button>
+        <button class="btn btn-secondary help" type="button"><a href="https://github.com/unbug/codelf/issues" target="_blank">Help?</a></button>
       </span>
       </div>
     </div>
@@ -109,7 +116,7 @@
   </section>
 </section>
 <!-- https://github.com/blog/273-github-ribbons -->
-<a href="https://github.com/unbug/codelf"><img style="position: absolute; top: 0; right: 0; border: 0;" src="resources/images/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+<a href="https://github.com/unbug/codelf"  target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="resources/images/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 <script src="src/lib/tether/js/tether.min.js"></script>
 <script src="src/lib/jquery.min.js"></script>
 <script src="src/lib/bootstrap.min.js"></script>
@@ -262,7 +269,7 @@
 
       searchForm: $('.search-form'),
       searchInput: $('.search-form input'),
-      searchBtn: $('.search-form button'),
+      searchBtn: $('.search-form button.search'),
 
       searchResult: $('.search-result'),
       searchResultTpl: $('.search-result script').html(),
