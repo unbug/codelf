@@ -394,7 +394,6 @@
 
     function renderHistory(){
       var his = [els.valHistory,els.lastVal],labels = [];
-      console.log(his.join(' '));
       els.valHistory = his.join(' ')
         .replace(/[`~!@#$^&*()=|{}':;',\[\].<>\/?~！@#￥……&*（）——|\\{\\}【】‘；：”“’。，、？]/g,' ')
         .replace(/\s+/ig,'+').split('+')
