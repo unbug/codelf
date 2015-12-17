@@ -4,8 +4,8 @@ Search over projects from Github, Bitbucket, Google Code, Codeplex, Sourceforge,
 
   >There are only two hard things in Computer Science: cache invalidation and naming things.-- Phil Karlton
   
-![demo1](http://unbug.github.io/codelf/resources/images/demo1.jpg)
-![demo2](http://unbug.github.io/codelf/resources/images/demo2.jpg)
+![demo1](http://unbug.github.io/codelf/resources/images/demo1.jpg?1)
+![demo2](http://unbug.github.io/codelf/resources/images/demo2.jpg?1)
 
 Thanks
 =================
