@@ -385,17 +385,7 @@
       });
       if(labels.length){
         els.searchResultBd.html(labels.join(''));
-
-        els.searchResult.find('[data-toggle="tooltip"]').tooltip();
-        els.showNextTipTimer = els.showNextTipTimer || 0;
-        var now = new Date().getTime();
-        if(now-els.showNextTipTimer>1000*300){
-          els.showNextTipTimer = now;
-          els.searchBtn.tooltip('show');
-          setTimeout(function(){
-            els.searchBtn.tooltip('dispose');
-          },3000);
-        }
+        renderTooltips();
       }else{
         els.searchResultBd.html('Codelf found nothing, see "History & Suggestion" :)');
       }
@@ -405,6 +395,20 @@
     function renderSearchBtn(){
       var val = els.searchInput.val().trim();
       els.searchBtn.html((val.length && val==els.lastInputVal)?'Next Group':'Search');
+    }
+
+    function renderTooltips(){
+      els.showNextTipTimer = els.showNextTipTimer || 0;
+      var now = new Date().getTime();
+      if(now-els.showNextTipTimer>1000*300){
+        els.showNextTipTimer = now;
+        els.searchBtn.tooltip('show');
+        setTimeout(function(){
+          els.searchBtn.tooltip('dispose');
+        },3000);
+      }
+
+      els.searchResult.find('[data-toggle="tooltip"]').tooltip();
     }
 
     function renderHistory(){
