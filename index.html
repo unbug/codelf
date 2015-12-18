@@ -50,6 +50,9 @@
     .search-result .label-warp{
       display: inline-block;
     }
+    .search-result a:hover{
+      text-decoration: underline;
+    }
     .blockquote{
       text-align: center;
     }
@@ -87,7 +90,9 @@
   <section class="row search-form">
     <div class="col-lg-12">
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="e.g. code 精灵">
+        <form action="javascript:void(0);">
+        <input type="search" name="search" class="form-control" placeholder="e.g. code 精灵">
+        </form>
       <span class="input-group-btn">
         <button class="btn btn-secondary search" type="button" data-toggle="tooltip" data-placement="left" data-trigger="manual" title="Click here to show more!">Search</button>
         <button class="btn btn-secondary help" type="button"><a href="https://github.com/unbug/codelf/issues" target="_blank">Help?</a></button>
@@ -109,7 +114,7 @@
           <img src="resources/images/twohardtings.jpg">
         </blockquote>
         <script type="text/html">
-          <h5 class="label-warp"><span class="label label-{type}"  data-toggle="tooltip" data-placement="top" title="{val}">{val}</span></h5>
+          <h5 class="label-warp"><a class="label label-{type}"  data-toggle="tooltip" data-placement="top" title="{val}" href="#{val}">{val}</a></h5>
         </script>
       </div>
     </div>
@@ -187,11 +192,11 @@
     }
 
     var searchcode = new function(){
-      var page = 1;
+      var page = 0;
       var lastVal;
       var searchRequestCallback;
       this.resetPage = function(){
-        page = 1;
+        page = 0;
       }
       this.request = function(val,callback){
         if(val!=lastVal){
@@ -303,6 +308,8 @@
       hash && onSearch(decodeURIComponent(hash));
     }
     function onSearch(val){
+      els.searchInput.blur();
+      els.body.find('.tooltip').remove();
       if(val && val==els.lastInputVal){return;}
       val = val || els.searchInput.val().trim();
       els.searchInput.val(val);
@@ -423,7 +430,6 @@
           els.searchBtn.tooltip('dispose');
         },3000);
       }
-
       els.searchResult.find('[data-toggle="tooltip"]').tooltip();
     }
 
