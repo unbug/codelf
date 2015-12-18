@@ -336,7 +336,7 @@
                   + tdata.translation.join(' ')
                     .replace(/[!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/g,'')
                     .split(' ').filter(function(key,idx,inputArray){
-                    return inputArray.indexOf(key) == idx && !/^(a|an|the|that|this|those|these|and)$/ig.test(key);
+                    return inputArray.indexOf(key) == idx && !/^(a|an|the)$/ig.test(key);
                   }).join(' ');
                 beforeDoSearch();
               }else{
@@ -439,7 +439,7 @@
         .replace(/[`~!@#$^&*()=|{}':;',\[\].<>\/?~！@#￥……&*（）——|\\{\\}【】‘；：”“’。，、？]/g,' ')
         .replace(/\s+/ig,'+').split('+')
         .filter(function(key,idx,inputArray){
-          var dup = key.length>1 && inputArray.indexOf(key) == idx && !/^(a|an|the|that|this|those|these|and)$/ig.test(key);
+          var dup = key.length>1 && inputArray.indexOf(key) == idx && !/^(a|an|the)$/ig.test(key);
           if(dup){
             labels.push(els.searchRelateTpl.replace(/\{val\}/g,key));
           }
