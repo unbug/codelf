@@ -9,9 +9,66 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <link rel="stylesheet" href="resources/css/bootstrap.min.css">
   <style>
-    body{
+    html,body{
       -webkit-font-smoothing: antialiased;
     }
+    /*component*/
+    /*https://github.com/tobiasahlin/SpinKit*/
+    .spinner {
+      margin: 0 auto;
+      width: 50px;
+      height: 40px;
+      text-align: center;
+      font-size: 10px;
+    }
+
+    .spinner > div {
+      background-color: #6b9dc8;
+      height: 100%;
+      width: 6px;
+      display: inline-block;
+
+      -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+      animation: sk-stretchdelay 1.2s infinite ease-in-out;
+    }
+
+    .spinner .rect2 {
+      -webkit-animation-delay: -1.1s;
+      animation-delay: -1.1s;
+    }
+
+    .spinner .rect3 {
+      -webkit-animation-delay: -1.0s;
+      animation-delay: -1.0s;
+    }
+
+    .spinner .rect4 {
+      -webkit-animation-delay: -0.9s;
+      animation-delay: -0.9s;
+    }
+
+    .spinner .rect5 {
+      -webkit-animation-delay: -0.8s;
+      animation-delay: -0.8s;
+    }
+
+    @-webkit-keyframes sk-stretchdelay {
+      0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+      20% { -webkit-transform: scaleY(1.0) }
+    }
+
+    @keyframes sk-stretchdelay {
+      0%, 40%, 100% {
+        transform: scaleY(0.4);
+        -webkit-transform: scaleY(0.4);
+      }  20% {
+           transform: scaleY(1.0);
+           -webkit-transform: scaleY(1.0);
+         }
+    }
+    /*end component*/
+
+    /*layout*/
     .main-container{
       padding: 20px;
     }
@@ -43,7 +100,7 @@
     .search-result{
       padding-top: 10px;
     }
-    .search-result .bd{
+    .search-result .ct{
       overflow-x: scroll;
       -webkit-overflow-scrolling: touch;
     }
@@ -52,6 +109,15 @@
     }
     .search-result a:hover{
       text-decoration: underline;
+    }
+    .search-result .hd,.search-result .hd>div{
+      text-align: center;
+    }
+    .search-result .hd>div{
+      display: none;
+    }
+    .search-result .hd.loading .loading,.search-result .hd.error .error{
+      display: block;
     }
     .blockquote{
       text-align: center;
@@ -74,7 +140,7 @@
       .search-relate{
         padding-bottom: 20px;
       }
-      .search-result .bd{
+      .search-result .ct{
         overflow-x: auto;
       }
       .github-corner svg{
@@ -104,7 +170,7 @@
       </div>
     </div>
   </section>
-  <section class="rwo search-relate">
+  <section class="row search-relate">
     <div class="col-lg-12 bd">
       <script type="text/html">
         <a class="label label-primary" href="#{val}">{val}</a>
@@ -113,13 +179,27 @@
   </section>
   <section class="row search-result">
     <div class="col-lg-12">
-      <div class="jumbotron bd" role="alert">
-        <blockquote class="blockquote">
+      <div class="jumbotron ct" role="alert">
+        <header class="hd">
+          <div class="loading">
+            <div class="spinner">
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
+            </div>
+          </div>
+          <div class="error text-muted">Codelf found nothing, try "History & Suggestion" :)</div>
+        </header>
+        <section class="bd">
+          <blockquote class="blockquote">
           <img src="resources/images/twohardtings.jpg">
         </blockquote>
-        <script type="text/html">
-          <h5 class="label-warp"><a class="label label-{type}"  data-toggle="tooltip" data-placement="top" title="{val}" href="#{val}">{val}</a></h5>
-        </script>
+          <script type="text/html">
+            <h5 class="label-warp"><a class="label label-{type}"  data-toggle="tooltip" data-placement="top" title="{val}" href="#{val}">{val}</a></h5>
+          </script>
+        </section>
       </div>
     </div>
   </section>
@@ -204,6 +284,9 @@
       this.resetPage = function(){
         page = 0;
       }
+      this.getPage = function(){
+       return page;
+      }
       this.request = function(val,callback){
         if(val!=lastVal){
           this.resetPage();
@@ -227,8 +310,8 @@
       }
       window.afterSearchRequest = function(data){
         if(data){
+          searchRequestCallback && searchRequestCallback(data,page);
           page++;
-          searchRequestCallback && searchRequestCallback(data);
         }
       }
     };
@@ -284,6 +367,7 @@
 
       searchResult: $('.search-result'),
       searchResultTpl: $('.search-result script').html(),
+      searchResultHd: $('.search-result .hd'),
       searchResultBd: $('.search-result .bd'),
 
       githubCorner: $('.github-corner svg'),
@@ -378,7 +462,7 @@
 
     function doSearch(){
       searchcode.request(els.lastVal,renderSearchResult);
-      els.searchResultBd.html('Codelf is searching...');
+      renderSearchResultHeader('loading');
       renderSearchBtn();
       renderAnalytics(els.lastInputVal);
     }
@@ -392,7 +476,7 @@
       els.githubCorner.css({fill: randomColor()});
     }
 
-    function renderSearchResult(data){
+    function renderSearchResult(data,page){
       var vals = [],labels = [],allStr = [];
       data.results.forEach(function(rkey){
         for(var lkey in rkey.lines){
@@ -419,10 +503,17 @@
         labels.push(els.searchResultTpl.replace('{type}',getRandomLabelType()).replace(/\{val\}/g,key));
       });
       if(labels.length){
-        els.searchResultBd.html(labels.join(''));
+        var blockquote = els.searchResultBd.find('.blockquote');
+        if(blockquote[0]){
+          els.searchResultBd.find('.blockquote').remove();
+        }else{
+          labels.push('<hr/>');
+        }
+        els.searchResultBd.prepend(labels.join(''));
+        renderSearchResultHeader();
         renderTooltips();
       }else{
-        els.searchResultBd.html('Codelf found nothing, see "History & Suggestion" :)');
+        renderSearchResultHeader('error');
       }
       renderTitle();
     }
@@ -430,6 +521,10 @@
     function renderSearchBtn(){
       var val = els.searchInput.val().trim();
       els.searchBtn.html((val.length && val==els.lastInputVal)?'More':'Search');
+    }
+
+    function renderSearchResultHeader(cls){
+      els.searchResultHd.removeClass('loading error').addClass(cls||'');
     }
 
     function renderTooltips(){
