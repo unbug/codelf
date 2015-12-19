@@ -387,6 +387,9 @@
           return false;
         }
       });
+      els.searchResultBd.on('mouseenter touchstart','a',function () {
+        $(this).select();
+      });
     }
     function init(){
       bindEvent();
