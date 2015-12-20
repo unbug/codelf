@@ -176,7 +176,7 @@
             <script type="text/html">
               <div class="dropdown-item">
                 <label class="c-input c-checkbox">
-                  <input type="checkbox" value="{id}">
+                  <input type="checkbox" value="{id}" {checked}>
                   <span class="c-indicator"></span>
                   {language}
                 </label>
@@ -238,6 +238,66 @@
 <script>
   $(function () {
     //utils
+    var localStorage = new function () {
+      var lcst = window.localStorage;
+
+      /**
+       * 读取
+       *
+       * @method getLocalValue
+       * @param {String} id item id
+       * @return {String} value
+       */
+      function getLocalValue(id) {
+        if (lcst) {
+          return lcst[id];
+        } else {
+          return null;
+        }
+      }
+
+      /**
+       * 保存/更新
+       *
+       * @method setLocalValue
+       * @param {String}|{Object} id item id
+       * @param {String} val value
+       */
+      function setLocalValue(id, val) {
+        if (lcst) {
+          if (typeof id === 'object') {
+            for (var key in id) {
+              try{id[key] && lcst.setItem(key, id[key]);}catch(err){}
+            }
+          } else {
+            try{lcst.setItem(id, val);}catch(err){}
+          }
+        }
+        return this;
+      }
+
+      /**
+       * 删除
+       * @param {Array}||{String} id
+       */
+      function removeLocalValue(id) {
+        if (lcst) {
+          if (typeof id === 'object') {
+            for (var key in id) {
+              try{lcst.removeItem(id[key]);}catch(err){}
+            }
+          } else {
+            try{lcst.removeItem(id);}catch(err){}
+          }
+        }
+        return this;
+      }
+
+      this.set = setLocalValue;
+      this.get = getLocalValue;
+      this.del = removeLocalValue;
+    };
+
     var HashHandler = (function () {
       var lc = window.location;
 
@@ -305,29 +365,46 @@
     //http://githut.info/
     var topProgramLan = [{"id":"22,106","language":"JavaScript, CoffeeScript"},{"id":"133,135","language":"CSS"},{"id":"3,39","language":"HTML"},{"id":137,"language":"Swift"},{"id":35,"language":"Objective-C"},{"id":23,"language":"Java"},{"id":19,"language":"Python"},{"id":24,"language":"PHP"},{"id":32,"language":"Ruby"},{"id":28,"language":"C"},{"id":16,"language":"C++"},{"id":6,"language":"C#"},{"id":55,"language":"Go"},{"id":51,"language":"Perl"},{"id":"104,109","language":"Clojure, ClojureScript"},{"id":40,"language":"Haskell"},{"id":54,"language":"Lua"},{"id":20,"language":"Matlab"},{"id":144,"language":"R"},{"id":47,"language":"Scala"},{"id":"69,78,146","language":"Shell"},{"id":29,"language":"Lisp"},{"id":42,"language":"ActionScript"}];
     var searchcode = new function(){
-      var langs;
+      var persistenceLangsName = 'codelf_langs_selected';
+      var langs = localStorage.get(persistenceLangsName),langQuery;
       var page = 0;
       var lastVal;
       var searchRequestCallback;
+
+      genLangQuery(langs);
+
       this.resetPage = function(){
         page = 0;
       }
+
       this.getPage = function(){
        return page;
       }
+
       this.setLang = function(val){
+        langs = val || null;
+        genLangQuery(val);
+        this.resetPage();
+        localStorage[langs?'set':'del'](persistenceLangsName,langs);
+      }
+
+      this.getLang = function(){
+        return langs;
+      }
+
+      function genLangQuery(val){
         if(!!val){
-          var arr1 = val.split(','),
+          var arr1 = val.replace(/\s+/g,',').split(','),
             arr2 = [];
           arr1.forEach(function(key){
             arr2.push('lan='+key);
           });
-          langs = arr2.join('&');
+          langQuery = arr2.join('&');
         }else{
-          langs = null;
+          langQuery = null;
         }
-        this.resetPage();
       }
+
       this.request = function(val,callback){
         if(val!=lastVal){
           this.resetPage();
@@ -336,7 +413,7 @@
         searchRequestCallback = callback;
         lastVal && $.ajax({
           type: 'GET',
-          url: 'https://searchcode.com/api/jsonp_codesearch_I/'+(langs?('?'+langs):''),
+          url: 'https://searchcode.com/api/jsonp_codesearch_I/'+(langQuery?('?'+langQuery):''),
           dataType: 'jsonp',
           jsonp: false,
           jsonpCallback: false,
@@ -455,7 +532,7 @@
       checked.each(function(){
         lang.push(this.value);
       });
-      searchcode.setLang(lang.join(','));
+      searchcode.setLang(lang.join(' '));
       renderSearchBtn('Search');
     }
     function onResetLang(){
@@ -532,9 +609,13 @@
     }
 
     function renderLangMunu(){
-      var htm = [];
+      var htm = [],storeLang = searchcode.getLang();
+      storeLang = storeLang?storeLang.split(' '):[];
       topProgramLan.forEach(function(key){
-        htm.push(els.searchDropdownMenuTpl.replace('{id}',key.id).replace('{language}',key.language));
+        htm.push(els.searchDropdownMenuTpl
+          .replace('{id}',key.id)
+          .replace('{language}',key.language)
+          .replace('{checked}',$.inArray(key.id, storeLang) != -1?'checked':''));
       });
       els.searchDropdownMenu.append(htm.join(''));
     }
