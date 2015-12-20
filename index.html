@@ -543,7 +543,7 @@
     }
     function onSearch(val){
       els.searchInput.blur();
-      els.body.find('.tooltip').remove();
+      //els.body.find('.tooltip').remove();
       if(val && val==els.lastInputVal){return;}
       val = val || els.searchInput.val().trim();
       els.searchInput.val(val);
@@ -678,14 +678,14 @@
     function renderTooltips(){
       els.showNextTipTimer = els.showNextTipTimer || 0;
       var now = new Date().getTime();
-      if(now-els.showNextTipTimer>1000*300){
+      if(now-els.showNextTipTimer>1000*1800){
         els.showNextTipTimer = now;
         els.searchBtn.tooltip('show');
         setTimeout(function(){
           els.searchBtn.tooltip('dispose');
         },3000);
       }
-      els.searchResult.find('[data-toggle="tooltip"]').tooltip();
+      //els.searchResult.find('[data-toggle="tooltip"]').tooltip();
     }
 
     function renderHistory(){
