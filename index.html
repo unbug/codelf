@@ -91,6 +91,11 @@
     .search-form{
       padding: 20px 0;
     }
+    .search-form .dropdown-menu{
+      height: 320px;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
+    }
     .search-form .help{
       display: none;
     }
@@ -160,6 +165,25 @@
   <section class="row search-form">
     <div class="col-lg-12">
       <div class="input-group">
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          </button>
+          <div class="dropdown-menu">
+            <div class="dropdown-item all">
+              All Languages
+            </div>
+            <div role="separator" class="dropdown-divider"></div>
+            <script type="text/html">
+              <div class="dropdown-item">
+                <label class="c-input c-checkbox">
+                  <input type="checkbox" value="{id}">
+                  <span class="c-indicator"></span>
+                  {language}
+                </label>
+              </div>
+            </script>
+          </div>
+        </div>
         <form action="javascript:void(0);">
         <input type="search" name="search" class="form-control" placeholder="e.g. code 精灵">
         </form>
@@ -276,8 +300,12 @@
       }
       return rs;
     }
-
+    //end utils
+    //model
+    //http://githut.info/
+    var topProgramLan = [{"id":"22,106","language":"JavaScript,CoffeeScript"},{"id":"133,135","language":"CSS"},{"id":"3,39","language":"HTML"},{"id":137,"language":"Swift"},{"id":35,"language":"Objective-C"},{"id":23,"language":"Java"},{"id":19,"language":"Python"},{"id":24,"language":"PHP"},{"id":32,"language":"Ruby"},{"id":28,"language":"C"},{"id":16,"language":"C++"},{"id":6,"language":"C#"},{"id":55,"language":"Go"},{"id":51,"language":"Perl"},{"id":"104,109","language":"Clojure,ClojureScript"},{"id":40,"language":"Haskell"},{"id":54,"language":"Lua"},{"id":20,"language":"Matlab"},{"id":144,"language":"R"},{"id":47,"language":"Scala"},{"id":"69,78,146","language":"Shell"},{"id":29,"language":"Lisp"},{"id":42,"language":"ActionScript"}];
     var searchcode = new function(){
+      var langs;
       var page = 0;
       var lastVal;
       var searchRequestCallback;
@@ -287,6 +315,19 @@
       this.getPage = function(){
        return page;
       }
+      this.setLang = function(val){
+        if(!!val){
+          var arr1 = val.split(','),
+            arr2 = [];
+          arr1.forEach(function(key){
+            arr2.push('lan='+key);
+          });
+          langs = arr2.join('&');
+        }else{
+          langs = null;
+        }
+        this.resetPage();
+      }
       this.request = function(val,callback){
         if(val!=lastVal){
           this.resetPage();
@@ -295,7 +336,7 @@
         searchRequestCallback = callback;
         lastVal && $.ajax({
           type: 'GET',
-          url: 'https://searchcode.com/api/jsonp_codesearch_I/',
+          url: 'https://searchcode.com/api/jsonp_codesearch_I/'+(langs?('?'+langs):''),
           dataType: 'jsonp',
           jsonp: false,
           jsonpCallback: false,
@@ -350,20 +391,22 @@
     function getKeyWordReg(key){
       return new RegExp('([\\-_\\w\\d\\/]{0,}){0,1}'+key+'([\\-_\\w\\d]{0,}){0,1}', 'gi');
     }
-    //end utils
+    //end model
 
     //view and render
     var els = {
       body: $('body'),
-      title: $('.main-title h1'),
-
-      searchRelate: $('.search-relate'),
-      searchRelateBd: $('.search-relate .bd'),
-      searchRelateTpl: $('.search-relate script').html(),
 
       searchForm: $('.search-form'),
       searchInput: $('.search-form input'),
       searchBtn: $('.search-form button.search'),
+      searchDropdownBtn: $('.search-form button.dropdown-toggle'),
+      searchDropdownMenu: $('.search-form .dropdown-menu'),
+      searchDropdownMenuTpl: $('.search-form .dropdown-menu script').html(),
+
+      searchRelate: $('.search-relate'),
+      searchRelateBd: $('.search-relate .bd'),
+      searchRelateTpl: $('.search-relate script').html(),
 
       searchResult: $('.search-result'),
       searchResultTpl: $('.search-result script').html(),
@@ -377,7 +420,11 @@
 
     function bindEvent(){
       window.addEventListener('hashchange', onLocationHashChanged, false);
-      els.searchInput.on('keyup',renderSearchBtn);
+      els.searchDropdownMenu.on('click','.all',onResetLang);
+      els.searchDropdownMenu.on('change','input',onSelectLang);
+      els.searchInput.on('keyup',function(){
+        renderSearchBtn();
+      });
       els.searchBtn.on('click',function(){
         onSearch();
       });
@@ -393,6 +440,7 @@
     }
     function init(){
       bindEvent();
+      renderLangMunu();
       onLocationHashChanged();
       renderAnalytics();
     }
@@ -401,6 +449,19 @@
       e && e.preventDefault();
       var hash = HashHandler.get();
       hash && onSearch(decodeURIComponent(hash));
+    }
+    function onSelectLang(){
+      var checked = els.searchDropdownMenu.find('input:checked'),lang = [];
+      checked.each(function(){
+        lang.push(this.value);
+      });
+      searchcode.setLang(lang.join(','));
+      renderSearchBtn('Search');
+    }
+    function onResetLang(){
+      els.searchDropdownMenu.find('input').removeAttr('checked');
+      searchcode.setLang();
+      renderSearchBtn('Search');
     }
     function onSearch(val){
       els.searchInput.blur();
@@ -470,11 +531,13 @@
       renderAnalytics(els.lastInputVal);
     }
 
-    function renderTitle(){
-//      els.title.css({color: randomColor()});
-      renderGithubCorner();
+    function renderLangMunu(){
+      var htm = [];
+      topProgramLan.forEach(function(key){
+        htm.push(els.searchDropdownMenuTpl.replace('{id}',key.id).replace('{language}',key.language));
+      });
+      els.searchDropdownMenu.append(htm.join(''));
     }
-
     function renderGithubCorner(){
       els.githubCorner.css({fill: randomColor()});
     }
@@ -518,12 +581,12 @@
       }else{
         renderSearchResultHeader('error');
       }
-      renderTitle();
+      renderGithubCorner();
     }
 
-    function renderSearchBtn(){
+    function renderSearchBtn(str){
       var val = els.searchInput.val().trim();
-      els.searchBtn.html((val.length && val==els.lastInputVal)?'More':'Search');
+      els.searchBtn.html(str?str:(((val.length && val==els.lastInputVal)?'More':'Search')));
     }
 
     function renderSearchResultHeader(cls){
