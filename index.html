@@ -85,8 +85,7 @@
       text-decoration: none;
     }
     .main-title h1{
-      transition: all 1s ease-in-out;
-      -webkit-transition: all 1s ease-in-out;
+      text-transform: uppercase;
     }
     .search-form{
       padding: 20px 0;
@@ -215,7 +214,7 @@
               <div class="rect5"></div>
             </div>
           </div>
-          <div class="error text-muted">Codelf found nothing, try "History & Suggestion" :)</div>
+          <div class="error text-muted">Codelf found nothing, try "Suggestions" :)</div>
         </header>
         <section class="bd">
           <blockquote class="blockquote">
@@ -701,7 +700,7 @@
           return dup;
         })
         .join(' ');
-      els.searchRelateBd.html('<span class="label label-default">History & Suggestion :</span>'+labels.join(''));
+      els.searchRelateBd.html('<span class="label label-default">Suggestions :</span>'+labels.join(''));
     }
 
     function renderAnalytics(param){
