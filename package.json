@@ -16,8 +16,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "searchcode",
-    "real-world usage variable names"
+    "Codelf",
+    "real-world usage variable names",
+    "searchcode"
   ],
   "author": "unbug",
   "license": "MIT"
