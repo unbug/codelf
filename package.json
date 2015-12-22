@@ -1,0 +1,24 @@
+{
+  "name": "Codelf",
+  "version": "0.0.1",
+  "description": "Search over projects from Github, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Project to find real-world usage variable names. ",
+  "dependencies": {},
+  "devDependencies": {
+    "browser-sync": "^2.2.4",
+    "date-utils": "^1.2.16",
+    "gulp": "^3.9.0",
+    "gulp-load-plugins": "^0.8.1",
+    "gulp-replace": "^0.5.3",
+    "run-sequence": "^1.0.2",
+    "through2": "^0.6.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "searchcode",
+    "real-world usage variable names"
+  ],
+  "author": "unbug",
+  "license": "MIT"
+}

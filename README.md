@@ -5,6 +5,10 @@ Search over projects from Github, Bitbucket, Google Code, Codeplex, Sourceforge,
   >There are only two hard things in Computer Science: cache invalidation and naming things.-- Phil Karlton
   ![twohardtings](http://unbug.github.io/codelf/resources/images/twohardtings.jpg)
   
+Build
+=================
+1. ```npm install```
+2. ```gulp```
 
 Thanks
 =================

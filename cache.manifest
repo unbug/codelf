@@ -1,0 +1,14 @@
+CACHE MANIFEST
+# Build: 20151222033848
+
+CACHE:
+resources/css/bootstrap.min.css
+resources/fonts/Dressedless_Three.svg
+resources/fonts/Dressedless_Three.ttf
+resources/images/twohardtings.jpg
+src/lib/tether/js/tether.min.js
+src/lib/bootstrap.min.js
+src/lib/jquery.min.js
+
+NETWORK:
+*
