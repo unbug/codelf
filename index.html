@@ -580,8 +580,10 @@
                 els.valHistory = tdata.basic.explains.join(' ');
               }
               //web translate
-              if(tdata.web && tdata.web[0]){
-                els.valHistory += ' '+tdata.web[0].value.join(' ');
+              if(tdata.web && tdata.web){
+                tdata.web.forEach(function(key){
+                  els.valHistory += ' '+key.value.join(' ');
+                });
               }
               if(tdata && tdata.translation){
                 els.lastVal = els.lastVal + ' '
