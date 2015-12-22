@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Codelf</title>
+  <title>CODELF</title>
   <meta name="description" content="Search over projects from Github, Bitbucket, Google Code and more to find real-world usage variable names" />
   <meta name="keywords" content="variable naming,programming naming,programming variable dictionary,naming convention,变量命名,函数命名,方法命名,变量命名神器">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -11,6 +11,15 @@
   <style>
     html,body{
       -webkit-font-smoothing: antialiased;
+    }
+    /*
+    http://www.fontspace.com/538fonts/dressedless
+    https://everythingfonts.com/ttf-to-svg
+    */
+    @font-face {
+      font-family: 'Dressedless Three';
+      src: url('resources/fonts/Dressedless_Three.ttf')  format('truetype'), /* Safari, Android, iOS */
+      url('resources/fonts/Dressedless_Three.svg') format('svg'); /* Legacy iOS */
     }
     /*component*/
     /*https://github.com/tobiasahlin/SpinKit*/
@@ -85,7 +94,9 @@
       text-decoration: none;
     }
     .main-title h1{
+      font-family: "Dressedless Three",Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif;;
       text-transform: uppercase;
+      font-size: 3.5em;
     }
     .search-form{
       padding: 20px 0;
@@ -138,6 +149,9 @@
       }
       .main-title{
         padding: 0 50px;
+      }
+      .main-title h1{
+        font-size: 4.5em;
       }
       .search-form .help{
         display: inline-block;
