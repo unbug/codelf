@@ -575,8 +575,13 @@
           els.lastVal = tmpval.join(' ');
           if(tmpch.length){
             youdaoTranslate.request(tmpch.join(' '),function(tdata){
+              //basic translate
               if(tdata.basic && tdata.basic.explains){
                 els.valHistory = tdata.basic.explains.join(' ');
+              }
+              //web translate
+              if(tdata.web && tdata.web[0]){
+                els.valHistory += ' '+tdata.web[0].value.join(' ');
               }
               if(tdata && tdata.translation){
                 els.lastVal = els.lastVal + ' '
