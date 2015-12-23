@@ -495,30 +495,33 @@
           this.resetPage();
         }
         lastVal = val;
-        lastVal && $.get(
-          'https://searchcode.com/api/codesearch_I/'+(langQuery?('?'+langQuery):''),
-          {
+        lastVal && $.ajax({
+          type: 'GET',
+          dataType: 'json',
+          url: 'https://searchcode.com/api/codesearch_I/'+(langQuery?('?'+langQuery):''),
+          data: {
             q: lastVal,
             p: page,
             per_page: 100
           },
-          function(data){
+          success: function(data){
             callback && callback(data,page);
             page++;
           }
-        )
+        })
       };
 
       //get source code by id
       this.requestSourceCode = function(id,callback){
         lastCodeId = id;
-        lastCodeId && $.get(
-          'https://searchcode.com/api/result/'+lastCodeId+'/',
-          {},
-          function(data){
+        lastCodeId && $.ajax({
+          type: 'GET',
+          dataType: 'json',
+          url: 'https://searchcode.com/api/result/'+lastCodeId+'/',
+          success: function(data){
             callback && callback(data);
           }
-        )
+        });
       }
     };
 
@@ -642,6 +645,7 @@
 
     function showSourceCode(){
       searchcode.requestSourceCode(this.dataset.id,renderSourceCode);
+      els.sourceCodeModal.modal('toggle');
     }
 
     function onLocationHashChanged(e){
@@ -847,7 +851,6 @@
 
     function renderSourceCode(data){
       data && els.sourceCodeContent.text(data.code);
-      els.sourceCodeModal.modal('toggle');
     }
     function removeVariableMenus(){
       els.body.find('.popover--variable').remove();
