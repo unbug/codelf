@@ -642,7 +642,6 @@
 
     function showSourceCode(){
       searchcode.requestSourceCode(this.dataset.id,renderSourceCode);
-      els.sourceCodeModal.modal('toggle');
     }
 
     function onLocationHashChanged(e){
@@ -848,6 +847,7 @@
 
     function renderSourceCode(data){
       data && els.sourceCodeContent.text(data.code);
+      els.sourceCodeModal.modal('toggle');
     }
     function removeVariableMenus(){
       els.body.find('.popover--variable').remove();
