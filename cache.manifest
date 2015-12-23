@@ -1,11 +1,12 @@
 CACHE MANIFEST
-# Build: 20151223102436
+# Build: 20151223112059
 
 CACHE:
+resources/images/codelf_logo.png
+resources/images/twohardtings.jpg
 resources/css/bootstrap.min.css
 resources/fonts/Dressedless_Three.svg
 resources/fonts/Dressedless_Three.ttf
-resources/images/twohardtings.jpg
 src/lib/tether/js/tether.min.js
 src/lib/bootstrap.min.js
 src/lib/jquery.min.js
