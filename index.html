@@ -98,6 +98,33 @@
       text-transform: uppercase;
       font-size: 3.5em;
     }
+    .main-title h1.animated span{
+      transition: color 250ms linear;
+    }
+    .main-title h1.animated span:nth-child(1){
+      color: #3369e8;
+      transition-delay: 200ms;
+    }
+    .main-title h1.animated span:nth-child(2){
+      color: #d50f25;
+      transition-delay: 350ms;
+    }
+    .main-title h1.animated span:nth-child(3){
+      color: #eeb211;
+      transition-delay: 500ms;
+    }
+    .main-title h1.animated span:nth-child(4){
+      color: #3369e8;
+      transition-delay: 650ms;
+    }
+    .main-title h1.animated span:nth-child(5){
+      color: #009925;
+      transition-delay: 800ms;
+    }
+    .main-title h1.animated span:nth-child(6){
+      color: #d50f25;
+      transition-delay: 950ms;
+    }
     .search-form{
       padding: 20px 0;
     }
@@ -172,7 +199,7 @@
 <body>
 <section class="main-container">
   <header class="main-title">
-    <header><a href="./"><h1>Codelf</h1></a></header>
+    <header><a href="./"><h1><span>C</span><span>O</span><span>D</span><span>E</span><span>L</span><span>F</span></h1></a></header>
     <h5>Search over projects from Github, Bitbucket, Google Code and more to find </h5>
     <h5><span class="label label-pill label-success">real-world usage</span> <span class="label label-pill label-danger">variable names</span></h5>
   </header>
@@ -488,6 +515,7 @@
     var els = {
       body: $('body'),
 
+      title: $('.main-title>header h1'),
       searchForm: $('.search-form'),
       searchInput: $('.search-form input'),
       searchBtn: $('.search-form button.search'),
@@ -531,6 +559,7 @@
     }
     function init(){
       bindEvent();
+      renderTitle();
       renderLangMunu();
       onLocationHashChanged();
       renderAnalytics();
@@ -627,6 +656,10 @@
       renderSearchResultHeader('loading');
       renderSearchBtn();
       renderAnalytics(els.lastInputVal);
+    }
+
+    function renderTitle(){
+      els.title.addClass('animated');
     }
 
     function renderLangMunu(){
