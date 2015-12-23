@@ -11,6 +11,7 @@
   <link rel="apple-touch-icon" sizes="144x144"  href="resources/images/codelf_logo.png">
   <link rel="apple-touch-icon-precomposed" href="resources/images/codelf_logo.png">
   <link rel="stylesheet" href="resources/css/bootstrap.min.css">
+  <link rel="stylesheet" href="resources/css/monokai-sublime.css">
   <style>
     html,body{
       -webkit-font-smoothing: antialiased;
@@ -156,7 +157,7 @@
       overflow-x: scroll;
       -webkit-overflow-scrolling: touch;
     }
-    .search-result .label-warp{
+    .search-result .variable-wrap{
       display: inline-block;
     }
     .search-result a:hover{
@@ -178,7 +179,19 @@
       max-width: 100%;
       height: auto;
     }
-
+    .popover--variable{
+      background-color: transparent;
+      border-left: 0;
+      border-right: 0;
+      border-top: 0;
+      border-color: #ccc;
+    }
+    .popover--variable .popover-content{
+      padding: 0;
+    }
+    .popover--variable .btn{
+      border-bottom: 0;
+    }
     @media (min-width: 62em) {
       .main-container{
         padding: 20px 150px;
@@ -271,20 +284,41 @@
           <img src="resources/images/twohardtings.jpg">
         </blockquote>
           <script type="text/html">
-            <h5 class="label-warp"><a class="label label-{type}"  data-toggle="tooltip" data-placement="top" title="{val}" href="#{val}">{val}</a></h5>
+            <h5 class="variable-wrap" data-id="{id}" data-repo="{repo}" data-url="{url}" data-val="{val}"><span class="label label-{label_type}" title="{val}">{val}</span></h5>
           </script>
         </section>
       </div>
     </div>
   </section>
 </section>
-<a href=""></a>
+<div class="modal fade js-sourcecode-modal" tabindex="-1" role="dialog" aria-labelledby="sourcecodeModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code></code></pre>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/html" template="variableMenu">
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-secondary js-variable-button__code" data-id="{id}">Codes</button>
+    <button type="button" class="btn btn-secondary"><a href="#{val}">Search</a></button>
+    <button type="button" class="btn btn-secondary"><a href="{repo}" target="_blank">Repo</a></button>
+  </div>
+</script>
 <!-- http://tholman.com/github-corners/ -->
 <a href="https://github.com/unbug/codelf" class="github-corner" target="_blank" title="Fork me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#fff; position: absolute; top: 0; border: 0; right: 0;"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
 <style>.github-corner svg{ transition: all 1s ease-in-out;}.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0deg)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
 <script src="src/lib/tether/js/tether.min.js"></script>
 <script src="src/lib/jquery.min.js"></script>
 <script src="src/lib/bootstrap.min.js"></script>
+<script src="src/lib/highlight.pack.js"></script>
 <script>
   $(function () {
     //utils
@@ -415,11 +449,11 @@
     //http://githut.info/
     var topProgramLan = [{"id":"22,106","language":"JavaScript, CoffeeScript"},{"id":"133,135","language":"CSS"},{"id":"3,39","language":"HTML"},{"id":137,"language":"Swift"},{"id":35,"language":"Objective-C"},{"id":23,"language":"Java"},{"id":19,"language":"Python"},{"id":24,"language":"PHP"},{"id":32,"language":"Ruby"},{"id":28,"language":"C"},{"id":16,"language":"C++"},{"id":6,"language":"C#"},{"id":55,"language":"Go"},{"id":51,"language":"Perl"},{"id":"104,109","language":"Clojure, ClojureScript"},{"id":40,"language":"Haskell"},{"id":54,"language":"Lua"},{"id":20,"language":"Matlab"},{"id":144,"language":"R"},{"id":47,"language":"Scala"},{"id":"69,78,146","language":"Shell"},{"id":29,"language":"Lisp"},{"id":42,"language":"ActionScript"}];
     var searchcode = new function(){
-      var persistenceLangsName = 'codelf_langs_selected';
-      var langs = localStorage.get(persistenceLangsName),langQuery;
+      var persistLangsName = 'codelf_langs_selected';
+      var langs = localStorage.get(persistLangsName),langQuery;
       var page = 0;
       var lastVal;
-      var searchRequestCallback;
+      var lastCodeId;
 
       genLangQuery(langs);
 
@@ -435,7 +469,7 @@
         langs = val || null;
         genLangQuery(val);
         this.resetPage();
-        localStorage[langs?'set':'del'](persistenceLangsName,langs);
+        localStorage[langs?'set':'del'](persistLangsName,langs);
       }
 
       this.getLang = function(){
@@ -455,32 +489,36 @@
         }
       }
 
+      //search code by query
       this.request = function(val,callback){
         if(val!=lastVal){
           this.resetPage();
         }
         lastVal = val;
-        searchRequestCallback = callback;
-        lastVal && $.ajax({
-          type: 'GET',
-          url: 'https://searchcode.com/api/jsonp_codesearch_I/'+(langQuery?('?'+langQuery):''),
-          dataType: 'jsonp',
-          jsonp: false,
-          jsonpCallback: false,
-          contentType: "application/json",
-          data: {
+        lastVal && $.get(
+          'https://searchcode.com/api/codesearch_I/'+(langQuery?('?'+langQuery):''),
+          {
             q: lastVal,
             p: page,
-            per_page: 100,
-            callback: 'afterSearchRequest'
+            per_page: 100
+          },
+          function(data){
+            callback && callback(data,page);
+            page++;
           }
-        });
-      }
-      window.afterSearchRequest = function(data){
-        if(data){
-          searchRequestCallback && searchRequestCallback(data,page);
-          page++;
-        }
+        )
+      };
+
+      //get source code by id
+      this.requestSourceCode = function(id,callback){
+        lastCodeId = id;
+        lastCodeId && $.get(
+          'https://searchcode.com/api/result/'+lastCodeId+'/',
+          {},
+          function(data){
+            callback && callback(data);
+          }
+        )
       }
     };
 
@@ -541,6 +579,11 @@
       searchResultHd: $('.search-result .hd'),
       searchResultBd: $('.search-result .bd'),
 
+      variableMenuTpl: $('script[template="variableMenu"]').html(),
+
+      sourceCodeModal: $('.js-sourcecode-modal'),
+      sourceCodeContent: $('.js-sourcecode-modal pre code'),
+
       githubCorner: $('.github-corner svg'),
 
       lastVal: ''
@@ -562,9 +605,31 @@
           return false;
         }
       });
-      els.searchResultBd.on('mouseenter touchstart','a',function () {
-        $(this).select();
+      els.searchResultBd.on('click mouseenter','.variable-wrap',function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        removeVariableMenus();
+        $(this).popover({
+          trigger: 'manual',
+          html: true,
+          placement: 'top',
+          offset: '-8 0',
+          title: function(){
+            return false;
+          },
+          content: function(){
+            return els.variableMenuTpl
+              .replace('{id}',this.dataset.id)
+              .replace('{val}',this.dataset.val)
+              .replace('{repo}',this.dataset.repo);
+          },
+          template: '<div class="popover popover--variable" role="tooltip"><div class="popover-arrow"></div><div class="popover-content"></div></div>'
+        });
+        $(this).popover('show');
+        return false;
       });
+      els.body.on('click','.js-variable-button__code',showSourceCode);
+      els.body.on('click',removeVariableMenus);
     }
     function init(){
       bindEvent();
@@ -572,6 +637,12 @@
       renderLangMunu();
       onLocationHashChanged();
       renderAnalytics();
+      hljs.highlightBlock(els.sourceCodeContent[0]);
+    }
+
+    function showSourceCode(){
+      searchcode.requestSourceCode(this.dataset.id,renderSourceCode);
+      els.sourceCodeModal.modal('toggle');
     }
 
     function onLocationHashChanged(e){
@@ -594,7 +665,7 @@
     }
     function onSearch(val){
       els.searchInput.blur();
-      //els.body.find('.tooltip').remove();
+      removeVariableMenus();
       if(val && val==els.lastInputVal){return;}
       val = val || els.searchInput.val().trim();
       els.searchInput.val(val);
@@ -687,31 +758,41 @@
     }
 
     function renderSearchResult(data,page){
-      var vals = [],labels = [],allStr = [];
+      var vals = [],labels = [],lineStr;
       data.results.forEach(function(rkey){
+        //filter codes
+        lineStr = [];
         for(var lkey in rkey.lines){
           var lstr = rkey.lines[lkey];
-          !(/;base64,/g.test(lstr) && lstr.length>256) //no base64
-          && allStr.push(lstr);
+          if(!(/;base64,/g.test(lstr) && lstr.length>256)){//no base64
+            lineStr.push(lstr);
+          }
         }
-      });
-      allStr = allStr.join('').replace(/\r\n/g,' ');
-      els.valRegs.forEach(function(key){
-        $.each(allStr.match(key)||[], function(i, el){
-          if(
-            !/\//g.test(el) //exclude links
-            && $.inArray(el, vals) === -1
-            && $.inArray(el.toLowerCase(), vals) === -1
-            && $.inArray(el.toUpperCase(), vals) === -1
-            && el.length<64 //too long
+        lineStr = lineStr.join('').replace(/\r\n/g,' ');
+        //match variables
+        els.valRegs.forEach(function(key){
+          $.each(lineStr.match(key)||[], function(i, el){
+            if(
+              !/\//g.test(el) //exclude links
+              && $.inArray(el, vals) === -1
+              && $.inArray(el.toLowerCase(), vals) === -1
+              && $.inArray(el.toUpperCase(), vals) === -1
+              && el.length<64 //too long
             ){
-            vals.push(el)
-          };
+              vals.push(el);
+              //render variable labels
+              labels.push(els.searchResultTpl
+                .replace('{label_type}',getRandomLabelType())
+                .replace(/\{val\}/g,el)
+                .replace('{id}',rkey.id)
+                .replace('{url}',rkey.url)
+                .replace('{repo}',rkey.repo)
+              );
+            };
+          });
         });
       });
-      vals.forEach(function(key){
-        labels.push(els.searchResultTpl.replace('{type}',getRandomLabelType()).replace(/\{val\}/g,key));
-      });
+
       if(labels.length){
         var blockquote = els.searchResultBd.find('.blockquote');
         if(blockquote[0]){
@@ -747,7 +828,6 @@
           els.searchBtn.tooltip('dispose');
         },3000);
       }
-      //els.searchResult.find('[data-toggle="tooltip"]').tooltip();
     }
 
     function renderHistory(){
@@ -766,6 +846,12 @@
       els.searchRelateBd.html('<span class="label label-default">Suggestions :</span>'+labels.join(''));
     }
 
+    function renderSourceCode(data){
+      data && els.sourceCodeContent.text(data.code);
+    }
+    function removeVariableMenus(){
+      els.body.find('.popover--variable').remove();
+    }
     function renderAnalytics(param){
       setTimeout(function(){
         els.body.append('<iframe src="http://www.mihtool.com/analytics.html?codelf'+(param?('&q='+param):'')+'" style="display: none;width: 0;height: 0;border: 0;"></iframe>');
