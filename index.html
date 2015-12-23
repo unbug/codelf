@@ -853,7 +853,7 @@
       els.body.find('.popover--variable').remove();
     }
     function renderAnalytics(param){
-      setTimeout(function(){
+      /unbug/g.test(location.href) && setTimeout(function(){
         els.body.append('<iframe src="http://www.mihtool.com/analytics.html?codelf'+(param?('&q='+param):'')+'" style="display: none;width: 0;height: 0;border: 0;"></iframe>');
       },param?500:3000);
     }
