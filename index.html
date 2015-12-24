@@ -453,16 +453,12 @@
       var langs = localStorage.get(persistLangsName),langQuery;
       var page = 0;
       var lastVal;
-      var lastCodeId;
+      var cacheSourceCodes = {};
 
       genLangQuery(langs);
 
       this.resetPage = function(){
         page = 0;
-      }
-
-      this.getPage = function(){
-       return page;
       }
 
       this.setLang = function(val){
@@ -513,12 +509,16 @@
 
       //get source code by id
       this.requestSourceCode = function(id,callback){
-        lastCodeId = id;
-        lastCodeId && $.ajax({
+        if(cacheSourceCodes[id]){
+          callback && callback(cacheSourceCodes[id]);
+          return;
+        }
+        id && $.ajax({
           type: 'GET',
           dataType: 'json',
-          url: 'https://searchcode.com/api/result/'+lastCodeId+'/',
+          url: 'https://searchcode.com/api/result/'+id+'/',
           success: function(data){
+            cacheSourceCodes[id] = data;
             callback && callback(data);
           }
         });
@@ -633,6 +633,9 @@
       });
       els.body.on('click','.js-variable-button__code',showSourceCode);
       els.body.on('click',removeVariableMenus);
+      els.sourceCodeModal.on('hidden.bs.modal', function () {
+        els.sourceCodeContent.text('');
+      });
     }
     function init(){
       bindEvent();
@@ -640,10 +643,9 @@
       renderLangMunu();
       onLocationHashChanged();
       renderAnalytics();
-//      hljs.highlightBlock(els.sourceCodeContent[0]);
     }
 
-    function showSourceCode(e){
+    function showSourceCode(){
       searchcode.requestSourceCode(this.dataset.id,renderSourceCode);
       els.sourceCodeModal.modal('toggle');
     }
