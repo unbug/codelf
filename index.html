@@ -206,8 +206,6 @@
     }
     .sourcecode-modal .modal-body{
       overflow: scroll;
-      transform: translate3d(0,0,0);
-      -webkit-transform: translate3d(0,0,0);
       -webkit-overflow-scrolling: touch;
     }
     @media (min-width: 62em) {
@@ -232,6 +230,21 @@
       .github-corner svg{
         width: 120px;
         height: 120px;
+      }
+      .sourcecode-modal{
+        max-height: 98%;
+      }
+      .sourcecode-modal .modal-dialog,
+      .sourcecode-modal .modal-content,
+      .sourcecode-modal .modal-body{
+        height: auto;
+        overflow: auto;
+      }
+      .sourcecode-modal .modal-content{
+        padding-bottom: auto;
+      }
+      .sourcecode-modal .modal-body{
+        overflow: auto;
       }
     }
   </style>
