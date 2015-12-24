@@ -192,6 +192,24 @@
     .popover--variable .btn{
       border-bottom: 0;
     }
+    .sourcecode-modal{
+      max-height: 98%;
+    }
+    .sourcecode-modal .modal-dialog,
+    .sourcecode-modal .modal-content,
+    .sourcecode-modal .modal-body{
+      height: 100%;
+      overflow: hidden;
+    }
+    .sourcecode-modal .modal-content{
+      padding-bottom: 20px;
+    }
+    .sourcecode-modal .modal-body{
+      overflow: scroll;
+      transform: translate3d(0,0,0);
+      -webkit-transform: translate3d(0,0,0);
+      -webkit-overflow-scrolling: touch;
+    }
     @media (min-width: 62em) {
       .main-container{
         padding: 20px 150px;
@@ -291,13 +309,14 @@
     </div>
   </section>
 </section>
-<div class="modal fade js-sourcecode-modal" tabindex="-1" role="dialog" aria-labelledby="sourcecodeModal" aria-hidden="true">
+<div class="modal fade sourcecode-modal" tabindex="-1" role="dialog" aria-labelledby="sourcecodeModal" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
+        <a target="_blank">Repo</a>
       </div>
       <div class="modal-body">
         <pre><code></code></pre>
@@ -584,8 +603,8 @@
 
       variableMenuTpl: $('script[template="variableMenu"]').html(),
 
-      sourceCodeModal: $('.js-sourcecode-modal'),
-      sourceCodeContent: $('.js-sourcecode-modal pre code'),
+      sourceCodeModal: $('.sourcecode-modal'),
+      sourceCodeContent: $('.sourcecode-modal pre code'),
 
       githubCorner: $('.github-corner svg'),
 
@@ -621,6 +640,7 @@
             return false;
           },
           content: function(){
+            els.sourceCodeModal.find('.modal-header a').attr('href',this.dataset.repo);
             return els.variableMenuTpl
               .replace('{id}',this.dataset.id)
               .replace('{val}',this.dataset.val)
