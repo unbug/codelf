@@ -107,12 +107,12 @@
     }
     /*C*/
     .main-title h1.animated span:nth-child(1){
-      color: #d50f25;
+      color: #3369e8;
       transition-delay: 200ms;
     }
     /*O*/
     .main-title h1.animated span:nth-child(2){
-      color: #3369e8;
+      color: #d50f25;
       transition-delay: 350ms;
     }
     /*D*/
@@ -122,7 +122,7 @@
     }
     /*E*/
     .main-title h1.animated span:nth-child(4){
-      color: #d50f25;
+      color: #3369e8;
       transition-delay: 650ms;
     }
     /*L*/
@@ -132,7 +132,7 @@
     }
     /*F*/
     .main-title h1.animated span:nth-child(6){
-      color: #3369e8;
+      color: #d50f25;
       transition-delay: 950ms;
     }
     .search-form{
@@ -208,6 +208,9 @@
       overflow: scroll;
       -webkit-overflow-scrolling: touch;
     }
+    .variable-btns>.variable-btns__copy{
+      display: none;
+    }
     @media (min-width: 62em) {
       .main-container{
         padding: 20px 150px;
@@ -242,6 +245,9 @@
       }
       .sourcecode-modal .modal-content{
         padding-bottom: 0;
+      }
+      .variable-btns>.variable-btns__copy{
+        display: block;
       }
     }
   </style>
@@ -335,10 +341,11 @@
   </div>
 </div>
 <script type="text/html" template="variableMenu">
-  <div class="btn-group-vertical" role="group">
+  <div class="btn-group-vertical variable-btns" role="group">
     <button type="button" class="btn btn-secondary"><a href="{repo}" target="_blank">Repo</a></button>
     <button type="button" class="btn btn-secondary"><a href="#{val}">Search</a></button>
-    <button type="button" class="btn btn-secondary js-variable-button__code" data-id="{id}">Codes</button>
+    <button type="button" class="btn btn-secondary variable-btns__code" data-id="{id}">Codes</button>
+    <button type="button" class="btn btn-secondary variable-btns__copy" data-clipboard-text="{val}">Copy</button>
   </div>
 </script>
 <!-- http://tholman.com/github-corners/ -->
@@ -347,6 +354,7 @@
 <script src="src/lib/tether.min.js"></script>
 <script src="src/lib/jquery.min.js"></script>
 <script src="src/lib/bootstrap.min.js"></script>
+<script src="src/lib/ZeroClipboard.min.js"></script>
 <script src="src/lib/highlight.min.js"></script>
 <script>
   $(function () {
@@ -653,15 +661,16 @@
             els.sourceCodeModal.find('.modal-header a').attr('href',this.dataset.repo);
             return els.variableMenuTpl
               .replace('{id}',this.dataset.id)
-              .replace('{val}',this.dataset.val)
+              .replace(/\{val\}/g,this.dataset.val)
               .replace('{repo}',this.dataset.repo);
           },
           template: '<div class="popover popover--variable" role="tooltip"><div class="popover-arrow"></div><div class="popover-content"></div></div>'
         });
         $(this).popover('show');
+        els.variableClipboard = new ZeroClipboard($('.variable-btns__copy')[0]);
         return false;
       });
-      els.body.on('click','.js-variable-button__code',showSourceCode);
+      els.body.on('click','.variable-btns__code',showSourceCode);
       els.body.on('click',removeVariableMenus);
       els.sourceCodeModal.on('hidden.bs.modal', function () {
         els.sourceCodeContent.text('');
