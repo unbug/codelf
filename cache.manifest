@@ -1,17 +1,17 @@
 CACHE MANIFEST
-# Build: 20151224021427
+# Build: 20151224120725
 
 CACHE:
 resources/css/bootstrap.min.css
-resources/css/monokai-sublime.css
+resources/css/highlight.min.css
 resources/fonts/Dressedless_Three.svg
 resources/fonts/Dressedless_Three.ttf
 resources/images/codelf_logo.png
 resources/images/twohardtings.jpg
-src/lib/tether/js/tether.min.js
 src/lib/bootstrap.min.js
-src/lib/highlight.pack.js
+src/lib/highlight.min.js
 src/lib/jquery.min.js
+src/lib/tether.min.js
 
 NETWORK:
 *
