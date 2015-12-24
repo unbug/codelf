@@ -11,8 +11,11 @@
   <link rel="apple-touch-icon" sizes="144x144"  href="resources/images/codelf_logo.png">
   <link rel="apple-touch-icon-precomposed" href="resources/images/codelf_logo.png">
   <link rel="stylesheet" href="resources/css/bootstrap.min.css">
-  <link rel="stylesheet" href="resources/css/highlight.min.css">
   <style>
+    /*google prettify*/
+    .pln{color:#000}@media screen{.str{color:#080}.kwd{color:#008}.com{color:#800}.typ{color:#606}.lit{color:#066}.pun,.opn,.clo{color:#660}.tag{color:#008}.atn{color:#606}.atv{color:#080}.dec,.var{color:#606}.fun{color:red}}@media print,projection{.str{color:#060}.kwd{color:#006;font-weight:bold}.com{color:#600;font-style:italic}.typ{color:#404;font-weight:bold}.lit{color:#044}.pun,.opn,.clo{color:#440}.tag{color:#006;font-weight:bold}.atn{color:#404}.atv{color:#060}}pre.prettyprint{padding:2px;border:1px solid #888}ol.linenums{margin-top:0;margin-bottom:0}li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8{list-style-type:none}li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}
+    /*end google prettify*/
+
     html,body{
       -webkit-font-smoothing: antialiased;
     }
@@ -208,6 +211,9 @@
       overflow: scroll;
       -webkit-overflow-scrolling: touch;
     }
+    .sourcecode-modal code{
+      display: inline-block;
+    }
     .variable-btns>.variable-btns__copy{
       display: none;
     }
@@ -335,17 +341,19 @@
         <a target="_blank">Repo</a>
       </div>
       <div class="modal-body">
-        <pre><code></code></pre>
+        <script type="text/html">
+          <pre><code class="prettyprint linenums">{code}</code></pre>
+        </script>
       </div>
     </div>
   </div>
 </div>
 <script type="text/html" template="variableMenu">
   <div class="btn-group-vertical variable-btns" role="group">
-    <button type="button" class="btn btn-secondary"><a href="{repo}" target="_blank">Repo</a></button>
     <button type="button" class="btn btn-secondary"><a href="#{val}">Search</a></button>
-    <button type="button" class="btn btn-secondary variable-btns__code" data-id="{id}">Codes</button>
+    <button type="button" class="btn btn-secondary"><a href="{repo}" target="_blank">Repo</a></button>
     <button type="button" class="btn btn-secondary variable-btns__copy" data-clipboard-text="{val}">Copy</button>
+    <button type="button" class="btn btn-secondary variable-btns__code" data-id="{id}">Codes</button>
   </div>
 </script>
 <!-- http://tholman.com/github-corners/ -->
@@ -354,8 +362,8 @@
 <script src="src/lib/tether.min.js"></script>
 <script src="src/lib/jquery.min.js"></script>
 <script src="src/lib/bootstrap.min.js"></script>
-<script src="src/lib/ZeroClipboard.min.js"></script>
-<script src="src/lib/highlight.min.js"></script>
+<script src="src/lib/ZeroClipboard.min.js" defer></script>
+<script src="src/lib/prettify.js" defer></script>
 <script>
   $(function () {
     //utils
@@ -622,7 +630,8 @@
       variableMenuTpl: $('script[template="variableMenu"]').html(),
 
       sourceCodeModal: $('.sourcecode-modal'),
-      sourceCodeContent: $('.sourcecode-modal pre code'),
+      sourceCodeContent: $('.sourcecode-modal .modal-body'),
+      sourceCodeContentTpl: $('.sourcecode-modal .modal-body script').html(),
 
       githubCorner: $('.github-corner svg'),
 
@@ -799,9 +808,6 @@
     }
     function renderGithubCorner(){
       els.githubCorner.css({fill: randomColor()});
-      setTimeout(function(){
-        hljs.highlightBlock(els.sourceCodeContent[0]);
-      },300);
     }
 
     function renderSearchResult(data,page){
@@ -895,9 +901,9 @@
 
     function renderSourceCode(data){
       if(data){
-        els.sourceCodeContent.text(data.code);
+        els.sourceCodeContent.html(els.sourceCodeContentTpl.replace('{code}',data.code));
         setTimeout(function(){
-          hljs.highlightBlock(els.sourceCodeContent[0]);
+          PR.prettyPrint();
         },100);
       }
     }
