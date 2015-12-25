@@ -9,8 +9,8 @@ Search over projects from Github, Bitbucket, Google Code, Codeplex, Sourceforge,
   
 Build
 =================
-1. install requirements ```npm install```
-2. build and watch ```gulp```
+1. install requirements run ```npm install```
+2. build and watch run ```gulp```
 
 Thanks
 =================
