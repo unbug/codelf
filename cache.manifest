@@ -1,12 +1,12 @@
 CACHE MANIFEST
-# Build: 20151225050022
+# Build: 20151225071807
 
 CACHE:
-resources/css/bootstrap.min.css
-resources/fonts/Dressedless_Three.svg
-resources/fonts/Dressedless_Three.ttf
 resources/images/codelf_logo.png
 resources/images/twohardtings.jpg
+resources/fonts/Dressedless_Three.svg
+resources/fonts/Dressedless_Three.ttf
+resources/css/bootstrap.min.css
 src/lib/ZeroClipboard.min.js
 src/lib/bootstrap.min.js
 src/lib/jquery.min.js

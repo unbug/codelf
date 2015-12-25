@@ -593,7 +593,7 @@
     }
 
     function getKeyWordReg(key){
-      return new RegExp('([\\-_\\w\\d\\/]{0,}){0,1}'+key+'([\\-_\\w\\d]{0,}){0,1}', 'gi');
+      return new RegExp('([\\-_\\w\\d\\/\\$]{0,}){0,1}'+key+'([\\-_\\w\\d\\$]{0,}){0,1}', 'gi');
     }
     //end model
 
