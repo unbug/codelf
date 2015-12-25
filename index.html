@@ -721,7 +721,6 @@
           HashHandler.set(encodeURIComponent(val));
           var tmpval = [],tmpch = [];
 
-          //ok,these code need optimize later
           els.lastInputVal.replace(/\s+/ig,'+').split('+').forEach(function(key){
             /[^\x00-\xff]/gi.test(key)?tmpch.push(key):tmpval.push(key);
           });
@@ -763,12 +762,12 @@
       els.lastVal = els.lastVal.split(' ').filter(function(key,idx,inputArray){
         return inputArray.indexOf(key) == idx;
       }).join(' ');
-      setKeyWordReg();
+      saveKeyWordRegs();
       renderHistory();
       doSearch();
     }
 
-    function setKeyWordReg(){
+    function saveKeyWordRegs(){
       els.valRegs = [];
       els.lastVal.replace(/\s+/ig,'+').split('+').forEach(function(key){
         key.length && els.valRegs.push(getKeyWordReg(key));
@@ -808,14 +807,17 @@
         lineStr = [];
         for(var lkey in rkey.lines){
           var lstr = rkey.lines[lkey];
-          if(!(/;base64,/g.test(lstr) && lstr.length>256)){//no base64
+          //no base64
+          if(!(/;base64,/g.test(lstr) && lstr.length>256)){
             lineStr.push(lstr);
           }
         }
-        lineStr = lineStr.join('').replace(/\r\n/g,' ');
+        lineStr = lineStr.join('');//.replace(/\r\n/g,' ');
         //match variables
         els.valRegs.forEach(function(key){
           $.each(lineStr.match(key)||[], function(i, el){
+            //remove "-" and "/" from the starer and the ender
+            el = el.replace(/^(\-|\/)*/, '').replace(/(\-|\/)*$/, '');
             if(
               !/\//g.test(el) //exclude links
               && $.inArray(el, vals) === -1
