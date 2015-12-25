@@ -812,7 +812,7 @@
             lineStr.push(lstr);
           }
         }
-        lineStr = lineStr.join('');//.replace(/\r\n/g,' ');
+        lineStr = lineStr.join('').replace(/\r\n/g,' ');
         //match variables
         els.valRegs.forEach(function(key){
           $.each(lineStr.match(key)||[], function(i, el){
