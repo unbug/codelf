@@ -1,7 +1,7 @@
+  ![logo](http://unbug.github.io/codelf/resources/images/codelf_logo.png)
+
 Codelf
 =================
-<img src="http://unbug.github.io/codelf/resources/images/codelf_logo.png" style="border-radius: 30px;">
-
 Search over projects from Github, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Project to find real-world usage variable names. 
 
   >There are only two hard things in Computer Science: cache invalidation and naming things.-- Phil Karlton
