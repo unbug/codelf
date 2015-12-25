@@ -331,7 +331,7 @@
     </div>
   </section>
 </section>
-<div class="modal fade sourcecode-modal" tabindex="-1" role="dialog" aria-labelledby="sourcecodeModal" aria-hidden="true">
+<section class="modal fade sourcecode-modal" tabindex="-1" role="dialog" aria-labelledby="sourcecodeModal" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -341,13 +341,11 @@
         <a target="_blank">Repo</a>
       </div>
       <div class="modal-body">
-        <script type="text/html">
-          <pre><code class="prettyprint linenums">{code}</code></pre>
-        </script>
+        <pre><code class="prettyprint linenums"></code></pre>
       </div>
     </div>
   </div>
-</div>
+</section>
 <script type="text/html" template="variableMenu">
   <div class="btn-group-vertical variable-btns" role="group">
     <button type="button" class="btn btn-secondary"><a href="#{val}">Search</a></button>
@@ -621,8 +619,7 @@
       variableMenuTpl: $('script[template="variableMenu"]').html(),
 
       sourceCodeModal: $('.sourcecode-modal'),
-      sourceCodeContent: $('.sourcecode-modal .modal-body'),
-      sourceCodeContentTpl: $('.sourcecode-modal .modal-body script').html(),
+      sourceCodeContent: $('.sourcecode-modal .modal-body pre code'),
 
       githubCorner: $('.github-corner svg'),
 
@@ -672,9 +669,7 @@
       });
       els.body.on('click','.variable-btns__code',showSourceCode);
       els.body.on('click',removeVariableMenus);
-      els.sourceCodeModal.on('hidden.bs.modal', function () {
-        els.sourceCodeContent.text('');
-      });
+      els.sourceCodeModal.on('hidden.bs.modal', renderSourceCode);
     }
     function init(){
       bindEvent();
@@ -897,8 +892,9 @@
     }
 
     function renderSourceCode(data){
-      if(data){
-        els.sourceCodeContent.html(els.sourceCodeContentTpl.replace('{code}',data.code));
+      els.sourceCodeContent.removeClass('prettyprinted').text('');
+      if(data && data.code){
+        els.sourceCodeContent.text(data.code);
         setTimeout(function(){
           PR.prettyPrint();
         },100);
