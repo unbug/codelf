@@ -263,7 +263,7 @@
   <header class="main-title">
     <header><a href="./"><h1><span>C</span><span>O</span><span>D</span><span>E</span><span>L</span><span>F</span></h1></a></header>
     <h5>Search over projects from Github, Bitbucket, Google Code and more to find </h5>
-    <h5><span class="label label-pill label-success">real-world usage</span> <span class="label label-pill label-danger">variable names</span></h5>
+    <h5><span class="label label-success">real-world usage</span> <span class="label label-danger">variable names</span></h5>
   </header>
   <section class="row search-form">
     <div class="col-lg-12">
@@ -370,13 +370,6 @@
     var localStorage = new function () {
       var lcst = window.localStorage;
 
-      /**
-       * 读取
-       *
-       * @method getLocalValue
-       * @param {String} id item id
-       * @return {String} value
-       */
       function getLocalValue(id) {
         if (lcst) {
           return lcst[id];
@@ -384,14 +377,6 @@
           return null;
         }
       }
-
-      /**
-       * 保存/更新
-       *
-       * @method setLocalValue
-       * @param {String}|{Object} id item id
-       * @param {String} val value
-       */
       function setLocalValue(id, val) {
         if (lcst) {
           if (typeof id === 'object') {
@@ -404,11 +389,6 @@
         }
         return this;
       }
-
-      /**
-       * 删除
-       * @param {Array}||{String} id
-       */
       function removeLocalValue(id) {
         if (lcst) {
           if (typeof id === 'object') {
@@ -488,6 +468,17 @@
         }
       }
       return rs;
+    }
+    function isInArray(arr,val){
+      if($.inArray(val,arr) != -1){
+        return true;
+      }
+      for(var key in arr){
+        if( typeof val==='function' && val.call(this,arr[key])){
+          return true;
+        }
+      }
+      return false;
     }
     //end utils
     //model
@@ -884,16 +875,20 @@
     }
 
     function renderHistory(){
-      var his = [els.valHistory,els.lastVal],labels = [];
+      var his = [els.lastVal,els.valHistory],labels = [],tmp = [];
       els.valHistory = his.join(' ')
         .replace(/[`~!@#$^&*()=|{}':;',\[\].<>\/?~！@#￥……&*（）——|\\{\\}【】‘；：”“’。，、？]/g,' ')
         .replace(/\s+/ig,'+').split('+')
         .filter(function(key,idx,inputArray){
-          var dup = key.length>1 && inputArray.indexOf(key) == idx && !/^(a|an|the)$/ig.test(key);
-          if(dup){
+          var checked = key.length>1
+            && inputArray.indexOf(key) == idx
+              && !/[^\x00-\xff]/gi.test(key)
+              && !isInArray(tmp,function(ikey){ return new RegExp('^'+key+'$', 'ig').test(ikey)});
+          if(checked){
+            tmp.push(key);
             labels.push(els.searchRelateTpl.replace(/\{val\}/g,key));
           }
-          return dup;
+          return checked;
         })
         .join(' ');
       els.searchRelateBd.html('<span class="label label-default">Suggestions :</span>'+labels.join(''));
