@@ -344,7 +344,7 @@
           <div class="btn-group btn-group-sm" role="group" aria-label="Button group with nested dropdown">
             <div class="btn-group" role="group">
               <button type="button" class="btn btn-primary-outline dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                All matched results
+                All matched results <span class="label label-danger label-pill match-count">1</span>
               </button>
               <div class="dropdown-menu">
                 <script type="text/html">
@@ -370,7 +370,7 @@
     <button type="button" class="btn btn-secondary"><a href="#{val}">Search</a></button>
     <button type="button" class="btn btn-secondary"><a href="{repo}" target="_blank">Repo</a></button>
     <button type="button" class="btn btn-secondary variable-btns__copy" data-clipboard-text="{val}">Copy</button>
-    <button type="button" class="btn btn-secondary variable-btns__code" data-id="{id}" data-val="{val}">Codes</button>
+    <button type="button" class="btn btn-secondary variable-btns__code" data-id="{id}" data-val="{val}">Codes <span class="label label-danger label-pill">{count}</span></button>
   </div>
 </script>
 <!-- http://tholman.com/github-corners/ -->
@@ -677,8 +677,10 @@
           },
           content: function(){
             els.sourceCodeModal.find('.modal-header a.cur').attr('href',this.dataset.repo);
+            var prop = getRelatedProperty(this.dataset.val);
             return els.variableMenuTpl
               .replace('{id}',this.dataset.id)
+              .replace('{count}',prop?prop['ids'].length:1)
               .replace(/\{val\}/g,this.dataset.val)
               .replace('{repo}',this.dataset.repo);
           },
@@ -816,6 +818,11 @@
       }
     }
 
+    function getRelatedProperty(name){
+      name = name.toLowerCase();
+      return els.storeRelatedProperties[name];
+    }
+
     function renderLangMunu(){
       var htm = [],storeLang = searchcode.getLang();
       storeLang = storeLang?storeLang.split(' '):[];
@@ -938,8 +945,8 @@
       }
     }
     function renderRelatedProperty(name){
-      name = name.toLowerCase();
-      var htm = [],prop = els.storeRelatedProperties[name];
+      var htm = [],
+        prop = getRelatedProperty(name);
       if(prop){
         var ids = prop['ids'],
           repos = prop['repos'],
@@ -955,6 +962,7 @@
         }
       }
       els.sourceCodeModalDropdown.html(htm.join(''));
+      els.sourceCodeModal.find('.match-count').html(htm.length);
     }
     function removeVariableMenus(){
       els.body.find('.popover--variable').remove();
