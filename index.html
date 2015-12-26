@@ -141,8 +141,9 @@
     .search-form{
       padding: 20px 0;
     }
-    .search-form .dropdown-menu{
-      height: 320px;
+    .search-form .dropdown-menu,
+    .sourcecode-modal .dropdown-menu{
+      max-height: 320px;
       overflow-y: scroll;
       -webkit-overflow-scrolling: touch;
       -webkit-transform: translate3d(0,0,0);
@@ -324,7 +325,7 @@
           <img src="resources/images/twohardtings.jpg">
         </blockquote>
           <script type="text/html">
-            <h5 class="variable-wrap" data-id="{id}" data-repo="{repo}" data-url="{url}" data-val="{val}"><span class="label label-{label_type}" title="{val}">{val}</span></h5>
+            <h5 class="variable-wrap" data-id="{id}" data-repo="{repo}" data-val="{val}"><span class="label label-{label_type}" title="{val}">{val}</span></h5>
           </script>
         </section>
       </div>
@@ -338,7 +339,25 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <a target="_blank">Repo</a>
+        <div>
+          <a class="btn btn-primary-outline btn-sm cur" target="_blank">Repo</a>
+          <div class="btn-group btn-group-sm" role="group" aria-label="Button group with nested dropdown">
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-primary-outline dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                All matched results
+              </button>
+              <div class="dropdown-menu">
+                <script type="text/html">
+                  <div class="dropdown-item">
+                    <button type="button" class="btn btn-primary-outline btn-sm variable-btns__code" data-id="{id}">Codes</button>
+                    <button type="button" class="btn btn-primary-outline btn-sm"><a href="{repo}" target="_blank">Repo</a></button>
+                    <span class="label label-default">{lang}</span>
+                  </div>
+                </script>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="modal-body">
         <pre><code class="prettyprint linenums"></code></pre>
@@ -351,7 +370,7 @@
     <button type="button" class="btn btn-secondary"><a href="#{val}">Search</a></button>
     <button type="button" class="btn btn-secondary"><a href="{repo}" target="_blank">Repo</a></button>
     <button type="button" class="btn btn-secondary variable-btns__copy" data-clipboard-text="{val}">Copy</button>
-    <button type="button" class="btn btn-secondary variable-btns__code" data-id="{id}">Codes</button>
+    <button type="button" class="btn btn-secondary variable-btns__code" data-id="{id}" data-val="{val}">Codes</button>
   </div>
 </script>
 <!-- http://tholman.com/github-corners/ -->
@@ -619,6 +638,8 @@
       variableMenuTpl: $('script[template="variableMenu"]').html(),
 
       sourceCodeModal: $('.sourcecode-modal'),
+      sourceCodeModalDropdown: $('.sourcecode-modal .dropdown-menu'),
+      sourceCodeModalDropdownTpl: $('.sourcecode-modal .dropdown-menu script').html(),
       sourceCodeContent: $('.sourcecode-modal .modal-body pre code'),
 
       githubCorner: $('.github-corner svg'),
@@ -655,7 +676,7 @@
             return false;
           },
           content: function(){
-            els.sourceCodeModal.find('.modal-header a').attr('href',this.dataset.repo);
+            els.sourceCodeModal.find('.modal-header a.cur').attr('href',this.dataset.repo);
             return els.variableMenuTpl
               .replace('{id}',this.dataset.id)
               .replace(/\{val\}/g,this.dataset.val)
@@ -681,7 +702,8 @@
 
     function showSourceCode(){
       searchcode.requestSourceCode(this.dataset.id,renderSourceCode);
-      els.sourceCodeModal.modal('toggle');
+      this.dataset.val && renderRelatedProperty(this.dataset.val);
+      els.sourceCodeModal.modal('show');
     }
 
     function onLocationHashChanged(e){
@@ -780,6 +802,19 @@
       els.title.addClass('animated');
     }
 
+    function storeRelatedProperty(name,res){
+      name = name.toLowerCase();
+      els.storeRelatedProperties = els.storeRelatedProperties || {};
+      if(!/\//g.test(name) /*exclude links*/ && name.length<64 /*too long*/){
+        var prop = els.storeRelatedProperties[name] = els.storeRelatedProperties[name] || {ids: [],repos: [],languages: []};
+        if(!isInArray(prop['ids'],res.id)){
+          prop['ids'].push(res.id);
+          prop['repos'].push(res.repo);
+          prop['languages'].push(res.language);
+        }
+      }
+    }
+
     function renderLangMunu(){
       var htm = [],storeLang = searchcode.getLang();
       storeLang = storeLang?storeLang.split(' '):[];
@@ -795,7 +830,7 @@
       els.githubCorner.css({fill: randomColor()});
     }
 
-    function renderSearchResult(data,page){
+    function renderSearchResult(data){
       var vals = [],labels = [],lineStr;
       data.results.forEach(function(rkey){
         //filter codes
@@ -813,12 +848,13 @@
           $.each(lineStr.match(key)||[], function(i, el){
             //remove "-" and "/" from the starer and the ender
             el = el.replace(/^(\-|\/)*/, '').replace(/(\-|\/)*$/, '');
+            storeRelatedProperty(el,rkey);
             if(
-              !/\//g.test(el) //exclude links
+              !/\//g.test(el) /*exclude links*/
               && $.inArray(el, vals) === -1
               && $.inArray(el.toLowerCase(), vals) === -1
               && $.inArray(el.toUpperCase(), vals) === -1
-              && el.length<64 //too long
+              && el.length<64 /*too long*/
             ){
               vals.push(el);
               //render variable labels
@@ -826,10 +862,9 @@
                 .replace('{label_type}',getRandomLabelType())
                 .replace(/\{val\}/g,el)
                 .replace('{id}',rkey.id)
-                .replace('{url}',rkey.url)
                 .replace('{repo}',rkey.repo)
               );
-            };
+            }
           });
         });
       });
@@ -899,6 +934,24 @@
           PR.prettyPrint();
         },100);
       }
+    }
+    function renderRelatedProperty(name){
+      name = name.toLowerCase();
+      var htm = [],prop = els.storeRelatedProperties[name];
+      if(prop){
+        var ids = prop['ids'],
+          repos = prop['repos'],
+          langs = prop['languages'],
+          i = 0,len = ids.length;
+        for(i;i<len;i++){
+          htm.push(
+            els.sourceCodeModalDropdownTpl.replace(/\{id\}/g,ids[i])
+              .replace(/\{repo\}/g,repos[i])
+              .replace(/\{lang\}/g,langs[i])
+          );
+        }
+      }
+      els.sourceCodeModalDropdown.html(htm.join(''));
     }
     function removeVariableMenus(){
       els.body.find('.popover--variable').remove();
