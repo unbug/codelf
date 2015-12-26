@@ -293,7 +293,7 @@
         </form>
       <span class="input-group-btn">
         <button class="btn btn-secondary search" type="button" data-toggle="tooltip" data-placement="left" data-trigger="manual" title="Click here to show more!">Search</button>
-        <button class="btn btn-secondary help" type="button"><a href="https://github.com/unbug/codelf/issues" target="_blank">Issues?</a></button>
+        <a class="btn btn-secondary help" href="https://github.com/unbug/codelf/issues" target="_blank">Issues?</a>
       </span>
       </div>
     </div>
@@ -350,8 +350,8 @@
                 <script type="text/html">
                   <div class="dropdown-item">
                     <button type="button" class="btn btn-primary-outline btn-sm variable-btns__code" data-id="{id}">Codes</button>
-                    <button type="button" class="btn btn-primary-outline btn-sm"><a href="{repo}" target="_blank">Repo</a></button>
-                    <span class="label label-default">{lang}</span>
+                    <a class="btn btn-primary-outline btn-sm" href="{repo}" target="_blank">Repo</a>
+                    <span class="label label-{label_type}">{lang}</span>
                   </div>
                 </script>
               </div>
@@ -948,6 +948,7 @@
             els.sourceCodeModalDropdownTpl.replace(/\{id\}/g,ids[i])
               .replace(/\{repo\}/g,repos[i])
               .replace(/\{lang\}/g,langs[i])
+              .replace(/\{label_type\}/g,getRandomLabelType())
           );
         }
       }
