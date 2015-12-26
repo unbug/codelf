@@ -218,6 +218,9 @@
     .variable-btns>.variable-btns__copy{
       display: none;
     }
+    body.mobile .variable-btns__copy{
+      display: none !important;
+    }
     @media (min-width: 62em) {
       .main-container{
         padding: 20px 150px;
@@ -384,6 +387,18 @@
 <script>
   $(function () {
     //utils
+    var ua = navigator.userAgent,
+      android = ua.match(/(Android);?[\s\/]+([\d.]+)?/),
+      ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
+      ipod = ua.match(/(iPod)(.*OS\s([\d_]+))?/),
+      iphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
+      os = {};
+
+    if (android) os.android = true, os.version = android[2];
+    if (iphone && !ipod) os.ios = os.iphone = true, os.version = iphone[2].replace(/_/g, '.')
+    if (ipad) os.ios = os.ipad = true, os.version = ipad[2].replace(/_/g, '.')
+    if (ipod) os.ios = os.ipod = true, os.version = ipod[3] ? ipod[3].replace(/_/g, '.') : null;
+
     var localStorage = new function () {
       var lcst = window.localStorage;
 
@@ -695,6 +710,9 @@
       els.sourceCodeModal.on('hidden.bs.modal', renderSourceCode);
     }
     function init(){
+      if(os.ios || os.android){
+        els.body.addClass('mobile');
+      }
       bindEvent();
       renderTitle();
       renderLangMunu();
