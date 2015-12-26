@@ -274,7 +274,7 @@
           </button>
           <div class="dropdown-menu">
             <div class="dropdown-item all">
-              All Languages
+              All Languages (Reset)
             </div>
             <div role="separator" class="dropdown-divider"></div>
             <script type="text/html">
@@ -796,7 +796,7 @@
       searchcode.request(els.lastVal,renderSearchResult);
       renderSearchResultHeader('loading');
       renderSearchBtn();
-      renderAnalytics(els.lastInputVal);
+      renderAnalytics('q='+els.lastInputVal);
     }
 
     function renderTitle(){
@@ -935,6 +935,7 @@
           PR.prettyPrint();
         },100);
       }
+      renderAnalytics('vc&q='+els.lastInputVal);
     }
     function renderRelatedProperty(name){
       name = name.toLowerCase();
@@ -960,7 +961,7 @@
     }
     function renderAnalytics(param){
       /unbug/g.test(location.href) && setTimeout(function(){
-        els.body.append('<iframe src="http://www.mihtool.com/analytics.html?codelf'+(param?('&q='+param):'')+'" style="display: none;width: 0;height: 0;border: 0;"></iframe>');
+        els.body.append('<iframe src="http://www.mihtool.com/analytics.html?codelf'+(param?('&'+param):'')+'" style="display: none;width: 0;height: 0;border: 0;"></iframe>');
       },param?500:3000);
     }
 
