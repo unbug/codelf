@@ -701,6 +701,7 @@
     }
 
     function showSourceCode(){
+      renderSourceCode();
       searchcode.requestSourceCode(this.dataset.id,renderSourceCode);
       this.dataset.val && renderRelatedProperty(this.dataset.val);
       els.sourceCodeModal.modal('show');
