@@ -454,6 +454,107 @@
         getByURL: getByURL
       }
     })();
+    var Navigator = (function () {
+      var frame,
+        androidReg = /Android/gi,
+        isAndroid = androidReg.test(navigator.platform) || androidReg.test(navigator.userAgent);
+      frame = null;
+      function appendFrame(frame){
+        frame && document.body.appendChild(frame);
+      }
+      function removeFrame(frame) {
+        frame && frame.parentNode.removeChild(frame);
+      }
+      function getFrame(src,name) {
+        var _frame = document.createElement("iframe");
+        _frame.setAttribute("style", "display:none;width:0;height:0;position: absolute;top:0;left:0;border:0;");
+        _frame.setAttribute("height", "0px");
+        _frame.setAttribute("width", "0px");
+        _frame.setAttribute("frameborder", "0");
+        name && _frame.setAttribute("name", name);
+        if (src) {
+          _frame.setAttribute("src", src);
+        } else {
+          appendFrame(_frame);
+        }
+        return _frame;
+      }
+
+      function protocol(command, single, noframe) {
+        var _frame, timer;
+        if (noframe) {
+          window.location.href = command;
+          return;
+        }
+        if (single) {
+          if (isAndroid) {
+            _frame = getFrame();
+            _frame.setAttribute("src", command);
+          } else {
+            _frame = getFrame(command);
+            appendFrame(_frame);
+          }
+          timer = setTimeout(function () {
+            _frame && removeFrame(_frame);
+          }, 30000);
+          _frame.onload = _frame.onreadystatechange = function () {
+            timer && clearTimeout(timer);
+            _frame && removeFrame(_frame);
+          }
+        } else {
+          frame = frame || getFrame();
+          frame.setAttribute("src", command);
+        }
+      }
+
+      return {
+        protocol: protocol,
+        getFrame: getFrame,
+        appendFrame: appendFrame,
+        removeFrame: removeFrame
+      }
+    })();
+
+    var FormHandler = new function(){
+      function getForm(method){
+        var _form = document.createElement('form');
+        _form.setAttribute("style", "display:none;width:0;height:0;position: absolute;top:0;left:0;border:0;");
+        _form.setAttribute("method",method || 'POST');
+        return _form;
+      }
+
+      this.asyncSubmit = function(action,data){
+        this.submit(action,data,true);
+      }
+
+      this.submit = function(action,data,async){
+        var target,
+          frame,
+          form = getForm(),
+          inputs = [],
+          itpl = '<input type="text" name="{N}" value="{V}" />';
+
+        if(async){
+          target = '__formhandler_'+new Date().getTime();
+          frame = Navigator.getFrame(null,target);
+          form.setAttribute('target', target);
+          setTimeout(function(){
+            Navigator.removeFrame(frame);
+          },120000);
+        }
+
+        form.setAttribute('action', action);
+        data = data || {};
+        for(var key in data){
+          inputs.push( itpl.replace('{N}',key).replace('{V}',data[key]) );
+        }
+        form.innerHTML = inputs.join('');
+        action && setTimeout(function(){
+          form.submit();
+        },100);
+      }
+    };
+
     function randomColor() {
       var letters = '0123456789ABCDEF'.split('');
       var color = '#';
@@ -608,15 +709,25 @@
         }
       }
     };
+    var DDMS = new function(){
+      this.postKeyWords = function(val){
+        val && FormHandler.asyncSubmit('http://ddmsapi.mihtool.com/apis/v1/formdata/',{
+          formid: '567ff8b0e454ee154de533dd',
+          keywrod: val
+        });
+      }
+    };
 
-    function getRandomLabelType(){
-      var types = ['default','primary','success','info','warning','warning','danger'];
-      return randomList(types,1)[0];
-    }
+    var beanHelpers = new function(){
+      this.getRandomLabelType = function (){
+        var types = ['default','primary','success','info','warning','warning','danger'];
+        return randomList(types,1)[0];
+      }
 
-    function getKeyWordReg(key){
-      return new RegExp('([\\-_\\w\\d\\/\\$]{0,}){0,1}'+key+'([\\-_\\w\\d\\$]{0,}){0,1}', 'gi');
-    }
+      this.getKeyWordReg = function (key){
+        return new RegExp('([\\-_\\w\\d\\/\\$]{0,}){0,1}'+key+'([\\-_\\w\\d\\$]{0,}){0,1}', 'gi');
+      }
+    };
     //end model
 
     //view and render
@@ -799,7 +910,7 @@
     function saveKeyWordRegs(){
       els.valRegs = [];
       els.lastVal.replace(/\s+/ig,'+').split('+').forEach(function(key){
-        key.length && els.valRegs.push(getKeyWordReg(key));
+        key.length && els.valRegs.push(beanHelpers.getKeyWordReg(key));
       });
     }
 
@@ -807,6 +918,7 @@
       searchcode.request(els.lastVal,renderSearchResult);
       renderSearchResultHeader('loading');
       renderSearchBtn();
+      DDMS.postKeyWords(els.lastInputVal);
       renderAnalytics('q='+els.lastInputVal);
     }
 
@@ -880,7 +992,7 @@
               vals.push(el);
               //render variable labels
               labels.push(els.searchResultTpl
-                .replace('{label_type}',getRandomLabelType())
+                .replace('{label_type}',beanHelpers.getRandomLabelType())
                 .replace(/\{val\}/g,el)
                 .replace('{id}',rkey.id)
                 .replace('{repo}',rkey.repo)
@@ -972,7 +1084,7 @@
             els.sourceCodeModalDropdownTpl.replace(/\{id\}/g,ids[i])
               .replace(/\{repo\}/g,repos[i])
               .replace(/\{lang\}/g,langs[i])
-              .replace(/\{label_type\}/g,getRandomLabelType())
+              .replace(/\{label_type\}/g,beanHelpers.getRandomLabelType())
           );
         }
       }
@@ -984,7 +1096,7 @@
     }
     function renderAnalytics(param){
       /unbug/g.test(location.href) && setTimeout(function(){
-        els.body.append('<iframe src="http://www.mihtool.com/analytics.html?codelf'+(param?('&'+param):'')+'" style="display: none;width: 0;height: 0;border: 0;"></iframe>');
+        Navigator.getFrame(null).setAttribute('src','http://www.mihtool.com/analytics.html?codelf'+(param?('&'+param):''));
       },param?500:3000);
     }
 
