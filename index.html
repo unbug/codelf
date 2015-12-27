@@ -710,11 +710,24 @@
       }
     };
     var DDMS = new function(){
+      var persistKeyWordsName = 'codelf_ddms_keywords';
+      var cacheKeyWords = (localStorage.get(persistKeyWordsName) || '').split(',');
+
+      function saveKeyWords(val){
+        if(!isInArray(cacheKeyWords,val)){
+          cacheKeyWords.push(val);
+          localStorage.set(persistKeyWordsName,cacheKeyWords.join(',').replace(/^,*/g,'').replace(/,*&/g,''));
+        }
+      }
+
       this.postKeyWords = function(val){
-        val && FormHandler.asyncSubmit('http://ddmsapi.mihtool.com/apis/v1/formdata/',{
-          formid: '567ff8b0e454ee154de533dd',
-          keywrod: val
-        });
+        if(val && !isInArray(cacheKeyWords,val)){
+          FormHandler.asyncSubmit('http://ddmsapi.mihtool.com/apis/v1/formdata/',{
+            formid: '567ff8b0e454ee154de533dd',
+            keywrod: val
+          });
+          saveKeyWords(val);
+        }
       }
     };
 
