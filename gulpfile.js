@@ -23,17 +23,24 @@ gulp.task('build_version', function (cb) {
 //watching script change to start default task
 gulp.task('watch', function () {
   return gulp.watch([
-    'gulpfile.js', 'src/**/*.js',
-    '/resources/**/*.css',
-    '/resources/**/*.*g',
-    '*.html'
+    'gulpfile.js',
+    './static/app/**/*.*'
   ], function (event) {
     console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
-    runSequence('build_version','manifest');
+    runSequence('compile');
   });
 
 });
-
+gulp.task('dist:html', function () {
+  return gulp.src(['./static/app/*.html'])
+    //.pipe(cachebust.references())
+    .pipe($.htmlmin({
+      removeComments: true,
+      minifyJS: true,
+      minifyCSS: true
+    }))
+    .pipe(gulp.dest('./'));
+});
 //generate cache.manifest
 gulp.task('manifest', function (cb) {
   var resources = [];
@@ -46,7 +53,7 @@ gulp.task('manifest', function (cb) {
       resources.push(data)
     })
     .on('end', function () {
-      gulp.src(['./helper/cache.manifest'])
+      gulp.src(['./static/app/cache.manifest'])
         .pipe($.replace(/_BUILD_VERSION_/g, buildVersion))
         .pipe($.replace(/_FILES_/g, resources.join('\n')))
         .pipe(gulp.dest('./'))
@@ -66,9 +73,6 @@ gulp.task('serve', function () {
   });
 
   gulp.watch(['./*.html'], reload);
-  gulp.watch(['./src/*.js'], reload);
-  gulp.watch(['./resources/**/*.css'], reload);
-  gulp.watch(['./resources/**/*.*g'], reload);
 });
 
 //print after tasks all done
@@ -85,8 +89,8 @@ gulp.task('prepare', function (cb) {
   runSequence('build_version', cb);
 });
 gulp.task('compile', function (cb) {
-  runSequence(['manifest'], cb);
+  runSequence(['prepare','manifest','dist:html'], cb);
 });
 gulp.task('default', function (cb) {
-  runSequence('prepare', 'compile', 'watch', 'serve', cb);
+  runSequence('compile', 'watch', 'serve', cb);
 });
