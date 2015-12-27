@@ -31,64 +31,35 @@
     /*component*/
     /*https://github.com/tobiasahlin/SpinKit*/
     .spinner {
-      margin: 0 auto;
-      width: 50px;
-      height: 40px;
-      text-align: center;
-      font-size: 10px;
+      -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
+      animation: sk-rotateplane 1.2s infinite ease-in-out;
     }
 
-    .spinner > div {
-      background-color: #6b9dc8;
-      height: 100%;
-      width: 6px;
-      display: inline-block;
-
-      -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
-      animation: sk-stretchdelay 1.2s infinite ease-in-out;
+    @-webkit-keyframes sk-rotateplane {
+      0% { -webkit-transform: perspective(120px) }
+      50% { -webkit-transform: perspective(120px) rotateY(180deg) }
+      100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
     }
 
-    .spinner .rect2 {
-      -webkit-animation-delay: -1.1s;
-      animation-delay: -1.1s;
-    }
-
-    .spinner .rect3 {
-      -webkit-animation-delay: -1.0s;
-      animation-delay: -1.0s;
-    }
-
-    .spinner .rect4 {
-      -webkit-animation-delay: -0.9s;
-      animation-delay: -0.9s;
-    }
-
-    .spinner .rect5 {
-      -webkit-animation-delay: -0.8s;
-      animation-delay: -0.8s;
-    }
-
-    @-webkit-keyframes sk-stretchdelay {
-      0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
-      20% { -webkit-transform: scaleY(1.0) }
-    }
-
-    @keyframes sk-stretchdelay {
-      0%, 40%, 100% {
-        transform: scaleY(0.4);
-        -webkit-transform: scaleY(0.4);
-      }  20% {
-           transform: scaleY(1.0);
-           -webkit-transform: scaleY(1.0);
-         }
+    @keyframes sk-rotateplane {
+      0% {
+        transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+        -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
+      } 50% {
+          transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+          -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg)
+        } 100% {
+            transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+            -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+          }
     }
     /*end component*/
 
     /*layout*/
     .logo{
       margin: 0 auto;
-      width: 2.5em;
-      height: 2.5em;
+      width: 3em;
+      height: 3em;
     }
     .logo img{
       display: inherit;
@@ -186,9 +157,7 @@
       display: none;
     }
     .search-result .hd.loading .loading,
-    .search-result .hd.error .error,
-    .search-result .hd.loading .logo,
-    .search-result .hd.error .logo{
+    .search-result .hd.error .error{
       display: block;
       margin: 0 auto;
     }
@@ -328,17 +297,13 @@
     <div class="col-lg-12">
       <div class="jumbotron ct" role="alert">
         <header class="hd">
-          <div class="logo"><a href="./"><img src="resources/images/codelf_logo.png"></a></div>
           <div class="loading">
-            <div class="spinner">
-              <div class="rect1"></div>
-              <div class="rect2"></div>
-              <div class="rect3"></div>
-              <div class="rect4"></div>
-              <div class="rect5"></div>
-            </div>
+            <div class="logo"><img class="spinner" src="resources/images/codelf_logo.png"></div>
           </div>
-          <div class="error text-default">Nothing found, try <span class="label label-default">Suggestions</span> :)</div>
+          <div class="error">
+            <div class="logo"><a href="./"><img src="resources/images/codelf_logo.png"></a></div>
+            <div class="text-default">Nothing found, try <span class="label label-default">Suggestions</span> :)</div>
+          </div>
         </header>
         <section class="bd">
           <blockquote class="blockquote">
@@ -381,16 +346,7 @@
       </div>
       <div class="modal-body">
         <header class="hd">
-          <div class="logo"><a href="./"><img src="resources/images/codelf_logo.png"></a></div>
-          <div class="loading">
-            <div class="spinner">
-              <div class="rect1"></div>
-              <div class="rect2"></div>
-              <div class="rect3"></div>
-              <div class="rect4"></div>
-              <div class="rect5"></div>
-            </div>
-          </div>
+          <div class="logo"><img class="spinner" src="resources/images/codelf_logo.png"></div>
         </header>
         <pre><code class="prettyprint linenums"></code></pre>
       </div>
