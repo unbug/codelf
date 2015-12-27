@@ -85,6 +85,18 @@
     /*end component*/
 
     /*layout*/
+    .logo{
+      margin: 0 auto;
+      width: 2.5em;
+      height: 2.5em;
+    }
+    .logo img{
+      display: inherit;
+      width: 100%;
+      height: 100%;
+      border-radius: 20%;
+      -webkit-border-radius: 20%;
+    }
     .main-container{
       padding: 20px;
     }
@@ -179,17 +191,6 @@
     .search-result .hd.error .logo{
       display: block;
       margin: 0 auto;
-    }
-    .search-result .hd .logo{
-      width: 2.5em;
-      height: 2.5em;
-    }
-    .search-result .hd .logo img{
-      display: inherit;
-      width: 100%;
-      height: 100%;
-      border-radius: 20%;
-      -webkit-border-radius: 20%;
     }
     .blockquote{
       text-align: center;
@@ -379,6 +380,18 @@
         </div>
       </div>
       <div class="modal-body">
+        <header class="hd">
+          <div class="logo"><a href="./"><img src="resources/images/codelf_logo.png"></a></div>
+          <div class="loading">
+            <div class="spinner">
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
+            </div>
+          </div>
+        </header>
         <pre><code class="prettyprint linenums"></code></pre>
       </div>
     </div>
@@ -672,6 +685,7 @@
       sourceCodeModalDropdown: $('.sourcecode-modal .dropdown-menu'),
       sourceCodeModalDropdownTpl: $('.sourcecode-modal .dropdown-menu script').html(),
       sourceCodeContent: $('.sourcecode-modal .modal-body pre code'),
+      sourceCodeContentHd: $('.sourcecode-modal .modal-body .hd'),
 
       githubCorner: $('.github-corner svg'),
 
@@ -973,8 +987,10 @@
     }
 
     function renderSourceCode(data){
+      els.sourceCodeContentHd.show();
       els.sourceCodeContent.removeClass('prettyprinted').text('');
       if(data && data.code){
+        els.sourceCodeContentHd.hide();
         els.sourceCodeContent.text(data.code);
         setTimeout(function(){
           PR.prettyPrint();
