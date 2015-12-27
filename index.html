@@ -823,8 +823,12 @@
       els.title.addClass('animated');
     }
 
-    function storeRelatedProperty(name,res){
+    function formatPropertyName(name){
       name = name.toLowerCase();
+      return '__codelf__'+name;
+    }
+    function storeRelatedProperty(name,res){
+      name = formatPropertyName(name);
       els.storeRelatedProperties = els.storeRelatedProperties || {};
       if(!/\//g.test(name) /*exclude links*/ && name.length<64 /*too long*/){
         var prop = els.storeRelatedProperties[name] = els.storeRelatedProperties[name] || {ids: [],repos: [],languages: []};
@@ -837,7 +841,7 @@
     }
 
     function getRelatedProperty(name){
-      name = name.toLowerCase();
+      name = formatPropertyName(name);
       return els.storeRelatedProperties[name];
     }
 
