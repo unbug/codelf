@@ -438,7 +438,9 @@ $(function () {
             .replace(/\{val\}/g,this.dataset.val)
             .replace('{repo}',this.dataset.repo);
         },
-        template: '<div class="popover popover--variable" role="tooltip"><div class="popover-arrow"></div><div class="popover-content"></div></div>'
+        template: '<div class="popover popover--variable" role="tooltip">' +
+        '<div class="popover-arrow"></div><div class="popover-content"></div>' +
+        '</div>'
       });
       $(this).popover('show');
       els.variableClipboard = new ZeroClipboard($('.variable-btns__copy')[0]);
@@ -499,7 +501,12 @@ $(function () {
         var tmpval = [],tmpch = [];
 
         els.lastInputVal.replace(/\s+/ig,'+').split('+').forEach(function(key){
-          /[^\x00-\xff]/gi.test(key)?tmpch.push(key):tmpval.push(key);
+          if(/[^\x00-\xff]/gi.test(key)){
+            tmpch.push(key);
+            renderBaiduShare();
+          }else{
+            tmpval.push(key);
+          }
         });
         els.lastVal = tmpval.join(' ');
         if(tmpch.length){
@@ -735,6 +742,11 @@ $(function () {
     els.isGithub && setTimeout(function(){
       Navigator.getFrame(null).setAttribute('src','http://www.mihtool.com/analytics.html?codelf'+(param?('&'+param):''));
     },param?500:3000);
+  }
+  function renderBaiduShare(){
+    if(els.hasBaiduShare){return;}
+    els.hasBaiduShare = true;
+    window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"5","bdPos":"right","bdTop":els.body.height()/2}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
   }
 
   init();

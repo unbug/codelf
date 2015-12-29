@@ -4,6 +4,7 @@ var $ = require('gulp-load-plugins')();
 var runSequence = require('run-sequence');
 var browserSync = require('browser-sync');//http://www.browsersync.io/docs/gulp/
 var reload = browserSync.reload;
+var cachebust = new $.cachebust();
 require('date-utils');
 
 //build version:
@@ -31,11 +32,21 @@ gulp.task('watch', function () {
   });
 
 });
+gulp.task('dist:js', function (cb) {
+  var dir = './static/app/src/lib/';
+  return gulp.src([dir+'jquery.min.js',dir+'tether.min.js',dir+'bootstrap.min.js',dir+'prettify.js',dir+'ZeroClipboard.min.js'])
+    .pipe($.concat('libs.js'))
+    .pipe(cachebust.references())
+    .pipe($.uglify())
+    .pipe(cachebust.resources())
+    .pipe(gulp.dest('./src/lib/'));
+});
 gulp.task('dist:html', function () {
   return gulp.src(['./static/app/*.html'])
     .pipe($.fileInclude({
       basepath: './static/app/'
     }))
+    .pipe(cachebust.references())
     .pipe($.htmlmin({
       collapseWhitespace: true,
       removeComments: true,
@@ -95,5 +106,5 @@ gulp.task('compile', function (cb) {
   runSequence(['prepare','manifest','dist:html'], cb);
 });
 gulp.task('default', function (cb) {
-  runSequence('compile', 'watch', 'serve', cb);
+  runSequence('compile','dist:js', 'watch', 'serve', cb);
 });
