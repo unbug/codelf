@@ -33,8 +33,11 @@ gulp.task('watch', function () {
 });
 gulp.task('dist:html', function () {
   return gulp.src(['./static/app/*.html'])
-    //.pipe(cachebust.references())
+    .pipe($.fileInclude({
+      basepath: './static/app/'
+    }))
     .pipe($.htmlmin({
+      collapseWhitespace: true,
       removeComments: true,
       minifyJS: true,
       minifyCSS: true
