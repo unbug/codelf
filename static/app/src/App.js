@@ -334,8 +334,15 @@ $(function () {
   };
   var DDMS = new function(){
     var persistKeyWordsName = 'codelf_ddms_keywords';
+    var persistKeyWordsTimerName = persistKeyWordsName+'_timer';
     var cacheKeyWords = (localStorage.get(persistKeyWordsName) || '').split(',');
+    var ot = new Date(localStorage.get(persistKeyWordsTimerName) || 0);
+    var nt = new Date().getTime();
 
+    if((nt-ot)>1000*60*60*24){
+      cacheKeyWords = [];
+      localStorage.set(persistKeyWordsTimerName,nt);
+    }
     function saveKeyWords(val){
       if(!isInArray(cacheKeyWords,val)){
         cacheKeyWords.push(val);
