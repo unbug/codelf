@@ -19,7 +19,7 @@ Thanks
   * Syntax highlighting of source code powerd by [google-code-prettify](https://github.com/google/code-prettify)
   * [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard)
   * Utils - [generator-webappstarter](https://github.com/unbug/generator-webappstarter)
-  * DDMS - [Data Drive Management System](https://github.com/unbug/ddms)
+  * [Data Drive Management System](https://github.com/unbug/ddms)
   
   
 Programming naming convention
