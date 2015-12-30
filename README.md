@@ -17,5 +17,13 @@ Thanks
   * API powerd by [shearchcode](http://searchcode.com/) & [youdao](http://fanyi.youdao.com/)
   * UI powerd by [Bootstrap v4.0](http://v4-alpha.getbootstrap.com/)
   * Syntax highlighting of source code powerd by [google-code-prettify](https://github.com/google/code-prettify)
-  * Copy text to the clipboard powerd by [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard)
-  * Utils powerd by [generator-webappstarter](https://github.com/unbug/generator-webappstarter)
+  * [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard)
+  * Utils - [generator-webappstarter](https://github.com/unbug/generator-webappstarter)
+  * DDMS - [Data Drive Management System](https://github.com/unbug/ddms)
+  
+  
+Programming naming convention
+=============================
+  * [Google Style Guides](https://github.com/google/styleguide)
+  * [The Ruby Style Guide](https://github.com/bbatsov/ruby-style-guide)
+  * [Style guide & coding conventions for Swift projects](https://github.com/github/swift-style-guide)
