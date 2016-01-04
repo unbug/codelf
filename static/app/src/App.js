@@ -280,7 +280,7 @@ $(function () {
         data: {
           q: lastVal,
           p: page,
-          per_page: 100
+          per_page: 50
         },
         success: function(data){
           callback && callback(data,page);
