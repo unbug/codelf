@@ -96,6 +96,7 @@ html,body{
 }
 .search-result .variable-wrap{
   display: inline-block;
+  cursor: pointer;
 }
 .search-result a:hover{
   text-decoration: underline;
