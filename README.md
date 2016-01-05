@@ -28,8 +28,8 @@ Programming naming convention
   * [The Ruby Style Guide](https://github.com/bbatsov/ruby-style-guide)
   * [Style guide & coding conventions for Swift projects](https://github.com/github/swift-style-guide)
   * CSS Architecture
-        * [OOCSS](http://github.com/stubbornella/oocss/wiki) - Object Oriented CSS
-        * [ACSS](https://www.lucidchart.com/techblog/2014/01/31/atomic-css-tool-set/) - Atomic CSS
-        * [oCSS](http://krasimir.github.io/organic-css/) - organic cascade style sheet
-        * [SMACSS](http://smacss.com/) - Scalable and Modular Architecture for CSS
-        * [BEM](http://bem.info/) [getbem](http://getbem.com/) - Block, Element, Modifier
+    * [OOCSS](http://github.com/stubbornella/oocss/wiki) - Object Oriented CSS
+    * [ACSS](https://www.lucidchart.com/techblog/2014/01/31/atomic-css-tool-set/) - Atomic CSS
+    * [oCSS](http://krasimir.github.io/organic-css/) - organic cascade style sheet
+    * [SMACSS](http://smacss.com/) - Scalable and Modular Architecture for CSS
+    * [BEM](http://bem.info/) [getbem](http://getbem.com/) - Block, Element, Modifier
