@@ -713,6 +713,11 @@ $(function () {
         return checked;
       })
       .join(' ');
+    if(labels.length<1){
+      ['foo','bar','2016'].forEach(function(key){
+        labels.push(els.searchRelateTpl.replace(/\{val\}/g,key));
+      });
+    }
     els.searchRelateBd.html('<span class="label label-default">Suggestions :</span>'+labels.join(''));
   }
 
