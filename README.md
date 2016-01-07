@@ -14,7 +14,7 @@ Build
 
 Thanks
 =================
-  * API powerd by [shearchcode](http://searchcode.com/) & [youdao](http://fanyi.youdao.com/)
+  * API powerd by [searchcode](http://searchcode.com/) & [youdao](http://fanyi.youdao.com/)
   * UI powerd by [Bootstrap v4.0](http://v4-alpha.getbootstrap.com/)
   * Syntax highlighting of source code powerd by [google-code-prettify](https://github.com/google/code-prettify)
   * [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard)
