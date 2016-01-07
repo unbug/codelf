@@ -566,9 +566,15 @@ $(function () {
   }
 
   function doSearch(){
-    searchcode.request(els.lastVal,renderSearchResult);
-    renderSearchResultHeader('loading');
-    renderSearchBtn();
+    if(els.lastVal && els.lastVal.length){
+      searchcode.request(els.lastVal,renderSearchResult);
+      renderSearchResultHeader('loading');
+      renderSearchBtn();
+    }else{
+      renderSearchResultHeader('error');
+      renderSearchBtn('Search');
+    }
+
     els.isGithub && DDMS.postKeyWords(els.lastInputVal);
     renderAnalytics('q='+els.lastInputVal);
   }
