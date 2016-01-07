@@ -478,7 +478,7 @@ $(function () {
   function onLocationHashChanged(e){
     e && e.preventDefault();
     var hash = HashHandler.get();
-    hash && onSearch(decodeURIComponent(hash));
+    hash && onSearch(decodeURIComponent(hash).replace(/(\?.*)/,''));
   }
   function onSelectLang(){
     var checked = els.searchDropdownMenu.find('input:checked'),lang = [];
