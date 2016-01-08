@@ -169,6 +169,11 @@ html,body{
 .donate form{
   display: inline-block;
 }
+.zhifubao{
+  margin-right: 10px;
+  margin-top: -40px;
+  width: 80px;
+}
 body.mobile .variable-btns__copy{
   display: none !important;
 }

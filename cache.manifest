@@ -1,11 +1,12 @@
 CACHE MANIFEST
-# Build: 20160108125834
+# Build: 20160108031840
 
 CACHE:
-resources/images/codelf_logo.png
-resources/images/twohardtings.jpg
 resources/fonts/Dressedless_Three.svg
 resources/fonts/Dressedless_Three.ttf
+resources/images/codelf_logo.png
+resources/images/twohardtings.jpg
+resources/images/zhifubao.png
 src/lib/libs.381945f7.js
 
 NETWORK:
