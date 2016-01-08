@@ -161,6 +161,14 @@ html,body{
 .variable-btns>.variable-btns__copy{
   display: none;
 }
+.donate{
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+}
+.donate form{
+  display: inline-block;
+}
 body.mobile .variable-btns__copy{
   display: none !important;
 }

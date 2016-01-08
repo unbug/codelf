@@ -1,11 +1,11 @@
 CACHE MANIFEST
-# Build: 20160107102246
+# Build: 20160108125834
 
 CACHE:
-resources/fonts/Dressedless_Three.svg
-resources/fonts/Dressedless_Three.ttf
 resources/images/codelf_logo.png
 resources/images/twohardtings.jpg
+resources/fonts/Dressedless_Three.svg
+resources/fonts/Dressedless_Three.ttf
 src/lib/libs.381945f7.js
 
 NETWORK:
