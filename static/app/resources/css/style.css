@@ -165,6 +165,7 @@ html,body{
   text-align: center;
   display: block;
   margin: 0 auto;
+  padding-bottom: 1em;
 }
 .donate form{
   display: inline-block;
