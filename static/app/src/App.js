@@ -403,6 +403,7 @@ $(function () {
     sourceCodeContentHd: $('.sourcecode-modal .modal-body .hd'),
 
     githubCorner: $('.github-corner svg'),
+    donate: $('.donate'),
 
     isGithub: /github/g.test(location.href),
     lastVal: ''
@@ -673,6 +674,7 @@ $(function () {
       renderSearchResultHeader('error');
     }
     renderGithubCorner();
+    renderDonate();
   }
 
   function renderSearchBtn(str){
@@ -753,9 +755,15 @@ $(function () {
     els.sourceCodeModalDropdown.html(htm.join(''));
     els.sourceCodeModal.find('.match-count').html(htm.length);
   }
+
   function removeVariableMenus(){
     els.body.find('.popover--variable').remove();
   }
+
+  function renderDonate(){
+    els.donate.removeClass('hide');
+  }
+
   function renderAnalytics(param){
     els.isGithub && setTimeout(function(){
       Navigator.getFrame(null).setAttribute('src','http://www.mihtool.com/analytics.html?codelf'+(param?('&'+param):''));

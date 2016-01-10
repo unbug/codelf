@@ -5,6 +5,9 @@ html,body{
 .label {
   margin-right: .4em;
 }
+.hide{
+  display: none !important;
+}
 /*layout*/
 .logo{
   margin: 0 auto;
