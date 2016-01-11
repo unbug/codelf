@@ -173,9 +173,18 @@ html,body{
 .donate form{
   display: inline-block;
 }
-.zhifubao{
+.donate .bd{
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+.zhifubao,.wechatpay{
   margin-right: 10px;
-  margin-top: -40px;
+  margin-top: -45px;
+  width: 80px;
+}
+.paypay{
   width: 80px;
 }
 body.mobile .variable-btns__copy{
