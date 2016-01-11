@@ -765,7 +765,7 @@ $(function () {
   function renderDonate(isZh){
     isZh = isZh || els.isZHSearchKeyWords;
     els.donate.removeClass('hide');
-    els.donateTitle.html(isZh?'赞助我买特斯拉':'Buy me a drink');
+    els.donateTitle.html(isZh?'赞助我这个月的房租':'Buy me a drink');
   }
 
   function renderAnalytics(param){
