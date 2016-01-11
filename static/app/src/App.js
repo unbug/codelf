@@ -512,7 +512,6 @@ $(function () {
         els.lastInputVal.replace(/\s+/ig,'+').split('+').forEach(function(key){
           if(/[^\x00-\xff]/gi.test(key)){
             tmpch.push(key);
-            renderBaiduShare();
             els.isZHSearchKeyWords = true;
           }else{
             tmpval.push(key);
@@ -677,6 +676,7 @@ $(function () {
     }
     renderGithubCorner();
     renderDonate();
+    renderBaiduShare();
   }
 
   function renderSearchBtn(str){
@@ -774,7 +774,7 @@ $(function () {
     },param?500:3000);
   }
   function renderBaiduShare(){
-    if(els.hasBaiduShare){return;}
+    if(els.hasBaiduShare || !els.isZHSearchKeyWords){return;}
     els.hasBaiduShare = true;
     window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"5","bdPos":"right","bdTop":els.body.height()/2-80}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
   }
