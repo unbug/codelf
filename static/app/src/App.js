@@ -404,6 +404,7 @@ $(function () {
 
     githubCorner: $('.github-corner svg'),
     donate: $('.donate'),
+    donateTitle: $('.donate .title'),
 
     isGithub: /github/g.test(location.href),
     lastVal: ''
@@ -512,6 +513,7 @@ $(function () {
           if(/[^\x00-\xff]/gi.test(key)){
             tmpch.push(key);
             renderBaiduShare();
+            els.isZHSearchKeyWords = true;
           }else{
             tmpval.push(key);
           }
@@ -760,8 +762,10 @@ $(function () {
     els.body.find('.popover--variable').remove();
   }
 
-  function renderDonate(){
+  function renderDonate(isZh){
+    isZh = isZh || els.isZHSearchKeyWords;
     els.donate.removeClass('hide');
+    els.donateTitle.html(isZh?'赞助我买特斯拉':'Buy me a drink');
   }
 
   function renderAnalytics(param){

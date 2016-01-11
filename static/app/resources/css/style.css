@@ -173,6 +173,10 @@ html,body{
 .donate form{
   display: inline-block;
 }
+.donate .title{
+  padding-bottom: 10px;
+  text-align: center;
+}
 .donate .bd{
   display: block;
   width: 100%;
@@ -184,7 +188,7 @@ html,body{
   margin-top: -45px;
   width: 80px;
 }
-.paypay{
+.paypal{
   width: 80px;
 }
 body.mobile .variable-btns__copy{
