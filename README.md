@@ -22,12 +22,6 @@ Thanks
   * [Data Drive Management System](https://github.com/unbug/ddms)
   
 
-Find me
-=================
-  * Twitter [@unbug](https://twitter.com/unbug)
-  * 微博 [@听奏](http://weibo.com/unbug)
-  
-
 Programming naming convention
 =============================
   * [Google Style Guides](https://github.com/google/styleguide)
@@ -39,3 +33,10 @@ Programming naming convention
     * [oCSS](http://krasimir.github.io/organic-css/) - organic cascade style sheet
     * [SMACSS](http://smacss.com/) - Scalable and Modular Architecture for CSS
     * [BEM](http://bem.info/) [getbem](http://getbem.com/) - Block, Element, Modifier
+
+
+Find me
+=================
+  * Twitter [@unbug](https://twitter.com/unbug)
+  * 微博 [@听奏](http://weibo.com/unbug)
+  
