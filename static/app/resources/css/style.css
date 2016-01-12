@@ -177,6 +177,13 @@ html,body{
   padding-bottom: 10px;
   text-align: center;
 }
+.donate .title .lang{
+  display: none;
+}
+.donate .title.cn .cn,
+.donate .title.en .en{
+  display: block;
+}
 .donate .bd{
   display: block;
   width: 100%;

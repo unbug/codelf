@@ -21,7 +21,13 @@ Thanks
   * Utils - [generator-webappstarter](https://github.com/unbug/generator-webappstarter)
   * [Data Drive Management System](https://github.com/unbug/ddms)
   
+
+Find me
+=================
+  * Twitter [@unbug](https://twitter.com/unbug)
+  * 微博 [@听奏](http://weibo.com/unbug)
   
+
 Programming naming convention
 =============================
   * [Google Style Guides](https://github.com/google/styleguide)
