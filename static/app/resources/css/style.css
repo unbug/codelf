@@ -5,9 +5,6 @@ html,body{
 .label {
   margin-right: .4em;
 }
-.hide{
-  display: none !important;
-}
 /*layout*/
 .logo{
   margin: 0 auto;
@@ -21,12 +18,12 @@ html,body{
   border-radius: 20%;
   -webkit-border-radius: 20%;
 }
-.main-container{
-  padding: 20px;
+.main{
+  padding-top: 1.5em;
 }
 .main-title{
   text-align: center;
-  padding: 0 20px;
+  padding: 0 1.2em;
 }
 .main-title>header a,
 .main-title>header a:visited,
@@ -75,7 +72,7 @@ html,body{
   transition-delay: 950ms;
 }
 .search-form{
-  padding: 20px 0;
+  padding: 1em 0;
 }
 .search-form .dropdown-menu,
 .sourcecode-modal .dropdown-menu{
@@ -84,14 +81,11 @@ html,body{
   -webkit-overflow-scrolling: touch;
   -webkit-transform: translate3d(0,0,0);
 }
-.search-form .help{
-  display: none;
-}
 .search-relate a:hover{
   text-decoration: underline;
 }
 .search-result{
-  padding-top: 10px;
+  padding-top: .8em;
 }
 .search-result .ct{
   overflow-x: scroll;
@@ -167,14 +161,13 @@ html,body{
 .donate{
   text-align: center;
   display: block;
-  margin: 0 auto;
   padding-bottom: 1em;
 }
 .donate form{
   display: inline-block;
 }
 .donate .title{
-  padding-bottom: 10px;
+  padding-bottom: .8em;
   text-align: center;
 }
 .donate .title .lang{
@@ -191,38 +184,29 @@ html,body{
   text-align: center;
 }
 .zhifubao,.wechatpay{
-  margin-right: 10px;
-  margin-top: -50px;
-  width: 80px;
+  margin-right: 1em;
+  margin-top: -3em;
+  width: 5em;
 }
 .paypal{
-  width: 80px;
+  width: 5em;
 }
 body.mobile .variable-btns__copy{
   display: none !important;
 }
 @media (min-width: 62em) {
-  .main-container{
-    padding: 20px 150px;
-  }
-  .main-title{
-    padding: 0 50px;
-  }
   .main-title h1{
     font-size: 4.5em;
   }
-  .search-form .help{
-    display: inline-block;
-  }
   .search-relate{
-    padding-bottom: 20px;
+    padding-bottom: 1.8em;
   }
   .search-result .ct{
     overflow-x: auto;
   }
   .github-corner svg{
-    width: 80px;
-    height: 80px;
+    width: 5em;
+    height: 5em;
   }
   .sourcecode-modal{
     max-height: none;

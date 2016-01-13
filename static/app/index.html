@@ -18,14 +18,14 @@
   </style>
 </head>
 <body>
-<section class="main-container">
+<section class="main container">
   <header class="main-title">
     <header><h1><a href="./"><span>C</span><span>O</span><span>D</span><span>E</span><span>L</span><span>F</span></a></h1></header>
     <h5>Search over projects from Github, Bitbucket, Google Code and more to find </h5>
     <h5><span class="label label-primary">real-world usage</span> <span class="label label-success">variable names</span></h5>
   </header>
   <section class="row search-form">
-    <div class="col-lg-12">
+    <div class="col-xs-12">
       <div class="input-group">
         <div class="input-group-btn">
           <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -51,20 +51,20 @@
         </form>
       <span class="input-group-btn">
         <button class="btn btn-secondary search" type="button" data-toggle="tooltip" data-placement="left" data-trigger="manual" title="Click here to show more!">Search</button>
-        <a class="btn btn-secondary help" href="https://github.com/unbug/codelf/issues?q=is%3Aissue+is%3Aclosed" target="_blank">WTF?</a>
+        <a class="btn btn-secondary hidden-sm-down help" href="https://github.com/unbug/codelf/issues?q=is%3Aissue+is%3Aclosed" target="_blank">WTF?</a>
       </span>
       </div>
     </div>
   </section>
   <section class="row search-relate">
-    <div class="col-lg-12 bd">
+    <div class="col-xs-12 bd">
       <script type="text/html">
         <a class="label label-primary" href="#{val}">{val}</a>
       </script>
     </div>
   </section>
   <section class="row search-result">
-    <div class="col-lg-12">
+    <div class="col-xs-12">
       <div class="jumbotron ct" role="alert">
         <header class="hd">
           <div class="loading">
@@ -95,17 +95,17 @@
           <span aria-hidden="true">&times;</span>
         </button>
         <div>
-          <a class="btn btn-primary-outline btn-sm cur-repo" target="_blank">Repo</a>
-          <div class="btn-group btn-group-sm" role="group" aria-label="Button group with nested dropdown">
+          <a class="btn btn-primary-outline btn-xs cur-repo" target="_blank">Repo</a>
+          <div class="btn-group btn-group-xs" role="group" aria-label="Button group with nested dropdown">
             <div class="btn-group" role="group">
-              <button type="button" class="btn btn-primary-outline dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button type="button" class="btn btn-primary-outline dropdown-toggle btn-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 All matched results <span class="label label-danger label-pill match-count">1</span>
               </button>
               <div class="dropdown-menu">
                 <script type="text/html">
                   <div class="dropdown-item">
-                    <button type="button" class="btn btn-primary-outline btn-sm variable-btns__code" data-id="{id}">Codes</button>
-                    <a class="btn btn-primary-outline btn-sm" href="{repo}" target="_blank">Repo</a>
+                    <button type="button" class="btn btn-primary-outline btn-xs variable-btns__code" data-id="{id}">Codes</button>
+                    <a class="btn btn-primary-outline btn-xs" href="{repo}" target="_blank">Repo</a>
                     <span class="label label-{label_type}">{lang}</span>
                   </div>
                 </script>
@@ -123,7 +123,7 @@
     </div>
   </div>
 </section>
-<section class="row donate hide">
+<section class="container donate" hidden>
   <header class="title">
     <h6 class="lang en">Buy <a href="https://twitter.com/unbug" target="_blank">@unbug</a> a drink</h6>
     <h6 class="lang cn">赞助 <a href="http://weibo.com/unbug/" target="_blank">@听奏</a> 这个月的房租</h6>

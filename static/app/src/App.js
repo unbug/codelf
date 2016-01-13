@@ -764,7 +764,7 @@ $(function () {
 
   function renderDonate(isZh){
     isZh = isZh || els.isZHSearchKeyWords;
-    els.donate.removeClass('hide');
+    els.donate.removeAttr('hidden');
     els.donateTitle.removeClass('cn en').addClass(isZh?'cn':'en');
   }
 
