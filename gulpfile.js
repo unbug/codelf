@@ -32,14 +32,26 @@ gulp.task('watch', function () {
   });
 
 });
+//clear dist folder
+gulp.task('clean:dist', function (cb) {
+  return gulp.src(['./src/lib/*.js'])
+    .pipe($.clean({force: true}))
+});
+
 gulp.task('dist:js', function (cb) {
   var dir = './static/app/src/lib/';
-  return gulp.src([dir+'jquery.min.js',dir+'tether.min.js',dir+'bootstrap.min.js',dir+'prettify.js',dir+'ZeroClipboard.min.js'])
+  gulp.src([dir+'jquery.min.js',dir+'tether.min.js',dir+'bootstrap.min.js',dir+'prettify.js',dir+'ZeroClipboard.min.js',dir+'lovefield.min.js'])
+    .pipe($.cached('build-cache', {
+      optimizeMemory: true
+    }))
     .pipe($.concat('libs.js'))
     .pipe(cachebust.references())
     .pipe($.uglify())
     .pipe(cachebust.resources())
-    .pipe(gulp.dest('./src/lib/'));
+    .pipe(gulp.dest('./src/lib/'))
+    .on('end', function () {
+      cb();
+    });
 });
 gulp.task('dist:html', function () {
   return gulp.src(['./static/app/*.html'])
@@ -103,8 +115,8 @@ gulp.task('prepare', function (cb) {
   runSequence('build_version', cb);
 });
 gulp.task('compile', function (cb) {
-  runSequence(['prepare','manifest','dist:html'], cb);
+  runSequence('prepare', 'dist:js', 'dist:html', 'manifest', cb);
 });
 gulp.task('default', function (cb) {
-  runSequence('compile','dist:js', 'watch', 'serve', cb);
+  runSequence('clean:dist', 'compile', 'watch', 'serve', cb);
 });

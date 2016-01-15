@@ -230,7 +230,7 @@ $(function () {
   //model
   //http://githut.info/
   var topProgramLan = [{"id":"22,106","language":"JavaScript, CoffeeScript"},{"id":"133,135","language":"CSS"},{"id":"3,39","language":"HTML"},{"id":137,"language":"Swift"},{"id":35,"language":"Objective-C"},{"id":23,"language":"Java"},{"id":19,"language":"Python"},{"id":24,"language":"PHP"},{"id":32,"language":"Ruby"},{"id":28,"language":"C"},{"id":16,"language":"C++"},{"id":6,"language":"C#"},{"id":55,"language":"Go"},{"id":51,"language":"Perl"},{"id":"104,109","language":"Clojure, ClojureScript"},{"id":40,"language":"Haskell"},{"id":54,"language":"Lua"},{"id":20,"language":"Matlab"},{"id":144,"language":"R"},{"id":47,"language":"Scala"},{"id":"69,78,146","language":"Shell"},{"id":29,"language":"Lisp"},{"id":42,"language":"ActionScript"}];
-  var searchcode = new function(){
+  var searchcodeModel = new function(){
     var persistLangsName = 'codelf_langs_selected';
     var langs = localStorage.get(persistLangsName),langQuery;
     var page = 0;
@@ -307,7 +307,7 @@ $(function () {
     }
   };
 
-  var youdaoTranslate = new function (){
+  var youdaoTranslateModel = new function (){
     var lastVal;
     var translateRequestCallback;
     this.request = function(val,callback){
@@ -332,7 +332,7 @@ $(function () {
       }
     }
   };
-  var DDMS = new function(){
+  var DDMSModel = new function(){
     var persistKeyWordsName = 'codelf_ddms_keywords';
     var persistKeyWordsTimerName = persistKeyWordsName+'_timer';
     var cacheKeyWords = (localStorage.get(persistKeyWordsName) || '').split(',');
@@ -361,7 +361,59 @@ $(function () {
     }
   };
 
-  var beanHelpers = new function(){
+  var bookmarkModel = new function (){
+    this.repos = new function (){
+      var _this = this;
+      var page = 1;
+      var mainData = [];
+      function storeRepos(data){
+        mainData = mainData.concat(data);
+      }
+      this.request = function(callback){
+        $.ajax({
+          type: 'GET',
+          dataType: 'json',
+          url: 'https://api.github.com/users/unbug/repos?per_page=100&page='+page,
+          success: function(data){
+            if(data && data.length){
+              storeRepos(data);
+              page++;
+              _this.request(callback);
+            }else{
+              callback && callback(mainData);
+            }
+          }
+        });
+      }
+    };
+
+    this.stars = new function (){
+      var _this = this;
+      var page = 1;
+      var mainData = [];
+      function storeRepos(data){
+        mainData = mainData.concat(data);
+      }
+      this.request = function(callback){
+        $.ajax({
+          type: 'GET',
+          dataType: 'json',
+          url: 'https://api.github.com/users/unbug/starred?per_page=100&page='+page,
+          success: function(data){
+            if(data && data.length){
+              storeRepos(data);
+              page++;
+              _this.request(callback);
+            }else{
+              callback && callback(mainData);
+            }
+          }
+        });
+      }
+    };
+  };
+
+  var beanHelpersModel = new function(){
     this.getRandomLabelType = function (){
       var types = ['default','primary','success','info','warning','warning','danger'];
       return randomList(types,1)[0];
@@ -472,7 +524,7 @@ $(function () {
 
   function showSourceCode(){
     renderSourceCode();
-    searchcode.requestSourceCode(this.dataset.id,renderSourceCode);
+    searchcodeModel.requestSourceCode(this.dataset.id,renderSourceCode);
     this.dataset.val && renderRelatedProperty(this.dataset.val);
     els.sourceCodeModal.modal('show');
   }
@@ -487,12 +539,12 @@ $(function () {
     checked.each(function(){
       lang.push(this.value);
     });
-    searchcode.setLang(lang.join(' '));
+    searchcodeModel.setLang(lang.join(' '));
     renderSearchBtn('Search');
   }
   function onResetLang(){
     els.searchDropdownMenu.find('input').removeAttr('checked');
-    searchcode.setLang();
+    searchcodeModel.setLang();
     renderSearchBtn('Search');
   }
   function onSearch(val){
@@ -519,7 +571,7 @@ $(function () {
         });
         els.lastVal = tmpval.join(' ');
         if(tmpch.length){
-          youdaoTranslate.request(tmpch.join(' '),function(tdata){
+          youdaoTranslateModel.request(tmpch.join(' '),function(tdata){
             //basic translate
             if(tdata.basic && tdata.basic.explains){
               els.valHistory = tdata.basic.explains.join(' ');
@@ -563,13 +615,13 @@ $(function () {
   function saveKeyWordRegs(){
     els.valRegs = [];
     els.lastVal.replace(/\s+/ig,'+').split('+').forEach(function(key){
-      key.length && els.valRegs.push(beanHelpers.getKeyWordReg(key));
+      key.length && els.valRegs.push(beanHelpersModel.getKeyWordReg(key));
     });
   }
 
   function doSearch(){
     if(els.lastVal && els.lastVal.length){
-      searchcode.request(els.lastVal,renderSearchResult);
+      searchcodeModel.request(els.lastVal,renderSearchResult);
       renderSearchResultHeader('loading');
       renderSearchBtn();
     }else{
@@ -577,7 +629,7 @@ $(function () {
       renderSearchBtn('Search');
     }
 
-    els.isGithub && DDMS.postKeyWords(els.lastInputVal);
+    els.isGithub && DDMSModel.postKeyWords(els.lastInputVal);
     renderAnalytics('q='+els.lastInputVal);
   }
 
@@ -608,7 +660,7 @@ $(function () {
   }
 
   function renderLangMunu(){
-    var htm = [],storeLang = searchcode.getLang();
+    var htm = [],storeLang = searchcodeModel.getLang();
     storeLang = storeLang?storeLang.split(' '):[];
     topProgramLan.forEach(function(key){
       htm.push(els.searchDropdownMenuTpl
@@ -651,7 +703,7 @@ $(function () {
             vals.push(el);
             //render variable labels
             labels.push(els.searchResultTpl
-              .replace('{label_type}',beanHelpers.getRandomLabelType())
+              .replace('{label_type}',beanHelpersModel.getRandomLabelType())
               .replace(/\{val\}/g,el)
               .replace('{id}',rkey.id)
               .replace('{repo}',rkey.repo)
@@ -750,7 +802,7 @@ $(function () {
           els.sourceCodeModalDropdownTpl.replace(/\{id\}/g,ids[i])
             .replace(/\{repo\}/g,repos[i])
             .replace(/\{lang\}/g,langs[i])
-            .replace(/\{label_type\}/g,beanHelpers.getRandomLabelType())
+            .replace(/\{label_type\}/g,beanHelpersModel.getRandomLabelType())
         );
       }
     }
@@ -778,6 +830,13 @@ $(function () {
     els.hasBaiduShare = true;
     window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"5","bdPos":"right","bdTop":els.body.height()/2-80}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
   }
+
+  bookmarkModel.repos.request(function(data){
+    console.log('repos',data.length,data);
+  });
+  bookmarkModel.stars.request(function(data){
+    console.log('stars',data.length,data);
+  });
 
   init();
   //end view and render
