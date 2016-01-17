@@ -800,6 +800,7 @@ $(function () {
   }
   function init(){
     if(os.ios || os.android){
+      els.isMobile = true;
       els.body.addClass('mobile');
     }
     bindEvent();
@@ -1080,7 +1081,7 @@ $(function () {
     if(now-els.showNextTipTimer>1000*1800){
       els.showNextTipTimer = now;
       els.searchBtn.tooltip('show');
-      els.bookmarkBtn.tooltip('show');
+      !els.isMobile && els.bookmarkBtn.tooltip('show');
       setTimeout(function(){
         els.searchBtn.tooltip('dispose');
         els.bookmarkBtn.tooltip('dispose');

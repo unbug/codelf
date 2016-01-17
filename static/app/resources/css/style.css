@@ -221,7 +221,8 @@ html,body{
   padding: .1rem .4rem;
 }
 
-body.mobile .variable-btns__copy{
+body.mobile .variable-btns__copy,
+.bookmark-btn{
   display: none !important;
 }
 @media (min-width: 62em) {
