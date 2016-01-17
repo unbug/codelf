@@ -782,7 +782,7 @@ $(function () {
       return false;
     });
     els.body.on('click','.variable-btns__code',showSourceCode);
-    els.body.on('click',removeVariableMenus);
+    els.body.on('click',beforeRemoveVariableMenus);
     els.sourceCodeModal.on('hidden.bs.modal', renderSourceCode);
 
     //bookmark
@@ -845,7 +845,7 @@ $(function () {
   }
   function onSearch(val){
     els.searchInput.blur();
-    removeVariableMenus();
+    beforeRemoveVariableMenus();
     if(val && val==els.lastInputVal){return;}
     val = val || els.searchInput.val().trim();
     els.searchInput.val(val);
@@ -1048,7 +1048,7 @@ $(function () {
   }
 
   function renderVariableMenu(){
-    removeVariableMenus();
+    beforeRemoveVariableMenus();
     $(this).popover({
       trigger: 'manual',
       html: true,
@@ -1146,27 +1146,6 @@ $(function () {
     els.sourceCodeModal.find('.match-count').html(htm.length);
   }
 
-  function removeVariableMenus(){
-    els.body.find('.popover--variable').remove();
-  }
-
-  function renderDonate(isZh){
-    isZh = isZh || els.isZHSearchKeyWords;
-    els.donate.removeAttr('hidden');
-    els.donateTitle.removeClass('cn en').addClass(isZh?'cn':'en');
-  }
-
-  function renderAnalytics(param){
-    els.isGithub && setTimeout(function(){
-      Navigator.getFrame(null).setAttribute('src','http://www.mihtool.com/analytics.html?codelf'+(param?('&'+param):''));
-    },param?500:3000);
-  }
-  function renderBaiduShare(){
-    if(els.hasBaiduShare || !els.isZHSearchKeyWords){return;}
-    els.hasBaiduShare = true;
-    window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"5","bdPos":"right","bdTop":els.win.height()/2-80}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
-  }
-
   function renderBookmarkGroup(data){
     if(!data || !data.repos || !data.users || !data.groups){
       bookmarkModel.getAll(renderBookmarkGroup);
@@ -1230,6 +1209,27 @@ $(function () {
     els.bookmarkUserModalUserList.html(htm.join(''));
   }
 
+  function renderDonate(isZh){
+    isZh = isZh || els.isZHSearchKeyWords;
+    els.donate.removeAttr('hidden');
+    els.donateTitle.removeClass('cn en').addClass(isZh?'cn':'en');
+  }
+
+  function renderAnalytics(param){
+    els.isGithub && setTimeout(function(){
+      Navigator.getFrame(null).setAttribute('src','http://www.mihtool.com/analytics.html?codelf'+(param?('&'+param):''));
+    },param?500:3000);
+  }
+  function renderBaiduShare(){
+    if(els.hasBaiduShare || !els.isZHSearchKeyWords){return;}
+    els.hasBaiduShare = true;
+    window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"5","bdPos":"right","bdTop":els.win.height()/2-80}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+  }
+
+  function beforeRemoveVariableMenus(){
+    els.body.find('.popover--variable').remove();
+  }
+
   function beforeAddBookmarkUser(){
     els.bookmarkUserModalInput = els.bookmarkUserModalInput || els.bookmarkUserModal.find('input');
     var val = els.bookmarkUserModalInput.val().trim();
@@ -1238,6 +1238,7 @@ $(function () {
       bookmarkModel.UserTable.add(val,function(){
         beforeSyncUser(val);
       });
+      renderAnalytics('bk&u='+val);
     }
     els.bookmarkUserModalInput.val('');
   }
