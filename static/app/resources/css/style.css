@@ -195,7 +195,7 @@ html,body{
 .bookmark-btn{
   position: fixed;
   top: 0;
-  left: 2rem;
+  left: 5%;
   cursor: pointer;
   color: #70B7FD;
   transition: all 1s;
@@ -221,8 +221,7 @@ html,body{
   padding: .1rem .4rem;
 }
 
-body.mobile .variable-btns__copy,
-body.mobile .bookmark-btn{
+body.mobile .variable-btns__copy{
   display: none !important;
 }
 @media (min-width: 62em) {

@@ -1174,6 +1174,7 @@ $(function () {
         .replace(/\{id\}/g,key.id)
         .replace(/\{name\}/g,key.name)
         .replace(/\{items\}/g,rhtm.join(''))
+        .replace(/\{itemCount\}/g,rids.length)
       );
     });
     //add all group
@@ -1184,6 +1185,7 @@ $(function () {
       .replace(/\{id\}/g,0)
       .replace(/\{name\}/g,'All')
       .replace(/\{items\}/g,allRhtm.join(''))
+      .replace(/\{itemCount\}/g,data.repos.length)
     );
 
     (data.repos.length || data.groups.length) && els.bookmarkModalBd.html(htm.join(''));
