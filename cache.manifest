@@ -1,9 +1,15 @@
 CACHE MANIFEST
-# Build: 20160115032152
+# Build: 20160117105726
 
 CACHE:
 resources/fonts/Dressedless_Three.svg
 resources/fonts/Dressedless_Three.ttf
+resources/fonts/FontAwesome.otf
+resources/fonts/fontawesome-webfont.eot
+resources/fonts/fontawesome-webfont.svg
+resources/fonts/fontawesome-webfont.ttf
+resources/fonts/fontawesome-webfont.woff
+resources/fonts/fontawesome-webfont.woff2
 resources/images/codelf_logo.png
 resources/images/paypal.png
 resources/images/twohardtings.jpg

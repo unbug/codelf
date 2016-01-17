@@ -362,21 +362,257 @@ $(function () {
   };
 
   var bookmarkModel = new function (){
-    this.repos = new function (){
+    var BM = this;
+    var schemaBuilder = lf.schema.create('Codelf', 1);
+    var DB;
+    var Tables;
+    var DBEventType = {
+      C: 'CREATE',
+      U: 'UPDATED',
+      D: 'DELETE'
+    };
+    var win = $(window);
+    var curUserName;
+    var curUser;
+
+    schemaBuilder.createTable('User').
+      addColumn('id', lf.Type.INTEGER).
+      addColumn('name', lf.Type.STRING).
+      addColumn('create', lf.Type.DATE_TIME).
+      addColumn('lastSync', lf.Type.DATE_TIME).
+      addPrimaryKey(['id'],true);
+
+    schemaBuilder.createTable('RepoGroup').
+      addColumn('id', lf.Type.INTEGER).
+      addColumn('name', lf.Type.STRING).
+      addColumn('repoIds', lf.Type.STRING).
+      addColumn('order', lf.Type.INTEGER).
+      addColumn('create', lf.Type.DATE_TIME).
+      addPrimaryKey(['id'],true);
+
+    schemaBuilder.createTable('Repo').
+      addColumn('id', lf.Type.INTEGER).
+      addColumn('userId', lf.Type.INTEGER).
+      addColumn('tags', lf.Type.STRING).
+      addColumn('originRepoId', lf.Type.STRING).
+      addColumn('data', lf.Type.STRING).
+      addColumn('create', lf.Type.DATE_TIME).
+      addPrimaryKey(['id'],true);
+
+    schemaBuilder.connect().then(function(db) {
+      DB = db;
+      Tables = {
+        User: DB.getSchema().table('User'),
+        RepoGroup: DB.getSchema().table('RepoGroup'),
+        Repo: DB.getSchema().table('Repo')
+      };
+      win.trigger('DB:ready');
+    });
+
+    this.UserTable = new function (){
+      this.add = function(name,callback){
+        if(!name){return;}
+        var row = Tables.User.createRow({
+          'name': name,
+          'create': new Date(),
+          'lastSync': new Date()
+        });
+        DB.select().
+          from(Tables.User).
+          where(Tables.User.name.eq(name))
+          .exec().then(function(rows) {
+            !rows.length && DB.insertOrReplace().into(Tables.User).values([row])
+              .exec().then(function(res){
+                curUser = res[0];
+                callback && callback();
+                win.trigger('DB:Table.User.onchange',{type: DBEventType.C,result: res});
+              });
+          });
+      }
+
+      this.updateSync = function(name){
+        DB.update(Tables.User).
+          set(Tables.User.lastSync, new Date()).
+          where(Tables.User.name.eq(name))
+          .exec().then(function(res){
+            win.trigger('DB:Table.User.onchange',{type: DBEventType.U,result: res});
+          });
+      }
+
+      this.getAll = function(callback){
+        DB.select()
+          .from(Tables.User)
+          .exec().then(function(rows){
+            callback && callback(rows);
+          });
+      }
+    };
+
+    this.RepoGroupTable = new function (){
+      this.add = function(name){
+        if(!name){return;}
+        var row = Tables.RepoGroup.createRow({
+          'name': name,
+          'repoIds': '',
+          'order': 0,
+          'create': new Date()
+        });
+        DB.select().
+        from(Tables.RepoGroup).
+          where(Tables.RepoGroup.name.eq(name))
+          .exec().then(function(rows) {
+          !rows.length && DB.insertOrReplace().into(Tables.RepoGroup).values([row])
+            .exec().then(function(res){
+              win.trigger('DB:Table.RepoGroup.onchange',{type: DBEventType.C,result: res});
+            });
+        });
+      }
+
+      this.addRopoId = function(id,repoId){
+        DB.select().
+        from(Tables.RepoGroup).
+          where(Tables.RepoGroup.id.eq(id))
+          .exec().then(function(rows) {
+          if(rows && rows[0]){
+            var ids = rows[0].repoIds.length?rows[0].repoIds.split(','):[];
+            if(ids.indexOf(repoId)==-1){
+              ids.push(repoId);
+            }
+            ids = ids.length?ids.join(','):'';
+            DB.update(Tables.RepoGroup).
+            set(Tables.RepoGroup.repoIds, ids).
+              where(Tables.RepoGroup.id.eq(id))
+              .exec().then(function(res){
+                win.trigger('DB:Table.RepoGroup.onchange',{type: DBEventType.U,result: res});
+              });
+          }
+        });
+      }
+
+      this.removeRopoId = function(id,repoId){
+        DB.select().
+        from(Tables.RepoGroup).
+          where(Tables.RepoGroup.id.eq(id))
+          .exec().then(function(rows) {
+          if(rows && rows[0]){
+            var ids = rows[0].repoIds.length?rows[0].repoIds.split(','):[],
+              idx = ids.indexOf(repoId);
+
+            if(idx!=-1){
+              ids.splice(idx,1);
+            }
+            ids = ids.length?ids.join(','):'';
+            DB.update(Tables.RepoGroup).
+            set(Tables.RepoGroup.repoIds, ids).
+              where(Tables.RepoGroup.id.eq(id))
+              .exec().then(function(){
+                win.trigger('DB:Table.RepoGroup.onchange',DBEventType.U);
+              });
+          }
+        });
+      }
+
+      this.del = function(id){
+        DB.delete()
+          .from(Tables.RepoGroup)
+          .where(Tables.RepoGroup.id.eq(id))
+          .exec().then(function(res){
+            win.trigger('DB:Tables.User.onchange',{type: DBEventType.D,result: res});
+          });
+      }
+
+      this.getAll = function(callback){
+        DB.select()
+          .from(Tables.RepoGroup)
+          .exec().then(function(rows){
+            callback && callback(rows);
+          });
+      }
+    };
+
+    this.RepoTable = new function (){
+
+      function _add(repo,callback){
+        function fn(){
+          if(!repo){return};
+          var row = Tables.Repo.createRow({
+            'userId': curUser.id,
+            'tags': '',
+            'originRepoId': repo.id,
+            'data': repo,
+            'create': new Date()
+          });
+          DB.select().
+          from(Tables.Repo).
+            where(lf.op.and(Tables.Repo.originRepoId.eq(repo.id),Tables.Repo.userId.eq(curUser.id)))
+            .exec().then(function(rows) {
+            if(rows.length){
+              callback && callback();
+            }else{
+              DB.insertOrReplace().into(Tables.Repo).values([row])
+                .exec().then(function(){
+                callback && callback();
+              });
+            }
+          });
+        }
+        if(curUser && curUser.name==curUserName){
+          fn();
+        }else{
+          DB.select().
+          from(Tables.User).
+            where(Tables.User.name.eq(curUserName))
+            .exec().then(function(rows) {
+              curUser = rows[0];
+              fn();
+            });
+        }
+      }
+
+      this.addRepos = function(repos,callback){
+        function loop(){
+          if(!repos.length){
+            callback && callback();
+            win.trigger('DB:Table.RepoGroup.onchange',{type: DBEventType.C});
+          }
+          _add(repos.shift(),loop);
+        }
+        _add(repos.shift(),loop);
+      }
+
+      this.getAll = function(callback){
+        DB.select()
+          .from(Tables.Repo)
+          .exec().then(function(rows){
+            callback && callback(rows);
+          });
+      }
+    };
+
+    this.setCurUserName = function(name){
+      curUserName = name;
+    };
+    this.getCurUserName = function(){
+      return curUserName;
+    };
+    var githubRepos = new function (){
       var _this = this;
       var page = 1;
       var mainData = [];
-      function storeRepos(data){
-        mainData = mainData.concat(data);
+      function concat(data){
+        if(toString.call(data) == '[object Array]'){
+          mainData = mainData.concat(data);
+        }
       }
       this.request = function(callback){
         $.ajax({
           type: 'GET',
           dataType: 'json',
-          url: 'https://api.github.com/users/unbug/repos?per_page=100&page='+page,
+          url: 'https://api.github.com/users/'+curUserName+'/repos?per_page=100&page='+page,
+          //url: 'static/data/repos.json?repos',
           success: function(data){
             if(data && data.length){
-              storeRepos(data);
+              concat(data);
               page++;
               _this.request(callback);
             }else{
@@ -387,21 +623,24 @@ $(function () {
       }
     };
 
-    this.stars = new function (){
+    var githubStars = new function (){
       var _this = this;
       var page = 1;
       var mainData = [];
-      function storeRepos(data){
-        mainData = mainData.concat(data);
+      function concat(data){
+        if(toString.call(data) == '[object Array]'){
+          mainData = mainData.concat(data);
+        }
       }
       this.request = function(callback){
         $.ajax({
           type: 'GET',
           dataType: 'json',
-          url: 'https://api.github.com/users/unbug/starred?per_page=100&page='+page,
+          url: 'https://api.github.com/users/'+curUserName+'/starred?per_page=100&page='+page,
+          //url: 'static/data/repos.json?stars',
           success: function(data){
             if(data && data.length){
-              storeRepos(data);
+              concat(data);
               page++;
               _this.request(callback);
             }else{
@@ -411,6 +650,50 @@ $(function () {
         });
       }
     };
+
+    this.getAll = function(callback){
+      var users,repos,groups;
+      //select user
+      BM.UserTable.getAll(function(ures){
+        users = ures;
+        //select groups
+        BM.RepoGroupTable.getAll(function(gres){
+          groups = gres;
+          //select repos
+          BM.RepoTable.getAll(function(rres){
+            repos = rres;
+            callback && callback.call(this,{
+              users: users || [],
+              repos: repos || [],
+              groups: groups || []
+            });
+          });
+        });
+      });
+    }
+    this.syncGithub = function(callback){
+      var data = [],users,repos,groups;
+      //reauest repos
+      githubRepos.request(function(res){
+        data = data.concat(res);
+        //request star repos
+        githubStars.request(function(){
+          //add repos to DB
+          BM.RepoTable.addRepos(data.concat(res),function(){
+            callback && callback();
+          });
+        });
+      });
+    }
+
+    this.arrayToObj = function(data){
+      var d = {};
+      data.forEach(function(key){
+        d[key.id] = key;
+      });
+      return d;
+    }
+
   };
 
   var beanHelpersModel = new function(){
@@ -427,6 +710,7 @@ $(function () {
 
   //view and render
   var els = {
+    win: $(window),
     body: $('body'),
 
     title: $('.main-title>header h1'),
@@ -453,6 +737,19 @@ $(function () {
     sourceCodeModalDropdownTpl: $('.sourcecode-modal .dropdown-menu script').html(),
     sourceCodeContent: $('.sourcecode-modal .modal-body pre code'),
     sourceCodeContentHd: $('.sourcecode-modal .modal-body .hd'),
+
+    bookmarkBtn: $('.bookmark-btn'),
+    bookmarkModal: $('.bookmark-modal'),
+    bookmarkModalBd: $('.bookmark-modal .modal-body'),
+    bookmarkModalGroupTpl: $('.bookmark-modal script[data-template="repoGroup"]').html(),
+    bookmarkModalGroupItemTpl: $('.bookmark-modal script[data-template="groupItem"]').html(),
+    bookmarkModalReopTpl: $('.bookmark-modal script[data-template="repoItem"]').html(),
+
+    bookmarkUserModal: $('.bookmark-user-modal'),
+    bookmarkUserModalUserList: $('.bookmark-user-modal .user-list'),
+    bookmarkUserModalUserTpl: $('.bookmark-user-modal .user-list script').html(),
+
+    bookmarkGroupModal: $('.bookmark-group-modal'),
 
     githubCorner: $('.github-corner svg'),
     donate: $('.donate'),
@@ -481,35 +778,25 @@ $(function () {
     els.searchResultBd.on('click mouseenter','.variable-wrap',function(e){
       e.preventDefault();
       e.stopPropagation();
-      removeVariableMenus();
-      $(this).popover({
-        trigger: 'manual',
-        html: true,
-        placement: 'top',
-        offset: '-10 0',
-        title: function(){
-          return false;
-        },
-        content: function(){
-          els.sourceCodeModal.find('.modal-header a.cur-repo').attr('href',this.dataset.repo);
-          var prop = getRelatedProperty(this.dataset.val);
-          return els.variableMenuTpl
-            .replace('{id}',this.dataset.id)
-            .replace('{count}',prop?prop['ids'].length:1)
-            .replace(/\{val\}/g,this.dataset.val)
-            .replace('{repo}',this.dataset.repo);
-        },
-        template: '<div class="popover popover--variable" role="tooltip">' +
-        '<div class="popover-arrow"></div><div class="popover-content"></div>' +
-        '</div>'
-      });
-      $(this).popover('show');
-      els.variableClipboard = new ZeroClipboard($('.variable-btns__copy')[0]);
+      renderVariableMenu.call(this);
       return false;
     });
     els.body.on('click','.variable-btns__code',showSourceCode);
     els.body.on('click',removeVariableMenus);
     els.sourceCodeModal.on('hidden.bs.modal', renderSourceCode);
+
+    //bookmark
+    els.win.on('DB:ready',renderBookmarkGroup);
+    els.win.on('DB:Table.RepoGroup.onchange',renderBookmarkGroup);
+    els.bookmarkBtn.on('click',showBookmark);
+    els.bookmarkModal.on('click','.add-account',showBookmarkUserModal);
+    els.bookmarkModal.on('click','.add-group',showBookmarkGroupModal);
+    els.bookmarkUserModal.on('click','.submit',beforeAddBookmarkUser);
+    els.bookmarkGroupModal.on('click','.submit',beforeAddBookmarkGroup);
+    els.bookmarkModalBd.on('click','.dropdown-item',beforeAddBookmarkToGroup);
+    els.bookmarkUserModalUserList.on('click','.sync',function(){
+      beforeSyncUser(this.dataset.name);
+    });
   }
   function init(){
     if(os.ios || os.android){
@@ -527,6 +814,15 @@ $(function () {
     searchcodeModel.requestSourceCode(this.dataset.id,renderSourceCode);
     this.dataset.val && renderRelatedProperty(this.dataset.val);
     els.sourceCodeModal.modal('show');
+  }
+  function showBookmark(){
+    els.bookmarkModal.modal('show');
+  }
+  function showBookmarkUserModal(){
+    els.bookmarkUserModal.modal('show');
+  }
+  function showBookmarkGroupModal(){
+    els.bookmarkGroupModal.modal('show');
   }
 
   function onLocationHashChanged(e){
@@ -659,6 +955,15 @@ $(function () {
     return els.storeRelatedProperties[name];
   }
 
+  function getBookmarkRopeHtm(repo,allGroupHtm){
+    return els.bookmarkModalReopTpl
+      .replace(/\{id\}/g,repo.id)
+      .replace(/\{full_name\}/g,repo.data.full_name)
+      .replace(/\{description\}/g,repo.data.description)
+      .replace(/\{html_url\}/g,repo.data.html_url)
+      .replace(/\{groupItems\}/g,allGroupHtm)
+  }
+
   function renderLangMunu(){
     var htm = [],storeLang = searchcodeModel.getLang();
     storeLang = storeLang?storeLang.split(' '):[];
@@ -671,7 +976,9 @@ $(function () {
     els.searchDropdownMenu.append(htm.join(''));
   }
   function renderGithubCorner(){
-    els.githubCorner.css({fill: randomColor()});
+    var color = randomColor();
+    els.githubCorner.css({fill: color});
+    els.bookmarkBtn.css({color: color});
   }
 
   function renderSearchResult(data){
@@ -740,14 +1047,43 @@ $(function () {
     els.searchResultHd.removeClass('loading error').addClass(cls||'');
   }
 
+  function renderVariableMenu(){
+    removeVariableMenus();
+    $(this).popover({
+      trigger: 'manual',
+      html: true,
+      placement: 'top',
+      offset: '-10 0',
+      title: function(){
+        return false;
+      },
+      content: function(){
+        els.sourceCodeModal.find('.modal-header a.cur-repo').attr('href',this.dataset.repo);
+        var prop = getRelatedProperty(this.dataset.val);
+        return els.variableMenuTpl
+          .replace('{id}',this.dataset.id)
+          .replace('{count}',prop?prop['ids'].length:1)
+          .replace(/\{val\}/g,this.dataset.val)
+          .replace('{repo}',this.dataset.repo);
+      },
+      template: '<div class="popover popover--variable" role="tooltip">' +
+      '<div class="popover-arrow"></div><div class="popover-content"></div>' +
+      '</div>'
+    });
+    $(this).popover('show');
+    els.variableClipboard = new ZeroClipboard($('.variable-btns__copy')[0]);
+  }
+
   function renderTooltips(){
     els.showNextTipTimer = els.showNextTipTimer || 0;
     var now = new Date().getTime();
     if(now-els.showNextTipTimer>1000*1800){
       els.showNextTipTimer = now;
       els.searchBtn.tooltip('show');
+      els.bookmarkBtn.tooltip('show');
       setTimeout(function(){
         els.searchBtn.tooltip('dispose');
+        els.bookmarkBtn.tooltip('dispose');
       },3000);
     }
   }
@@ -828,15 +1164,114 @@ $(function () {
   function renderBaiduShare(){
     if(els.hasBaiduShare || !els.isZHSearchKeyWords){return;}
     els.hasBaiduShare = true;
-    window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"5","bdPos":"right","bdTop":els.body.height()/2-80}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"5","bdPos":"right","bdTop":els.win.height()/2-80}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
   }
 
-  bookmarkModel.repos.request(function(data){
-    console.log('repos',data.length,data);
-  });
-  bookmarkModel.stars.request(function(data){
-    console.log('stars',data.length,data);
-  });
+  function renderBookmarkGroup(data){
+    if(!data || !data.repos || !data.users || !data.groups){
+      bookmarkModel.getAll(renderBookmarkGroup);
+      return;
+    }
+    var repos = bookmarkModel.arrayToObj(data.repos),
+      htm = [],
+      allRhtm = [],
+      allGhtm = [];
+
+    data.groups.forEach(function(key){
+      allGhtm.push( els.bookmarkModalGroupItemTpl
+        .replace(/\{id\}/g,key.id)
+        .replace(/\{name\}/g,key.name)
+      );
+    });
+    allGhtm = allGhtm.join('');
+    data.groups.forEach(function(key){
+      var rids = key.repoIds.split(','),
+        rhtm = [];
+      rids.length && rids.forEach(function(key){
+        var rd = repos[key];
+        rd && rhtm.push(getBookmarkRopeHtm(rd,allGhtm));
+      });
+      htm.push( els.bookmarkModalGroupTpl
+        .replace(/\{id\}/g,key.id)
+        .replace(/\{name\}/g,key.name)
+        .replace(/\{items\}/g,rhtm.join(''))
+      );
+    });
+    //add all group
+    data.repos.forEach(function(key){
+      allRhtm.push(getBookmarkRopeHtm(key,allGhtm));
+    });
+    htm.push( els.bookmarkModalGroupTpl
+      .replace(/\{id\}/g,0)
+      .replace(/\{name\}/g,'All')
+      .replace(/\{items\}/g,allRhtm.join(''))
+    );
+
+    (data.repos.length || data.groups.length) && els.bookmarkModalBd.html(htm.join(''));
+    setTimeout(function(){
+      var gel = els.bookmarkModalBd.find('.repo-group-item[data-id="'+els.lastEditBookmarkRepoGroupId+'"] .collapse');
+      if(!gel[0]){
+        gel = els.bookmarkModalBd.find('.repo-group-item:last-child .collapse');
+      }
+      gel.addClass('in');
+    },100);
+
+    renderBookmarkUsers(data.users);
+  }
+
+  function renderBookmarkUsers(data){
+    var htm = [];
+    data.forEach(function(key){
+      htm.push(els.bookmarkUserModalUserTpl
+        .replace(/\{id\}/g,key.id)
+        .replace(/\{name\}/g,key.name)
+      )
+    });
+    els.bookmarkUserModalUserList.html(htm.join(''));
+  }
+
+  function beforeAddBookmarkUser(){
+    els.bookmarkUserModalInput = els.bookmarkUserModalInput || els.bookmarkUserModal.find('input');
+    var val = els.bookmarkUserModalInput.val().trim();
+    if(val.length){
+      bookmarkModel.setCurUserName(val);
+      bookmarkModel.UserTable.add(val,function(){
+        beforeSyncUser(val);
+      });
+    }
+    els.bookmarkUserModalInput.val('');
+  }
+  function beforeAddBookmarkGroup(){
+    els.bookmarkGroupModalInput = els.bookmarkGroupModalInput || els.bookmarkGroupModal.find('input');
+    var val = els.bookmarkGroupModal.find('input').val().trim();
+    val.length && bookmarkModel.RepoGroupTable.add(val);
+    els.bookmarkGroupModalInput.val('');
+  }
+
+  function beforeAddBookmarkToGroup(){
+    var el = $(this),
+      gId = el.attr('data-id'),
+      repoEl = el.parents('.repo-item'),
+      repoId = repoEl.attr('data-id'),
+      curGroupEl = el.parents('.repo-group-item'),
+      curGroupId = curGroupEl.attr('data-id');
+
+    els.lastEditBookmarkRepoGroupId = curGroupId;
+    if(gId!=undefined && gId!=0){
+      bookmarkModel.RepoGroupTable.addRopoId(gId,repoId);
+    }else if(curGroupId!=0){
+      bookmarkModel.RepoGroupTable.removeRopoId(curGroupId,repoId);
+    }
+  }
+
+  function beforeSyncUser(name){
+    if(name){
+      bookmarkModel.setCurUserName(name);
+      bookmarkModel.syncGithub(function(){
+        bookmarkModel.getAll(renderBookmarkGroup);
+      });
+    }
+  }
 
   init();
   //end view and render

@@ -3,13 +3,13 @@ html,body{
   -webkit-font-smoothing: antialiased;
 }
 .label {
-  margin-right: .4em;
+  margin-right: .4rem;
 }
 /*layout*/
 .logo{
   margin: 0 auto;
-  width: 3em;
-  height: 3em;
+  width: 3rem;
+  height: 3rem;
 }
 .logo img{
   display: inherit;
@@ -19,11 +19,11 @@ html,body{
   -webkit-border-radius: 20%;
 }
 .main{
-  padding-top: 1.5em;
+  padding-top: 1.5rem;
 }
 .main-title{
   text-align: center;
-  padding: 0 1.2em;
+  padding: 0 1.2rem;
 }
 .main-title>header a,
 .main-title>header a:visited,
@@ -36,7 +36,7 @@ html,body{
 .main-title h1{
   font-family: "Dressedless Three",Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif;;
   text-transform: uppercase;
-  font-size: 3.5em;
+  font-size: 3.5rem;
 }
 .main-title h1.animated span{
   transition: color 250ms linear;
@@ -72,7 +72,7 @@ html,body{
   transition-delay: 950ms;
 }
 .search-form{
-  padding: 1em 0;
+  padding: 1rem 0;
 }
 .search-form .dropdown-menu,
 .sourcecode-modal .dropdown-menu{
@@ -85,7 +85,7 @@ html,body{
   text-decoration: underline;
 }
 .search-result{
-  padding-top: .8em;
+  padding-top: .8rem;
 }
 .search-result .ct{
   overflow-x: scroll;
@@ -110,7 +110,7 @@ html,body{
   margin: 0 auto;
 }
 .search-result .hd .logo{
-  margin: 0 auto 1em;
+  margin: 0 auto 1rem;
 }
 .blockquote{
   text-align: center;
@@ -132,22 +132,22 @@ html,body{
 .popover--variable .btn{
   border-bottom: 0;
 }
-.sourcecode-modal{
+.sourcecode-modal .cur-repo{
+  margin-left: .4rem;
+}
+.modal--fix{
   max-height: 98%;
 }
-.sourcecode-modal .cur-repo{
-  margin-right: .4em;
-}
-.sourcecode-modal .modal-dialog,
-.sourcecode-modal .modal-content{
+.modal--fix .modal-dialog,
+.modal--fix .modal-content{
   height: 100%;
   max-width: 100%;
   overflow: hidden;
 }
-.sourcecode-modal .modal-content{
+.modal--fix .modal-content{
   padding-bottom: 8%;
 }
-.sourcecode-modal .modal-body{
+.modal--fix .modal-body{
   max-height: 98%;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
@@ -161,13 +161,13 @@ html,body{
 .donate{
   text-align: center;
   display: block;
-  padding-bottom: 1em;
+  padding-bottom: 1rem;
 }
 .donate form{
   display: inline-block;
 }
 .donate .title{
-  padding-bottom: .8em;
+  padding-bottom: .8rem;
   text-align: center;
 }
 .donate .title .lang{
@@ -184,40 +184,71 @@ html,body{
   text-align: center;
 }
 .zhifubao,.wechatpay{
-  margin-right: 1em;
-  margin-top: -3em;
-  width: 5em;
+  margin-right: 1rem;
+  margin-top: -3rem;
+  width: 5rem;
 }
 .paypal{
-  width: 5em;
+  width: 5rem;
 }
-body.mobile .variable-btns__copy{
+
+.bookmark-btn{
+  position: fixed;
+  top: 0;
+  left: 2rem;
+  cursor: pointer;
+  color: #70B7FD;
+  transition: all 1s;
+}
+.bookmark-modal .topbar input{
+  display: inline-block;
+}
+.bookmark-modal .modal-body>.hd{
+  padding: 5rem 0;
+  text-align: center;
+  cursor: pointer;
+}
+.bookmark-modal .repo-item .card-footer {
+  padding: .3rem 1.25rem;
+}
+.bookmark-modal .repo-group-item:last-child .dropdown-menu>.dropdown-item:last-child{
+  display: none;
+}
+.bookmark-user-modal .user-item:first-child{
+  margin-top: 1rem;
+}
+.bookmark-user-modal .btn.sync{
+  padding: .1rem .4rem;
+}
+
+body.mobile .variable-btns__copy,
+body.mobile .bookmark-btn{
   display: none !important;
 }
 @media (min-width: 62em) {
   .main-title h1{
-    font-size: 4.5em;
+    font-size: 4.5rem;
   }
   .search-relate{
-    padding-bottom: 1.8em;
+    padding-bottom: 1.8rem;
   }
   .search-result .ct{
     overflow-x: auto;
   }
   .github-corner svg{
-    width: 5em;
-    height: 5em;
+    width: 5rem;
+    height: 5rem;
   }
-  .sourcecode-modal{
+  .modal--fix{
     max-height: none;
   }
-  .sourcecode-modal .modal-dialog,
-  .sourcecode-modal .modal-content,
-  .sourcecode-modal .modal-body{
+  .modal--fix .modal-dialog,
+  .modal--fix .modal-content,
+  .modal--fix .modal-body{
     height: auto;
     overflow: auto;
   }
-  .sourcecode-modal .modal-content{
+  .modal--fix .modal-content{
     padding-bottom: 0;
   }
   .variable-btns>.variable-btns__copy{

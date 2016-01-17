@@ -4,13 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>CODELF</title>
-  <meta name="description" content="Search over projects from Github, Bitbucket, Google Code and more to find real-world usage variable names" />
+  <meta name="description" content="Search over projects from GitHub, Bitbucket, Google Code and more to find real-world usage variable names" />
   <meta name="keywords" content="Codelf,变量命名,函数命名,方法命名,变量命名神器,naming things,naming convention,variable naming,programming naming,programming variable dictionary">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <link rel="shortcut icon" href="resources/images/codelf_logo.png" >
   <link rel="apple-touch-icon" sizes="144x144"  href="resources/images/codelf_logo.png">
   <link rel="apple-touch-icon-precomposed" href="resources/images/codelf_logo.png">
   <style>
+    @@include("resources/css/font-awesome.min.css")
     @@include("resources/css/bootstrap.min.css")
     @@include("resources/css/prettify.css")
     @@include("resources/css/components.css")
@@ -18,10 +19,10 @@
   </style>
 </head>
 <body>
-<section class="main container">
+<section class="container main">
   <header class="main-title">
     <header><h1><a href="./"><span>C</span><span>O</span><span>D</span><span>E</span><span>L</span><span>F</span></a></h1></header>
-    <h5>Search over projects from Github, Bitbucket, Google Code and more to find </h5>
+    <h5>Search over projects from GitHub, Bitbucket, Google Code and more to find </h5>
     <h5><span class="label label-primary">real-world usage</span> <span class="label label-success">variable names</span></h5>
   </header>
   <section class="row search-form">
@@ -49,10 +50,10 @@
         <form action="javascript:void(0);">
         <input type="search" name="search" class="form-control" placeholder="New Year 2016 快播">
         </form>
-      <span class="input-group-btn">
-        <button class="btn btn-secondary search" type="button" data-toggle="tooltip" data-placement="left" data-trigger="manual" title="Click here to show more!">Search</button>
-        <a class="btn btn-secondary hidden-sm-down help" href="https://github.com/unbug/codelf/issues?q=is%3Aissue+is%3Aclosed" target="_blank">WTF?</a>
-      </span>
+        <span class="input-group-btn">
+          <button class="btn btn-secondary search" type="button" data-toggle="tooltip" data-placement="left" data-trigger="manual" title="Click here to show more">Search</button>
+          <a class="btn btn-secondary hidden-sm-down help" href="https://github.com/unbug/codelf/issues?q=is%3Aissue+is%3Aclosed" target="_blank">WTF?</a>
+        </span>
       </div>
     </div>
   </section>
@@ -87,7 +88,7 @@
     </div>
   </section>
 </section>
-<section class="modal fade sourcecode-modal" tabindex="-1" role="dialog" aria-labelledby="sourcecodeModal" aria-hidden="true">
+<section class="modal fade sourcecode-modal modal--fix" tabindex="-1" role="dialog" aria-labelledby="sourcecodeModal" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -95,8 +96,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
         <div>
-          <a class="btn btn-primary-outline btn-xs cur-repo" target="_blank">Repo</a>
-          <div class="btn-group btn-group-xs" role="group" aria-label="Button group with nested dropdown">
+          <div class="btn-group btn-group-xs" role="group">
             <div class="btn-group" role="group">
               <button type="button" class="btn btn-primary-outline dropdown-toggle btn-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 All matched results <span class="label label-danger label-pill match-count">1</span>
@@ -112,6 +112,7 @@
               </div>
             </div>
           </div>
+          <a class="btn btn-primary-outline btn-xs cur-repo" target="_blank">Repo</a>
         </div>
       </div>
       <div class="modal-body">
@@ -123,7 +124,114 @@
     </div>
   </div>
 </section>
-
+<div class="bookmark-btn" data-toggle="tooltip" data-placement="right" title="Group GitHub stars"><i class="fa fa-bookmark fa-2x"></i></div>
+<section class="modal fade bookmark-modal modal--fix" tabindex="-1" role="dialog" aria-labelledby="bookmarkModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <button class="btn btn-primary-outline btn-xs add-account"><i class="fa fa-plus-circle"></i> GitHub</button>
+        <button class="btn btn-primary-outline btn-xs add-group"><i class="fa fa-plus-circle"></i> Group</button>
+      </div>
+      <div class="modal-body panel repo-group" role="tablist" id="repo-group">
+        <header class="hd">
+          <i class="fa fa-plus-circle fa-5x add-account"></i>
+          <h5>Add GitHub accounts to group your stars and repos</h5>
+        </header>
+        <script type="text/html" data-template="repoGroup">
+        <article class="card repo-group-item" data-id="{id}">
+          <header class="card-header hd" role="tab" id="repo_group_hd_{id}">
+            <a href="#repo_group_list_{id}" data-toggle="collapse" data-parent="#repo-group" aria-expanded="false" aria-controls="repo_group_list_{id}">{name}</a>
+          </header>
+          <section class="card-block repo-list collapse" id="repo_group_list_{id}" role="tabpanel" aria-labelledby="repo_group_hd_{id}">
+            {items}
+          </section>
+        </article>
+        </script>
+        <script type="text/html" data-template="groupItem">
+          <div class="dropdown-item" data-id="{id}">
+            {name}
+          </div>
+        </script>
+        <script type="text/html" data-template="repoItem">
+          <article class="card repo-item" data-id="{id}">
+            <div class="card-block">
+              <header class="repo-item__hd"><h6><a href="{html_url}" target="_blank">{full_name}</a></h6></header>
+              <section class="repo-item__bd">{description}</section>
+            </div>
+            <div class="card-footer">
+              <div class="btn-group btn-group-xs" role="group">
+                <div class="btn-group" role="group">
+                  <a class="dropdown-toggle btn-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="javascript:void(0);">
+                    Add to group...
+                  </a>
+                  <div class="dropdown-menu">
+                    {groupItems}
+                    <div role="separator" class="dropdown-divider"></div>
+                    <div class="dropdown-item text-primary add-group">
+                      <i class="fa fa-plus-circle"></i> Add new group
+                    </div>
+                    <div class="dropdown-item text-danger" data-id="0">
+                      <i class="fa fa-minus-circle"></i> Remove from group
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </script>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="modal fade bookmark-user-modal" tabindex="-1" role="dialog" aria-labelledby="bookmarkAccountModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h6 class="modal-title">Add GitHub Account</h6>
+      </div>
+      <div class="modal-body">
+        <div class="input-group form">
+          <input type="text" class="form-control" placeholder="Your GitHub account">
+          <span class="input-group-btn">
+            <button class="btn btn-secondary submit" type="button" data-dismiss="modal">Add</button>
+          </span>
+        </div>
+        <section class="list-group user-list">
+          <script type="text/html">
+          <article class="list-group-item user-item" data-id="{id}">
+            <a href="https://github.com/{name}">https://github.com/{name}</a>
+            <button class="btn btn-secondary btn-xs pull-xs-right sync" data-name="{name}" data-dismiss="modal"><i class="fa fa-refresh"></i> Sync</button>
+          </article>
+          </script>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="modal fade bookmark-group-modal" tabindex="-1" role="dialog" aria-labelledby="bookmarkGroupModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h6 class="modal-title">New Group</h6>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="form-control" placeholder="Group name">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary submit" data-dismiss="modal">Done</button>
+      </div>
+    </div>
+  </div>
+</section>
 <section class="container donate" hidden>
   <header class="title">
     <h6 class="lang en">Buy <a href="https://twitter.com/unbug" target="_blank">@unbug</a> a drink</h6>

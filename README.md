@@ -2,7 +2,7 @@
 
 Codelf
 =================
-Search over projects from Github, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Project to find real-world usage variable names. 
+Search over projects from GitHub, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Project to find real-world usage variable names. 
 
   >There are only two hard things in Computer Science: cache invalidation and naming things.-- Phil Karlton
   ![twohardtings](http://unbug.github.io/codelf/resources/images/twohardtings.jpg)
@@ -17,6 +17,7 @@ Thanks
   * API powerd by [searchcode](http://searchcode.com/) & [youdao](http://fanyi.youdao.com/)
   * UI powerd by [Bootstrap v4.0](http://v4-alpha.getbootstrap.com/)
   * Syntax highlighting of source code powerd by [google-code-prettify](https://github.com/google/code-prettify)
+  * [Google Lovefield](https://github.com/google/lovefield)
   * [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard)
   * Utils - [generator-webappstarter](https://github.com/unbug/generator-webappstarter)
   * [Data Drive Management System](https://github.com/unbug/ddms)
