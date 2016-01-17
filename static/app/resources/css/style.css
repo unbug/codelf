@@ -195,7 +195,7 @@ html,body{
 .bookmark-btn{
   position: fixed;
   top: 0;
-  left: 5%;
+  left: 4%;
   cursor: pointer;
   color: #70B7FD;
   transition: all 1s;
