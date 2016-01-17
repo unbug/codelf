@@ -222,7 +222,7 @@ html,body{
 }
 
 body.mobile .variable-btns__copy,
-.bookmark-btn{
+body.mobile .bookmark-btn{
   display: none !important;
 }
 @media (min-width: 62em) {
