@@ -898,6 +898,7 @@ $(function () {
         doSearch();
       }
     }
+    renderTitle(true);
   }
   function beforeDoSearch(){
     els.lastVal = els.lastVal.trim();
@@ -930,8 +931,8 @@ $(function () {
     renderAnalytics('q='+els.lastInputVal);
   }
 
-  function renderTitle(){
-    els.title.addClass('animated');
+  function renderTitle(black){
+    els.title[black?'removeClass':'addClass']('animated');
   }
 
   function formatPropertyName(name){
@@ -975,11 +976,6 @@ $(function () {
         .replace('{checked}',$.inArray(key.id, storeLang) != -1?'checked':''));
     });
     els.searchDropdownMenu.append(htm.join(''));
-  }
-  function renderGithubCorner(){
-    var color = randomColor();
-    els.githubCorner.css({fill: color});
-    els.bookmarkBtn.css({color: color});
   }
 
   function renderSearchResult(data){
@@ -1034,7 +1030,7 @@ $(function () {
     }else{
       renderSearchResultHeader('error');
     }
-    renderGithubCorner();
+    renderTitle();
     renderDonate();
     renderBaiduShare();
   }
