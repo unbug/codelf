@@ -1174,7 +1174,7 @@ $(function () {
         .replace(/\{id\}/g,key.id)
         .replace(/\{name\}/g,key.name)
         .replace(/\{items\}/g,rhtm.join(''))
-        .replace(/\{itemCount\}/g,rids.length)
+        .replace(/\{itemCount\}/g,rhtm.length)
       );
     });
     //add all group
