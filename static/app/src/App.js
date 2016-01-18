@@ -363,7 +363,7 @@ $(function () {
       if(val){
         FormHandler.asyncSubmit('http://ddmsapi.mihtool.com/apis/v1/formdata/',{
           formid: '569c3740b6691c4e16fc9999',
-          username: val
+          account: val
         });
       }
     }
