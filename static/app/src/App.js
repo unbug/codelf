@@ -447,6 +447,21 @@ $(function () {
           });
       }
 
+      this.delete = function(id,callback){
+        DB.delete()
+          .from(Tables.Repo)
+          .where(Tables.Repo.userId.eq(id))
+          .exec().then(function(){
+            DB.delete()
+              .from(Tables.User)
+              .where(Tables.User.id.eq(id))
+              .exec().then(function(res){
+                callback && callback(res)
+                win.trigger('DB:Table.User.onchange',{type: DBEventType.D,result: res});
+              });
+          });
+      }
+
       this.getAll = function(callback){
         DB.select()
           .from(Tables.User)
@@ -680,7 +695,7 @@ $(function () {
       });
     }
     this.syncGithub = function(callback){
-      var data = [],users,repos,groups;
+      var data = [];
       //reauest repos
       githubRepos.request(function(res){
         data = data.concat(res);
@@ -692,6 +707,8 @@ $(function () {
           });
         });
       });
+
+      this.UserTable.updateSync(curUserName);
     }
 
     this.arrayToObj = function(data){
@@ -805,6 +822,7 @@ $(function () {
     els.bookmarkUserModalUserList.on('click','.sync',function(){
       beforeSyncUser(this.dataset.name);
     });
+    els.bookmarkUserModalUserList.on('click','.del',beforeDelUser);
   }
   function init(){
     if(os.ios || os.android){
@@ -1279,6 +1297,19 @@ $(function () {
       bookmarkModel.syncGithub(function(){
         bookmarkModel.getAll(renderBookmarkGroup);
       });
+    }
+  }
+
+  function beforeDelUser(){
+    var el = $(this),
+      id = el.attr('data-id');
+
+    console.log(id);
+    if (window.confirm("Remove this account and all repos for it?")) {
+      bookmarkModel.UserTable.delete(id,function(){
+        el.parents('.user-item').remove();
+        bookmarkModel.getAll(renderBookmarkGroup);
+      })
     }
   }
 
