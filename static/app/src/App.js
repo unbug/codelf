@@ -407,8 +407,8 @@ $(function () {
 
   var bookmarkModel = new function () {
     var BM = this;
-    var schemaBuilder = lf.schema.create('Codelf', 1);
     var DB;
+    var schemaBuilder = lf.schema.create('Codelf', 1);
     var Tables;
     var DBEventType = {
       C: 'CREATE',
@@ -445,7 +445,9 @@ $(function () {
       .addColumn('create', lf.Type.DATE_TIME)
       .addPrimaryKey(['id'], true);
 
-    schemaBuilder.connect().then(function (db) {
+    schemaBuilder.connect({
+      storeType: os.ios?lf.schema.DataStoreType.WEB_SQL: null
+    }).then(function (db) {
       DB = db;
       Tables = {
         User: DB.getSchema().table('User'),
@@ -810,7 +812,8 @@ $(function () {
 
     bookmarkBtn: $('.bookmark-btn'),
     bookmarkModal: $('.bookmark-modal'),
-    bookmarkModalBd: $('.bookmark-modal .modal-body'),
+    bookmarkModalContent: $('.bookmark-modal .modal-body>.bd'),
+    bookmarkModalContentHd: $('.bookmark-modal .modal-body>.hd'),
     bookmarkModalGroupTpl: $('.bookmark-modal script[data-template="repoGroup"]').html(),
     bookmarkModalGroupItemTpl: $('.bookmark-modal script[data-template="groupItem"]').html(),
     bookmarkModalReopTpl: $('.bookmark-modal script[data-template="repoItem"]').html(),
@@ -863,8 +866,8 @@ $(function () {
     els.bookmarkModal.on('click', '.add-group', showBookmarkGroupModal);
     els.bookmarkUserModal.on('click', '.submit', beforeAddBookmarkUser);
     els.bookmarkGroupModal.on('click', '.submit', beforeAddBookmarkGroup);
-    els.bookmarkModalBd.on('click', '.repo-group-item>.hd .ctrl .del', beforeDelBookmarkGroup);
-    els.bookmarkModalBd.on('click', '.dropdown-item', beforeAddRepoToGroup);
+    els.bookmarkModalContent.on('click', '.repo-group-item>.hd .ctrl .del', beforeDelBookmarkGroup);
+    els.bookmarkModalContent.on('click', '.dropdown-item', beforeAddRepoToGroup);
     els.bookmarkUserModalUserList.on('click', '.sync', function () {
       beforeSyncUser(this.dataset.name);
     });
@@ -1181,7 +1184,12 @@ $(function () {
     }
   }
   function renderBookmarkTip() {
-    !els.isMobile && els.bookmarkBtn.tooltip('show');
+    setTimeout(function(){
+      els.bookmarkBtn.tooltip('show');
+      setTimeout(function(){
+        els.bookmarkBtn.tooltip('hide');
+      },2000);
+    },500);
   }
 
   function renderHistory() {
@@ -1245,6 +1253,10 @@ $(function () {
     els.sourceCodeModal.find('.match-count').html(htm.length);
   }
 
+  function renderBookmarkHeader(cls){
+    els.bookmarkModalContentHd.removeClass('empty loading').addClass(cls||'');
+  }
+
   function renderBookmarkGroup(data) {
     if (!data || !data.repos || !data.users || !data.groups) {
       bookmarkModel.getAll(renderBookmarkGroup);
@@ -1287,11 +1299,14 @@ $(function () {
       .replace(/\{itemCount\}/g, data.repos.length)
     );
 
-    (data.repos.length || data.groups.length) && els.bookmarkModalBd.html(htm.join(''));
+    if(data.repos.length || data.groups.length){
+      els.bookmarkModalContent.html(htm.join(''));
+      renderBookmarkHeader();
+    }
     setTimeout(function () {
-      var gel = els.bookmarkModalBd.find('.repo-group-item[data-id="' + els.lastEditBookmarkRepoGroupId + '"] .collapse');
+      var gel = els.bookmarkModalContent.find('.repo-group-item[data-id="' + els.lastEditBookmarkRepoGroupId + '"] .collapse');
       if (!gel[0]) {
-        gel = els.bookmarkModalBd.find('.repo-group-item:last-child .collapse');
+        gel = els.bookmarkModalContent.find('.repo-group-item:last-child .collapse');
       }
       gel.addClass('in');
     }, 100);
@@ -1348,7 +1363,7 @@ $(function () {
   function beforeAddBookmarkUser() {
     els.bookmarkUserModalInput = els.bookmarkUserModalInput || els.bookmarkUserModal.find('input');
     var val = els.bookmarkUserModalInput.val().trim();
-    val = val.replace(/(\/)*$/, '').replace(/^(.{0,}\/)/, '');
+    val = val.replace(/(\/)*$/, '').replace(/^(.{0,}\/)/, '').replace(/@/g,'');
     if (val.length) {
       bookmarkModel.setCurUserName(val);
       bookmarkModel.UserTable.add(val, function () {
@@ -1394,6 +1409,7 @@ $(function () {
 
   function beforeSyncUser(name) {
     if (name) {
+      renderBookmarkHeader('loading');
       bookmarkModel.setCurUserName(name);
       bookmarkModel.syncGithub(function () {
         bookmarkModel.getAll(renderBookmarkGroup);

@@ -124,7 +124,10 @@
     </div>
   </div>
 </section>
-<div class="bookmark-btn" data-toggle="tooltip" data-placement="right" title="Group GitHub stars"><i class="fa fa-bookmark fa-2x"></i></div>
+<div class="bookmark-btn" data-toggle="tooltip" data-placement="right" title="Group GitHub stars">
+  <i class="fa fa-bookmark fa-2x hidden-sm-up"></i>
+  <i class="fa fa-bookmark fa-3x hidden-xs-down"></i>
+</div>
 <section class="modal fade bookmark-modal modal--fix" tabindex="-1" role="dialog" aria-labelledby="bookmarkModal" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -135,57 +138,64 @@
         <button class="btn btn-primary-outline btn-sm add-account"><i class="fa fa-plus-circle"></i> GitHub</button>
         <button class="btn btn-primary-outline btn-sm add-group"><i class="fa fa-plus-circle"></i> Group</button>
       </div>
-      <div class="modal-body repo-group" role="tablist" id="repo-group">
-        <header class="hd">
-          <i class="fa fa-plus-circle fa-5x add-account"></i>
-          <h5>Add GitHub accounts to group your stars and repos</h5>
-        </header>
-        <script type="text/html" data-template="repoGroup">
-        <article class="card repo-group-item" data-id="{id}">
-          <header class="card-header hd" role="tab" id="repo_group_hd_{id}">
-            <a href="#repo_group_list_{id}" data-toggle="collapse" data-parent="#repo-group" aria-expanded="false" aria-controls="repo_group_list_{id}">{name}</a>
-            &nbsp;<span class="label label-info label-pill">{itemCount}</span>
-            <div class="btn-group btn-group-sm pull-xs-right ctrl">
-              <button class="btn btn-secondary btn-sm del" data-id="{id}"><i class="fa fa-trash-o"></i></button>
-            </div>
-          </header>
-          <section class="card-block repo-list collapse" id="repo_group_list_{id}" role="tabpanel" aria-labelledby="repo_group_hd_{id}">
-            {items}
-          </section>
-        </article>
-        </script>
-        <script type="text/html" data-template="groupItem">
-          <div class="dropdown-item" data-id="{id}">
-            {name}
+      <div class="modal-body">
+        <header class="hd empty">
+          <div class="loading">
+            <div class="logo"><img class="spinner" src="resources/images/codelf_logo.png"></div>
           </div>
-        </script>
-        <script type="text/html" data-template="repoItem">
-          <article class="card repo-item" data-id="{id}" data-repoid="{originRepoId}">
-            <div class="card-block">
-              <header class="repo-item__hd"><h6><a href="{html_url}" target="_blank">{full_name}</a></h6></header>
-              <section class="repo-item__bd">{description}</section>
+          <div class="empty">
+            <i class="fa fa-plus-circle fa-5x add-account"></i>
+            <h5>Add GitHub accounts to group your stars and repos</h5>
+          </div>
+        </header>
+        <section class="bd" role="tablist">
+          <script type="text/html" data-template="repoGroup">
+            <article class="card repo-group-item" data-id="{id}">
+              <header class="card-header hd" role="tab" id="repo_group_hd_{id}">
+                <a href="#repo_group_list_{id}" data-toggle="collapse" data-parent=".bd" aria-expanded="false" aria-controls="repo_group_list_{id}">{name}</a>
+                &nbsp;<span class="label label-info label-pill">{itemCount}</span>
+                <div class="btn-group btn-group-sm pull-xs-right ctrl">
+                  <button class="btn btn-secondary btn-sm del" data-id="{id}"><i class="fa fa-trash-o"></i></button>
+                </div>
+              </header>
+              <section class="card-block repo-list collapse" id="repo_group_list_{id}" role="tabpanel" aria-labelledby="repo_group_hd_{id}">
+                {items}
+              </section>
+            </article>
+          </script>
+          <script type="text/html" data-template="groupItem">
+            <div class="dropdown-item" data-id="{id}">
+              {name}
             </div>
-            <div class="card-footer">
-              <div class="btn-group btn-group-sm" role="group">
-                <div class="btn-group" role="group">
-                  <a class="dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="javascript:void(0);">
-                    Add to group...
-                  </a>
-                  <div class="dropdown-menu">
-                    {groupItems}
-                    <div role="separator" class="dropdown-divider"></div>
-                    <div class="dropdown-item text-primary add-group">
-                      <i class="fa fa-plus-circle"></i> Add new group
-                    </div>
-                    <div class="dropdown-item text-danger" data-id="0">
-                      <i class="fa fa-minus-circle"></i> Remove from group
+          </script>
+          <script type="text/html" data-template="repoItem">
+            <article class="card repo-item" data-id="{id}" data-repoid="{originRepoId}">
+              <div class="card-block">
+                <header class="repo-item__hd"><h6><a href="{html_url}" target="_blank">{full_name}</a></h6></header>
+                <section class="repo-item__bd">{description}</section>
+              </div>
+              <div class="card-footer">
+                <div class="btn-group btn-group-sm" role="group">
+                  <div class="btn-group" role="group">
+                    <a class="dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="javascript:void(0);">
+                      Add to group...
+                    </a>
+                    <div class="dropdown-menu">
+                      {groupItems}
+                      <div role="separator" class="dropdown-divider"></div>
+                      <div class="dropdown-item text-primary add-group">
+                        <i class="fa fa-plus-circle"></i> Add new group
+                      </div>
+                      <div class="dropdown-item text-danger" data-id="0">
+                        <i class="fa fa-minus-circle"></i> Remove from group
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </article>
-        </script>
+            </article>
+          </script>
+        </section>
       </div>
     </div>
   </div>
@@ -202,7 +212,7 @@
       <div class="modal-body">
         <div class="text-muted">*e.g. https://github.com/<span class="text-danger">account</span></div>
         <div class="input-group form">
-          <input type="text" class="form-control" placeholder="GitHub account">
+          <input type="text" class="form-control" placeholder="account">
           <span class="input-group-btn">
             <button class="btn btn-secondary submit" type="button" data-dismiss="modal">Add</button>
           </span>
@@ -210,7 +220,7 @@
         <section class="list-group user-list">
           <script type="text/html">
           <article class="list-group-item user-item" data-id="{id}">
-            <a href="https://github.com/{name}" target="_blank">https://github.com/{name}</a>
+            <a href="https://github.com/{name}" target="_blank">@{name}</a>
             <div class="btn-group btn-group-sm pull-xs-right ctrl">
               <button class="btn btn-secondary btn-sm sync" data-name="{name}" data-dismiss="modal"><i class="fa fa-refresh"></i> Sync</button>
               <button class="btn btn-secondary btn-sm del" data-id="{id}"><i class="fa fa-trash-o"></i></button>

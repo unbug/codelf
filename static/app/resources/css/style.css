@@ -200,10 +200,21 @@ html,body{
   color: #70B7FD;
   transition: all 1s;
 }
-.bookmark-modal .topbar input{
-  display: inline-block;
-}
 .bookmark-modal .modal-body>.hd{
+  padding-bottom: 1rem;
+}
+.bookmark-modal .modal-body>.hd,
+.bookmark-modal .modal-body>.hd>div{
+  display: none;
+}
+.bookmark-modal .modal-body>.hd.loading,
+.bookmark-modal .modal-body>.hd.empty,
+.bookmark-modal .modal-body>.hd.loading>.loading,
+.bookmark-modal .modal-body>.hd.empty>.empty{
+  display: block;
+  margin: 0 auto;
+}
+.bookmark-modal .modal-body>.hd>.empty{
   padding: 5rem 0;
   text-align: center;
   cursor: pointer;
@@ -219,8 +230,7 @@ html,body{
   margin-top: 1rem;
 }
 
-body.mobile .variable-btns__copy,
-body.mobile .bookmark-btn{
+body.mobile .variable-btns__copy{
   display: none !important;
 }
 @media (min-width: 62em) {
