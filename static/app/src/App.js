@@ -755,10 +755,11 @@ $(function () {
       this.UserTable.updateSync(curUserName);
     }
 
-    this.arrayToObj = function (data) {
+    this.arrayToObj = function (data,idName) {
       var d = {};
+      idName = idName || 'id';
       data.forEach(function (key) {
-        d[key.id] = key;
+        d[key[idName]] = key;
       });
       return d;
     }
@@ -1056,6 +1057,7 @@ $(function () {
   function getBookmarkRopeHtm(repo, allGroupHtm) {
     return els.bookmarkModalReopTpl
       .replace(/\{id\}/g, repo.id)
+      .replace(/\{originRepoId\}/g, repo.originRepoId)
       .replace(/\{full_name\}/g, repo.data.full_name)
       .replace(/\{description\}/g, repo.data.description||'')
       .replace(/\{html_url\}/g, repo.data.html_url)
@@ -1248,7 +1250,7 @@ $(function () {
       bookmarkModel.getAll(renderBookmarkGroup);
       return;
     }
-    var repos = bookmarkModel.arrayToObj(data.repos),
+    var repos = bookmarkModel.arrayToObj(data.repos,'originRepoId'),
       htm = [],
       allRhtm = [],
       allGhtm = [];
@@ -1378,7 +1380,7 @@ $(function () {
     var el = $(this),
       gId = el.attr('data-id'),
       repoEl = el.parents('.repo-item'),
-      repoId = repoEl.attr('data-id'),
+      repoId = repoEl.attr('data-repoid'),
       curGroupEl = el.parents('.repo-group-item'),
       curGroupId = curGroupEl.attr('data-id');
 
