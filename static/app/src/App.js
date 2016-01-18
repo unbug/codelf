@@ -825,6 +825,8 @@ $(function () {
       beforeSyncUser(this.dataset.name);
     });
     els.bookmarkUserModalUserList.on('click','.del',beforeDelUser);
+    els.bookmarkGroupModal.on('hidden.bs.modal', showBookmark);
+    els.bookmarkUserModal.on('hidden.bs.modal', showBookmark);
   }
   function init(){
     if(os.ios || os.android){
@@ -847,10 +849,15 @@ $(function () {
   function showBookmark(){
     els.bookmarkModal.modal('show');
   }
+  function hideBookmark(){
+    els.bookmarkModal.modal('hide');
+  }
   function showBookmarkUserModal(){
+    hideBookmark();
     els.bookmarkUserModal.modal('show');
   }
   function showBookmarkGroupModal(){
+    hideBookmark();
     els.bookmarkGroupModal.modal('show');
   }
 
