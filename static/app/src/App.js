@@ -873,6 +873,7 @@ $(function () {
     }
     bindEvent();
     renderTitle();
+    renderBookmarkTip();
     renderLangMunu();
     onLocationHashChanged();
     renderAnalytics();
@@ -1166,12 +1167,13 @@ $(function () {
     if (now - els.showNextTipTimer > 1000 * 1800) {
       els.showNextTipTimer = now;
       els.searchBtn.tooltip('show');
-      !els.isMobile && els.bookmarkBtn.tooltip('show');
       setTimeout(function () {
         els.searchBtn.tooltip('dispose');
-        els.bookmarkBtn.tooltip('dispose');
       }, 3000);
     }
+  }
+  function renderBookmarkTip() {
+    !els.isMobile && els.bookmarkBtn.tooltip('show');
   }
 
   function renderHistory() {
