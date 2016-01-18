@@ -96,23 +96,23 @@
           <span aria-hidden="true">&times;</span>
         </button>
         <div>
-          <div class="btn-group btn-group-xs" role="group">
+          <div class="btn-group btn-group-sm" role="group">
             <div class="btn-group" role="group">
-              <button type="button" class="btn btn-primary-outline dropdown-toggle btn-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button type="button" class="btn btn-primary-outline dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 All matched results <span class="label label-danger label-pill match-count">1</span>
               </button>
               <div class="dropdown-menu">
                 <script type="text/html">
                   <div class="dropdown-item">
-                    <button type="button" class="btn btn-primary-outline btn-xs variable-btns__code" data-id="{id}">Codes</button>
-                    <a class="btn btn-primary-outline btn-xs" href="{repo}" target="_blank">Repo</a>
+                    <button type="button" class="btn btn-primary-outline btn-sm variable-btns__code" data-id="{id}">Codes</button>
+                    <a class="btn btn-primary-outline btn-sm" href="{repo}" target="_blank">Repo</a>
                     <span class="label label-{label_type}">{lang}</span>
                   </div>
                 </script>
               </div>
             </div>
           </div>
-          <a class="btn btn-primary-outline btn-xs cur-repo" target="_blank">Repo</a>
+          <a class="btn btn-primary-outline btn-sm cur-repo" target="_blank">Repo</a>
         </div>
       </div>
       <div class="modal-body">
@@ -132,10 +132,10 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <button class="btn btn-primary-outline btn-xs add-account"><i class="fa fa-plus-circle"></i> GitHub</button>
-        <button class="btn btn-primary-outline btn-xs add-group"><i class="fa fa-plus-circle"></i> Group</button>
+        <button class="btn btn-primary-outline btn-sm add-account"><i class="fa fa-plus-circle"></i> GitHub</button>
+        <button class="btn btn-primary-outline btn-sm add-group"><i class="fa fa-plus-circle"></i> Group</button>
       </div>
-      <div class="modal-body panel repo-group" role="tablist" id="repo-group">
+      <div class="modal-body repo-group" role="tablist" id="repo-group">
         <header class="hd">
           <i class="fa fa-plus-circle fa-5x add-account"></i>
           <h5>Add GitHub accounts to group your stars and repos</h5>
@@ -145,6 +145,9 @@
           <header class="card-header hd" role="tab" id="repo_group_hd_{id}">
             <a href="#repo_group_list_{id}" data-toggle="collapse" data-parent="#repo-group" aria-expanded="false" aria-controls="repo_group_list_{id}">{name}</a>
             &nbsp;<span class="label label-info label-pill">{itemCount}</span>
+            <div class="btn-group btn-group-sm pull-xs-right ctrl">
+              <button class="btn btn-secondary btn-sm del" data-id="{id}"><i class="fa fa-trash-o"></i></button>
+            </div>
           </header>
           <section class="card-block repo-list collapse" id="repo_group_list_{id}" role="tabpanel" aria-labelledby="repo_group_hd_{id}">
             {items}
@@ -163,9 +166,9 @@
               <section class="repo-item__bd">{description}</section>
             </div>
             <div class="card-footer">
-              <div class="btn-group btn-group-xs" role="group">
+              <div class="btn-group btn-group-sm" role="group">
                 <div class="btn-group" role="group">
-                  <a class="dropdown-toggle btn-xs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="javascript:void(0);">
+                  <a class="dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="javascript:void(0);">
                     Add to group...
                   </a>
                   <div class="dropdown-menu">
@@ -208,9 +211,9 @@
           <script type="text/html">
           <article class="list-group-item user-item" data-id="{id}">
             <a href="https://github.com/{name}" target="_blank">https://github.com/{name}</a>
-            <div class="btn-group btn-group-xs pull-xs-right ctrl">
-              <button class="btn btn-secondary btn-xs del" data-id="{id}"><i class="fa fa-trash-o"></i> Remove</button>
-              <button class="btn btn-secondary btn-xs sync" data-name="{name}" data-dismiss="modal"><i class="fa fa-refresh"></i> Sync</button>
+            <div class="btn-group btn-group-sm pull-xs-right ctrl">
+              <button class="btn btn-secondary btn-sm sync" data-name="{name}" data-dismiss="modal"><i class="fa fa-refresh"></i> Sync</button>
+              <button class="btn btn-secondary btn-sm del" data-id="{id}"><i class="fa fa-trash-o"></i></button>
             </div>
           </article>
           </script>

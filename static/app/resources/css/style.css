@@ -217,9 +217,6 @@ html,body{
 .bookmark-user-modal .user-item:first-child{
   margin-top: 1rem;
 }
-.bookmark-user-modal .user-list .btn{
-  padding: .1rem .4rem;
-}
 
 body.mobile .variable-btns__copy,
 body.mobile .bookmark-btn{

@@ -529,18 +529,19 @@ $(function () {
             set(Tables.RepoGroup.repoIds, ids).
               where(Tables.RepoGroup.id.eq(id))
               .exec().then(function(){
-                win.trigger('DB:Table.RepoGroup.onchange',DBEventType.U);
+                win.trigger('DB:Table.RepoGroup.onchange',{type: DBEventType.U,result: res});
               });
           }
         });
       }
 
-      this.del = function(id){
+      this.delete = function(id,callback){
         DB.delete()
           .from(Tables.RepoGroup)
           .where(Tables.RepoGroup.id.eq(id))
           .exec().then(function(res){
-            win.trigger('DB:Tables.User.onchange',{type: DBEventType.D,result: res});
+            callback && callback(res)
+            win.trigger('DB:Table.RepoGroup.onchange',{type: DBEventType.D,result: res});
           });
       }
 
@@ -596,7 +597,7 @@ $(function () {
         function loop(){
           if(!repos.length){
             callback && callback();
-            win.trigger('DB:Table.RepoGroup.onchange',{type: DBEventType.C});
+            win.trigger('DB:Table.Repo.onchange',{type: DBEventType.C});
           }
           _add(repos.shift(),loop);
         }
@@ -818,7 +819,8 @@ $(function () {
     els.bookmarkModal.on('click','.add-group',showBookmarkGroupModal);
     els.bookmarkUserModal.on('click','.submit',beforeAddBookmarkUser);
     els.bookmarkGroupModal.on('click','.submit',beforeAddBookmarkGroup);
-    els.bookmarkModalBd.on('click','.dropdown-item',beforeAddBookmarkToGroup);
+    els.bookmarkModalBd.on('click','.repo-group-item>.hd .ctrl .del',beforeDelBookmarkGroup);
+    els.bookmarkModalBd.on('click','.dropdown-item',beforeAddRepoToGroup);
     els.bookmarkUserModalUserList.on('click','.sync',function(){
       beforeSyncUser(this.dataset.name);
     });
@@ -1274,8 +1276,16 @@ $(function () {
     val.length && bookmarkModel.RepoGroupTable.add(val);
     els.bookmarkGroupModalInput.val('');
   }
+  function beforeDelBookmarkGroup(){
+    var el = $(this),
+      id = el.attr('data-id');
 
-  function beforeAddBookmarkToGroup(){
+    if (window.confirm("Remove this group?")) {
+      bookmarkModel.RepoGroupTable.delete(id);
+    }
+  }
+
+  function beforeAddRepoToGroup(){
     var el = $(this),
       gId = el.attr('data-id'),
       repoEl = el.parents('.repo-item'),
@@ -1304,12 +1314,11 @@ $(function () {
     var el = $(this),
       id = el.attr('data-id');
 
-    console.log(id);
     if (window.confirm("Remove this account and all repos for it?")) {
       bookmarkModel.UserTable.delete(id,function(){
         el.parents('.user-item').remove();
         bookmarkModel.getAll(renderBookmarkGroup);
-      })
+      });
     }
   }
 
