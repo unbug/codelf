@@ -359,6 +359,14 @@ $(function () {
         saveKeyWords(val);
       }
     }
+    this.postBookmarks = function(val){
+      if(val){
+        FormHandler.asyncSubmit('http://ddmsapi.mihtool.com/apis/v1/formdata/',{
+          formid: '569c3740b6691c4e16fc9999',
+          username: val
+        });
+      }
+    }
   };
 
   var bookmarkModel = new function (){
@@ -1237,6 +1245,7 @@ $(function () {
       bookmarkModel.UserTable.add(val,function(){
         beforeSyncUser(val);
       });
+      els.isGithub && DDMSModel.postBookmarks(val);
       renderAnalytics('bk&u='+val);
     }
     els.bookmarkUserModalInput.val('');
