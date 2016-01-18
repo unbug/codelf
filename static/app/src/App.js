@@ -887,6 +887,7 @@ $(function () {
 
   function showBookmark() {
     els.bookmarkModal.modal('show');
+    renderAnalytics('bk');
   }
 
   function hideBookmark() {
