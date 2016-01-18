@@ -211,6 +211,7 @@ html,body{
 .bookmark-modal .repo-item .card-footer {
   padding: .3rem 1.25rem;
 }
+.bookmark-modal .repo-group-item:last-child>.hd .del,
 .bookmark-modal .repo-group-item:last-child .dropdown-menu>.dropdown-item:last-child{
   display: none;
 }
