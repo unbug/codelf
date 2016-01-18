@@ -664,7 +664,9 @@ $(function () {
           mainData = mainData.concat(data);
         }
       }
-
+      this.resetPage = function(){
+        page = 1;
+      }
       this.request = function (callback) {
         $.ajax({
           type: 'GET',
@@ -693,7 +695,9 @@ $(function () {
           mainData = mainData.concat(data);
         }
       }
-
+      this.resetPage = function(){
+        page = 1;
+      }
       this.request = function (callback) {
         $.ajax({
           type: 'GET',
@@ -735,10 +739,12 @@ $(function () {
     this.syncGithub = function (callback) {
       var data = [];
       //reauest repos
+      githubRepos.resetPage();
       githubRepos.request(function (res) {
         data = data.concat(res);
         //request star repos
-        githubStars.request(function () {
+        githubRepos.resetPage();
+        githubStars.request(function (res) {
           //add repos to DB
           BM.RepoTable.addListByCurUser(data.concat(res), function () {
             callback && callback();
@@ -1051,7 +1057,7 @@ $(function () {
     return els.bookmarkModalReopTpl
       .replace(/\{id\}/g, repo.id)
       .replace(/\{full_name\}/g, repo.data.full_name)
-      .replace(/\{description\}/g, repo.data.description)
+      .replace(/\{description\}/g, repo.data.description||'')
       .replace(/\{html_url\}/g, repo.data.html_url)
       .replace(/\{groupItems\}/g, allGroupHtm)
   }
