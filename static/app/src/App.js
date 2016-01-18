@@ -22,26 +22,40 @@ $(function () {
         return null;
       }
     }
+
     function setLocalValue(id, val) {
       if (lcst) {
         if (typeof id === 'object') {
           for (var key in id) {
-            try{id[key] && lcst.setItem(key, id[key]);}catch(err){}
+            try {
+              id[key] && lcst.setItem(key, id[key]);
+            } catch (err) {
+            }
           }
         } else {
-          try{lcst.setItem(id, val);}catch(err){}
+          try {
+            lcst.setItem(id, val);
+          } catch (err) {
+          }
         }
       }
       return this;
     }
+
     function removeLocalValue(id) {
       if (lcst) {
         if (typeof id === 'object') {
           for (var key in id) {
-            try{lcst.removeItem(id[key]);}catch(err){}
+            try {
+              lcst.removeItem(id[key]);
+            } catch (err) {
+            }
           }
         } else {
-          try{lcst.removeItem(id);}catch(err){}
+          try {
+            lcst.removeItem(id);
+          } catch (err) {
+          }
         }
       }
       return this;
@@ -82,13 +96,15 @@ $(function () {
       androidReg = /Android/gi,
       isAndroid = androidReg.test(navigator.platform) || androidReg.test(navigator.userAgent);
     frame = null;
-    function appendFrame(frame){
+    function appendFrame(frame) {
       frame && document.body.appendChild(frame);
     }
+
     function removeFrame(frame) {
       frame && frame.parentNode.removeChild(frame);
     }
-    function getFrame(src,name) {
+
+    function getFrame(src, name) {
       var _frame = document.createElement("iframe");
       _frame.setAttribute("style", "display:none;width:0;height:0;position: absolute;top:0;left:0;border:0;");
       _frame.setAttribute("height", "0px");
@@ -138,50 +154,50 @@ $(function () {
     }
   })();
 
-  var FormHandler = new function(){
-    function getForm(method){
+  var FormHandler = new function () {
+    function getForm(method) {
       var _form = document.createElement('form');
       _form.setAttribute("style", "display:none;width:0;height:0;position: absolute;top:0;left:0;border:0;");
-      _form.setAttribute("method",method || 'POST');
+      _form.setAttribute("method", method || 'POST');
       return _form;
     }
 
-    this.asyncSubmit = function(action,data){
-      this.submit(action,data,true);
+    this.asyncSubmit = function (action, data) {
+      this.submit(action, data, true);
     }
 
-    this.submit = function(action,data,async){
+    this.submit = function (action, data, async) {
       var target,
         frame,
         form = getForm(),
         inputs = [],
         itpl = '<input type="text" name="{N}" value="{V}" />';
 
-      if(async){
-        target = '__formhandler_'+new Date().getTime();
-        frame = Navigator.getFrame(null,target);
+      if (async) {
+        target = '__formhandler_' + new Date().getTime();
+        frame = Navigator.getFrame(null, target);
         form.setAttribute('target', target);
-        setTimeout(function(){
+        setTimeout(function () {
           Navigator.removeFrame(frame);
-        },120000);
+        }, 120000);
       }
 
       form.setAttribute('action', action);
       data = data || {};
-      for(var key in data){
-        inputs.push( itpl.replace('{N}',key).replace('{V}',data[key]) );
+      for (var key in data) {
+        inputs.push(itpl.replace('{N}', key).replace('{V}', data[key]));
       }
       form.innerHTML = inputs.join('');
-      action && setTimeout(function(){
+      action && setTimeout(function () {
         form.submit();
-      },100);
+      }, 100);
     }
   };
 
   function randomColor() {
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';
-    for (var i = 0; i < 6; i++ ) {
+    for (var i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
@@ -215,91 +231,111 @@ $(function () {
     }
     return rs;
   }
-  function isInArray(arr,val){
-    if($.inArray(val,arr) != -1){
+
+  function isInArray(arr, val) {
+    if ($.inArray(val, arr) != -1) {
       return true;
     }
-    for(var key in arr){
-      if( typeof val==='function' && val.call(this,arr[key])){
+    for (var key in arr) {
+      if (typeof val === 'function' && val.call(this, arr[key])) {
         return true;
       }
     }
     return false;
   }
+
   //end utils
   //model
   //http://githut.info/
-  var topProgramLan = [{"id":"22,106","language":"JavaScript, CoffeeScript"},{"id":"133,135","language":"CSS"},{"id":"3,39","language":"HTML"},{"id":137,"language":"Swift"},{"id":35,"language":"Objective-C"},{"id":23,"language":"Java"},{"id":19,"language":"Python"},{"id":24,"language":"PHP"},{"id":32,"language":"Ruby"},{"id":28,"language":"C"},{"id":16,"language":"C++"},{"id":6,"language":"C#"},{"id":55,"language":"Go"},{"id":51,"language":"Perl"},{"id":"104,109","language":"Clojure, ClojureScript"},{"id":40,"language":"Haskell"},{"id":54,"language":"Lua"},{"id":20,"language":"Matlab"},{"id":144,"language":"R"},{"id":47,"language":"Scala"},{"id":"69,78,146","language":"Shell"},{"id":29,"language":"Lisp"},{"id":42,"language":"ActionScript"}];
-  var searchcodeModel = new function(){
+  var topProgramLan = [{"id": "22,106", "language": "JavaScript, CoffeeScript"}, {
+    "id": "133,135",
+    "language": "CSS"
+  }, {"id": "3,39", "language": "HTML"}, {"id": 137, "language": "Swift"}, {
+    "id": 35,
+    "language": "Objective-C"
+  }, {"id": 23, "language": "Java"}, {"id": 19, "language": "Python"}, {"id": 24, "language": "PHP"}, {
+    "id": 32,
+    "language": "Ruby"
+  }, {"id": 28, "language": "C"}, {"id": 16, "language": "C++"}, {"id": 6, "language": "C#"}, {
+    "id": 55,
+    "language": "Go"
+  }, {"id": 51, "language": "Perl"}, {"id": "104,109", "language": "Clojure, ClojureScript"}, {
+    "id": 40,
+    "language": "Haskell"
+  }, {"id": 54, "language": "Lua"}, {"id": 20, "language": "Matlab"}, {"id": 144, "language": "R"}, {
+    "id": 47,
+    "language": "Scala"
+  }, {"id": "69,78,146", "language": "Shell"}, {"id": 29, "language": "Lisp"}, {"id": 42, "language": "ActionScript"}];
+  var searchcodeModel = new function () {
     var persistLangsName = 'codelf_langs_selected';
-    var langs = localStorage.get(persistLangsName),langQuery;
+    var langs = localStorage.get(persistLangsName), langQuery;
     var page = 0;
     var lastVal;
     var cacheSourceCodes = {};
 
     genLangQuery(langs);
 
-    this.resetPage = function(){
+    this.resetPage = function () {
       page = 0;
     }
 
-    this.setLang = function(val){
+    this.setLang = function (val) {
       langs = val || null;
       genLangQuery(val);
       this.resetPage();
-      localStorage[langs?'set':'del'](persistLangsName,langs);
+      localStorage[langs ? 'set' : 'del'](persistLangsName, langs);
     }
 
-    this.getLang = function(){
+    this.getLang = function () {
       return langs;
     }
 
-    function genLangQuery(val){
-      if(!!val){
-        var arr1 = val.replace(/\s+/g,',').split(','),
+    function genLangQuery(val) {
+      if (!!val) {
+        var arr1 = val.replace(/\s+/g, ',').split(','),
           arr2 = [];
-        arr1.forEach(function(key){
-          arr2.push('lan='+key);
+        arr1.forEach(function (key) {
+          arr2.push('lan=' + key);
         });
         langQuery = arr2.join('&');
-      }else{
+      } else {
         langQuery = null;
       }
     }
 
     //search code by query
-    this.request = function(val,callback){
-      if(val!=lastVal){
+    this.request = function (val, callback) {
+      if (val != lastVal) {
         this.resetPage();
       }
       lastVal = val;
       lastVal && $.ajax({
         type: 'GET',
         dataType: 'json',
-        url: 'https://searchcode.com/api/codesearch_I/'+(langQuery?('?'+langQuery):''),
+        url: 'https://searchcode.com/api/codesearch_I/' + (langQuery ? ('?' + langQuery) : ''),
         data: {
           q: lastVal,
           p: page,
           per_page: 42
         },
-        success: function(data){
-          callback && callback(data,page);
+        success: function (data) {
+          callback && callback(data, page);
           page++;
         }
       })
     };
 
     //get source code by id
-    this.requestSourceCode = function(id,callback){
-      if(cacheSourceCodes[id]){
+    this.requestSourceCode = function (id, callback) {
+      if (cacheSourceCodes[id]) {
         callback && callback(cacheSourceCodes[id]);
         return;
       }
       id && $.ajax({
         type: 'GET',
         dataType: 'json',
-        url: 'https://searchcode.com/api/result/'+id+'/',
-        success: function(data){
+        url: 'https://searchcode.com/api/result/' + id + '/',
+        success: function (data) {
           cacheSourceCodes[id] = data;
           callback && callback(data);
         }
@@ -307,10 +343,10 @@ $(function () {
     }
   };
 
-  var youdaoTranslateModel = new function (){
+  var youdaoTranslateModel = new function () {
     var lastVal;
     var translateRequestCallback;
-    this.request = function(val,callback){
+    this.request = function (val, callback) {
       lastVal = val;
       translateRequestCallback = callback;
       lastVal && $.ajax({
@@ -326,42 +362,42 @@ $(function () {
         }
       });
     }
-    window.afterYoudaoTranslateRequest = function(data){
-      if(data){
+    window.afterYoudaoTranslateRequest = function (data) {
+      if (data) {
         translateRequestCallback && translateRequestCallback(data);
       }
     }
   };
-  var DDMSModel = new function(){
+  var DDMSModel = new function () {
     var persistKeyWordsName = 'codelf_ddms_keywords';
-    var persistKeyWordsTimerName = persistKeyWordsName+'_timer';
+    var persistKeyWordsTimerName = persistKeyWordsName + '_timer';
     var cacheKeyWords = (localStorage.get(persistKeyWordsName) || '').split(',');
     var ot = new Date(localStorage.get(persistKeyWordsTimerName) || 0);
     var nt = new Date().getTime();
 
-    if((nt-ot)>1000*60*60*24){
+    if ((nt - ot) > 1000 * 60 * 60 * 24) {
       cacheKeyWords = [];
-      localStorage.set(persistKeyWordsTimerName,nt);
+      localStorage.set(persistKeyWordsTimerName, nt);
     }
-    function saveKeyWords(val){
-      if(!isInArray(cacheKeyWords,val)){
+    function saveKeyWords(val) {
+      if (!isInArray(cacheKeyWords, val)) {
         cacheKeyWords.push(val);
-        localStorage.set(persistKeyWordsName,cacheKeyWords.join(',').replace(/^,*/g,'').replace(/,*&/g,''));
+        localStorage.set(persistKeyWordsName, cacheKeyWords.join(',').replace(/^,*/g, '').replace(/,*&/g, ''));
       }
     }
 
-    this.postKeyWords = function(val){
-      if(val && !isInArray(cacheKeyWords,val)){
-        FormHandler.asyncSubmit('http://ddmsapi.mihtool.com/apis/v1/formdata/',{
+    this.postKeyWords = function (val) {
+      if (val && !isInArray(cacheKeyWords, val)) {
+        FormHandler.asyncSubmit('http://ddmsapi.mihtool.com/apis/v1/formdata/', {
           formid: '567ff8b0e454ee154de533dd',
           keywrod: val
         });
         saveKeyWords(val);
       }
     }
-    this.postBookmarks = function(val){
-      if(val){
-        FormHandler.asyncSubmit('http://ddmsapi.mihtool.com/apis/v1/formdata/',{
+    this.postBookmarks = function (val) {
+      if (val) {
+        FormHandler.asyncSubmit('http://ddmsapi.mihtool.com/apis/v1/formdata/', {
           formid: '569c3740b6691c4e16fc9999',
           account: val
         });
@@ -369,7 +405,7 @@ $(function () {
     }
   };
 
-  var bookmarkModel = new function (){
+  var bookmarkModel = new function () {
     var BM = this;
     var schemaBuilder = lf.schema.create('Codelf', 1);
     var DB;
@@ -383,31 +419,33 @@ $(function () {
     var curUserName;
     var curUser;
 
-    schemaBuilder.createTable('User').
-      addColumn('id', lf.Type.INTEGER).
-      addColumn('name', lf.Type.STRING).
-      addColumn('create', lf.Type.DATE_TIME).
-      addColumn('lastSync', lf.Type.DATE_TIME).
-      addPrimaryKey(['id'],true);
+    schemaBuilder
+      .createTable('User')
+      .addColumn('id', lf.Type.INTEGER)
+      .addColumn('name', lf.Type.STRING)
+      .addColumn('create', lf.Type.DATE_TIME)
+      .addColumn('lastSync', lf.Type.DATE_TIME)
+      .addPrimaryKey(['id'], true);
 
-    schemaBuilder.createTable('RepoGroup').
-      addColumn('id', lf.Type.INTEGER).
-      addColumn('name', lf.Type.STRING).
-      addColumn('repoIds', lf.Type.STRING).
-      addColumn('order', lf.Type.INTEGER).
-      addColumn('create', lf.Type.DATE_TIME).
-      addPrimaryKey(['id'],true);
+    schemaBuilder
+      .createTable('RepoGroup')
+      .addColumn('id', lf.Type.INTEGER)
+      .addColumn('name', lf.Type.STRING)
+      .addColumn('repoIds', lf.Type.STRING)
+      .addColumn('order', lf.Type.INTEGER)
+      .addColumn('create', lf.Type.DATE_TIME)
+      .addPrimaryKey(['id'], true);
 
-    schemaBuilder.createTable('Repo').
-      addColumn('id', lf.Type.INTEGER).
-      addColumn('userId', lf.Type.INTEGER).
-      addColumn('tags', lf.Type.STRING).
-      addColumn('originRepoId', lf.Type.STRING).
-      addColumn('data', lf.Type.STRING).
-      addColumn('create', lf.Type.DATE_TIME).
-      addPrimaryKey(['id'],true);
+    schemaBuilder
+      .createTable('Repo')
+      .addColumn('id', lf.Type.INTEGER)
+      .addColumn('userId', lf.Type.INTEGER)
+      .addColumn('originRepoId', lf.Type.STRING)
+      .addColumn('data', lf.Type.STRING)
+      .addColumn('create', lf.Type.DATE_TIME)
+      .addPrimaryKey(['id'], true);
 
-    schemaBuilder.connect().then(function(db) {
+    schemaBuilder.connect().then(function (db) {
       DB = db;
       Tables = {
         User: DB.getSchema().table('User'),
@@ -417,229 +455,227 @@ $(function () {
       win.trigger('DB:ready');
     });
 
-    this.UserTable = new function (){
-      this.add = function(name,callback){
-        if(!name){return;}
+    this.UserTable = new function () {
+      this.add = function (name, callback) {
+        if (!name) {
+          return;
+        }
         var row = Tables.User.createRow({
           'name': name,
           'create': new Date(),
           'lastSync': new Date()
         });
-        DB.select().
-          from(Tables.User).
-          where(Tables.User.name.eq(name))
-          .exec().then(function(rows) {
-            !rows.length && DB.insertOrReplace().into(Tables.User).values([row])
-              .exec().then(function(res){
-                curUser = res[0];
-                callback && callback();
-                win.trigger('DB:Table.User.onchange',{type: DBEventType.C,result: res});
-              });
-          });
+        DB.select().from(Tables.User).where(Tables.User.name.eq(name))
+          .exec().then(function (rows) {
+          !rows.length && DB.insertOrReplace().into(Tables.User).values([row])
+            .exec().then(function (res) {
+              curUser = res[0];
+              callback && callback();
+              win.trigger('DB:Table.User.onchange', {type: DBEventType.C, result: res});
+            });
+        });
       }
 
-      this.updateSync = function(name){
-        DB.update(Tables.User).
-          set(Tables.User.lastSync, new Date()).
-          where(Tables.User.name.eq(name))
-          .exec().then(function(res){
-            win.trigger('DB:Table.User.onchange',{type: DBEventType.U,result: res});
-          });
+      this.updateSync = function (name) {
+        DB.update(Tables.User).set(Tables.User.lastSync, new Date()).where(Tables.User.name.eq(name))
+          .exec().then(function (res) {
+          win.trigger('DB:Table.User.onchange', {type: DBEventType.U, result: res});
+        });
       }
 
-      this.delete = function(id,callback){
+      this.delete = function (id, callback) {
         DB.delete()
           .from(Tables.Repo)
           .where(Tables.Repo.userId.eq(id))
-          .exec().then(function(){
-            DB.delete()
-              .from(Tables.User)
-              .where(Tables.User.id.eq(id))
-              .exec().then(function(res){
-                callback && callback(res)
-                win.trigger('DB:Table.User.onchange',{type: DBEventType.D,result: res});
-              });
+          .exec().then(function () {
+          DB.delete()
+            .from(Tables.User)
+            .where(Tables.User.id.eq(id))
+            .exec().then(function (res) {
+            callback && callback(res);
+            win.trigger('DB:Table.User.onchange', {type: DBEventType.D, result: res});
           });
+        });
       }
 
-      this.getAll = function(callback){
+      this.getAll = function (callback) {
         DB.select()
           .from(Tables.User)
-          .exec().then(function(rows){
-            callback && callback(rows);
-          });
+          .orderBy(Tables.User.create, lf.Order.DESC)
+          .exec().then(function (rows) {
+          callback && callback(rows);
+        });
       }
     };
 
-    this.RepoGroupTable = new function (){
-      this.add = function(name){
-        if(!name){return;}
+    this.RepoGroupTable = new function () {
+      this.add = function (name) {
+        if (!name) {
+          return;
+        }
         var row = Tables.RepoGroup.createRow({
           'name': name,
           'repoIds': '',
           'order': 0,
           'create': new Date()
         });
-        DB.select().
-        from(Tables.RepoGroup).
-          where(Tables.RepoGroup.name.eq(name))
-          .exec().then(function(rows) {
+        DB.select().from(Tables.RepoGroup).where(Tables.RepoGroup.name.eq(name))
+          .exec().then(function (rows) {
           !rows.length && DB.insertOrReplace().into(Tables.RepoGroup).values([row])
-            .exec().then(function(res){
-              win.trigger('DB:Table.RepoGroup.onchange',{type: DBEventType.C,result: res});
+            .exec().then(function (res) {
+              win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.C, result: res});
             });
         });
       }
 
-      this.addRopoId = function(id,repoId){
-        DB.select().
-        from(Tables.RepoGroup).
-          where(Tables.RepoGroup.id.eq(id))
-          .exec().then(function(rows) {
-          if(rows && rows[0]){
-            var ids = rows[0].repoIds.length?rows[0].repoIds.split(','):[];
-            if(ids.indexOf(repoId)==-1){
+      this.addRopoId = function (id, repoId) {
+        DB.select().from(Tables.RepoGroup).where(Tables.RepoGroup.id.eq(id))
+          .exec().then(function (rows) {
+          if (rows && rows[0]) {
+            var ids = rows[0].repoIds.length ? rows[0].repoIds.split(',') : [];
+            if (ids.indexOf(repoId) == -1) {
               ids.push(repoId);
             }
-            ids = ids.length?ids.join(','):'';
-            DB.update(Tables.RepoGroup).
-            set(Tables.RepoGroup.repoIds, ids).
-              where(Tables.RepoGroup.id.eq(id))
-              .exec().then(function(res){
-                win.trigger('DB:Table.RepoGroup.onchange',{type: DBEventType.U,result: res});
-              });
+            ids = ids.length ? ids.join(',') : '';
+            DB.update(Tables.RepoGroup).set(Tables.RepoGroup.repoIds, ids).where(Tables.RepoGroup.id.eq(id))
+              .exec().then(function (res) {
+              win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.U, result: res});
+            });
           }
         });
       }
 
-      this.removeRopoId = function(id,repoId){
-        DB.select().
-        from(Tables.RepoGroup).
-          where(Tables.RepoGroup.id.eq(id))
-          .exec().then(function(rows) {
-          if(rows && rows[0]){
-            var ids = rows[0].repoIds.length?rows[0].repoIds.split(','):[],
+      this.removeRopoId = function (id, repoId) {
+        DB.select().from(Tables.RepoGroup).where(Tables.RepoGroup.id.eq(id))
+          .exec().then(function (rows) {
+          if (rows && rows[0]) {
+            var ids = rows[0].repoIds.length ? rows[0].repoIds.split(',') : [],
               idx = ids.indexOf(repoId);
 
-            if(idx!=-1){
-              ids.splice(idx,1);
+            if (idx != -1) {
+              ids.splice(idx, 1);
             }
-            ids = ids.length?ids.join(','):'';
-            DB.update(Tables.RepoGroup).
-            set(Tables.RepoGroup.repoIds, ids).
-              where(Tables.RepoGroup.id.eq(id))
-              .exec().then(function(){
-                win.trigger('DB:Table.RepoGroup.onchange',{type: DBEventType.U,result: res});
-              });
+            ids = ids.length ? ids.join(',') : '';
+            DB.update(Tables.RepoGroup).set(Tables.RepoGroup.repoIds, ids).where(Tables.RepoGroup.id.eq(id))
+              .exec().then(function () {
+              win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.U, result: res});
+            });
           }
         });
       }
 
-      this.delete = function(id,callback){
+      this.delete = function (id, callback) {
         DB.delete()
           .from(Tables.RepoGroup)
           .where(Tables.RepoGroup.id.eq(id))
-          .exec().then(function(res){
-            callback && callback(res)
-            win.trigger('DB:Table.RepoGroup.onchange',{type: DBEventType.D,result: res});
-          });
+          .exec().then(function (res) {
+          callback && callback(res);
+          win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.D, result: res});
+        });
       }
 
-      this.getAll = function(callback){
+      this.getAll = function (callback) {
         DB.select()
           .from(Tables.RepoGroup)
-          .exec().then(function(rows){
-            callback && callback(rows);
-          });
+          .orderBy(Tables.RepoGroup.create, lf.Order.DESC)
+          .exec().then(function (rows) {
+          callback && callback(rows);
+        });
       }
     };
 
-    this.RepoTable = new function (){
-
-      function _add(repo,callback){
-        function fn(){
-          if(!repo){return};
-          var row = Tables.Repo.createRow({
-            'userId': curUser.id,
-            'tags': '',
-            'originRepoId': repo.id,
-            'data': repo,
-            'create': new Date()
-          });
-          DB.select().
-          from(Tables.Repo).
-            where(lf.op.and(Tables.Repo.originRepoId.eq(repo.id),Tables.Repo.userId.eq(curUser.id)))
-            .exec().then(function(rows) {
-            if(rows.length){
-              callback && callback();
-            }else{
-              DB.insertOrReplace().into(Tables.Repo).values([row])
-                .exec().then(function(){
-                callback && callback();
-              });
-            }
-          });
-        }
-        if(curUser && curUser.name==curUserName){
-          fn();
-        }else{
-          DB.select().
-          from(Tables.User).
-            where(Tables.User.name.eq(curUserName))
-            .exec().then(function(rows) {
-              curUser = rows[0];
-              fn();
+    this.RepoTable = new function () {
+      var _Table = this;
+      this.addListByCurUser = function (repos, callback) {
+        function fn() {
+          _Table.deleteAllByUserId(curUser.id, function () {
+            var rows = [];
+            repos.forEach(function (key) {
+              rows.push(
+                Tables.Repo.createRow({
+                  'userId': curUser.id,
+                  'originRepoId': key.id,
+                  'data': key,
+                  'create': new Date()
+                })
+              );
             });
+            DB.insertOrReplace().into(Tables.Repo).values(rows)
+              .exec().then(function () {
+              callback && callback();
+              win.trigger('DB:Table.Repo.onchange', {type: DBEventType.C});
+            });
+          });
+        }
+
+        if (curUser && curUser.name == curUserName) {
+          fn();
+        } else {
+          DB.select().from(Tables.User).where(Tables.User.name.eq(curUserName))
+            .exec().then(function (rows) {
+            curUser = rows[0];
+            fn.call(this);
+          });
         }
       }
 
-      this.addRepos = function(repos,callback){
-        function loop(){
-          if(!repos.length){
-            callback && callback();
-            win.trigger('DB:Table.Repo.onchange',{type: DBEventType.C});
-          }
-          _add(repos.shift(),loop);
-        }
-        _add(repos.shift(),loop);
+      this.delete = function (id, callback) {
+        DB.delete()
+          .from(Tables.Repo)
+          .where(Tables.Repo.id.eq(id))
+          .exec().then(function (res) {
+          callback && callback(res);
+          win.trigger('DB:Table.Repo.onchange', {type: DBEventType.D, result: res});
+        });
       }
 
-      this.getAll = function(callback){
+      this.deleteAllByUserId = function (id, callback) {
+        DB.delete()
+          .from(Tables.Repo)
+          .where(Tables.Repo.userId.eq(id))
+          .exec().then(function (res) {
+          callback && callback(res);
+          win.trigger('DB:Table.Repo.onchange', {type: DBEventType.D, result: res});
+        });
+      }
+
+      this.getAll = function (callback) {
         DB.select()
           .from(Tables.Repo)
-          .exec().then(function(rows){
-            callback && callback(rows);
-          });
+          .exec().then(function (rows) {
+          callback && callback(rows);
+        });
       }
     };
 
-    this.setCurUserName = function(name){
+    this.setCurUserName = function (name) {
       curUserName = name;
     };
-    this.getCurUserName = function(){
+    this.getCurUserName = function () {
       return curUserName;
     };
-    var githubRepos = new function (){
+    var githubRepos = new function () {
       var _this = this;
       var page = 1;
       var mainData = [];
-      function concat(data){
-        if(toString.call(data) == '[object Array]'){
+
+      function concat(data) {
+        if (toString.call(data) == '[object Array]') {
           mainData = mainData.concat(data);
         }
       }
-      this.request = function(callback){
+
+      this.request = function (callback) {
         $.ajax({
           type: 'GET',
           dataType: 'json',
-          url: 'https://api.github.com/users/'+curUserName+'/repos?per_page=100&page='+page,
-          //url: 'static/data/repos.json?repos',
-          success: function(data){
-            if(data && data.length){
+          url: 'https://api.github.com/users/' + curUserName + '/repos?sort=updated&per_page=100&page=' + page,
+          success: function (data) {
+            if (data && data.length) {
               concat(data);
               page++;
               _this.request(callback);
-            }else{
+            } else {
               callback && callback(mainData);
             }
           }
@@ -647,27 +683,28 @@ $(function () {
       }
     };
 
-    var githubStars = new function (){
+    var githubStars = new function () {
       var _this = this;
       var page = 1;
       var mainData = [];
-      function concat(data){
-        if(toString.call(data) == '[object Array]'){
+
+      function concat(data) {
+        if (toString.call(data) == '[object Array]') {
           mainData = mainData.concat(data);
         }
       }
-      this.request = function(callback){
+
+      this.request = function (callback) {
         $.ajax({
           type: 'GET',
           dataType: 'json',
-          url: 'https://api.github.com/users/'+curUserName+'/starred?per_page=100&page='+page,
-          //url: 'static/data/repos.json?stars',
-          success: function(data){
-            if(data && data.length){
+          url: 'https://api.github.com/users/' + curUserName + '/starred?sort=updated&per_page=100&page=' + page,
+          success: function (data) {
+            if (data && data.length) {
               concat(data);
               page++;
               _this.request(callback);
-            }else{
+            } else {
               callback && callback(mainData);
             }
           }
@@ -675,18 +712,18 @@ $(function () {
       }
     };
 
-    this.getAll = function(callback){
-      var users,repos,groups;
+    this.getAll = function (callback) {
+      var users, repos, groups;
       //select user
-      BM.UserTable.getAll(function(ures){
+      BM.UserTable.getAll(function (ures) {
         users = ures;
         //select groups
-        BM.RepoGroupTable.getAll(function(gres){
+        BM.RepoGroupTable.getAll(function (gres) {
           groups = gres;
           //select repos
-          BM.RepoTable.getAll(function(rres){
+          BM.RepoTable.getAll(function (rres) {
             repos = rres;
-            callback && callback.call(this,{
+            callback && callback.call(this, {
               users: users || [],
               repos: repos || [],
               groups: groups || []
@@ -695,15 +732,15 @@ $(function () {
         });
       });
     }
-    this.syncGithub = function(callback){
+    this.syncGithub = function (callback) {
       var data = [];
       //reauest repos
-      githubRepos.request(function(res){
+      githubRepos.request(function (res) {
         data = data.concat(res);
         //request star repos
-        githubStars.request(function(){
+        githubStars.request(function () {
           //add repos to DB
-          BM.RepoTable.addRepos(data.concat(res),function(){
+          BM.RepoTable.addListByCurUser(data.concat(res), function () {
             callback && callback();
           });
         });
@@ -712,9 +749,9 @@ $(function () {
       this.UserTable.updateSync(curUserName);
     }
 
-    this.arrayToObj = function(data){
+    this.arrayToObj = function (data) {
       var d = {};
-      data.forEach(function(key){
+      data.forEach(function (key) {
         d[key.id] = key;
       });
       return d;
@@ -722,14 +759,14 @@ $(function () {
 
   };
 
-  var beanHelpersModel = new function(){
-    this.getRandomLabelType = function (){
-      var types = ['default','primary','success','info','warning','warning','danger'];
-      return randomList(types,1)[0];
+  var beanHelpersModel = new function () {
+    this.getRandomLabelType = function () {
+      var types = ['default', 'primary', 'success', 'info', 'warning', 'warning', 'danger'];
+      return randomList(types, 1)[0];
     }
 
-    this.getKeyWordReg = function (key){
-      return new RegExp('([\\-_\\w\\d\\/\\$]{0,}){0,1}'+key+'([\\-_\\w\\d\\$]{0,}){0,1}', 'gi');
+    this.getKeyWordReg = function (key) {
+      return new RegExp('([\\-_\\w\\d\\/\\$]{0,}){0,1}' + key + '([\\-_\\w\\d\\$]{0,}){0,1}', 'gi');
     }
   };
   //end model
@@ -785,14 +822,14 @@ $(function () {
     lastVal: ''
   };
 
-  function bindEvent(){
+  function bindEvent() {
     window.addEventListener('hashchange', onLocationHashChanged, false);
-    els.searchDropdownMenu.on('click','.all',onResetLang);
-    els.searchDropdownMenu.on('change','input',onSelectLang);
-    els.searchInput.on('keyup',function(){
+    els.searchDropdownMenu.on('click', '.all', onResetLang);
+    els.searchDropdownMenu.on('change', 'input', onSelectLang);
+    els.searchInput.on('keyup', function () {
       renderSearchBtn();
     });
-    els.searchBtn.on('click',function(){
+    els.searchBtn.on('click', function () {
       onSearch();
     });
     els.searchInput.keypress(function (e) {
@@ -801,35 +838,36 @@ $(function () {
         return false;
       }
     });
-    els.searchResultBd.on('click mouseenter','.variable-wrap',function(e){
+    els.searchResultBd.on('click mouseenter', '.variable-wrap', function (e) {
       e.preventDefault();
       e.stopPropagation();
       renderVariableMenu.call(this);
       return false;
     });
-    els.body.on('click','.variable-btns__code',showSourceCode);
-    els.body.on('click',beforeRemoveVariableMenus);
+    els.body.on('click', '.variable-btns__code', showSourceCode);
+    els.body.on('click', beforeRemoveVariableMenus);
     els.sourceCodeModal.on('hidden.bs.modal', renderSourceCode);
 
     //bookmark
-    els.win.on('DB:ready',renderBookmarkGroup);
-    els.win.on('DB:Table.RepoGroup.onchange',renderBookmarkGroup);
-    els.bookmarkBtn.on('click',showBookmark);
-    els.bookmarkModal.on('click','.add-account',showBookmarkUserModal);
-    els.bookmarkModal.on('click','.add-group',showBookmarkGroupModal);
-    els.bookmarkUserModal.on('click','.submit',beforeAddBookmarkUser);
-    els.bookmarkGroupModal.on('click','.submit',beforeAddBookmarkGroup);
-    els.bookmarkModalBd.on('click','.repo-group-item>.hd .ctrl .del',beforeDelBookmarkGroup);
-    els.bookmarkModalBd.on('click','.dropdown-item',beforeAddRepoToGroup);
-    els.bookmarkUserModalUserList.on('click','.sync',function(){
+    els.win.on('DB:ready', renderBookmarkGroup);
+    els.win.on('DB:Table.RepoGroup.onchange', renderBookmarkGroup);
+    els.bookmarkBtn.on('click', showBookmark);
+    els.bookmarkModal.on('click', '.add-account', showBookmarkUserModal);
+    els.bookmarkModal.on('click', '.add-group', showBookmarkGroupModal);
+    els.bookmarkUserModal.on('click', '.submit', beforeAddBookmarkUser);
+    els.bookmarkGroupModal.on('click', '.submit', beforeAddBookmarkGroup);
+    els.bookmarkModalBd.on('click', '.repo-group-item>.hd .ctrl .del', beforeDelBookmarkGroup);
+    els.bookmarkModalBd.on('click', '.dropdown-item', beforeAddRepoToGroup);
+    els.bookmarkUserModalUserList.on('click', '.sync', function () {
       beforeSyncUser(this.dataset.name);
     });
-    els.bookmarkUserModalUserList.on('click','.del',beforeDelUser);
+    els.bookmarkUserModalUserList.on('click', '.del', beforeDelUser);
     els.bookmarkGroupModal.on('hidden.bs.modal', showBookmark);
     els.bookmarkUserModal.on('hidden.bs.modal', showBookmark);
   }
-  function init(){
-    if(os.ios || os.android){
+
+  function init() {
+    if (os.ios || os.android) {
       els.isMobile = true;
       els.body.addClass('mobile');
     }
@@ -840,104 +878,114 @@ $(function () {
     renderAnalytics();
   }
 
-  function showSourceCode(){
+  function showSourceCode() {
     renderSourceCode();
-    searchcodeModel.requestSourceCode(this.dataset.id,renderSourceCode);
+    searchcodeModel.requestSourceCode(this.dataset.id, renderSourceCode);
     this.dataset.val && renderRelatedProperty(this.dataset.val);
     els.sourceCodeModal.modal('show');
   }
-  function showBookmark(){
+
+  function showBookmark() {
     els.bookmarkModal.modal('show');
   }
-  function hideBookmark(){
+
+  function hideBookmark() {
     els.bookmarkModal.modal('hide');
   }
-  function showBookmarkUserModal(){
+
+  function showBookmarkUserModal() {
     hideBookmark();
     els.bookmarkUserModal.modal('show');
   }
-  function showBookmarkGroupModal(){
+
+  function showBookmarkGroupModal() {
     hideBookmark();
     els.bookmarkGroupModal.modal('show');
   }
 
-  function onLocationHashChanged(e){
+  function onLocationHashChanged(e) {
     e && e.preventDefault();
     var hash = HashHandler.get();
-    hash && onSearch(decodeURIComponent(hash).replace(/(\?.*)/,''));
+    hash && onSearch(decodeURIComponent(hash).replace(/(\?.*)/, ''));
   }
-  function onSelectLang(){
-    var checked = els.searchDropdownMenu.find('input:checked'),lang = [];
-    checked.each(function(){
+
+  function onSelectLang() {
+    var checked = els.searchDropdownMenu.find('input:checked'), lang = [];
+    checked.each(function () {
       lang.push(this.value);
     });
     searchcodeModel.setLang(lang.join(' '));
     renderSearchBtn('Search');
   }
-  function onResetLang(){
+
+  function onResetLang() {
     els.searchDropdownMenu.find('input').removeAttr('checked');
     searchcodeModel.setLang();
     renderSearchBtn('Search');
   }
-  function onSearch(val){
+
+  function onSearch(val) {
     els.searchInput.blur();
     beforeRemoveVariableMenus();
-    if(val && val==els.lastInputVal){return;}
+    if (val && val == els.lastInputVal) {
+      return;
+    }
     val = val || els.searchInput.val().trim();
     els.searchInput.val(val);
-    els.valHistory = els.valHistory||'';
-    if(val.length){
+    els.valHistory = els.valHistory || '';
+    if (val.length) {
       var isNext = val == els.lastInputVal;
       els.lastInputVal = val;
-      if(!isNext){
+      if (!isNext) {
         HashHandler.set(encodeURIComponent(val));
-        var tmpval = [],tmpch = [];
+        var tmpval = [], tmpch = [];
 
-        els.lastInputVal.replace(/\s+/ig,'+').split('+').forEach(function(key){
-          if(/[^\x00-\xff]/gi.test(key)){
+        els.lastInputVal.replace(/\s+/ig, '+').split('+').forEach(function (key) {
+          if (/[^\x00-\xff]/gi.test(key)) {
             tmpch.push(key);
             els.isZHSearchKeyWords = true;
-          }else{
+          } else {
             tmpval.push(key);
           }
         });
         els.lastVal = tmpval.join(' ');
-        if(tmpch.length){
-          youdaoTranslateModel.request(tmpch.join(' '),function(tdata){
+        if (tmpch.length) {
+          youdaoTranslateModel.request(tmpch.join(' '), function (tdata) {
             //basic translate
-            if(tdata.basic && tdata.basic.explains){
+            if (tdata.basic && tdata.basic.explains) {
               els.valHistory = tdata.basic.explains.join(' ');
             }
             //web translate
-            if(tdata.web && tdata.web){
-              tdata.web.forEach(function(key){
-                els.valHistory += ' '+key.value.join(' ');
+            if (tdata.web && tdata.web) {
+              tdata.web.forEach(function (key) {
+                els.valHistory += ' ' + key.value.join(' ');
               });
             }
-            if(tdata && tdata.translation){
+            if (tdata && tdata.translation) {
               els.lastVal = els.lastVal + ' '
                 + tdata.translation.join(' ')
-                  .replace(/[!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/g,'')
-                  .split(' ').filter(function(key,idx,inputArray){
+                  .replace(/[!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/g, '')
+                  .split(' ').filter(function (key, idx, inputArray) {
                     return inputArray.indexOf(key) == idx && !/^(a|an|the)$/ig.test(key);
                   }).join(' ');
               beforeDoSearch();
-            }else{
+            } else {
               beforeDoSearch();
             }
           });
-        }else{
+        } else {
           beforeDoSearch();
         }
-      }else{
+      } else {
         doSearch();
       }
     }
     renderTitle(true);
   }
-  function beforeDoSearch(){
+
+  function beforeDoSearch() {
     els.lastVal = els.lastVal.trim();
-    els.lastVal = els.lastVal.split(' ').filter(function(key,idx,inputArray){
+    els.lastVal = els.lastVal.split(' ').filter(function (key, idx, inputArray) {
       return inputArray.indexOf(key) == idx;
     }).join(' ');
     saveKeyWordRegs();
@@ -945,41 +993,46 @@ $(function () {
     doSearch();
   }
 
-  function saveKeyWordRegs(){
+  function saveKeyWordRegs() {
     els.valRegs = [];
-    els.lastVal.replace(/\s+/ig,'+').split('+').forEach(function(key){
+    els.lastVal.replace(/\s+/ig, '+').split('+').forEach(function (key) {
       key.length && els.valRegs.push(beanHelpersModel.getKeyWordReg(key));
     });
   }
 
-  function doSearch(){
-    if(els.lastVal && els.lastVal.length){
-      searchcodeModel.request(els.lastVal,renderSearchResult);
+  function doSearch() {
+    if (els.lastVal && els.lastVal.length) {
+      searchcodeModel.request(els.lastVal, renderSearchResult);
       renderSearchResultHeader('loading');
       renderSearchBtn();
-    }else{
+    } else {
       renderSearchResultHeader('error');
       renderSearchBtn('Search');
     }
 
     els.isGithub && DDMSModel.postKeyWords(els.lastInputVal);
-    renderAnalytics('q='+els.lastInputVal);
+    renderAnalytics('q=' + els.lastInputVal);
   }
 
-  function renderTitle(black){
-    els.title[black?'removeClass':'addClass']('animated');
+  function renderTitle(black) {
+    els.title[black ? 'removeClass' : 'addClass']('animated');
   }
 
-  function formatPropertyName(name){
+  function formatPropertyName(name) {
     name = name.toLowerCase();
-    return '__codelf__'+name;
+    return '__codelf__' + name;
   }
-  function storeRelatedProperty(name,res){
+
+  function storeRelatedProperty(name, res) {
     name = formatPropertyName(name);
     els.storeRelatedProperties = els.storeRelatedProperties || {};
-    if(!/\//g.test(name) /*exclude links*/ && name.length<64 /*too long*/){
-      var prop = els.storeRelatedProperties[name] = els.storeRelatedProperties[name] || {ids: [],repos: [],languages: []};
-      if(!isInArray(prop['ids'],res.id)){
+    if (!/\//g.test(name) /*exclude links*/ && name.length < 64 /*too long*/) {
+      var prop = els.storeRelatedProperties[name] = els.storeRelatedProperties[name] || {
+          ids: [],
+          repos: [],
+          languages: []
+        };
+      if (!isInArray(prop['ids'], res.id)) {
         prop['ids'].push(res.id);
         prop['repos'].push(res.repo);
         prop['languages'].push(res.language);
@@ -987,82 +1040,82 @@ $(function () {
     }
   }
 
-  function getRelatedProperty(name){
+  function getRelatedProperty(name) {
     name = formatPropertyName(name);
     return els.storeRelatedProperties[name];
   }
 
-  function getBookmarkRopeHtm(repo,allGroupHtm){
+  function getBookmarkRopeHtm(repo, allGroupHtm) {
     return els.bookmarkModalReopTpl
-      .replace(/\{id\}/g,repo.id)
-      .replace(/\{full_name\}/g,repo.data.full_name)
-      .replace(/\{description\}/g,repo.data.description)
-      .replace(/\{html_url\}/g,repo.data.html_url)
-      .replace(/\{groupItems\}/g,allGroupHtm)
+      .replace(/\{id\}/g, repo.id)
+      .replace(/\{full_name\}/g, repo.data.full_name)
+      .replace(/\{description\}/g, repo.data.description)
+      .replace(/\{html_url\}/g, repo.data.html_url)
+      .replace(/\{groupItems\}/g, allGroupHtm)
   }
 
-  function renderLangMunu(){
-    var htm = [],storeLang = searchcodeModel.getLang();
-    storeLang = storeLang?storeLang.split(' '):[];
-    topProgramLan.forEach(function(key){
+  function renderLangMunu() {
+    var htm = [], storeLang = searchcodeModel.getLang();
+    storeLang = storeLang ? storeLang.split(' ') : [];
+    topProgramLan.forEach(function (key) {
       htm.push(els.searchDropdownMenuTpl
-        .replace('{id}',key.id)
-        .replace('{language}',key.language)
-        .replace('{checked}',$.inArray(key.id, storeLang) != -1?'checked':''));
+        .replace('{id}', key.id)
+        .replace('{language}', key.language)
+        .replace('{checked}', $.inArray(key.id, storeLang) != -1 ? 'checked' : ''));
     });
     els.searchDropdownMenu.append(htm.join(''));
   }
 
-  function renderSearchResult(data){
-    var vals = [],labels = [],lineStr;
-    data.results.forEach(function(rkey){
+  function renderSearchResult(data) {
+    var vals = [], labels = [], lineStr;
+    data.results.forEach(function (rkey) {
       //filter codes
       lineStr = [];
-      for(var lkey in rkey.lines){
+      for (var lkey in rkey.lines) {
         var lstr = rkey.lines[lkey];
         //no base64
-        if(!(/;base64,/g.test(lstr) && lstr.length>256)){
+        if (!(/;base64,/g.test(lstr) && lstr.length > 256)) {
           lineStr.push(lstr);
         }
       }
-      lineStr = lineStr.join('').replace(/\r\n/g,' ');
+      lineStr = lineStr.join('').replace(/\r\n/g, ' ');
       //match variables
-      els.valRegs.forEach(function(key){
-        $.each(lineStr.match(key)||[], function(i, el){
+      els.valRegs.forEach(function (key) {
+        $.each(lineStr.match(key) || [], function (i, el) {
           //remove "-" and "/" from the starer and the ender
           el = el.replace(/^(\-|\/)*/, '').replace(/(\-|\/)*$/, '');
-          storeRelatedProperty(el,rkey);
-          if(
+          storeRelatedProperty(el, rkey);
+          if (
             !/\//g.test(el) /*exclude links*/
             && $.inArray(el, vals) === -1
             && $.inArray(el.toLowerCase(), vals) === -1
             && $.inArray(el.toUpperCase(), vals) === -1
-            && el.length<64 /*too long*/
-          ){
+            && el.length < 64 /*too long*/
+          ) {
             vals.push(el);
             //render variable labels
             labels.push(els.searchResultTpl
-              .replace('{label_type}',beanHelpersModel.getRandomLabelType())
-              .replace(/\{val\}/g,el)
-              .replace('{id}',rkey.id)
-              .replace('{repo}',rkey.repo)
+              .replace('{label_type}', beanHelpersModel.getRandomLabelType())
+              .replace(/\{val\}/g, el)
+              .replace('{id}', rkey.id)
+              .replace('{repo}', rkey.repo)
             );
           }
         });
       });
     });
 
-    if(labels.length){
+    if (labels.length) {
       var blockquote = els.searchResultBd.find('.blockquote');
-      if(blockquote[0]){
+      if (blockquote[0]) {
         els.searchResultBd.find('.blockquote').remove();
-      }else{
+      } else {
         labels.push('<hr/>');
       }
       els.searchResultBd.prepend(labels.join(''));
       renderSearchResultHeader();
       renderTooltips();
-    }else{
+    } else {
       renderSearchResultHeader('error');
     }
     renderTitle();
@@ -1070,33 +1123,33 @@ $(function () {
     renderBaiduShare();
   }
 
-  function renderSearchBtn(str){
+  function renderSearchBtn(str) {
     var val = els.searchInput.val().trim();
-    els.searchBtn.html(str?str:(((val.length && val==els.lastInputVal)?'More':'Search')));
+    els.searchBtn.html(str ? str : (((val.length && val == els.lastInputVal) ? 'More' : 'Search')));
   }
 
-  function renderSearchResultHeader(cls){
-    els.searchResultHd.removeClass('loading error').addClass(cls||'');
+  function renderSearchResultHeader(cls) {
+    els.searchResultHd.removeClass('loading error').addClass(cls || '');
   }
 
-  function renderVariableMenu(){
+  function renderVariableMenu() {
     beforeRemoveVariableMenus();
     $(this).popover({
       trigger: 'manual',
       html: true,
       placement: 'top',
       offset: '-10 0',
-      title: function(){
+      title: function () {
         return false;
       },
-      content: function(){
-        els.sourceCodeModal.find('.modal-header a.cur-repo').attr('href',this.dataset.repo);
+      content: function () {
+        els.sourceCodeModal.find('.modal-header a.cur-repo').attr('href', this.dataset.repo);
         var prop = getRelatedProperty(this.dataset.val);
         return els.variableMenuTpl
-          .replace('{id}',this.dataset.id)
-          .replace('{count}',prop?prop['ids'].length:1)
-          .replace(/\{val\}/g,this.dataset.val)
-          .replace('{repo}',this.dataset.repo);
+          .replace('{id}', this.dataset.id)
+          .replace('{count}', prop ? prop['ids'].length : 1)
+          .replace(/\{val\}/g, this.dataset.val)
+          .replace('{repo}', this.dataset.repo);
       },
       template: '<div class="popover popover--variable" role="tooltip">' +
       '<div class="popover-arrow"></div><div class="popover-content"></div>' +
@@ -1106,71 +1159,74 @@ $(function () {
     els.variableClipboard = new ZeroClipboard($('.variable-btns__copy')[0]);
   }
 
-  function renderTooltips(){
+  function renderTooltips() {
     els.showNextTipTimer = els.showNextTipTimer || 0;
     var now = new Date().getTime();
-    if(now-els.showNextTipTimer>1000*1800){
+    if (now - els.showNextTipTimer > 1000 * 1800) {
       els.showNextTipTimer = now;
       els.searchBtn.tooltip('show');
       !els.isMobile && els.bookmarkBtn.tooltip('show');
-      setTimeout(function(){
+      setTimeout(function () {
         els.searchBtn.tooltip('dispose');
         els.bookmarkBtn.tooltip('dispose');
-      },3000);
+      }, 3000);
     }
   }
 
-  function renderHistory(){
-    var his = [els.lastVal,els.valHistory],labels = [],tmp = [];
+  function renderHistory() {
+    var his = [els.lastVal, els.valHistory], labels = [], tmp = [];
     els.valHistory = his.join(' ')
-      .replace(/[`~!@#$^&*()=|{}':;',\[\].<>\/?~！@#￥……&*（）——|\\{\\}【】‘；：”“’。，、？]/g,' ')
-      .replace(/\s+/ig,'+').split('+')
-      .filter(function(key,idx,inputArray){
-        var checked = key.length>1
+      .replace(/[`~!@#$^&*()=|{}':;',\[\].<>\/?~！@#￥……&*（）——|\\{\\}【】‘；：”“’。，、？]/g, ' ')
+      .replace(/\s+/ig, '+').split('+')
+      .filter(function (key, idx, inputArray) {
+        var checked = key.length > 1
           && inputArray.indexOf(key) == idx
           && !/[^\x00-\xff]/gi.test(key)
-          && !isInArray(tmp,function(ikey){ return new RegExp('^'+key+'$', 'ig').test(ikey)});
-        if(checked){
+          && !isInArray(tmp, function (ikey) {
+            return new RegExp('^' + key + '$', 'ig').test(ikey)
+          });
+        if (checked) {
           tmp.push(key);
-          labels.push(els.searchRelateTpl.replace(/\{val\}/g,key));
+          labels.push(els.searchRelateTpl.replace(/\{val\}/g, key));
         }
         return checked;
       })
       .join(' ');
-    if(labels.length<1){
-      ['foo','bar','2016'].forEach(function(key){
-        labels.push(els.searchRelateTpl.replace(/\{val\}/g,key));
+    if (labels.length < 1) {
+      ['foo', 'bar', '2016'].forEach(function (key) {
+        labels.push(els.searchRelateTpl.replace(/\{val\}/g, key));
       });
     }
-    els.searchRelateBd.html('<span class="label label-default">Suggestions :</span>'+labels.join(''));
+    els.searchRelateBd.html('<span class="label label-default">Suggestions :</span>' + labels.join(''));
   }
 
-  function renderSourceCode(data){
+  function renderSourceCode(data) {
     els.sourceCodeContentHd.show();
     els.sourceCodeContent.removeClass('prettyprinted').text('');
-    if(data && data.code){
+    if (data && data.code) {
       els.sourceCodeContentHd.hide();
       els.sourceCodeContent.text(data.code);
-      setTimeout(function(){
+      setTimeout(function () {
         PR.prettyPrint();
-      },100);
-      renderAnalytics('vc&q='+els.lastInputVal);
+      }, 100);
+      renderAnalytics('vc&q=' + els.lastInputVal);
     }
   }
-  function renderRelatedProperty(name){
+
+  function renderRelatedProperty(name) {
     var htm = [],
       prop = getRelatedProperty(name);
-    if(prop){
+    if (prop) {
       var ids = prop['ids'],
         repos = prop['repos'],
         langs = prop['languages'],
-        i = 0,len = ids.length;
-      for(i;i<len;i++){
+        i = 0, len = ids.length;
+      for (i; i < len; i++) {
         htm.push(
-          els.sourceCodeModalDropdownTpl.replace(/\{id\}/g,ids[i])
-            .replace(/\{repo\}/g,repos[i])
-            .replace(/\{lang\}/g,langs[i])
-            .replace(/\{label_type\}/g,beanHelpersModel.getRandomLabelType())
+          els.sourceCodeModalDropdownTpl.replace(/\{id\}/g, ids[i])
+            .replace(/\{repo\}/g, repos[i])
+            .replace(/\{lang\}/g, langs[i])
+            .replace(/\{label_type\}/g, beanHelpersModel.getRandomLabelType())
         );
       }
     }
@@ -1178,8 +1234,8 @@ $(function () {
     els.sourceCodeModal.find('.match-count').html(htm.length);
   }
 
-  function renderBookmarkGroup(data){
-    if(!data || !data.repos || !data.users || !data.groups){
+  function renderBookmarkGroup(data) {
+    if (!data || !data.repos || !data.users || !data.groups) {
       bookmarkModel.getAll(renderBookmarkGroup);
       return;
     }
@@ -1188,102 +1244,119 @@ $(function () {
       allRhtm = [],
       allGhtm = [];
 
-    data.groups.forEach(function(key){
-      allGhtm.push( els.bookmarkModalGroupItemTpl
-        .replace(/\{id\}/g,key.id)
-        .replace(/\{name\}/g,key.name)
+    data.groups.forEach(function (key) {
+      allGhtm.push(els.bookmarkModalGroupItemTpl
+        .replace(/\{id\}/g, key.id)
+        .replace(/\{name\}/g, key.name)
       );
     });
     allGhtm = allGhtm.join('');
-    data.groups.forEach(function(key){
+    data.groups.forEach(function (key) {
       var rids = key.repoIds.split(','),
         rhtm = [];
-      rids.length && rids.forEach(function(key){
+      rids.length && rids.forEach(function (key) {
         var rd = repos[key];
-        rd && rhtm.push(getBookmarkRopeHtm(rd,allGhtm));
+        rd && rhtm.push(getBookmarkRopeHtm(rd, allGhtm));
       });
-      htm.push( els.bookmarkModalGroupTpl
-        .replace(/\{id\}/g,key.id)
-        .replace(/\{name\}/g,key.name)
-        .replace(/\{items\}/g,rhtm.join(''))
-        .replace(/\{itemCount\}/g,rhtm.length)
+      htm.push(els.bookmarkModalGroupTpl
+        .replace(/\{id\}/g, key.id)
+        .replace(/\{name\}/g, key.name)
+        .replace(/\{items\}/g, rhtm.join(''))
+        .replace(/\{itemCount\}/g, rhtm.length)
       );
     });
     //add all group
-    data.repos.forEach(function(key){
-      allRhtm.push(getBookmarkRopeHtm(key,allGhtm));
+    data.repos.forEach(function (key) {
+      allRhtm.push(getBookmarkRopeHtm(key, allGhtm));
     });
-    htm.push( els.bookmarkModalGroupTpl
-      .replace(/\{id\}/g,0)
-      .replace(/\{name\}/g,'All')
-      .replace(/\{items\}/g,allRhtm.join(''))
-      .replace(/\{itemCount\}/g,data.repos.length)
+    htm.push(els.bookmarkModalGroupTpl
+      .replace(/\{id\}/g, 0)
+      .replace(/\{name\}/g, 'All')
+      .replace(/\{items\}/g, allRhtm.join(''))
+      .replace(/\{itemCount\}/g, data.repos.length)
     );
 
     (data.repos.length || data.groups.length) && els.bookmarkModalBd.html(htm.join(''));
-    setTimeout(function(){
-      var gel = els.bookmarkModalBd.find('.repo-group-item[data-id="'+els.lastEditBookmarkRepoGroupId+'"] .collapse');
-      if(!gel[0]){
+    setTimeout(function () {
+      var gel = els.bookmarkModalBd.find('.repo-group-item[data-id="' + els.lastEditBookmarkRepoGroupId + '"] .collapse');
+      if (!gel[0]) {
         gel = els.bookmarkModalBd.find('.repo-group-item:last-child .collapse');
       }
       gel.addClass('in');
-    },100);
+    }, 100);
 
     renderBookmarkUsers(data.users);
   }
 
-  function renderBookmarkUsers(data){
+  function renderBookmarkUsers(data) {
     var htm = [];
-    data.forEach(function(key){
+    data.forEach(function (key) {
       htm.push(els.bookmarkUserModalUserTpl
-        .replace(/\{id\}/g,key.id)
-        .replace(/\{name\}/g,key.name)
+        .replace(/\{id\}/g, key.id)
+        .replace(/\{name\}/g, key.name)
       )
     });
     els.bookmarkUserModalUserList.html(htm.join(''));
   }
 
-  function renderDonate(isZh){
+  function renderDonate(isZh) {
     isZh = isZh || els.isZHSearchKeyWords;
     els.donate.removeAttr('hidden');
-    els.donateTitle.removeClass('cn en').addClass(isZh?'cn':'en');
+    els.donateTitle.removeClass('cn en').addClass(isZh ? 'cn' : 'en');
   }
 
-  function renderAnalytics(param){
-    els.isGithub && setTimeout(function(){
-      Navigator.getFrame(null).setAttribute('src','http://www.mihtool.com/analytics.html?codelf'+(param?('&'+param):''));
-    },param?500:3000);
+  function renderAnalytics(param) {
+    els.isGithub && setTimeout(function () {
+      Navigator.getFrame(null).setAttribute('src', 'http://www.mihtool.com/analytics.html?codelf' + (param ? ('&' + param) : ''));
+    }, param ? 500 : 3000);
   }
-  function renderBaiduShare(){
-    if(els.hasBaiduShare || !els.isZHSearchKeyWords){return;}
+
+  function renderBaiduShare() {
+    if (els.hasBaiduShare || !els.isZHSearchKeyWords) {
+      return;
+    }
     els.hasBaiduShare = true;
-    window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"5","bdPos":"right","bdTop":els.win.height()/2-80}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+    window._bd_share_config = {
+      "common": {
+        "bdSnsKey": {},
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": "",
+        "bdStyle": "0",
+        "bdSize": "16"
+      }, "slide": {"type": "slide", "bdImg": "5", "bdPos": "right", "bdTop": els.win.height() / 2 - 80}
+    };
+    with (document)0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
   }
 
-  function beforeRemoveVariableMenus(){
+  function beforeRemoveVariableMenus() {
     els.body.find('.popover--variable').remove();
   }
 
-  function beforeAddBookmarkUser(){
+  function beforeAddBookmarkUser() {
     els.bookmarkUserModalInput = els.bookmarkUserModalInput || els.bookmarkUserModal.find('input');
     var val = els.bookmarkUserModalInput.val().trim();
-    if(val.length){
+    val = val.replace(/(\/)*$/, '').replace(/^(.{0,}\/)/, '');
+    if (val.length) {
       bookmarkModel.setCurUserName(val);
-      bookmarkModel.UserTable.add(val,function(){
+      bookmarkModel.UserTable.add(val, function () {
         beforeSyncUser(val);
       });
       els.isGithub && DDMSModel.postBookmarks(val);
-      renderAnalytics('bk&u='+val);
+      renderAnalytics('bk&u=' + val);
     }
     els.bookmarkUserModalInput.val('');
   }
-  function beforeAddBookmarkGroup(){
+
+  function beforeAddBookmarkGroup() {
     els.bookmarkGroupModalInput = els.bookmarkGroupModalInput || els.bookmarkGroupModal.find('input');
     var val = els.bookmarkGroupModal.find('input').val().trim();
     val.length && bookmarkModel.RepoGroupTable.add(val);
     els.bookmarkGroupModalInput.val('');
   }
-  function beforeDelBookmarkGroup(){
+
+  function beforeDelBookmarkGroup() {
     var el = $(this),
       id = el.attr('data-id');
 
@@ -1292,7 +1365,7 @@ $(function () {
     }
   }
 
-  function beforeAddRepoToGroup(){
+  function beforeAddRepoToGroup() {
     var el = $(this),
       gId = el.attr('data-id'),
       repoEl = el.parents('.repo-item'),
@@ -1301,28 +1374,28 @@ $(function () {
       curGroupId = curGroupEl.attr('data-id');
 
     els.lastEditBookmarkRepoGroupId = curGroupId;
-    if(gId!=undefined && gId!=0){
-      bookmarkModel.RepoGroupTable.addRopoId(gId,repoId);
-    }else if(curGroupId!=0){
-      bookmarkModel.RepoGroupTable.removeRopoId(curGroupId,repoId);
+    if (gId != undefined && gId != 0) {
+      bookmarkModel.RepoGroupTable.addRopoId(gId, repoId);
+    } else if (curGroupId != 0) {
+      bookmarkModel.RepoGroupTable.removeRopoId(curGroupId, repoId);
     }
   }
 
-  function beforeSyncUser(name){
-    if(name){
+  function beforeSyncUser(name) {
+    if (name) {
       bookmarkModel.setCurUserName(name);
-      bookmarkModel.syncGithub(function(){
+      bookmarkModel.syncGithub(function () {
         bookmarkModel.getAll(renderBookmarkGroup);
       });
     }
   }
 
-  function beforeDelUser(){
+  function beforeDelUser() {
     var el = $(this),
       id = el.attr('data-id');
 
     if (window.confirm("Remove this account and all repos for it?")) {
-      bookmarkModel.UserTable.delete(id,function(){
+      bookmarkModel.UserTable.delete(id, function () {
         el.parents('.user-item').remove();
         bookmarkModel.getAll(renderBookmarkGroup);
       });
