@@ -926,6 +926,7 @@ $(function () {
   }
 
   function showBookmark() {
+    renderBookmarkTip(true);
     els.bookmarkModal.modal('show');
     renderAnalytics('bk');
   }
@@ -1218,13 +1219,17 @@ $(function () {
       }, 3000);
     }
   }
-  function renderBookmarkTip() {
-    setTimeout(function(){
-      els.bookmarkBtn.tooltip('show');
+  function renderBookmarkTip(dispose) {
+    if(dispose){
+      els.bookmarkBtn.tooltip('dispose');
+    }else{
       setTimeout(function(){
-        els.bookmarkBtn.tooltip('hide');
-      },2000);
-    },500);
+        els.bookmarkBtn.tooltip('show');
+        setTimeout(function(){
+          els.bookmarkBtn.tooltip('hide');
+        },2500);
+      },500);
+    }
   }
 
   function renderHistory() {
