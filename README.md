@@ -2,7 +2,7 @@
 
 Codelf
 =================
-Search over projects from GitHub, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Project to find real-world usage variable names. 
+Group your GitHub stars and repos.Search over projects from GitHub, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Project to find real-world usage variable names. 
 
   >There are only two hard things in Computer Science: cache invalidation and naming things.-- Phil Karlton
   ![twohardtings](http://unbug.github.io/codelf/resources/images/twohardtings.jpg)
