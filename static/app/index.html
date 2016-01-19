@@ -125,8 +125,8 @@
   </div>
 </section>
 <div class="bookmark-btn" data-toggle="tooltip" data-placement="right" title="Group GitHub stars">
-  <i class="fa fa-bookmark fa-2x hidden-sm-up"></i>
-  <i class="fa fa-bookmark fa-3x hidden-xs-down"></i>
+  <i class="bookmark-logo fa fa-bookmark fa-2x hidden-sm-up"></i>
+  <i class="bookmark-logo fa fa-bookmark fa-3x hidden-xs-down"></i>
 </div>
 <section class="modal fade bookmark-modal modal--fix" tabindex="-1" role="dialog" aria-labelledby="bookmarkModal" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -144,8 +144,17 @@
             <div class="logo"><img class="spinner" src="resources/images/codelf_logo.png"></div>
           </div>
           <div class="empty">
-            <i class="fa fa-plus-circle fa-5x add-account"></i>
-            <h5>Add GitHub accounts to group your stars and repos</h5>
+            <div class="top">
+              <i class="bookmark-logo fa fa-bookmark fa-5x"></i>
+              <h5>Add GitHub accounts to group your stars and repos</h5>
+            </div>
+            <div class="input-group form">
+              <input type="text" class="form-control" placeholder="account">
+              <span class="input-group-btn">
+                <button class="btn btn-secondary submit" type="button">Add</button>
+              </span>
+            </div>
+            <div class="tip text-muted">*e.g. https://github.com/<span class="text-danger">account</span></div>
           </div>
         </header>
         <section class="bd" role="tablist">
@@ -178,7 +187,7 @@
                 <div class="btn-group btn-group-sm" role="group">
                   <div class="btn-group" role="group">
                     <a class="dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="javascript:void(0);">
-                      Add to group...
+                      Add to group
                     </a>
                     <div class="dropdown-menu">
                       {groupItems}
@@ -187,7 +196,7 @@
                         <i class="fa fa-plus-circle"></i> Add new group
                       </div>
                       <div class="dropdown-item text-danger" data-id="0">
-                        <i class="fa fa-minus-circle"></i> Remove from group
+                        <i class="fa fa-times-circle"></i> Remove from group
                       </div>
                     </div>
                   </div>

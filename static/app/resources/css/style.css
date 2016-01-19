@@ -197,8 +197,10 @@ html,body{
   top: 0;
   left: 4%;
   cursor: pointer;
-  color: #70B7FD;
   transition: all 1s;
+}
+.bookmark-logo{
+  color: #70B7FD;
 }
 .bookmark-modal .modal-body>.hd{
   padding-bottom: 1rem;
@@ -215,15 +217,19 @@ html,body{
   margin: 0 auto;
 }
 .bookmark-modal .modal-body>.hd>.empty{
-  padding: 5rem 0;
   text-align: center;
-  cursor: pointer;
+}
+.bookmark-modal .modal-body>.hd>.empty .top{
+  margin: 2em;
+}
+.bookmark-modal .modal-body>.hd>.empty .tip{
+  text-align: left;
 }
 .bookmark-modal .repo-item .card-footer {
   padding: .3rem 1.25rem;
 }
-.bookmark-modal .repo-group-item:last-child>.hd .del,
-.bookmark-modal .repo-group-item:last-child .dropdown-menu>.dropdown-item:last-child{
+.bookmark-modal .repo-group-item[data-id="0"]>.hd .del,
+.bookmark-modal .repo-group-item[data-id="0"] .dropdown-menu>.dropdown-item:last-child{
   display: none;
 }
 .bookmark-user-modal .user-item:first-child{

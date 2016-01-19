@@ -868,7 +868,24 @@ $(function () {
     els.bookmarkBtn.on('click', showBookmark);
     els.bookmarkModal.on('click', '.add-account', showBookmarkUserModal);
     els.bookmarkModal.on('click', '.add-group', showBookmarkGroupModal);
-    els.bookmarkUserModal.on('click', '.submit', beforeAddBookmarkUser);
+    els.bookmarkModalContentHd.on('click', '.submit', function(){
+      beforeAddBookmarkUser(els.bookmarkModalContentHd);
+    });
+    els.bookmarkUserModal.on('click', '.submit', function(){
+      beforeAddBookmarkUser();
+    });
+    els.bookmarkModalContentHd.keypress(function (e) {
+      if (e.which == 13) {
+        beforeAddBookmarkUser();
+        return false;
+      }
+    });
+    els.bookmarkUserModal.keypress(function (e) {
+      if (e.which == 13) {
+        beforeAddBookmarkUser(els.bookmarkModalContentHd);
+        return false;
+      }
+    });
     els.bookmarkGroupModal.on('click', '.submit', beforeAddBookmarkGroup);
     els.bookmarkModalContent.on('click', '.repo-group-item>.hd .ctrl .del', beforeDelBookmarkGroup);
     els.bookmarkModalContent.on('click', '.dropdown-item', beforeAddRepoToGroup);
@@ -1292,20 +1309,25 @@ $(function () {
         .replace(/\{itemCount\}/g, rhtm.length)
       );
     });
-    //add all group
-    data.repos.forEach(function (key) {
-      allRhtm.push(getBookmarkRopeHtm(key, allGhtm));
-    });
-    htm.push(els.bookmarkModalGroupTpl
-      .replace(/\{id\}/g, 0)
-      .replace(/\{name\}/g, 'All')
-      .replace(/\{items\}/g, allRhtm.join(''))
-      .replace(/\{itemCount\}/g, data.repos.length)
-    );
+    if(data.repos.length){
+      //add all group
+      data.repos.forEach(function (key) {
+        allRhtm.push(getBookmarkRopeHtm(key, allGhtm));
+      });
+      htm.push(els.bookmarkModalGroupTpl
+        .replace(/\{id\}/g, 0)
+        .replace(/\{name\}/g, 'All')
+        .replace(/\{items\}/g, allRhtm.join(''))
+        .replace(/\{itemCount\}/g, data.repos.length)
+      );
+    }
 
     if(data.repos.length || data.groups.length){
       els.bookmarkModalContent.html(htm.join(''));
       renderBookmarkHeader();
+    }else{
+      els.bookmarkModalContent.html('');
+      renderBookmarkHeader('empty');
     }
     setTimeout(function () {
       var gel = els.bookmarkModalContent.find('.repo-group-item[data-id="' + els.lastEditBookmarkRepoGroupId + '"] .collapse');
@@ -1364,9 +1386,10 @@ $(function () {
     els.body.find('.popover--variable').remove();
   }
 
-  function beforeAddBookmarkUser() {
-    els.bookmarkUserModalInput = els.bookmarkUserModalInput || els.bookmarkUserModal.find('input');
-    var val = els.bookmarkUserModalInput.val().trim();
+  function beforeAddBookmarkUser(el) {
+    el = el || els.bookmarkUserModal;
+    var inputEl = el.find('input'),
+      val = inputEl.val().trim();
     val = val.replace(/(\/)*$/, '').replace(/^(.{0,}\/)/, '').replace(/@/g,'');
     if (val.length) {
       bookmarkModel.setCurUserName(val);
@@ -1376,7 +1399,7 @@ $(function () {
       els.isGithub && DDMSModel.postBookmarks(val);
       renderAnalytics('bk&u=' + val);
     }
-    els.bookmarkUserModalInput.val('');
+    inputEl.val('');
   }
 
   function beforeAddBookmarkGroup() {
