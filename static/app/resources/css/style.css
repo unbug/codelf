@@ -144,6 +144,9 @@ html,body{
 .modal--fix{
   max-height: 98%;
 }
+.modal-header .close{
+  padding-left: 1.25rem;
+}
 .modal--fix .modal-dialog,
 .modal--fix .modal-content{
   height: 100%;
@@ -226,29 +229,35 @@ html,body{
   text-align: center;
 }
 .bookmark-modal .modal-body>.hd>.empty .top{
-  margin: 2em;
+  margin: 2rem;
 }
 .bookmark-modal .modal-body>.hd>.empty .tip{
   text-align: left;
 }
-.bookmark-modal .repo-item .card-footer {
-  padding: .3rem 1.25rem;
+.bookmark-modal .card-block{
+  padding: .5rem;
 }
-.bookmark-modal .repo-item_bd{
-  word-break: break-word;
-  word-wrap: break-word;
+.bookmark-modal .card-header {
+  padding: .5rem;
+}
+.bookmark-modal .card-footer {
+  padding: 0 0 .2rem 0;
+}
+.bookmark-modal .repo-list {
+  padding-bottom: 0;
 }
 .bookmark-modal .repo-group-item>.hd .search{
   display: none;
   cursor: pointer;
   max-width: 70%;
+  margin-top: -0.25rem;
 }
 .bookmark-modal .repo-group-item[data-id="0"]>.hd .search{
   display: block;
 }
 .bookmark-modal .repo-group-item .hd .ctrl>div{
   display: inline-block;
-  padding-left: .4rem;
+  padding: 0 .4rem;
   cursor: pointer;
 }
 .bookmark-modal .repo-group-item[data-id="0"]>.hd .ctrl,
@@ -257,6 +266,9 @@ html,body{
 }
 .bookmark-user-modal .user-item:first-child{
   margin-top: 1rem;
+}
+.bookmark-user-modal .user-list .ctrl{
+  margin-top: -0.25rem;
 }
 
 body.mobile .variable-btns__copy{

@@ -879,17 +879,23 @@ $(function () {
     });
     els.bookmarkModalContentHd.keypress(function (e) {
       if (e.which == 13) {
-        beforeAddBookmarkUser();
+        beforeAddBookmarkUser(els.bookmarkModalContentHd);
         return false;
       }
     });
     els.bookmarkUserModal.keypress(function (e) {
       if (e.which == 13) {
-        beforeAddBookmarkUser(els.bookmarkModalContentHd);
+        beforeAddBookmarkUser();
         return false;
       }
     });
     els.bookmarkGroupModal.on('click', '.submit', beforeEditBookmarkGroup);
+    els.bookmarkGroupModal.keypress(function (e) {
+      if (e.which == 13) {
+        beforeEditBookmarkGroup();
+        return false;
+      }
+    });
     els.bookmarkModalContent.on('click', '.repo-group-item>.hd .ctrl .del', beforeDelBookmarkGroup);
     els.bookmarkModalContent.on('click', '.repo-group-item>.hd .ctrl .edit', function(){
       showBookmarkGroupModal(this.dataset.id,this.dataset.name);
@@ -941,6 +947,10 @@ $(function () {
     els.bookmarkUserModal.modal('show');
   }
 
+  function hideBookmarkUserModal() {
+    els.bookmarkUserModal.modal('hide');
+  }
+
   function showBookmarkGroupModal(id,name) {
     hideBookmark();
     els.bookmarkGroupModal.modal('show');
@@ -949,6 +959,10 @@ $(function () {
     }else{
       els.bookmarkGroupModalInput.removeAttr('data-id').val('');
     }
+  }
+
+  function hideBookmarkGroupModal() {
+    els.bookmarkGroupModal.modal('hide');
   }
 
   function onLocationHashChanged(e) {
@@ -1434,6 +1448,7 @@ $(function () {
       renderAnalytics('bk&u=' + val);
     }
     inputEl.val('');
+    hideBookmarkUserModal();
   }
 
   function beforeEditBookmarkGroup() {
@@ -1449,6 +1464,7 @@ $(function () {
       }
     }
     els.bookmarkGroupModalInput.val('');
+    hideBookmarkGroupModal();
   }
 
   function beforeDelBookmarkGroup() {
