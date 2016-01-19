@@ -909,6 +909,7 @@ $(function () {
     if (os.ios || os.android) {
       els.isMobile = true;
       els.body.addClass('mobile');
+      FastClick.attach(document.body);
     }
     bindEvent();
     renderTitle();

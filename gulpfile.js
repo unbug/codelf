@@ -40,7 +40,13 @@ gulp.task('clean:dist', function (cb) {
 
 gulp.task('dist:js', function (cb) {
   var dir = './static/app/src/lib/';
-  gulp.src([dir+'jquery.min.js',dir+'tether.min.js',dir+'bootstrap.min.js',dir+'prettify.js',dir+'ZeroClipboard.min.js',dir+'lovefield.min.js'])
+  gulp.src([dir+'jquery.min.js',
+    dir+'tether.min.js',
+    dir+'bootstrap.min.js',
+    dir+'prettify.js',
+    dir+'ZeroClipboard.min.js',
+    dir+'lovefield.min.js',
+    dir+'fastclick.js'])
     .pipe($.cached('build-cache', {
       optimizeMemory: true
     }))
