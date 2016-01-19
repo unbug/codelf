@@ -559,7 +559,7 @@ $(function () {
             }
             ids = ids.length ? ids.join(',') : '';
             DB.update(Tables.RepoGroup).set(Tables.RepoGroup.repoIds, ids).where(Tables.RepoGroup.id.eq(id))
-              .exec().then(function () {
+              .exec().then(function (res) {
               win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.U, result: res});
             });
           }
@@ -668,6 +668,7 @@ $(function () {
       }
       this.resetPage = function(){
         page = 1;
+        mainData = [];
       }
       this.request = function (callback) {
         $.ajax({
@@ -699,6 +700,7 @@ $(function () {
       }
       this.resetPage = function(){
         page = 1;
+        mainData = [];
       }
       this.request = function (callback) {
         $.ajax({
@@ -860,7 +862,9 @@ $(function () {
 
     //bookmark
     els.win.on('DB:ready', renderBookmarkGroup);
-    els.win.on('DB:Table.RepoGroup.onchange', renderBookmarkGroup);
+    els.win.on('DB:Table.RepoGroup.onchange', function(e,data){
+      data && data.type!='UPDATED' && renderBookmarkGroup();
+    });
     els.bookmarkBtn.on('click', showBookmark);
     els.bookmarkModal.on('click', '.add-account', showBookmarkUserModal);
     els.bookmarkModal.on('click', '.add-group', showBookmarkGroupModal);
@@ -1393,17 +1397,32 @@ $(function () {
 
   function beforeAddRepoToGroup() {
     var el = $(this),
-      gId = el.attr('data-id'),
+      targetGroupId = el.attr('data-id'),
       repoEl = el.parents('.repo-item'),
       repoId = repoEl.attr('data-repoid'),
       curGroupEl = el.parents('.repo-group-item'),
-      curGroupId = curGroupEl.attr('data-id');
+      curGroupId = curGroupEl.attr('data-id'),
+      curGroupElCountEl = curGroupEl.find('.hd>.count'),
+      curGoupCountNum = parseInt(curGroupElCountEl.html()),
+      targetGoupEl = curGroupEl.siblings('.repo-group-item[data-id="'+targetGroupId+'"]'),
+      targetGoupCountEl = targetGoupEl.find('.hd>.count'),
+      targetGoupCountNum = parseInt(targetGoupCountEl.html()),
+      targetGroupHasRepo = targetGoupEl.find('.repo-item[data-repoid="'+repoId+'"]').length;
 
     els.lastEditBookmarkRepoGroupId = curGroupId;
-    if (gId != undefined && gId != 0) {
-      bookmarkModel.RepoGroupTable.addRopoId(gId, repoId);
+    if (targetGroupId != undefined && targetGroupId != 0) {
+      bookmarkModel.RepoGroupTable.addRopoId(targetGroupId, repoId);
+
+      if(!targetGroupHasRepo){
+        targetGoupCountEl.html(++targetGoupCountNum);
+        targetGoupEl.find('.repo-list').append(repoEl.clone());
+      }
+
     } else if (curGroupId != 0) {
       bookmarkModel.RepoGroupTable.removeRopoId(curGroupId, repoId);
+
+      curGroupElCountEl.html(--curGoupCountNum);
+      repoEl.remove();
     }
   }
 
