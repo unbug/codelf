@@ -2,6 +2,12 @@ html,body{
   width: 100%;
   -webkit-font-smoothing: antialiased;
 }
+.fix-break-word, p {
+  word-break: break-all;
+  word-break: break-word;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
 .label {
   margin-right: .4rem;
 }
@@ -227,6 +233,10 @@ html,body{
 }
 .bookmark-modal .repo-item .card-footer {
   padding: .3rem 1.25rem;
+}
+.bookmark-modal .repo-item_bd{
+  word-break: break-word;
+  word-wrap: break-word;
 }
 .bookmark-modal .repo-group-item>.hd .search{
   display: none;
