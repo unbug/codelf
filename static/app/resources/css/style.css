@@ -231,9 +231,15 @@ html,body{
 .bookmark-modal .repo-group-item>.hd .search{
   display: none;
   cursor: pointer;
+  max-width: 70%;
 }
 .bookmark-modal .repo-group-item[data-id="0"]>.hd .search{
   display: block;
+}
+.bookmark-modal .repo-group-item .hd .ctrl>div{
+  display: inline-block;
+  padding-left: .4rem;
+  cursor: pointer;
 }
 .bookmark-modal .repo-group-item[data-id="0"]>.hd .ctrl,
 .bookmark-modal .repo-group-item[data-id="0"] .dropdown-menu>.dropdown-item:last-child{

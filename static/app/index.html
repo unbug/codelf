@@ -163,8 +163,9 @@
               <header class="card-header hd" role="tab" id="repo_group_hd_{id}">
                 <a href="#repo_group_list_{id}" data-toggle="collapse" data-parent=".bd" aria-expanded="false" aria-controls="repo_group_list_{id}">{name}</a>
                 &nbsp;<span class="label label-info label-pill count">{itemCount}</span>
-                <div class="btn-group btn-group-sm pull-xs-right ctrl">
-                  <button class="btn btn-secondary btn-sm del" data-id="{id}"><i class="fa fa-trash-o"></i></button>
+                <div class="pull-xs-right ctrl">
+                  <div class="edit" data-id="{id}" data-name="{name}"><i class="fa fa-pencil-square-o"></i></div>
+                  <div class="del" data-id="{id}"><i class="fa fa-trash-o"></i></div>
                 </div>
                 <form class="form-inline pull-xs-right search">
                   <div class="form-group">
@@ -186,7 +187,7 @@
             </div>
           </script>
           <script type="text/html" data-template="repoItem">
-            <article class="card repo-item" data-id="{id}" data-repoid="{originRepoId}" data-name="{full_name}">
+            <article class="card repo-item" data-id="{id}" data-repoid="{originRepoId}" data-name="{_full_name}">
               <div class="card-block">
                 <header class="repo-item__hd"><h6><a href="{html_url}" target="_blank">{full_name}</a></h6></header>
                 <section class="repo-item__bd">{description}</section>

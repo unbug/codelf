@@ -473,7 +473,7 @@ $(function () {
             .exec().then(function (res) {
               curUser = res[0];
               callback && callback();
-              win.trigger('DB:Table.User.onchange', {type: DBEventType.C, result: res});
+              win.trigger('DB:Table.User.onchange', {type: DBEventType.C});
             });
         });
       }
@@ -481,7 +481,7 @@ $(function () {
       this.updateSync = function (name) {
         DB.update(Tables.User).set(Tables.User.lastSync, new Date()).where(Tables.User.name.eq(name))
           .exec().then(function (res) {
-          win.trigger('DB:Table.User.onchange', {type: DBEventType.U, result: res});
+          win.trigger('DB:Table.User.onchange', {type: DBEventType.U});
         });
       }
 
@@ -495,7 +495,7 @@ $(function () {
             .where(Tables.User.id.eq(id))
             .exec().then(function (res) {
             callback && callback(res);
-            win.trigger('DB:Table.User.onchange', {type: DBEventType.D, result: res});
+            win.trigger('DB:Table.User.onchange', {type: DBEventType.D});
           });
         });
       }
@@ -525,7 +525,7 @@ $(function () {
           .exec().then(function (rows) {
           !rows.length && DB.insertOrReplace().into(Tables.RepoGroup).values([row])
             .exec().then(function (res) {
-              win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.C, result: res});
+              win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.C});
             });
         });
       }
@@ -540,9 +540,7 @@ $(function () {
             }
             ids = ids.length ? ids.join(',') : '';
             DB.update(Tables.RepoGroup).set(Tables.RepoGroup.repoIds, ids).where(Tables.RepoGroup.id.eq(id))
-              .exec().then(function (res) {
-              win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.U, result: res});
-            });
+              .exec();
           }
         });
       }
@@ -559,10 +557,14 @@ $(function () {
             }
             ids = ids.length ? ids.join(',') : '';
             DB.update(Tables.RepoGroup).set(Tables.RepoGroup.repoIds, ids).where(Tables.RepoGroup.id.eq(id))
-              .exec().then(function (res) {
-              win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.U, result: res});
-            });
+              .exec();
           }
+        });
+      }
+      this.updateName = function (id, name) {
+        DB.update(Tables.RepoGroup).set(Tables.RepoGroup.name, name).where(Tables.RepoGroup.id.eq(id))
+          .exec().then(function () {
+          win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.U, fields: 'name'});
         });
       }
 
@@ -572,7 +574,7 @@ $(function () {
           .where(Tables.RepoGroup.id.eq(id))
           .exec().then(function (res) {
           callback && callback(res);
-          win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.D, result: res});
+          win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.D});
         });
       }
 
@@ -627,7 +629,7 @@ $(function () {
           .where(Tables.Repo.id.eq(id))
           .exec().then(function (res) {
           callback && callback(res);
-          win.trigger('DB:Table.Repo.onchange', {type: DBEventType.D, result: res});
+          win.trigger('DB:Table.Repo.onchange', {type: DBEventType.D});
         });
       }
 
@@ -637,7 +639,7 @@ $(function () {
           .where(Tables.Repo.userId.eq(id))
           .exec().then(function (res) {
           callback && callback(res);
-          win.trigger('DB:Table.Repo.onchange', {type: DBEventType.D, result: res});
+          win.trigger('DB:Table.Repo.onchange', {type: DBEventType.D});
         });
       }
 
@@ -825,6 +827,7 @@ $(function () {
     bookmarkUserModalUserTpl: $('.bookmark-user-modal .user-list script').html(),
 
     bookmarkGroupModal: $('.bookmark-group-modal'),
+    bookmarkGroupModalInput: $('.bookmark-group-modal input'),
 
     githubCorner: $('.github-corner svg'),
     donate: $('.donate'),
@@ -862,12 +865,12 @@ $(function () {
 
     //bookmark
     els.win.on('DB:ready', renderBookmarkGroup);
-    els.win.on('DB:Table.RepoGroup.onchange', function(e,data){
-      data && data.type!='UPDATED' && renderBookmarkGroup();
-    });
+    els.win.on('DB:Table.RepoGroup.onchange', renderBookmarkGroup);
     els.bookmarkBtn.on('click', showBookmark);
     els.bookmarkModal.on('click', '.add-account', showBookmarkUserModal);
-    els.bookmarkModal.on('click', '.add-group', showBookmarkGroupModal);
+    els.bookmarkModal.on('click', '.add-group', function(){
+      showBookmarkGroupModal();
+    });
     els.bookmarkModalContentHd.on('click', '.submit', function(){
       beforeAddBookmarkUser(els.bookmarkModalContentHd);
     });
@@ -886,8 +889,11 @@ $(function () {
         return false;
       }
     });
-    els.bookmarkGroupModal.on('click', '.submit', beforeAddBookmarkGroup);
+    els.bookmarkGroupModal.on('click', '.submit', beforeEditBookmarkGroup);
     els.bookmarkModalContent.on('click', '.repo-group-item>.hd .ctrl .del', beforeDelBookmarkGroup);
+    els.bookmarkModalContent.on('click', '.repo-group-item>.hd .ctrl .edit', function(){
+      showBookmarkGroupModal(this.dataset.id,this.dataset.name);
+    });
     els.bookmarkModalContent.on('click', '.dropdown-item', beforeAddRepoToGroup);
     els.bookmarkModalContent.on('keyup','.repo-group-item>.hd .search input',renderBookmarkSearchRepos);
     els.bookmarkModalContent.on('click','.repo-group-item>.hd .search submit',renderBookmarkSearchRepos);
@@ -933,9 +939,14 @@ $(function () {
     els.bookmarkUserModal.modal('show');
   }
 
-  function showBookmarkGroupModal() {
+  function showBookmarkGroupModal(id,name) {
     hideBookmark();
     els.bookmarkGroupModal.modal('show');
+    if(id){
+      els.bookmarkGroupModalInput.attr('data-id',id).val(name||'');
+    }else{
+      els.bookmarkGroupModalInput.removeAttr('data-id').val('');
+    }
   }
 
   function onLocationHashChanged(e) {
@@ -1085,6 +1096,7 @@ $(function () {
       .replace(/\{id\}/g, repo.id)
       .replace(/\{originRepoId\}/g, repo.originRepoId)
       .replace(/\{full_name\}/g, repo.data.full_name)
+      .replace(/\{_full_name\}/g, repo.data.full_name.toLowerCase())
       .replace(/\{description\}/g, repo.data.description||'')
       .replace(/\{html_url\}/g, repo.data.html_url)
       .replace(/\{groupItems\}/g, allGroupHtm)
@@ -1346,7 +1358,7 @@ $(function () {
     var gEl = els.bookmarkModalContent.find('.repo-group-item[data-id="0"]'),
       inputEl = gEl.find('.hd .search input'),
       countEl = gEl.find('.hd .count'),
-      val = inputEl.val().trim(),
+      val = inputEl.val().trim().toLowerCase(),
       repoEls = gEl.find('.repo-list .repo-item'),
       matchRepoEls = gEl.find('.repo-list .repo-item[data-name*="'+val+'"]'),
       resultRepoEls = val.length?matchRepoEls:repoEls;
@@ -1418,10 +1430,18 @@ $(function () {
     inputEl.val('');
   }
 
-  function beforeAddBookmarkGroup() {
-    els.bookmarkGroupModalInput = els.bookmarkGroupModalInput || els.bookmarkGroupModal.find('input');
-    var val = els.bookmarkGroupModal.find('input').val().trim();
-    val.length && bookmarkModel.RepoGroupTable.add(val);
+  function beforeEditBookmarkGroup() {
+    var id = els.bookmarkGroupModalInput.attr('data-id'),
+      val = els.bookmarkGroupModalInput.val().trim();
+
+    if(val.length){
+      if(id){
+        bookmarkModel.RepoGroupTable.updateName(id,val);
+        els.bookmarkGroupModalInput.removeAttr('data-id');
+      }else{
+        bookmarkModel.RepoGroupTable.add(val);
+      }
+    }
     els.bookmarkGroupModalInput.val('');
   }
 
