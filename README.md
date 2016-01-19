@@ -2,6 +2,8 @@
 
 Codelf
 =================
+
+[![Join the chat at https://gitter.im/unbug/codelf](https://badges.gitter.im/unbug/codelf.svg)](https://gitter.im/unbug/codelf?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Search over projects from GitHub, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Project to find real-world usage variable names. 
 
   >There are only two hard things in Computer Science: cache invalidation and naming things.-- Phil Karlton
