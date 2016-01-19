@@ -228,7 +228,14 @@ html,body{
 .bookmark-modal .repo-item .card-footer {
   padding: .3rem 1.25rem;
 }
-.bookmark-modal .repo-group-item[data-id="0"]>.hd .del,
+.bookmark-modal .repo-group-item>.hd .search{
+  display: none;
+  cursor: pointer;
+}
+.bookmark-modal .repo-group-item[data-id="0"]>.hd .search{
+  display: block;
+}
+.bookmark-modal .repo-group-item[data-id="0"]>.hd .ctrl,
 .bookmark-modal .repo-group-item[data-id="0"] .dropdown-menu>.dropdown-item:last-child{
   display: none;
 }

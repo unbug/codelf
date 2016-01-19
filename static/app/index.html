@@ -166,6 +166,14 @@
                 <div class="btn-group btn-group-sm pull-xs-right ctrl">
                   <button class="btn btn-secondary btn-sm del" data-id="{id}"><i class="fa fa-trash-o"></i></button>
                 </div>
+                <form class="form-inline pull-xs-right search">
+                  <div class="form-group">
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control" placeholder="search...">
+                      <div class="input-group-addon submit"><i class="fa fa-search"></i></div>
+                    </div>
+                  </div>
+                </form>
               </header>
               <section class="card-block repo-list collapse" id="repo_group_list_{id}" role="tabpanel" aria-labelledby="repo_group_hd_{id}">
                 {items}
@@ -178,7 +186,7 @@
             </div>
           </script>
           <script type="text/html" data-template="repoItem">
-            <article class="card repo-item" data-id="{id}" data-repoid="{originRepoId}">
+            <article class="card repo-item" data-id="{id}" data-repoid="{originRepoId}" data-name="{full_name}">
               <div class="card-block">
                 <header class="repo-item__hd"><h6><a href="{html_url}" target="_blank">{full_name}</a></h6></header>
                 <section class="repo-item__bd">{description}</section>

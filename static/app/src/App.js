@@ -889,6 +889,8 @@ $(function () {
     els.bookmarkGroupModal.on('click', '.submit', beforeAddBookmarkGroup);
     els.bookmarkModalContent.on('click', '.repo-group-item>.hd .ctrl .del', beforeDelBookmarkGroup);
     els.bookmarkModalContent.on('click', '.dropdown-item', beforeAddRepoToGroup);
+    els.bookmarkModalContent.on('keyup','.repo-group-item>.hd .search input',renderBookmarkSearchRepos);
+    els.bookmarkModalContent.on('click','.repo-group-item>.hd .search submit',renderBookmarkSearchRepos);
     els.bookmarkUserModalUserList.on('click', '.sync', function () {
       beforeSyncUser(this.dataset.name);
     });
@@ -1340,6 +1342,20 @@ $(function () {
     renderBookmarkUsers(data.users);
   }
 
+  function renderBookmarkSearchRepos(){
+    var gEl = els.bookmarkModalContent.find('.repo-group-item[data-id="0"]'),
+      inputEl = gEl.find('.hd .search input'),
+      countEl = gEl.find('.hd .count'),
+      val = inputEl.val().trim(),
+      repoEls = gEl.find('.repo-list .repo-item'),
+      matchRepoEls = gEl.find('.repo-list .repo-item[data-name*="'+val+'"]'),
+      resultRepoEls = val.length?matchRepoEls:repoEls;
+
+    repoEls.attr('hidden','true');
+    resultRepoEls.removeAttr('hidden');
+    countEl.html(resultRepoEls.length);
+
+  }
   function renderBookmarkUsers(data) {
     var htm = [];
     data.forEach(function (key) {
