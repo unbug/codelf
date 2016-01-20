@@ -247,7 +247,7 @@ html,body{
   padding-bottom: 0;
 }
 .bookmark-modal .repo-group-item>.hd .dropdown-menu{
-  min-width: auto;
+  min-width: initial;
 }
 .bookmark-modal .repo-group-item>.hd .search{
   display: none;
