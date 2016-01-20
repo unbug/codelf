@@ -446,7 +446,7 @@ $(function () {
       .createTable('RepoGroup')
       .addColumn('id', lf.Type.INTEGER)
       .addColumn('name', lf.Type.STRING)
-      .addColumn('repoIds', lf.Type.STRING)
+      .addColumn('repoIds', lf.Type.OBJECT)
       .addColumn('order', lf.Type.INTEGER)
       .addColumn('create', lf.Type.DATE_TIME)
       .addPrimaryKey(['id'], true);
@@ -456,7 +456,7 @@ $(function () {
       .addColumn('id', lf.Type.INTEGER)
       .addColumn('userId', lf.Type.INTEGER)
       .addColumn('originRepoId', lf.Type.STRING)
-      .addColumn('data', lf.Type.STRING)
+      .addColumn('data', lf.Type.OBJECT)
       .addColumn('create', lf.Type.DATE_TIME)
       .addPrimaryKey(['id'], true);
 
@@ -940,7 +940,7 @@ $(function () {
     renderLangMunu();
     onLocationHashChanged();
     renderAnalytics();
-    //showBookmark();
+    showBookmark();
   }
 
   function showSourceCode() {
@@ -1348,7 +1348,7 @@ $(function () {
     });
     allGhtm = allGhtm.join('');
     data.groups.forEach(function (key) {
-      var rids = toString.call(key.repoIds) == '[object Array]'?key.repoIds:key.repoIds.split(','),
+      var rids = /string/i.test(typeof key.repoIds)?key.repoIds.split(','):key.repoIds,
         rhtm = [];
       rids.length && rids.forEach(function (key) {
         var rd = repos[key];
