@@ -246,6 +246,9 @@ html,body{
 .bookmark-modal .repo-list {
   padding-bottom: 0;
 }
+.bookmark-modal .repo-group-item>.hd .dropdown-menu{
+  min-width: auto;
+}
 .bookmark-modal .repo-group-item>.hd .search{
   display: none;
   cursor: pointer;
