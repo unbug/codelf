@@ -517,7 +517,7 @@ $(function () {
         }
         var row = Tables.RepoGroup.createRow({
           'name': name,
-          'repoIds': '',
+          'repoIds': [],
           'order': 0,
           'create': new Date()
         });
@@ -534,11 +534,12 @@ $(function () {
         DB.select().from(Tables.RepoGroup).where(Tables.RepoGroup.id.eq(id))
           .exec().then(function (rows) {
           if (rows && rows[0]) {
-            var ids = rows[0].repoIds.length ? rows[0].repoIds.split(',') : [];
+            var ids = /string/i.test(typeof rows[0].repoIds)?
+              (rows[0].repoIds.length ? rows[0].repoIds.split(',') : []):
+              rows[0].repoIds;
             if (ids.indexOf(repoId) == -1) {
               ids.push(repoId);
             }
-            ids = ids.length ? ids.join(',') : '';
             DB.update(Tables.RepoGroup).set(Tables.RepoGroup.repoIds, ids).where(Tables.RepoGroup.id.eq(id))
               .exec();
           }
@@ -549,13 +550,14 @@ $(function () {
         DB.select().from(Tables.RepoGroup).where(Tables.RepoGroup.id.eq(id))
           .exec().then(function (rows) {
           if (rows && rows[0]) {
-            var ids = rows[0].repoIds.length ? rows[0].repoIds.split(',') : [],
+            var ids = /string/i.test(typeof rows[0].repoIds)?
+                        (rows[0].repoIds.length ? rows[0].repoIds.split(',') : []):
+                        rows[0].repoIds,
               idx = ids.indexOf(repoId);
 
             if (idx != -1) {
               ids.splice(idx, 1);
             }
-            ids = ids.length ? ids.join(',') : '';
             DB.update(Tables.RepoGroup).set(Tables.RepoGroup.repoIds, ids).where(Tables.RepoGroup.id.eq(id))
               .exec();
           }
@@ -1330,7 +1332,7 @@ $(function () {
     });
     allGhtm = allGhtm.join('');
     data.groups.forEach(function (key) {
-      var rids = key.repoIds.split(','),
+      var rids = toString.call(key.repoIds) == '[object Array]'?key.repoIds:key.repoIds.split(','),
         rhtm = [];
       rids.length && rids.forEach(function (key) {
         var rd = repos[key];
