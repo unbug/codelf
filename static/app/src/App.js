@@ -940,7 +940,7 @@ $(function () {
     renderLangMunu();
     onLocationHashChanged();
     renderAnalytics();
-    showBookmark();
+    //showBookmark();
   }
 
   function showSourceCode() {
