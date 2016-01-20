@@ -1,5 +1,20 @@
 $(function () {
   //utils
+  var appCache = window.applicationCache;
+  appCache.addEventListener('updateready', function(e) {
+    if (appCache.status == appCache.UPDATEREADY){
+      try{
+        appCache.update();
+        if (appCache.status == appCache.UPDATEREADY) {
+          try{
+            appCache.swapCache();
+            window.location.reload(false);
+          }catch(err){}
+        }
+      }catch(err){}
+    }
+  }, false);
+
   var ua = navigator.userAgent,
     android = ua.match(/(Android);?[\s\/]+([\d.]+)?/),
     ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
@@ -925,6 +940,7 @@ $(function () {
     renderLangMunu();
     onLocationHashChanged();
     renderAnalytics();
+    //showBookmark();
   }
 
   function showSourceCode() {
