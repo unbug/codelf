@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>CODELF</title>
-  <meta name="description" content="Group your GitHub stars and repos.Search over projects from GitHub, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Project to find real-world usage variable names" />
-  <meta name="keywords" content="Codelf,变量命名,函数命名,方法命名,变量命名神器,GitHub 分组,Group GitHub stars,naming things,naming convention,programming naming">
+  <meta name="description" content="Organize GitHub stars and repos.Search over projects from GitHub, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Project to find real-world usage variable names" />
+  <meta name="keywords" content="Codelf,变量命名,函数命名,方法命名,变量命名神器,GitHub 分组,Organize GitHub stars,naming things,naming convention,programming naming">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <link rel="shortcut icon" href="resources/images/codelf_logo.png" >
   <link rel="apple-touch-icon" sizes="144x144"  href="resources/images/codelf_logo.png">
@@ -52,7 +52,7 @@
         </form>
         <span class="input-group-btn">
           <button class="btn btn-secondary search" type="button" data-toggle="tooltip" data-placement="left" data-trigger="manual" title="Click here to show more">Search</button>
-          <a class="btn btn-secondary hidden-sm-down help" href="https://github.com/unbug/codelf/issues?q=is%3Aissue+is%3Aclosed" target="_blank">WTF?</a>
+          <a class="btn btn-secondary hidden-sm-down help" href="https://github.com/unbug/codelf/issues?q=is%3Aissue+is%3Aclosed" target="_blank">Help?</a>
         </span>
       </div>
     </div>
@@ -124,7 +124,7 @@
     </div>
   </div>
 </section>
-<div class="bookmark-btn" data-toggle="tooltip" data-placement="right" title="Group GitHub stars">
+<div class="bookmark-btn" data-toggle="tooltip" data-placement="right" title="Organize GitHub stars">
   <i class="bookmark-logo fa fa-bookmark fa-3x"></i>
 </div>
 <section class="modal fade bookmark-modal modal--fix" tabindex="-1" role="dialog" aria-labelledby="bookmarkModal" aria-hidden="true">
@@ -145,7 +145,7 @@
           <div class="empty">
             <div class="top">
               <i class="bookmark-logo fa fa-bookmark fa-5x"></i>
-              <h5>Add GitHub accounts to group your stars and repos</h5>
+              <h5>Add GitHub accounts to organize your stars and repositories</h5>
             </div>
             <div class="input-group form">
               <input type="text" class="form-control" placeholder="account">
@@ -163,8 +163,15 @@
                 <a href="#repo_group_list_{id}" data-toggle="collapse" data-parent=".bd" aria-expanded="false" aria-controls="repo_group_list_{id}">{name}</a>
                 &nbsp;<span class="label label-info label-pill count">{itemCount}</span>
                 <div class="pull-xs-right ctrl">
-                  <div class="edit" data-id="{id}" data-name="{name}"><i class="fa fa-pencil-square-o"></i></div>
-                  <div class="del" data-id="{id}"><i class="fa fa-trash-o"></i></div>
+                  <div class="btn-group btn-group-sm" role="group">
+                    <div class="btn-group" role="group">
+                      <div class="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="repo_group_menu_{id}"><i class="fa fa-bars"></i></div>
+                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="repo_group_menu_{id}">
+                        <div class="dropdown-item edit" data-id="{id}" data-name="{name}"><i class="fa fa-pencil-square-o"></i> Edit</div>
+                        <div class="dropdown-item del" data-id="{id}"><i class="fa fa-trash-o"></i> Remove</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <form class="form-inline pull-xs-right search">
                   <div class="form-group">
