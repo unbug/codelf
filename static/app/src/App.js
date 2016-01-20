@@ -917,7 +917,7 @@ $(function () {
     els.bookmarkModalContent.on('click', '.repo-group-item>.hd .ctrl .edit', function(){
       showBookmarkGroupModal(this.dataset.id,this.dataset.name);
     });
-    els.bookmarkModalContent.on('click', '.dropdown-item', beforeAddRepoToGroup);
+    els.bookmarkModalContent.on('click', '.dropdown-item.add-repo', beforeAddRepoToGroup);
     els.bookmarkModalContent.on('keyup','.repo-group-item>.hd .search input',renderBookmarkSearchRepos);
     els.bookmarkModalContent.on('click','.repo-group-item>.hd .search submit',renderBookmarkSearchRepos);
     els.bookmarkUserModalUserList.on('click', '.sync', function () {
