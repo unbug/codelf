@@ -423,7 +423,7 @@ $(function () {
   var bookmarkModel = new function () {
     var BM = this;
     var DB;
-    var schemaBuilder = lf.schema.create('Codelf', 1);
+    var schemaBuilder = lf.schema.create('Codelf', 2);
     var Tables;
     var DBEventType = {
       C: 'CREATE',
@@ -460,6 +460,15 @@ $(function () {
       .addColumn('create', lf.Type.DATE_TIME)
       .addPrimaryKey(['id'], true);
 
+    schemaBuilder
+      .createTable('RepoTag')
+      .addColumn('id', lf.Type.INTEGER)
+      .addColumn('name', lf.Type.STRING)
+      .addColumn('color', lf.Type.STRING)
+      .addColumn('repoIds', lf.Type.OBJECT)
+      .addColumn('create', lf.Type.DATE_TIME)
+      .addPrimaryKey(['id'], true);
+
     schemaBuilder.connect({
       storeType: os.ios?lf.schema.DataStoreType.WEB_SQL: null
     }).then(function (db) {
@@ -467,8 +476,10 @@ $(function () {
       Tables = {
         User: DB.getSchema().table('User'),
         RepoGroup: DB.getSchema().table('RepoGroup'),
+        RepoTag: DB.getSchema().table('RepoTag'),
         Repo: DB.getSchema().table('Repo')
       };
+      BM.RepoTagTable.addDefaultTags();
       win.trigger('DB:ready');
     });
 
@@ -599,6 +610,142 @@ $(function () {
         DB.select()
           .from(Tables.RepoGroup)
           .orderBy(Tables.RepoGroup.create, lf.Order.DESC)
+          .exec().then(function (rows) {
+          callback && callback(rows);
+        });
+      }
+    };
+
+    this.RepoTagTable = new function () {
+      this.addDefaultTags = function(callback){
+        var tags = [
+          {
+            name: 'Red',
+            color: '#ff5f5f'
+          },
+          {
+            name: 'Orange',
+            color: '#fba45b'
+          },
+          {
+            name: 'Yellow',
+            color: '#f6cc67'
+          },
+          {
+            name: 'Green',
+            color: '#60cb68'
+          },
+          {
+            name: 'Blue',
+            color: '#33baef'
+          },
+          {
+            name: 'Purple',
+            color: '#d38adb'
+          },
+          {
+            name: 'Gray',
+            color: '#a4a4a7'
+          }
+        ];
+        DB.select().from(Tables.RepoTag)
+          .exec().then(function (rows) {
+          if(!rows.length){
+            var trows = [];
+            tags.forEach(function(key){
+              trows.push(Tables.RepoTag.createRow({
+                'name': key.name,
+                'color': key.color,
+                'repoIds': [],
+                'create': new Date()
+              }));
+            });
+            DB.insertOrReplace().into(Tables.RepoTag).values(trows)
+              .exec().then(function () {
+              callback && callback();
+            });
+          }else{
+            callback && callback();
+          }
+        });
+      }
+
+      this.add = function (name,color) {
+        if (!name || !color) {
+          return;
+        }
+        var row = Tables.RepoTag.createRow({
+          'name': name,
+          'color': color,
+          'repoIds': [],
+          'create': new Date()
+        });
+        DB.select().from(Tables.RepoTag).where(Tables.RepoTag.name.eq(name))
+          .exec().then(function (rows) {
+          !rows.length && DB.insertOrReplace().into(Tables.RepoTag).values([row])
+            .exec().then(function () {
+              win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.C});
+            });
+        });
+      }
+
+      this.addRopoId = function (id, repoId,callback) {
+        DB.select().from(Tables.RepoTag).where(Tables.RepoTag.id.eq(id))
+          .exec().then(function (rows) {
+          if (rows && rows[0]) {
+            var ids = rows[0].repoIds;
+            if (ids.indexOf(repoId) == -1) {
+              ids.push(repoId);
+            }
+            DB.update(Tables.RepoTag).set(Tables.RepoTag.repoIds, ids).where(Tables.RepoTag.id.eq(id))
+              .exec().then(function(){
+                callback && callback();
+                win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.U, fileds: ['repoIds']});
+              });
+          }
+        });
+      }
+
+      this.removeRopoId = function (id, repoId,callback) {
+        DB.select().from(Tables.RepoTag).where(Tables.RepoTag.id.eq(id))
+          .exec().then(function (rows) {
+          if (rows && rows[0]) {
+            var ids = rows[0].repoIds,
+              idx = ids.indexOf(repoId);
+
+            if (idx != -1) {
+              ids.splice(idx, 1);
+            }
+            DB.update(Tables.RepoTag).set(Tables.RepoTag.repoIds, ids).where(Tables.RepoTag.id.eq(id))
+              .exec().then(function(){
+                callback && callback();
+                win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.U, fileds: ['repoIds']});
+              });
+          }
+        });
+      }
+
+      this.updateName = function (id, name) {
+        DB.update(Tables.RepoTag).set(Tables.RepoTag.name, name).where(Tables.RepoTag.id.eq(id))
+          .exec().then(function () {
+          win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.U, fields: 'name'});
+        });
+      }
+
+      this.delete = function (id, callback) {
+        DB.delete()
+          .from(Tables.RepoTag)
+          .where(Tables.RepoTag.id.eq(id))
+          .exec().then(function (res) {
+          callback && callback(res);
+          win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.D});
+        });
+      }
+
+      this.getAll = function (callback) {
+        DB.select()
+          .from(Tables.RepoTag)
+          .orderBy(Tables.RepoTag.create, lf.Order.DESC)
           .exec().then(function (rows) {
           callback && callback(rows);
         });
@@ -740,20 +887,20 @@ $(function () {
     };
 
     this.getAll = function (callback) {
-      var users, repos, groups;
       //select user
-      BM.UserTable.getAll(function (ures) {
-        users = ures;
+      BM.UserTable.getAll(function (users) {
         //select groups
-        BM.RepoGroupTable.getAll(function (gres) {
-          groups = gres;
+        BM.RepoGroupTable.getAll(function (groups) {
           //select repos
-          BM.RepoTable.getAll(function (rres) {
-            repos = rres;
-            callback && callback.call(this, {
-              users: users || [],
-              repos: repos || [],
-              groups: groups || []
+          BM.RepoTable.getAll(function (repos) {
+            //select tags
+            BM.RepoTagTable.getAll(function (tags) {
+              callback && callback.call(this, {
+                users: users || [],
+                repos: repos || [],
+                groups: groups || [],
+                tags: tags || []
+              });
             });
           });
         });
@@ -833,10 +980,12 @@ $(function () {
 
     bookmarkBtn: $('.bookmark-btn'),
     bookmarkModal: $('.bookmark-modal'),
+    bookmarkModalTagMenu: $('.bookmark-modal .modal-header .tag-menu'),
     bookmarkModalContent: $('.bookmark-modal .modal-body>.bd'),
     bookmarkModalContentHd: $('.bookmark-modal .modal-body>.hd'),
     bookmarkModalGroupTpl: $('.bookmark-modal script[data-template="repoGroup"]').html(),
     bookmarkModalGroupItemTpl: $('.bookmark-modal script[data-template="groupItem"]').html(),
+    bookmarkModalTagItemTpl: $('.bookmark-modal script[data-template="tagItem"]').html(),
     bookmarkModalReopTpl: $('.bookmark-modal script[data-template="repoItem"]').html(),
 
     bookmarkUserModal: $('.bookmark-user-modal'),
@@ -883,16 +1032,15 @@ $(function () {
     //bookmark
     els.win.on('DB:ready', renderBookmarkGroup);
     els.win.on('DB:Table.RepoGroup.onchange', renderBookmarkGroup);
+    els.win.on('DB:Table.RepoTag.onchange', updateBookmarkTagsData);
     els.bookmarkBtn.on('click', showBookmark);
+    els.bookmarkModalTagMenu.on('click', '.dropdown-item', renderBookmarkGroupByTag);
     els.bookmarkModal.on('click', '.add-account', showBookmarkUserModal);
     els.bookmarkModal.on('click', '.add-group', function(){
       showBookmarkGroupModal();
     });
     els.bookmarkModalContentHd.on('click', '.submit', function(){
       beforeAddBookmarkUser(els.bookmarkModalContentHd);
-    });
-    els.bookmarkUserModal.on('click', '.submit', function(){
-      beforeAddBookmarkUser();
     });
     els.bookmarkModalContentHd.keypress(function (e) {
       if (e.which == 13) {
@@ -917,9 +1065,14 @@ $(function () {
     els.bookmarkModalContent.on('click', '.repo-group-item>.hd .ctrl .edit', function(){
       showBookmarkGroupModal(this.dataset.id,this.dataset.name);
     });
-    els.bookmarkModalContent.on('click', '.dropdown-item.add-repo', beforeAddRepoToGroup);
+    els.bookmarkModalContent.on('click', '.group-menu .add-repo', beforeAddRepoToGroup);
+    els.bookmarkModalContent.on('click', '.tag-menu .add-repo', beforeAddRepoToTag);
+    els.bookmarkModalContent.on('click', '.repo-item .tag-menu', renderBookmarkRepoTagMenu);
     els.bookmarkModalContent.on('keyup','.repo-group-item>.hd .search input',renderBookmarkSearchRepos);
     els.bookmarkModalContent.on('click','.repo-group-item>.hd .search submit',renderBookmarkSearchRepos);
+    els.bookmarkUserModal.on('click', '.submit', function(){
+      beforeAddBookmarkUser();
+    });
     els.bookmarkUserModalUserList.on('click', '.sync', function () {
       beforeSyncUser(this.dataset.name);
     });
@@ -940,7 +1093,7 @@ $(function () {
     renderLangMunu();
     onLocationHashChanged();
     renderAnalytics();
-    //showBookmark();
+    !els.isGithub && showBookmark();
   }
 
   function showSourceCode() {
@@ -1125,7 +1278,7 @@ $(function () {
     return els.storeRelatedProperties[name];
   }
 
-  function getBookmarkRopeHtm(repo, allGroupHtm) {
+  function getBookmarkRopeHtm(repo, allGroupHtm, allTagHtm) {
     return els.bookmarkModalReopTpl
       .replace(/\{id\}/g, repo.id)
       .replace(/\{originRepoId\}/g, repo.originRepoId)
@@ -1134,6 +1287,7 @@ $(function () {
       .replace(/\{description\}/g, repo.data.description||'')
       .replace(/\{html_url\}/g, repo.data.html_url)
       .replace(/\{groupItems\}/g, allGroupHtm)
+      .replace(/\{tagItems\}/g, allTagHtm)
   }
 
   function renderLangMunu() {
@@ -1331,45 +1485,55 @@ $(function () {
   }
 
   function renderBookmarkGroup(data) {
-    if (!data || !data.repos || !data.users || !data.groups) {
+    if (!data || !data.repos || !data.users || !data.groups || !data.tags) {
       bookmarkModel.getAll(renderBookmarkGroup);
       return;
     }
     var repos = bookmarkModel.arrayToObj(data.repos,'originRepoId'),
       htm = [],
-      allRhtm = [],
-      allGhtm = [];
+      allRepoHtm = [],
+      allGroupHtm = [],
+      allTagHtm = [];
 
     data.groups.forEach(function (key) {
-      allGhtm.push(els.bookmarkModalGroupItemTpl
+      allGroupHtm.push(els.bookmarkModalGroupItemTpl
         .replace(/\{id\}/g, key.id)
         .replace(/\{name\}/g, key.name)
       );
     });
-    allGhtm = allGhtm.join('');
+    allGroupHtm = allGroupHtm.join('');
+    data.tags.forEach(function (key) {
+      allTagHtm.push(els.bookmarkModalTagItemTpl
+        .replace(/\{id\}/g, key.id)
+        .replace(/\{name\}/g, key.name)
+        .replace(/\{color\}/g, key.color)
+        .replace(/\{count\}/g, key.repoIds.length)
+      );
+    });
+    allTagHtm = allTagHtm.join('');
     data.groups.forEach(function (key) {
       var rids = /string/i.test(typeof key.repoIds)?key.repoIds.split(','):key.repoIds,
         rhtm = [];
       rids.length && rids.forEach(function (key) {
         var rd = repos[key];
-        rd && rhtm.push(getBookmarkRopeHtm(rd, allGhtm));
+        rd && rhtm.push(getBookmarkRopeHtm(rd, allGroupHtm, allTagHtm));
       });
       htm.push(els.bookmarkModalGroupTpl
         .replace(/\{id\}/g, key.id)
         .replace(/\{name\}/g, key.name)
         .replace(/\{items\}/g, rhtm.join(''))
-        .replace(/\{itemCount\}/g, rhtm.length)
+        .replace(/\{itemCount\}/g, rhtm.length||'')
       );
     });
     if(data.repos.length){
       //add all group
       data.repos.forEach(function (key) {
-        allRhtm.push(getBookmarkRopeHtm(key, allGhtm));
+        allRepoHtm.push(getBookmarkRopeHtm(key, allGroupHtm, allTagHtm));
       });
       htm.push(els.bookmarkModalGroupTpl
         .replace(/\{id\}/g, 0)
         .replace(/\{name\}/g, 'All')
-        .replace(/\{items\}/g, allRhtm.join(''))
+        .replace(/\{items\}/g, allRepoHtm.join(''))
         .replace(/\{itemCount\}/g, data.repos.length)
       );
     }
@@ -1382,14 +1546,44 @@ $(function () {
       renderBookmarkHeader('empty');
     }
     setTimeout(function () {
-      var gel = els.bookmarkModalContent.find('.repo-group-item[data-id="' + els.lastEditBookmarkRepoGroupId + '"] .collapse');
-      if (!gel[0]) {
-        gel = els.bookmarkModalContent.find('.repo-group-item:last-child .collapse');
-      }
-      gel.addClass('in');
+      els.bookmarkModalContent.find('.repo-group-item:last-child .collapse').addClass('in');
     }, 100);
 
+    renderBookmarkTagMenu(allTagHtm);
     renderBookmarkUsers(data.users);
+  }
+
+  function renderBookmarkGroupByTag(){
+    var id = this.dataset.id;
+    bookmarkModel.getAll(function(data){
+      var repoObjs = bookmarkModel.arrayToObj(data.repos,'originRepoId'),
+        repos = [],
+        repoIds;
+      if(id){
+        repoIds = data.tags.filter(function (key) {
+          return key.id == +id;
+        })[0].repoIds;
+        repoIds.forEach(function (key) {
+          repoObjs[key] && repos.push(repoObjs[key]);
+        });
+        data.repos = repos;
+      }
+      renderBookmarkGroup(data);
+    });
+  }
+
+  function renderBookmarkTagMenu(htm){
+    els.bookmarkModalTagMenu.find('.add-repo').remove();
+    els.bookmarkModalTagMenu.append(htm);
+    updateBookmarkTagsData();
+  }
+
+  function renderBookmarkRepoTagMenu(){
+    var el = $(this),
+      id = el.parents('.repo-item').attr('data-repoid');
+    els.lastBookmarkTagsData.forEach(function(key){
+      el.find('.add-repo[data-id="'+key.id+'"]')[key.repoIds.indexOf(id)==-1?'removeAttr':'attr']('data-tagged',true);
+    });
   }
 
   function renderBookmarkSearchRepos(){
@@ -1502,13 +1696,12 @@ $(function () {
       curGroupEl = el.parents('.repo-group-item'),
       curGroupId = curGroupEl.attr('data-id'),
       curGroupElCountEl = curGroupEl.find('.hd>.count'),
-      curGoupCountNum = parseInt(curGroupElCountEl.html()),
+      curGoupCountNum = parseInt(curGroupElCountEl.html()||0),
       targetGoupEl = curGroupEl.siblings('.repo-group-item[data-id="'+targetGroupId+'"]'),
       targetGoupCountEl = targetGoupEl.find('.hd>.count'),
-      targetGoupCountNum = parseInt(targetGoupCountEl.html()),
+      targetGoupCountNum = parseInt(targetGoupCountEl.html()||0),
       targetGroupHasRepo = targetGoupEl.find('.repo-item[data-repoid="'+repoId+'"]').length;
 
-    els.lastEditBookmarkRepoGroupId = curGroupId;
     if (targetGroupId != undefined && targetGroupId != 0) {
       bookmarkModel.RepoGroupTable.addRopoId(targetGroupId, repoId);
 
@@ -1520,8 +1713,19 @@ $(function () {
     } else if (curGroupId != 0) {
       bookmarkModel.RepoGroupTable.removeRopoId(curGroupId, repoId);
 
-      curGroupElCountEl.html(--curGoupCountNum);
+      curGroupElCountEl.html(--curGoupCountNum||'');
       repoEl.remove();
+    }
+  }
+  function beforeAddRepoToTag() {
+    var el = $(this),
+      targetId = el.attr('data-id'),
+      tagged = el.attr('data-tagged'),
+      repoEl = el.parents('.repo-item'),
+      repoId = repoEl.attr('data-repoid');
+
+    if (targetId != undefined && targetId != 0){
+      bookmarkModel.RepoTagTable[tagged?'removeRopoId':'addRopoId'](targetId, repoId);
     }
   }
 
@@ -1545,6 +1749,12 @@ $(function () {
         bookmarkModel.getAll(renderBookmarkGroup);
       });
     }
+  }
+
+  function updateBookmarkTagsData(){
+    bookmarkModel.RepoTagTable.getAll(function(res){
+      els.lastBookmarkTagsData = res;
+    });
   }
 
   init();

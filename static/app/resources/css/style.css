@@ -145,7 +145,7 @@ html,body{
   max-height: 98%;
 }
 .modal-header .close{
-  padding-left: 1.25rem;
+  padding-left: .65rem;
 }
 .modal--fix .modal-dialog,
 .modal--fix .modal-content{
@@ -211,6 +211,9 @@ html,body{
 .bookmark-logo{
   color: #70B7FD;
 }
+.bookmark-modal .modal-header>.btn{
+  margin-right: .4rem;
+}
 .bookmark-modal .modal-body>.hd{
   padding-bottom: 1rem;
 }
@@ -264,8 +267,24 @@ html,body{
   cursor: pointer;
 }
 .bookmark-modal .repo-group-item[data-id="0"]>.hd .ctrl,
-.bookmark-modal .repo-group-item[data-id="0"] .dropdown-menu>.dropdown-item:last-child{
+.bookmark-modal .repo-group-item[data-id="0"] .group-menu .dropdown-menu>.dropdown-item:last-child{
   display: none;
+}
+.bookmark-modal .tag-menu .add-repo .label{
+  position: relative;
+  min-width: 1.15rem;
+  min-height: 1.15rem;
+  margin-bottom: -0.125rem;
+}
+.bookmark-modal .tag-menu .add-repo .label i{
+  display: none;
+}
+.bookmark-modal .tag-menu .add-repo[data-tagged] .label{
+  padding-left: 0;
+  padding-right: 0;
+}
+.bookmark-modal .tag-menu .add-repo[data-tagged] .label i{
+  display: inline-block;
 }
 .bookmark-user-modal .user-item:first-child{
   margin-top: 1rem;

@@ -136,6 +136,19 @@
         </button>
         <button class="btn btn-primary-outline btn-sm add-account"><i class="fa fa-plus-circle"></i> GitHub</button>
         <button class="btn btn-primary-outline btn-sm add-group"><i class="fa fa-plus-circle"></i> Group</button>
+        <div class="btn-group btn-group-sm" role="group">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-primary-outline dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-tags"></i> Tags
+            </button>
+            <div class="dropdown-menu dropdown-menu-right tag-menu">
+              <div class="dropdown-item">
+                All Tags
+              </div>
+              <div role="separator" class="dropdown-divider"></div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="modal-body">
         <header class="hd empty">
@@ -192,6 +205,11 @@
               {name}
             </div>
           </script>
+          <script type="text/html" data-template="tagItem">
+            <div class="dropdown-item add-repo" data-id="{id}">
+              <span class="label label-pill" style="background:{color};"><i class="fa fa-times"></i></span> {name}
+            </div>
+          </script>
           <script type="text/html" data-template="repoItem">
             <article class="card repo-item" data-id="{id}" data-repoid="{originRepoId}" data-name="{_full_name}">
               <div class="card-block">
@@ -199,7 +217,7 @@
                 <section class="repo-item__bd fix-break-word">{description}</section>
               </div>
               <div class="card-footer">
-                <div class="btn-group btn-group-sm" role="group">
+                <div class="btn-group btn-group-sm group-menu" role="group">
                   <div class="btn-group" role="group">
                     <a class="dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="javascript:void(0);">
                       Add to group
@@ -213,6 +231,16 @@
                       <div class="dropdown-item text-danger add-repo" data-id="0">
                         <i class="fa fa-times-circle"></i> Remove from group
                       </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="btn-group btn-group-sm tag-menu" role="group">
+                  <div class="btn-group" role="group">
+                    <a class="dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="javascript:void(0);">
+                      Add to tag
+                    </a>
+                    <div class="dropdown-menu">
+                      {tagItems}
                     </div>
                   </div>
                 </div>
