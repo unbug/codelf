@@ -506,7 +506,7 @@ $(function () {
 
       this.updateSync = function (name) {
         DB.update(Tables.User).set(Tables.User.lastSync, new Date()).where(Tables.User.name.eq(name))
-          .exec().then(function (res) {
+          .exec().then(function () {
           win.trigger('DB:Table.User.onchange', {type: DBEventType.U});
         });
       }
