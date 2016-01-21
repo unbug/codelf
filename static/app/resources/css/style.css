@@ -292,6 +292,7 @@ html,body{
 }
 .bookmark-modal .tag-menu .add-repo .label i{
   display: none;
+  color: #515153;
 }
 .bookmark-modal .tag-menu .add-repo[data-tagged] .label{
   padding-left: 0;
