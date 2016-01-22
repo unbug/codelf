@@ -384,6 +384,7 @@ $(function () {
     }
   };
   var DDMSModel = new function () {
+    var postAction = 'http://ddmsapi.mihtool.com/apis/v1/formdata/';
     var persistKeyWordsName = 'codelf_ddms_keywords';
     var persistKeyWordsTimerName = persistKeyWordsName + '_timer';
     var cacheKeyWords = (localStorage.get(persistKeyWordsName) || '').split(',');
@@ -403,18 +404,28 @@ $(function () {
 
     this.postKeyWords = function (val) {
       if (val && !isInArray(cacheKeyWords, val)) {
-        FormHandler.asyncSubmit('http://ddmsapi.mihtool.com/apis/v1/formdata/', {
+        FormHandler.asyncSubmit(postAction, {
           formid: '567ff8b0e454ee154de533dd',
           keywrod: val
         });
         saveKeyWords(val);
       }
     }
-    this.postBookmarks = function (val) {
+    this.postBookmarkUser = function (val) {
       if (val) {
-        FormHandler.asyncSubmit('http://ddmsapi.mihtool.com/apis/v1/formdata/', {
+        FormHandler.asyncSubmit(postAction, {
           formid: '569c3740b6691c4e16fc9999',
           account: val
+        });
+      }
+    }
+    this.postBookmarkGroup = function (repoid,repourl,groupname) {
+      if (repoid) {
+        FormHandler.asyncSubmit(postAction, {
+          formid: '56a1a23fb6691c4e16fc99b8',
+          repoid: repoid,
+          repourl: repourl,
+          groupname: groupname,
         });
       }
     }
@@ -1656,7 +1667,7 @@ $(function () {
       bookmarkModel.UserTable.add(val, function () {
         beforeSyncUser(val);
       });
-      els.isGithub && DDMSModel.postBookmarks(val);
+      els.isGithub && DDMSModel.postBookmarkUser(val);
       renderAnalytics('bk&u=' + val);
     }
     inputEl.val('');
@@ -1693,11 +1704,13 @@ $(function () {
       targetGroupId = el.attr('data-id'),
       repoEl = el.parents('.repo-item'),
       repoId = repoEl.attr('data-repoid'),
+      repoUrl = repoEl.find('.repo-item__hd a').attr('href'),
       curGroupEl = el.parents('.repo-group-item'),
       curGroupId = curGroupEl.attr('data-id'),
       curGroupElCountEl = curGroupEl.find('.hd>.count'),
       curGoupCountNum = parseInt(curGroupElCountEl.html()||0),
       targetGoupEl = curGroupEl.siblings('.repo-group-item[data-id="'+targetGroupId+'"]'),
+      targetGroupName = targetGoupEl.find('>.hd>a').html(),
       targetGoupCountEl = targetGoupEl.find('.hd>.count'),
       targetGoupCountNum = parseInt(targetGoupCountEl.html()||0),
       targetGroupHasRepo = targetGoupEl.find('.repo-item[data-repoid="'+repoId+'"]').length;
@@ -1709,6 +1722,7 @@ $(function () {
         targetGoupCountEl.html(++targetGoupCountNum);
         targetGoupEl.find('.repo-list').append(repoEl.clone());
       }
+      els.isGithub && DDMSModel.postBookmarkGroup(repoId,repoUrl,targetGroupName);
 
     } else if (curGroupId != 0) {
       bookmarkModel.RepoGroupTable.removeRopoId(curGroupId, repoId);
