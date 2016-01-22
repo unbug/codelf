@@ -7,6 +7,10 @@ Organize your GitHub stars and repositories.Search over projects from GitHub, Bi
   >There are only two hard things in Computer Science: cache invalidation and naming things.-- Phil Karlton
   ![twohardtings](http://unbug.github.io/codelf/resources/images/twohardtings.jpg)
   
+Apps
+=================
+[Codelf Chrome App](https://chrome.google.com/webstore/detail/codelf-best-github-stars/jnmjaglhmmcplekpfnblniiammmdpaan)
+
 Build
 =================
 1. install requirements run ```npm install```
