@@ -997,6 +997,7 @@ $(function () {
     bookmarkModalGroupTpl: $('.bookmark-modal script[data-template="repoGroup"]').html(),
     bookmarkModalGroupItemTpl: $('.bookmark-modal script[data-template="groupItem"]').html(),
     bookmarkModalTagItemTpl: $('.bookmark-modal script[data-template="tagItem"]').html(),
+    bookmarkModalTagDotTpl: $('.bookmark-modal script[data-template="tagDot"]').html(),
     bookmarkModalReopTpl: $('.bookmark-modal script[data-template="repoItem"]').html(),
 
     bookmarkUserModal: $('.bookmark-user-modal'),
@@ -1078,7 +1079,9 @@ $(function () {
     });
     els.bookmarkModalContent.on('click', '.group-menu .add-repo', beforeAddRepoToGroup);
     els.bookmarkModalContent.on('click', '.tag-menu .add-repo', beforeAddRepoToTag);
+    els.bookmarkModalContent.on('click', '.repo-item .group-menu', renderBookmarkRepoGroupMenu);
     els.bookmarkModalContent.on('click', '.repo-item .tag-menu', renderBookmarkRepoTagMenu);
+    els.bookmarkModalContent.on('mouseenter mouseleave', '.repo-item', renderBookmarkRepoTagDots);
     els.bookmarkModalContent.on('keyup','.repo-group-item>.hd .search input',renderBookmarkSearchRepos);
     els.bookmarkModalContent.on('click','.repo-group-item>.hd .search submit',renderBookmarkSearchRepos);
     els.bookmarkUserModal.on('click', '.submit', function(){
@@ -1560,6 +1563,7 @@ $(function () {
       els.bookmarkModalContent.find('.repo-group-item:last-child .collapse').addClass('in');
     }, 100);
 
+    updateBookmarkGroupsData();
     renderBookmarkTagMenu(allTagHtm);
     renderBookmarkUsers(data.users);
   }
@@ -1583,6 +1587,14 @@ $(function () {
     });
   }
 
+  function renderBookmarkRepoGroupMenu(){
+    var el = $(this),
+      id = el.parents('.repo-item').attr('data-repoid');
+    els.lastBookmarkGroupsData.forEach(function(key){
+      el.find('.add-repo[data-id="'+key.id+'"]')[key.repoIds.indexOf(id)==-1?'removeAttr':'attr']('data-selected',true);
+    });
+  }
+
   function renderBookmarkTagMenu(htm){
     els.bookmarkModalTagMenu.find('.add-repo').remove();
     els.bookmarkModalTagMenu.append(htm);
@@ -1593,8 +1605,27 @@ $(function () {
     var el = $(this),
       id = el.parents('.repo-item').attr('data-repoid');
     els.lastBookmarkTagsData.forEach(function(key){
-      el.find('.add-repo[data-id="'+key.id+'"]')[key.repoIds.indexOf(id)==-1?'removeAttr':'attr']('data-tagged',true);
+      el.find('.add-repo[data-id="'+key.id+'"]')[key.repoIds.indexOf(id)==-1?'removeAttr':'attr']('data-selected',true);
     });
+  }
+  function renderBookmarkRepoTagDots(e){
+    var el = $(this),
+      id = el.attr('data-repoid'),
+      dotsEl = el.find('.tag-dots'),
+      htm = [];
+    if(e.type=='mouseenter'){
+      els.lastBookmarkTagsData.forEach(function(key){
+        if(key.repoIds.indexOf(id)!=-1){
+          htm.push(
+            els.bookmarkModalTagDotTpl
+              .replace(/\{color\}/g,key.color)
+          );
+        }
+      });
+      dotsEl.html(htm.join('')).addClass('in');
+    }else{
+      dotsEl.html('').removeClass('in');
+    }
   }
 
   function renderBookmarkSearchRepos(){
@@ -1702,6 +1733,7 @@ $(function () {
   function beforeAddRepoToGroup() {
     var el = $(this),
       targetGroupId = el.attr('data-id'),
+      selected = el.attr('data-selected'),
       repoEl = el.parents('.repo-item'),
       repoId = repoEl.attr('data-repoid'),
       repoUrl = repoEl.find('.repo-item__hd a').attr('href'),
@@ -1713,33 +1745,38 @@ $(function () {
       targetGroupName = targetGoupEl.find('>.hd>a').html(),
       targetGoupCountEl = targetGoupEl.find('.hd>.count'),
       targetGoupCountNum = parseInt(targetGoupCountEl.html()||0),
-      targetGroupHasRepo = targetGoupEl.find('.repo-item[data-repoid="'+repoId+'"]').length;
+      targetGroupRepo = targetGoupEl.find('.repo-item[data-repoid="'+repoId+'"]');
 
-    if (targetGroupId != undefined && targetGroupId != 0) {
+    if (!selected) {
       bookmarkModel.RepoGroupTable.addRopoId(targetGroupId, repoId);
 
-      if(!targetGroupHasRepo){
+      if(!targetGroupRepo.length){
         targetGoupCountEl.html(++targetGoupCountNum);
         targetGoupEl.find('.repo-list').append(repoEl.clone());
       }
       els.isGithub && DDMSModel.postBookmarkGroup(repoId,repoUrl,targetGroupName);
 
-    } else if (curGroupId != 0) {
-      bookmarkModel.RepoGroupTable.removeRopoId(curGroupId, repoId);
+    } else{
+      bookmarkModel.RepoGroupTable.removeRopoId(targetGroupId, repoId);
 
-      curGroupElCountEl.html(--curGoupCountNum||'');
-      repoEl.remove();
+      if(targetGroupId==curGroupId){
+        repoEl.remove();
+        curGroupElCountEl.html(--curGoupCountNum||'');
+      }else{
+        targetGroupRepo.remove();
+        targetGoupCountEl.html(--targetGoupCountNum||'');
+      }
     }
   }
   function beforeAddRepoToTag() {
     var el = $(this),
       targetId = el.attr('data-id'),
-      tagged = el.attr('data-tagged'),
+      selected = el.attr('data-selected'),
       repoEl = el.parents('.repo-item'),
       repoId = repoEl.attr('data-repoid');
 
     if (targetId != undefined && targetId != 0){
-      bookmarkModel.RepoTagTable[tagged?'removeRopoId':'addRopoId'](targetId, repoId);
+      bookmarkModel.RepoTagTable[selected?'removeRopoId':'addRopoId'](targetId, repoId);
     }
   }
 
@@ -1768,6 +1805,11 @@ $(function () {
   function updateBookmarkTagsData(){
     bookmarkModel.RepoTagTable.getAll(function(res){
       els.lastBookmarkTagsData = res;
+    });
+  }
+  function updateBookmarkGroupsData(){
+    bookmarkModel.RepoGroupTable.getAll(function(res){
+      els.lastBookmarkGroupsData = res;
     });
   }
 

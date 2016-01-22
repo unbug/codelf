@@ -202,13 +202,16 @@
           </script>
           <script type="text/html" data-template="groupItem">
             <div class="dropdown-item add-repo" data-id="{id}">
-              {name}
+              <span class="label label-default label-pill"><i class="fa fa-check"></i></span> {name}
             </div>
           </script>
           <script type="text/html" data-template="tagItem">
             <div class="dropdown-item add-repo" data-id="{id}">
-              <span class="label label-pill" style="background:{color};"><i class="fa fa-times"></i></span> {name}
+              <span class="label label-pill" style="background:{color};"><i class="fa fa-check"></i></span> {name}
             </div>
+          </script>
+          <script type="text/html" data-template="tagDot">
+            <span style="color: {color}"><i class="fa fa-circle"></i></span>
           </script>
           <script type="text/html" data-template="repoItem">
             <article class="card repo-item" data-id="{id}" data-repoid="{originRepoId}" data-name="{_full_name}">
@@ -228,9 +231,6 @@
                       <div class="dropdown-item text-primary add-group">
                         <i class="fa fa-plus-circle"></i> Add new group
                       </div>
-                      <div class="dropdown-item text-danger add-repo" data-id="0">
-                        <i class="fa fa-times-circle"></i> Remove from group
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -244,6 +244,7 @@
                     </div>
                   </div>
                 </div>
+                <div class="btn-group btn-group-sm tag-dots fade" role="group"></div>
               </div>
             </article>
           </script>

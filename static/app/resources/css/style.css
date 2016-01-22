@@ -268,8 +268,7 @@ html,body{
   padding: 0 .4rem;
   cursor: pointer;
 }
-.bookmark-modal .repo-group-item[data-id="0"]>.hd .ctrl,
-.bookmark-modal .repo-group-item[data-id="0"] .group-menu .dropdown-menu>.dropdown-item:last-child{
+.bookmark-modal .repo-group-item[data-id="0"]>.hd .ctrl{
   display: none;
 }
 .bookmark-modal .repo-group-item .repo-item{
@@ -284,22 +283,24 @@ html,body{
 .bookmark-modal .repo-group-item .repo-item .card-footer{
   border-top: 0;
 }
-.bookmark-modal .tag-menu .add-repo .label{
-  position: relative;
-  min-width: 1.15rem;
-  min-height: 1.15rem;
-  margin-bottom: -0.125rem;
+.bookmark-modal .dropdown-menu .dropdown-item.add-repo .label{
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-bottom: -0.2rem;
 }
-.bookmark-modal .tag-menu .add-repo .label i{
+.bookmark-modal .dropdown-menu .dropdown-item.add-repo .label i{
   display: none;
-  color: #515153;
+  color: #fff;
 }
-.bookmark-modal .tag-menu .add-repo[data-tagged] .label{
+.bookmark-modal .dropdown-menu .dropdown-item.add-repo[data-selected] .label{
   padding-left: 0;
   padding-right: 0;
 }
-.bookmark-modal .tag-menu .add-repo[data-tagged] .label i{
+.bookmark-modal .dropdown-menu .dropdown-item.add-repo[data-selected] .label i{
   display: inline-block;
+}
+.bookmark-modal .tag-dots span{
+  margin-left: -.5rem;
 }
 .bookmark-user-modal .user-item:first-child{
   margin-top: 1rem;
