@@ -1044,7 +1044,7 @@ $(function () {
     //bookmark
     els.win.on('DB:ready', renderBookmarkGroup);
     els.win.on('DB:Table.RepoGroup.onchange', renderBookmarkGroup);
-    els.win.on('DB:Table.RepoTag.onchange', updateBookmarkTagsData);
+    //els.win.on('DB:Table.RepoTag.onchange', updateBookmarkTagsData);
     els.bookmarkBtn.on('click', showBookmark);
     els.bookmarkModalTagMenu.on('click', '.dropdown-item', renderBookmarkGroupByTag);
     els.bookmarkModal.on('click', '.add-account', showBookmarkUserModal);
@@ -1081,7 +1081,7 @@ $(function () {
     els.bookmarkModalContent.on('click', '.tag-menu .add-repo', beforeAddRepoToTag);
     els.bookmarkModalContent.on('click', '.repo-item .group-menu', renderBookmarkRepoGroupMenu);
     els.bookmarkModalContent.on('click', '.repo-item .tag-menu', renderBookmarkRepoTagMenu);
-    els.bookmarkModalContent.on('mouseenter mouseleave', '.repo-item', renderBookmarkRepoTagDots);
+    els.bookmarkModalContent.on('mouseenter mouseleave ontouchstart ontouchend', '.repo-item', renderBookmarkRepoTagDots);
     els.bookmarkModalContent.on('keyup','.repo-group-item>.hd .search input',renderBookmarkSearchRepos);
     els.bookmarkModalContent.on('click','.repo-group-item>.hd .search submit',renderBookmarkSearchRepos);
     els.bookmarkUserModal.on('click', '.submit', function(){
@@ -1587,18 +1587,18 @@ $(function () {
     });
   }
 
+  function renderBookmarkTagMenu(htm){
+    els.bookmarkModalTagMenu.find('.add-repo').remove();
+    els.bookmarkModalTagMenu.append(htm);
+    updateBookmarkTagsData();
+  }
+
   function renderBookmarkRepoGroupMenu(){
     var el = $(this),
       id = el.parents('.repo-item').attr('data-repoid');
     els.lastBookmarkGroupsData.forEach(function(key){
       el.find('.add-repo[data-id="'+key.id+'"]')[key.repoIds.indexOf(id)==-1?'removeAttr':'attr']('data-selected',true);
     });
-  }
-
-  function renderBookmarkTagMenu(htm){
-    els.bookmarkModalTagMenu.find('.add-repo').remove();
-    els.bookmarkModalTagMenu.append(htm);
-    updateBookmarkTagsData();
   }
 
   function renderBookmarkRepoTagMenu(){
@@ -1613,7 +1613,7 @@ $(function () {
       id = el.attr('data-repoid'),
       dotsEl = el.find('.tag-dots'),
       htm = [];
-    if(e.type=='mouseenter'){
+    if(/ontouchstart|mouseenter/g.test(e.type)){
       els.lastBookmarkTagsData.forEach(function(key){
         if(key.repoIds.indexOf(id)!=-1){
           htm.push(
