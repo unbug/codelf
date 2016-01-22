@@ -1007,6 +1007,8 @@ $(function () {
     bookmarkGroupModal: $('.bookmark-group-modal'),
     bookmarkGroupModalInput: $('.bookmark-group-modal input'),
 
+    confirmModal: $('.confirm-modal'),
+
     githubCorner: $('.github-corner svg'),
     donate: $('.donate'),
     donateTitle: $('.donate .title'),
@@ -1093,6 +1095,8 @@ $(function () {
     els.bookmarkUserModalUserList.on('click', '.del', beforeDelUser);
     els.bookmarkGroupModal.on('hidden.bs.modal', showBookmark);
     els.bookmarkUserModal.on('hidden.bs.modal', showBookmark);
+
+    els.confirmModal.on('click','.btn',hideConfirm);
   }
 
   function init() {
@@ -1121,6 +1125,19 @@ $(function () {
     renderBookmarkTip(true);
     els.bookmarkModal.modal('show');
     renderAnalytics('bk');
+  }
+
+  function showConfirm(msg,callback){
+    els.confirmModal.find('.modal-body').html(msg||'');
+    els.confirmModalYesCallback = callback;
+    els.confirmModal.addClass('in');
+  }
+  function hideConfirm(){
+    els.confirmModal.removeClass('in');
+    if($(this).hasClass('yes')){
+      els.confirmModalYesCallback && els.confirmModalYesCallback();
+    }
+    els.confirmModalYesCallback = null;
   }
 
   function hideBookmark() {
@@ -1725,9 +1742,9 @@ $(function () {
     var el = $(this),
       id = el.attr('data-id');
 
-    if (window.confirm("Remove this group?")) {
+    showConfirm("Remove this group?",function(){
       bookmarkModel.RepoGroupTable.delete(id);
-    }
+    });
   }
 
   function beforeAddRepoToGroup() {
@@ -1794,12 +1811,12 @@ $(function () {
     var el = $(this),
       id = el.attr('data-id');
 
-    if (window.confirm("Remove this account and all repos for it?")) {
+    showConfirm("Remove this account and all repos for it?",function(){
       bookmarkModel.UserTable.delete(id, function () {
         el.parents('.user-item').remove();
         bookmarkModel.getAll(renderBookmarkGroup);
       });
-    }
+    });
   }
 
   function updateBookmarkTagsData(){

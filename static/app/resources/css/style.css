@@ -309,6 +309,10 @@ html,body{
   margin-top: -0.25rem;
 }
 
+.confirm-modal.in{
+  display: block;
+}
+
 body.mobile .variable-btns__copy{
   display: none !important;
 }
