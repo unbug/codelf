@@ -1044,7 +1044,7 @@ $(function () {
     //bookmark
     els.win.on('DB:ready', renderBookmarkGroup);
     els.win.on('DB:Table.RepoGroup.onchange', renderBookmarkGroup);
-    //els.win.on('DB:Table.RepoTag.onchange', updateBookmarkTagsData);
+    els.win.on('DB:Table.RepoTag.onchange', updateBookmarkTagsData);
     els.bookmarkBtn.on('click', showBookmark);
     els.bookmarkModalTagMenu.on('click', '.dropdown-item', renderBookmarkGroupByTag);
     els.bookmarkModal.on('click', '.add-account', showBookmarkUserModal);
