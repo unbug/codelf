@@ -1811,7 +1811,7 @@ $(function () {
     var el = $(this),
       id = el.attr('data-id');
 
-    showConfirm("Remove this account and all repos for it?",function(){
+    showConfirm("Remove this user and all repos for the user?",function(){
       bookmarkModel.UserTable.delete(id, function () {
         el.parents('.user-item').remove();
         bookmarkModel.getAll(renderBookmarkGroup);
