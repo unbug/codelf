@@ -1,0 +1,25 @@
+[
+    {
+        "caption": "Tools",
+        "mnemonic": "t",
+        "id": "tools",
+        "children":
+        [
+            {
+                "caption": "Codelf",
+                "id": "codelf",
+                "children":
+                [
+                    {
+                        "command": "codelf_selection",
+                        "caption": "Search Selection"
+                    },
+                    {
+                        "command": "codelf_from_input",
+                        "caption": "Search From Input"
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -5,3 +5,7 @@ node_modules
 dist
 .idea
 test
+*.pyc
+*.sublime-workspace
+*.sublime-project
+package_control_channel
