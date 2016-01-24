@@ -14,9 +14,18 @@ Apps
 Plugins
 =================
 ####Codelf for Sbulime Text
+
+#####Install
   1. [Download Codelf for Sublime](https://github.com/unbug/codelf/archive/st-0.0.1.zip)
   2. Unzip and rename the folder to `Codelf`
   3. Copy the folder into `Packages` directory, which you can find using the menu item `Sublime Text -> Preferences -> Browse Packages...`
+
+#####Usage
+  1. Select text, right-click and click "Codelf". 
+  ![ST Right Click](https://cloud.githubusercontent.com/assets/799578/12536608/655d4f72-c2e5-11e5-8836-7ce733f47eed.png)
+  2. Open Command Palette using menu item Tools -> Command Palette... --> Type "E" or "Codelf" -->Select "Search Selection" or "Search From Input"
+  ![ST Command Palette...](https://cloud.githubusercontent.com/assets/799578/12536569/10422964-c2e4-11e5-9530-6efb742dad3c.png)
+  
 
 Build
 =================
