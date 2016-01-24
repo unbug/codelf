@@ -16,9 +16,10 @@ Plugins
 ####Codelf for Sbulime Text
 
 #####Install
-  1. [Download Codelf for Sublime](https://github.com/unbug/codelf/archive/st-0.0.1.zip)
+  1. [Download Codelf for Sublime](https://github.com/unbug/codelf/archive/st-0.0.3.zip) or [Select a "st-" version to download](https://github.com/unbug/codelf/tags)
   2. Unzip and rename the folder to `Codelf`
   3. Copy the folder into `Packages` directory, which you can find using the menu item `Sublime Text -> Preferences -> Browse Packages...`
+  4. Restart Sublime Text
 
 #####Usage
   1. Select text, right-click and click "Codelf". 
