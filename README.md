@@ -1,4 +1,4 @@
-  ![logo](http://unbug.github.io/codelf/resources/images/codelf_logo.png)
+  <img src="http://unbug.github.io/codelf/resources/images/codelf_logo.png" width="80">
 
 Codelf
 =================
