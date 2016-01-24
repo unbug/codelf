@@ -11,12 +11,12 @@
                 "children":
                 [
                     {
-                        "command": "codelf_selection",
-                        "caption": "Search Selection"
-                    },
-                    {
                         "command": "codelf_from_input",
                         "caption": "Search From Input"
+                    },
+                    {
+                        "command": "codelf_selection",
+                        "caption": "Search Selection"
                     }
                 ]
             }
