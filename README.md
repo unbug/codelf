@@ -11,6 +11,13 @@ Apps
 =================
 [Codelf Chrome App](https://chrome.google.com/webstore/detail/codelf-best-github-stars/jnmjaglhmmcplekpfnblniiammmdpaan)
 
+Plugins
+=================
+####Codelf for Sbulime Text
+  1. [Download Codelf for Sublime](https://github.com/unbug/codelf/archive/st-0.0.1.zip)
+  2. Unzip and rename the folder to `Codelf`
+  3. Copy the folder into `Packages` directory, which you can find using the menu item `Sublime Text -> Preferences -> Browse Packages...`
+
 Build
 =================
 1. install requirements run ```npm install```
