@@ -11,19 +11,8 @@ import webbrowser
 
 
 def SearchFor(text):
-    url = 'http://unbug.github.io/codelf/#=' + text.replace(' ', '%20')
+    url = 'http://unbug.github.io/codelf/#' + text.replace(' ', '%20')
     webbrowser.open_new_tab(url)
-
-
-class CodelfSelectionCommand(sublime_plugin.TextCommand):
-    def run(self, edit):
-        for selection in self.view.sel():
-            # if the user didn't select anything, search the currently highlighted word
-            if selection.empty():
-                text = self.view.word(selection)
-
-            text = self.view.substr(selection)
-            SearchFor(text)
 
 
 class CodelfFromInputCommand(sublime_plugin.WindowCommand):
@@ -40,3 +29,15 @@ class CodelfFromInputCommand(sublime_plugin.WindowCommand):
 
     def on_cancel(self):
         pass
+
+
+class CodelfSelectionCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        for selection in self.view.sel():
+            # if the user didn't select anything, search the currently highlighted word
+            if selection.empty():
+                text = self.view.word(selection)
+
+            text = self.view.substr(selection)
+            SearchFor(text)
+
