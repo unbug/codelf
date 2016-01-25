@@ -287,6 +287,7 @@ $(function () {
     var page = 0;
     var lastVal;
     var cacheSourceCodes = {};
+    var afterRequestSearchcode;
 
     genLangQuery(langs);
 
@@ -320,25 +321,36 @@ $(function () {
 
     //search code by query
     this.request = function (val, callback) {
+      afterRequestSearchcode = callback;
       if (val != lastVal) {
         this.resetPage();
       }
       lastVal = val;
       lastVal && $.ajax({
         type: 'GET',
+        //dataType: 'jsonp',
         dataType: 'json',
         url: 'https://searchcode.com/api/codesearch_I/' + (langQuery ? ('?' + langQuery) : ''),
+        //url: 'https://searchcode.com/api/jsonp_search_IV/' + (langQuery ? ('?' + langQuery) : ''),
         data: {
           q: lastVal,
           p: page,
-          per_page: 42
+          per_page: 42,
+          callback: 'afterRequestSearchcode'
         },
+        jsonp: false,
+        jsonpCallback: false,
         success: function (data) {
           callback && callback(data, page);
           page++;
         }
       })
     };
+
+    window.afterRequestSearchcode = function(data){
+      afterRequestSearchcode && afterRequestSearchcode(data, page);
+      page++;
+    }
 
     //get source code by id
     this.requestSourceCode = function (id, callback) {
@@ -1111,7 +1123,7 @@ $(function () {
     renderLangMunu();
     onLocationHashChanged();
     renderAnalytics();
-    !els.isGithub && showBookmark();
+    //!els.isGithub && showBookmark();
   }
 
   function showSourceCode() {
