@@ -84,7 +84,7 @@ gulp.task('dist:html', function () {
     .pipe($.htmlmin({
       collapseWhitespace: true,
       removeComments: true,
-      //minifyJS: true,
+      minifyJS: true,
       minifyCSS: true
     }))
     .pipe(gulp.dest('./'));

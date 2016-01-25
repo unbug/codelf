@@ -1216,7 +1216,7 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Util = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./Utils.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var Util = __webpack_require__(2);
 
 	//model
 	//http://githut.info/
