@@ -1,3 +1,0 @@
-$(function () {
-  require('./View.js');
-});

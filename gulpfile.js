@@ -25,7 +25,7 @@ gulp.task('build_version', function (cb) {
 //watching script change to start default task
 gulp.task('watch', function () {
   return gulp.watch([
-    './static/app/**/*.*'
+    './static/app/**/*.*','!./static/app/src/AppBundle.js'
   ], function (event) {
     console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
     runSequence('compile');
@@ -62,10 +62,10 @@ gulp.task('dist:libjs', function (cb) {
 gulp.task("dist:appjs", function(callback) {
   // run webpack
   webpack({
-    entry: "./static/app/src/AppPack.js",
+    entry: "./static/app/src/App.js",
     output: {
       path: __dirname + "/static/app/src",
-      filename: "App.js"
+      filename: "AppBundle.js"
     }
   }, function(err, stats) {
     if(err) throw new $.util.PluginError("webpack", err);
