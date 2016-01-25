@@ -1378,7 +1378,7 @@
 
 	  this.postKeyWords = function (val) {
 	    if (val && !Util.isInArray(cacheKeyWords, val)) {
-	      FormHandler.asyncSubmit(postAction, {
+	      Util.FormHandler.asyncSubmit(postAction, {
 	        formid: '567ff8b0e454ee154de533dd',
 	        keywrod: val
 	      });
@@ -1387,7 +1387,7 @@
 	  }
 	  this.postBookmarkUser = function (val) {
 	    if (val) {
-	      FormHandler.asyncSubmit(postAction, {
+	      Util.FormHandler.asyncSubmit(postAction, {
 	        formid: '569c3740b6691c4e16fc9999',
 	        account: val
 	      });
@@ -1395,7 +1395,7 @@
 	  }
 	  this.postBookmarkGroup = function (repoid,repourl,groupname) {
 	    if (repoid) {
-	      FormHandler.asyncSubmit(postAction, {
+	      Util.FormHandler.asyncSubmit(postAction, {
 	        formid: '56a1a23fb6691c4e16fc99b8',
 	        repoid: repoid,
 	        repourl: repourl,
