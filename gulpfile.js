@@ -1,3 +1,4 @@
+require('date-utils');
 var gulp = require('gulp');
 var through2 = require('through2');
 var $ = require('gulp-load-plugins')();
@@ -5,7 +6,7 @@ var runSequence = require('run-sequence');
 var browserSync = require('browser-sync');//http://www.browsersync.io/docs/gulp/
 var reload = browserSync.reload;
 var cachebust = new $.cachebust();
-require('date-utils');
+var webpack = require("webpack");
 
 //build version:
 //script version
@@ -24,7 +25,6 @@ gulp.task('build_version', function (cb) {
 //watching script change to start default task
 gulp.task('watch', function () {
   return gulp.watch([
-    'gulpfile.js',
     './static/app/**/*.*'
   ], function (event) {
     console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
@@ -38,7 +38,7 @@ gulp.task('clean:dist', function (cb) {
     .pipe($.clean({force: true}))
 });
 
-gulp.task('dist:js', function (cb) {
+gulp.task('dist:libjs', function (cb) {
   var dir = './static/app/src/lib/';
   gulp.src([dir+'jquery.min.js',
     dir+'tether.min.js',
@@ -59,6 +59,22 @@ gulp.task('dist:js', function (cb) {
       cb();
     });
 });
+gulp.task("dist:appjs", function(callback) {
+  // run webpack
+  webpack({
+    entry: "./static/app/src/AppPack.js",
+    output: {
+      path: __dirname + "/static/app/src",
+      filename: "App.js"
+    }
+  }, function(err, stats) {
+    if(err) throw new $.util.PluginError("webpack", err);
+    $.util.log("[webpack]", stats.toString({
+      // output options
+    }));
+    callback();
+  });
+});
 gulp.task('dist:html', function () {
   return gulp.src(['./static/app/*.html'])
     .pipe($.fileInclude({
@@ -68,7 +84,7 @@ gulp.task('dist:html', function () {
     .pipe($.htmlmin({
       collapseWhitespace: true,
       removeComments: true,
-      minifyJS: true,
+      //minifyJS: true,
       minifyCSS: true
     }))
     .pipe(gulp.dest('./'));
@@ -121,7 +137,7 @@ gulp.task('prepare', function (cb) {
   runSequence('build_version', cb);
 });
 gulp.task('compile', function (cb) {
-  runSequence('prepare', 'dist:js', 'dist:html', 'manifest', cb);
+  runSequence('prepare', 'dist:libjs', 'dist:appjs', 'dist:html', 'manifest', cb);
 });
 gulp.task('default', function (cb) {
   runSequence('clean:dist', 'compile', 'watch', 'serve', cb);

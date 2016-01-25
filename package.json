@@ -16,8 +16,10 @@
     "gulp-load-plugins": "^0.8.1",
     "gulp-replace": "^0.5.3",
     "gulp-uglify": "^1.5.1",
+    "gulp-util": "^3.0.7",
     "run-sequence": "^1.0.2",
-    "through2": "^0.6.3"
+    "through2": "^0.6.3",
+    "webpack": "^1.12.12"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
