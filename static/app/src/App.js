@@ -1370,14 +1370,14 @@
 	    Util.localStorage.set(persistKeyWordsTimerName, nt);
 	  }
 	  function saveKeyWords(val) {
-	    if (!isInArray(cacheKeyWords, val)) {
+	    if (!Util.isInArray(cacheKeyWords, val)) {
 	      cacheKeyWords.push(val);
 	      Util.localStorage.set(persistKeyWordsName, cacheKeyWords.join(',').replace(/^,*/g, '').replace(/,*&/g, ''));
 	    }
 	  }
 
 	  this.postKeyWords = function (val) {
-	    if (val && !isInArray(cacheKeyWords, val)) {
+	    if (val && !Util.isInArray(cacheKeyWords, val)) {
 	      FormHandler.asyncSubmit(postAction, {
 	        formid: '567ff8b0e454ee154de533dd',
 	        keywrod: val
