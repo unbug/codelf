@@ -1130,10 +1130,16 @@ $(function () {
   function showConfirm(msg,callback){
     els.confirmModal.find('.modal-body').html(msg||'');
     els.confirmModalYesCallback = callback;
-    els.confirmModal.addClass('in');
+    els.confirmModal.show();
+    setTimeout(function(){
+      els.confirmModal.addClass('in');
+    },50);
   }
   function hideConfirm(){
     els.confirmModal.removeClass('in');
+    setTimeout(function(){
+      els.confirmModal.hide();
+    },1000);
     if($(this).hasClass('yes')){
       els.confirmModalYesCallback && els.confirmModalYesCallback();
     }
