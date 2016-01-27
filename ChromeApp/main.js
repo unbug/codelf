@@ -1,13 +1,22 @@
 window.onload = function() {
-  var webview = document.querySelector('#codelf');
+  var webview = document.createElement('webview');
+  webview.style.width = '99%';
+  webview.style.height = '99%';
+  document.body.appendChild(webview);
+
   webview.addContentScripts([
     {
       name: 'openLinkInBroswer',
       matches: ['http://unbug.github.io/codelf/*'],
-      js: { files: ['openLinkInBroswer.js'] },
+      js: { files: ['openLinkInBrowser.js'] },
       run_at: 'document_end'
     }]);
-  webview.addEventListener('consolemessage', function(e) {
-    console.log('Guest page logged a message: ', e.message);
+  webview.addEventListener('newwindow', function(e) {
+    window.open(e.targetUrl);
   });
+  webview.addEventListener('consolemessage', function(e) {
+    console.log('consolemessage: ', e.message);
+  });
+
+  webview.src = 'http://unbug.github.io/codelf/';
 };

@@ -3,9 +3,8 @@
   "name": "Codelf-Best GitHub Stars organizer",
   "short_name": "Codelf-Best GitHub Stars organizer",
   "description": "Organize your GitHub stars and repositories.Search over projects from GitHub to find real-world usage variable names.",
-  "version": "1.3.1",
+  "version": "1.5.0",
   "minimum_chrome_version": "38",
-
   "icons": {
     "128": "assets/icon128.png"
   },
