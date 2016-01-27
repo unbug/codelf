@@ -90,7 +90,7 @@
           <script type="text/html" data-template="repoItem">
             <article class="card repo-item" data-id="{id}" data-repoid="{originRepoId}" data-name="{_full_name}">
               <div class="card-block">
-                <header class="repo-item__hd"><h6><a href="{html_url}" target="_blank">{full_name}</a></h6></header>
+                <header class="repo-item__hd"><h6><a href="{html_url}" >{full_name}</a></h6></header>
                 <section class="repo-item__bd fix-break-word">{description}</section>
               </div>
               <div class="card-footer">
@@ -147,7 +147,7 @@
         <section class="list-group user-list">
           <script type="text/html">
           <article class="list-group-item user-item" data-id="{id}">
-            <a href="https://github.com/{name}" target="_blank">@{name}</a>
+            <a href="https://github.com/{name}" >@{name}</a>
             <div class="btn-group btn-group-sm pull-xs-right ctrl">
               <button class="btn btn-secondary btn-sm sync" data-name="{name}" data-dismiss="modal"><i class="fa fa-refresh"></i> Sync</button>
               <button class="btn btn-secondary btn-sm del" data-id="{id}"><i class="fa fa-trash-o"></i></button>
