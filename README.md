@@ -21,7 +21,7 @@ Plugins
 #####Usage
   [How to use Codelf on Atom](https://github.com/unbug/atom-codelf#usage)
 
-####Codelf for Sbulime Text
+####Codelf for Sublime Text
 
 #####Install
   1. [Download Codelf for Sublime](https://github.com/unbug/codelf/archive/st-0.0.3.zip) or [Select a "st-" version to download](https://github.com/unbug/codelf/tags)
