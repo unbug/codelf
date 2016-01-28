@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# Build: 20160128121402
+# Build: 20160128084813
 
 CACHE:
 resources/fonts/Dressedless_Three.svg
@@ -15,7 +15,7 @@ resources/images/paypal.png
 resources/images/twohardtings.jpg
 resources/images/wechatpay.jpg
 resources/images/zhifubao.png
-src/lib/libs.f851782e.js
+src/lib/all.f851782e.js
 
 NETWORK:
 *

@@ -38,26 +38,18 @@ gulp.task('clean:dist', function (cb) {
     .pipe($.clean({force: true}))
 });
 
-gulp.task('dist:libjs', function (cb) {
-  var dir = './static/app/src/lib/';
-  gulp.src([dir+'jquery.min.js',
-    dir+'tether.min.js',
-    dir+'bootstrap.min.js',
-    dir+'prettify.js',
-    dir+'ZeroClipboard.min.js',
-    dir+'lovefield.min.js',
-    dir+'fastclick.js'])
+gulp.task('dist:libjs', function () {
+  return gulp.src(['./static/app/src/lib/all.js'])
+    .pipe($.fileInclude({
+      basepath: './static/app/src/lib/'
+    }))
     .pipe($.cached('build-cache', {
       optimizeMemory: true
     }))
-    .pipe($.concat('libs.js'))
     .pipe(cachebust.references())
     .pipe($.uglify())
     .pipe(cachebust.resources())
-    .pipe(gulp.dest('./src/lib/'))
-    .on('end', function () {
-      cb();
-    });
+    .pipe(gulp.dest('./src/lib/'));
 });
 gulp.task("dist:appjs", function(callback) {
   // run webpack
