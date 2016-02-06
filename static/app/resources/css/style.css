@@ -96,6 +96,11 @@ html,body{
 .search-result .ct{
   overflow-x: scroll;
   -webkit-overflow-scrolling: touch;
+  border-left: .25rem solid #eceeef;
+  background: none;
+}
+.search-result .ct.ct--white{
+  border-left: 0;
 }
 .search-result .variable-wrap{
   display: inline-block;
@@ -119,6 +124,7 @@ html,body{
   margin: 0 auto 1rem;
 }
 .blockquote{
+  border: none;
   text-align: center;
 }
 .blockquote img{

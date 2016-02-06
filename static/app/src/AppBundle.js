@@ -74,6 +74,7 @@
 	  searchRelateTpl: $('.search-relate script').html(),
 
 	  searchResult: $('.search-result'),
+	  searchResultCt: $('.search-result .ct'),
 	  searchResultTpl: $('.search-result script').html(),
 	  searchResultHd: $('.search-result .hd'),
 	  searchResultBd: $('.search-result .bd'),
@@ -483,6 +484,7 @@
 	      labels.push('<hr/>');
 	    }
 	    els.searchResultBd.prepend(labels.join(''));
+	    els.searchResultCt.removeClass('ct--white');
 	    renderSearchResultHeader();
 	    renderTooltips();
 	  } else {
@@ -801,7 +803,7 @@
 	      "bdSize": "16"
 	    }, "slide": {"type": "slide", "bdImg": "5", "bdPos": "right", "bdTop": els.win.height() / 2 - 80}
 	  };
-	  
+
 	  with (document)0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
 	}
 
