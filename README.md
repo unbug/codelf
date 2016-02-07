@@ -19,11 +19,11 @@ Plugins
   Codelf is [on Atom package](https://atom.io/packages/codelf).Search "codelf" on Atom setting pane and click install.Please see [using-atom-atom-packages](https://atom.io/docs/v1.4.1/using-atom-atom-packages) 
 
 #####Usage
-    1. Select text, right-click and click "Codelf".
-    2. Open Packages menu select "Codelf"
-    3. Press CTRL+ALT+E to open Codelf
+  1. Select text, right-click and click "Codelf".
+  2. Open Packages menu select "Codelf"
+  3. Press CTRL+ALT+E to open Codelf
   
-    <img src="https://cloud.githubusercontent.com/assets/799578/12577706/2b6d4970-c457-11e5-83d3-dba0ce2c867c.gif" width="600">
+  <img src="https://cloud.githubusercontent.com/assets/799578/12577706/2b6d4970-c457-11e5-83d3-dba0ce2c867c.gif" width="600">
 
   Also see [How to use Codelf on Atom](https://github.com/unbug/atom-codelf#usage)
 
