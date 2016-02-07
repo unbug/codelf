@@ -6,6 +6,10 @@ Organize your GitHub stars and repositories.Search over projects from GitHub, Bi
 
   >There are only two hard things in Computer Science: cache invalidation and naming things.-- Phil Karlton
   ![twohardtings](http://unbug.github.io/codelf/resources/images/twohardtings.jpg)
+
+WIKI
+=================
+[简体中文](https://github.com/unbug/codelf/wiki)
   
 Apps
 =================
