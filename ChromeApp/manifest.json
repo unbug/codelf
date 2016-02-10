@@ -2,8 +2,8 @@
   "manifest_version": 2,
   "name": "Codelf-Best GitHub Stars organizer",
   "short_name": "Codelf-Best GitHub Stars organizer",
-  "description": "Organize your GitHub stars and repositories.Search over projects from GitHub to find real-world usage variable names.",
-  "version": "1.5.0",
+  "description": "Best GitHub stars,repositories tagger and organizer.Search over projects from GitHub to find real-world usage variable names.",
+  "version": "1.7.0",
   "minimum_chrome_version": "38",
   "icons": {
     "128": "assets/icon128.png"
