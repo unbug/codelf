@@ -69,8 +69,6 @@
 .search-result {
   padding-top: .8rem;
   .ct {
-    overflow-x: scroll;
-    -webkit-overflow-scrolling: touch;
     border-left: .15rem solid #eceeef;
     background: none;
     &.ct--white {
@@ -117,6 +115,14 @@
 }
 body.mobile .variable-btns__copy {
   display: none !important;
+}
+@media (max-width: 34em) {
+  .search-result {
+    .ct {
+      overflow-x: scroll;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
 }
 @media (min-width: 62em) {
   .main-title h1 {

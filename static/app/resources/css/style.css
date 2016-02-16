@@ -178,8 +178,6 @@ html, body {
 .search-result {
   padding-top: .8rem; }
   .search-result .ct {
-    overflow-x: scroll;
-    -webkit-overflow-scrolling: touch;
     border-left: .15rem solid #eceeef;
     background: none; }
     .search-result .ct.ct--white {
@@ -217,6 +215,11 @@ html, body {
 body.mobile .variable-btns__copy {
   display: none !important; }
 
+@media (max-width: 34em) {
+  .search-result .ct {
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch; } }
+
 @media (min-width: 62em) {
   .main-title h1 {
     font-size: 4.5rem; }
@@ -232,9 +235,10 @@ body.mobile .variable-btns__copy {
     padding-top: 5rem; } }
 
 .donate {
-  text-align: center;
   display: block;
-  padding-bottom: 1rem; }
+  padding-bottom: 1rem;
+  margin-top: 1rem;
+  text-align: center; }
   .donate form {
     display: inline-block; }
   .donate .title {
