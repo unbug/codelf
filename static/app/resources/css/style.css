@@ -282,6 +282,7 @@ body.mobile .variable-btns__copy {
   display: inline-block; }
 
 .bookmark-logo {
+  cursor: pointer;
   color: #70B7FD; }
 
 .bookmark-modal .modal-header > .btn {
