@@ -1,0 +1,350 @@
+html,body{
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+.fix-break-word, p {
+  word-break: break-all;
+  word-break: break-word;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+.label {
+  margin-right: .4rem;
+}
+/*layout*/
+.logo{
+  margin: 0 auto;
+  width: 3rem;
+  height: 3rem;
+}
+.logo img{
+  display: inherit;
+  width: 100%;
+  height: 100%;
+  border-radius: 20%;
+  -webkit-border-radius: 20%;
+}
+.main{
+  padding-top: 2rem;
+}
+.main-title{
+  text-align: center;
+  padding: 0 1.2rem;
+}
+.main-title>header a,
+.main-title>header a:visited,
+.main-title>header a:link,
+.main-title>header a:active,
+.main-title>header a:hover{
+  color: inherit;
+  text-decoration: none;
+}
+.main-title h1{
+  font-family: "Dressedless Three",Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif;;
+  text-transform: uppercase;
+  font-size: 3.5rem;
+}
+.main-title h1.animated span{
+  transition: color 250ms linear;
+}
+/*C*/
+.main-title h1.animated span:nth-child(1){
+  color: #3369e8;
+  transition-delay: 200ms;
+}
+/*O*/
+.main-title h1.animated span:nth-child(2){
+  color: #d50f25;
+  transition-delay: 350ms;
+}
+/*D*/
+.main-title h1.animated span:nth-child(3){
+  color: #eeb211;
+  transition-delay: 500ms;
+}
+/*E*/
+.main-title h1.animated span:nth-child(4){
+  color: #3369e8;
+  transition-delay: 650ms;
+}
+/*L*/
+.main-title h1.animated span:nth-child(5){
+  color: #009925;
+  transition-delay: 800ms;
+}
+/*F*/
+.main-title h1.animated span:nth-child(6){
+  color: #d50f25;
+  transition-delay: 950ms;
+}
+.search-form{
+  padding: 1rem 0;
+}
+.search-form .dropdown-menu,
+.sourcecode-modal .dropdown-menu{
+  max-height: 320px;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  -webkit-transform: translate3d(0,0,0);
+}
+.search-relate a:hover{
+  text-decoration: underline;
+}
+.search-result{
+  padding-top: .8rem;
+}
+.search-result .ct{
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+  border-left: .25rem solid #eceeef;
+  background: none;
+}
+.search-result .ct.ct--white{
+  border-left: 0;
+}
+.search-result .variable-wrap{
+  display: inline-block;
+  cursor: pointer;
+}
+.search-result a:hover{
+  text-decoration: underline;
+}
+.search-result .hd,.search-result .hd>div{
+  text-align: center;
+}
+.search-result .hd>div{
+  display: none;
+}
+.search-result .hd.loading .loading,
+.search-result .hd.error .error{
+  display: block;
+  margin: 0 auto;
+}
+.search-result .hd .logo{
+  margin: 0 auto 1rem;
+}
+.blockquote{
+  border: none;
+  text-align: center;
+}
+.blockquote img{
+  max-width: 100%;
+  height: auto;
+}
+.popover--variable{
+  background-color: transparent;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  border-color: #ccc;
+}
+.popover--variable .popover-content{
+  padding: 0;
+}
+.popover--variable .btn{
+  border-bottom: 0;
+}
+.sourcecode-modal .cur-repo{
+  margin-left: .4rem;
+}
+.modal--fix{
+  max-height: 98%;
+}
+.modal-header .close{
+  padding-left: .65rem;
+}
+.modal--fix .modal-dialog,
+.modal--fix .modal-content{
+  height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+.modal--fix .modal-content{
+  padding-bottom: 8%;
+}
+.modal--fix .modal-body{
+  max-height: 98%;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+.sourcecode-modal code{
+  display: inline-block;
+}
+.variable-btns>.variable-btns__copy{
+  display: none;
+}
+.donate{
+  text-align: center;
+  display: block;
+  padding-bottom: 1rem;
+}
+.donate form{
+  display: inline-block;
+}
+.donate .title{
+  padding-bottom: .8rem;
+  text-align: center;
+}
+.donate .title .lang{
+  display: none;
+}
+.donate .title.cn .cn,
+.donate .title.en .en{
+  display: block;
+}
+.donate .bd{
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+.zhifubao,.wechatpay{
+  margin-right: 1rem;
+  margin-top: -3rem;
+  width: 5rem;
+}
+.paypal{
+  width: 5rem;
+}
+
+.bookmark-btn{
+  position: absolute;
+  top: 0;
+  left: 4%;
+  cursor: pointer;
+  transition: all 1s;
+}
+.bookmark-logo{
+  color: #70B7FD;
+}
+.bookmark-modal .modal-header>.btn{
+  margin-right: .4rem;
+}
+.bookmark-modal .modal-body>.hd{
+  padding-bottom: 1rem;
+}
+.bookmark-modal .modal-body>.hd,
+.bookmark-modal .modal-body>.hd>div{
+  display: none;
+}
+.bookmark-modal .modal-body>.hd.loading,
+.bookmark-modal .modal-body>.hd.empty,
+.bookmark-modal .modal-body>.hd.loading>.loading,
+.bookmark-modal .modal-body>.hd.empty>.empty{
+  display: block;
+  margin: 0 auto;
+}
+.bookmark-modal .modal-body>.hd>.empty{
+  text-align: center;
+}
+.bookmark-modal .modal-body>.hd>.empty .top{
+  margin: 2rem;
+}
+.bookmark-modal .modal-body>.hd>.empty .tip{
+  text-align: left;
+}
+.bookmark-modal .card-block{
+  padding: .5rem;
+}
+.bookmark-modal .card-header {
+  padding: .5rem;
+}
+.bookmark-modal .card-footer {
+  padding: 0 0 .2rem 0;
+}
+.bookmark-modal .repo-list {
+  padding-right: 0;
+  padding-left: 0;
+  padding-bottom: 0;
+}
+.bookmark-modal .repo-group-item>.hd .dropdown-menu{
+  min-width: initial;
+}
+.bookmark-modal .repo-group-item>.hd .search{
+  display: none;
+  cursor: pointer;
+  max-width: 70%;
+  margin-top: -0.25rem;
+}
+.bookmark-modal .repo-group-item[data-id="0"]>.hd .search{
+  display: block;
+}
+.bookmark-modal .repo-group-item .hd .ctrl>div{
+  display: inline-block;
+  padding: 0 .4rem;
+  cursor: pointer;
+}
+.bookmark-modal .repo-group-item[data-id="0"]>.hd .ctrl{
+  display: none;
+}
+.bookmark-modal .repo-group-item .repo-item{
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+}
+.bookmark-modal .repo-group-item .repo-item:last-child{
+  margin-bottom: 0;
+}
+.bookmark-modal .repo-group-item .repo-item .card-footer{
+  border-top: 0;
+}
+.bookmark-modal .dropdown-menu .dropdown-item.add-repo .label{
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-bottom: -0.2rem;
+}
+.bookmark-modal .dropdown-menu .dropdown-item.add-repo .label i{
+  display: none;
+  color: #fff;
+}
+.bookmark-modal .dropdown-menu .dropdown-item.add-repo[data-selected] .label{
+  padding-left: 0;
+  padding-right: 0;
+}
+.bookmark-modal .dropdown-menu .dropdown-item.add-repo[data-selected] .label i{
+  display: inline-block;
+}
+.bookmark-modal .tag-dots span{
+  margin-left: -.5rem;
+}
+.bookmark-user-modal .user-item:first-child{
+  margin-top: 1rem;
+}
+.bookmark-user-modal .user-list .ctrl{
+  margin-top: -0.25rem;
+}
+
+body.mobile .variable-btns__copy{
+  display: none !important;
+}
+@media (min-width: 62em) {
+  .main-title h1{
+    font-size: 4.5rem;
+  }
+  .search-relate{
+    padding-bottom: 1.8rem;
+  }
+  .search-result .ct{
+    overflow-x: auto;
+  }
+  .github-corner svg{
+    width: 5rem;
+    height: 5rem;
+  }
+  .modal--fix{
+    max-height: none;
+  }
+  .modal--fix .modal-dialog,
+  .modal--fix .modal-content,
+  .modal--fix .modal-body{
+    height: auto;
+    overflow: auto;
+  }
+  .modal--fix .modal-content{
+    padding-bottom: 0;
+  }
+  .variable-btns>.variable-btns__copy{
+    display: block;
+  }
+}

@@ -1,0 +1,14 @@
+.sourcecode-modal {
+  .dropdown-menu {
+    max-height: 320px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    transform: translate3d(0, 0, 0);
+  }
+  .cur-repo {
+    margin-left: .4rem;
+  }
+  code {
+    display: inline-block;
+  }
+}

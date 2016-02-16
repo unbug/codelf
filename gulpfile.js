@@ -37,7 +37,29 @@ gulp.task('clean:dist', function (cb) {
   return gulp.src(['./src/lib/*.js'])
     .pipe($.clean({force: true}))
 });
-
+//compile sass files
+var AUTOPREFIXER_BROWSERS = [
+  'ie >= 10',
+  'ie_mob >= 10',
+  'ff >= 30',
+  'chrome >= 34',
+  'safari >= 7',
+  'opera >= 23',
+  'ios >= 7',
+  'android >= 4.4',
+  'bb >= 10'
+];
+gulp.task('sass', function () {
+  return gulp.src(['./static/app/scss/*.scss'], {buffer: true})
+    //.pipe($.sourcemaps.init())
+    .pipe($.sass({errLogToConsole: true}))
+    .pipe($.autoprefixer({browsers: AUTOPREFIXER_BROWSERS}))
+    //.pipe($.sourcemaps.write())
+    .pipe($.cached('build-cache', {
+      optimizeMemory: true
+    }))
+    .pipe(gulp.dest('./static/app/resources/css/'))
+});
 gulp.task('dist:libjs', function () {
   return gulp.src(['./static/app/src/lib/all.js'])
     .pipe($.fileInclude({
@@ -129,7 +151,7 @@ gulp.task('prepare', function (cb) {
   runSequence('build_version', cb);
 });
 gulp.task('compile', function (cb) {
-  runSequence('prepare', 'dist:libjs', 'dist:appjs', 'dist:html', 'manifest', cb);
+  runSequence('prepare', 'sass', 'dist:libjs', 'dist:appjs', 'dist:html', 'manifest', cb);
 });
 gulp.task('default', function (cb) {
   runSequence('clean:dist', 'compile', 'watch', 'serve', cb);

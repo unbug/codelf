@@ -1,0 +1,34 @@
+.donate {
+  text-align: center;
+  display: block;
+  padding-bottom: 1rem;
+  form {
+    display: inline-block;
+  }
+  .title {
+    padding-bottom: .8rem;
+    text-align: center;
+    .lang {
+      display: none;
+    }
+    &.cn .cn, &.en .en {
+      display: block;
+    }
+  }
+  .bd {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+}
+
+.zhifubao, .wechatpay {
+  margin-right: 1rem;
+  margin-top: -3rem;
+  width: 5rem;
+}
+
+.paypal {
+  width: 5rem;
+}

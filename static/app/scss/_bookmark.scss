@@ -1,0 +1,106 @@
+.bookmark-logo {
+  color: #70B7FD;
+}
+
+.bookmark-modal {
+  .modal-header > .btn {
+    margin-right: .4rem;
+  }
+  .modal-body > .hd {
+    padding-bottom: 1rem;
+    display: none;
+    > div {
+      display: none;
+    }
+    &.loading, &.empty, &.loading > .loading, &.empty > .empty {
+      display: block;
+      margin: 0 auto;
+    }
+    > .empty {
+      text-align: center;
+      .top {
+        margin: 2rem;
+      }
+      .tip {
+        text-align: left;
+      }
+    }
+  }
+  .card-block, .card-header {
+    padding: .5rem;
+  }
+  .card-footer {
+    padding: 0 0 .2rem 0;
+  }
+  .repo-list {
+    padding-right: 0;
+    padding-left: 0;
+    padding-bottom: 0;
+  }
+  .repo-group-item {
+    > .hd {
+      .dropdown-menu {
+        min-width: initial;
+      }
+      .search {
+        display: none;
+        cursor: pointer;
+        max-width: 70%;
+        margin-top: -0.25rem;
+      }
+    }
+    &[data-id="0"] > .hd .search {
+      display: block;
+    }
+    .hd .ctrl > div {
+      display: inline-block;
+      padding: 0 .4rem;
+      cursor: pointer;
+    }
+    &[data-id="0"] > .hd .ctrl {
+      display: none;
+    }
+    .repo-item {
+      border-top: 0;
+      border-left: 0;
+      border-right: 0;
+      border-radius: 0;
+      &:last-child {
+        margin-bottom: 0;
+      }
+      .card-footer {
+        border-top: 0;
+      }
+    }
+  }
+  .dropdown-menu .dropdown-item.add-repo {
+    .label {
+      width: 1.15rem;
+      height: 1.15rem;
+      margin-bottom: -0.2rem;
+      i {
+        display: none;
+        color: #fff;
+      }
+    }
+    &[data-selected] .label {
+      padding-left: 0;
+      padding-right: 0;
+      i {
+        display: inline-block;
+      }
+    }
+  }
+  .tag-dots span {
+    margin-left: -.5rem;
+  }
+}
+
+.bookmark-user-modal {
+  .user-item:first-child {
+    margin-top: 1rem;
+  }
+  .user-list .ctrl {
+    margin-top: -0.25rem;
+  }
+}
