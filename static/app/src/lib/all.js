@@ -1,4 +1,5 @@
 @@include("jquery.min.js")
+@@include("jquery.highlight.js")
 @@include("tether.min.js")
 @@include("bootstrap.min.js")
 @@include("prettify.js")

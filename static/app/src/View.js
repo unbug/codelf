@@ -160,6 +160,7 @@ function init() {
 function showSourceCode() {
   renderSourceCode();
   Model.searchcodeModel.requestSourceCode(this.dataset.id, renderSourceCode);
+  els.lastVariableKeyword = this.dataset.val || els.lastVariableKeyword;
   this.dataset.val && renderRelatedProperty(this.dataset.val);
   els.sourceCodeModal.modal('show');
 }
@@ -538,10 +539,16 @@ function renderSourceCode(data) {
     els.sourceCodeContentHd.hide();
     els.sourceCodeContent.text(data.code);
     setTimeout(function () {
-      PR.prettyPrint();
+      PR.prettyPrint(renderHighlightVariableKeyword);
     }, 100);
     renderAnalytics('vc&q=' + els.lastInputVal);
   }
+}
+function renderHighlightVariableKeyword(){
+  els.sourceCodeContent.unhighlight();
+  setTimeout(function(){
+    els.sourceCodeContent.highlight(els.lastVariableKeyword);
+  },1000);
 }
 
 function renderRelatedProperty(name) {

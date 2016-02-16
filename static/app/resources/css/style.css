@@ -23,6 +23,9 @@ html, body {
 .jumbotron {
   margin-bottom: 0; }
 
+.highlight {
+  background-color: #FFFF88; }
+
 .modal-header .close {
   padding-left: .65rem; }
 
