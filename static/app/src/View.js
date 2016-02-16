@@ -343,11 +343,15 @@ function storeRelatedProperty(name, res) {
     var prop = els.storeRelatedProperties[name] = els.storeRelatedProperties[name] || {
         ids: [],
         repos: [],
+        repoNames: [],
+        repoFilePaths: [],
         languages: []
       };
     if (!Util.isInArray(prop['ids'], res.id)) {
       prop['ids'].push(res.id);
       prop['repos'].push(res.repo);
+      prop['repoNames'].push(res.name);
+      prop['repoFilePaths'].push(res.repo+(res.location||'').substring(1)+'/'+res.filename);
       prop['languages'].push(res.language);
     }
   }
@@ -442,7 +446,7 @@ function renderSearchResult(data) {
 
 function renderSearchBtn(str) {
   var val = els.searchInput.val().trim();
-  els.searchBtn.html(str ? str : (((val.length && val == els.lastInputVal) ? 'More' : 'Search')));
+  els.searchBtn.removeClass('more').addClass((str || (val.length && val != els.lastInputVal)) ? '' : 'more');
 }
 
 function renderSearchResultHeader(cls) {
@@ -546,12 +550,16 @@ function renderRelatedProperty(name) {
   if (prop) {
     var ids = prop['ids'],
       repos = prop['repos'],
+      repoNames = prop['repoNames'],
+      repoFilePaths = prop['repoFilePaths'],
       langs = prop['languages'],
       i = 0, len = ids.length;
     for (i; i < len; i++) {
       htm.push(
         els.sourceCodeModalDropdownTpl.replace(/\{id\}/g, ids[i])
           .replace(/\{repo\}/g, repos[i])
+          .replace(/\{repoName\}/g, repoNames[i])
+          .replace(/\{repoFilePath\}/g, repoFilePaths[i])
           .replace(/\{lang\}/g, langs[i])
           .replace(/\{label_type\}/g, Model.beanHelpersModel.getRandomLabelType())
       );

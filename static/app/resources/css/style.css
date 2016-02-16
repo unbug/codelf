@@ -171,6 +171,12 @@ html, body {
     -webkit-overflow-scrolling: touch;
     -webkit-transform: translate3d(0, 0, 0);
             transform: translate3d(0, 0, 0); }
+  .search-form button.search .more {
+    display: none; }
+  .search-form button.search.more .normal {
+    display: none; }
+  .search-form button.search.more .more {
+    display: inline-block; }
 
 .search-relate a:hover {
   text-decoration: underline; }

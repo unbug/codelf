@@ -61,6 +61,19 @@
     -webkit-overflow-scrolling: touch;
     transform: translate3d(0, 0, 0);
   }
+  button.search{
+    .more{
+      display: none;
+    }
+    &.more{
+      .normal{
+        display: none;
+      }
+      .more{
+        display: inline-block;
+      }
+    }
+  }
 }
 .search-relate a:hover {
   text-decoration: underline;
