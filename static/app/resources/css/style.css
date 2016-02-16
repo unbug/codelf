@@ -101,7 +101,7 @@ html, body {
 
 .nav-bar {
   position: absolute;
-  top: 0;
+  top: 0.15rem;
   right: 5%;
   z-index: 10;
   display: inline-block;
