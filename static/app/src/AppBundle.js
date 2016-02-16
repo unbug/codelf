@@ -603,7 +603,12 @@
 	  els.sourceCodeContent.unhighlight();
 	  setTimeout(function(){
 	    els.sourceCodeContent.highlight(els.lastVariableKeyword);
-	  },1000);
+	    setTimeout(function(){
+	      els.sourceCodeContent.find('.highlight').each(function(idx){
+	        this.setAttribute('tabindex',idx+1);
+	      });
+	    },300);
+	  },800);
 	}
 
 	function renderRelatedProperty(name) {
