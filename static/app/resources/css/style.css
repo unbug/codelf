@@ -147,11 +147,13 @@ html, body {
   .nav-bar > * {
     float: left;
     display: inline-block;
-    margin-right: .4rem; }
+    margin-right: .45rem; }
   .nav-bar:last-child {
     margin-right: 0; }
   .nav-bar i {
     color: #70B7FD; }
+    .nav-bar i:hover, .nav-bar i:active {
+      color: #59AAF9; }
   .nav-bar > *:nth-child(1) {
     -webkit-animation-duration: 500ms;
             animation-duration: 500ms;

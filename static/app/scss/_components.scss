@@ -67,13 +67,16 @@
   >*{
     float: left;
     display: inline-block;
-    margin-right: .4rem;
+    margin-right: .45rem;
   }
   &:last-child{
     margin-right: 0;
   }
   i{
     color: #70B7FD;
+    &:hover,&:active{
+      color: #59AAF9;
+    }
   }
   $anim-delay: 150ms;
   $anim-duration: 500ms;
