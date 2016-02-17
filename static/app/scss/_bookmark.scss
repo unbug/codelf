@@ -93,7 +93,7 @@
     }
   }
   .tag-dots span {
-    margin-left: -.5rem;
+    margin-left: .25rem;
   }
 }
 
@@ -103,5 +103,13 @@
   }
   .user-list .ctrl {
     margin-top: -0.25rem;
+  }
+}
+
+@media (max-width: 34em) {
+  .bookmark-modal {
+    .tag-dots span {
+      margin-left: -.25rem;
+    }
   }
 }

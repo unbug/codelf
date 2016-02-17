@@ -54,6 +54,44 @@ html, body {
     .modal--fix .modal-content {
       padding-bottom: 0; } }
 
+.animated {
+  -webkit-animation-duration: 1s;
+          animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both; }
+
+.animated.infinite {
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite; }
+
+.animated.hinge {
+  -webkit-animation-duration: 2s;
+          animation-duration: 2s; }
+
+@-webkit-keyframes fadeInDown {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+            transform: translate3d(0, -100%, 0); }
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+            transform: none; } }
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, -100%, 0);
+            transform: translate3d(0, -100%, 0); }
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+            transform: none; } }
+
+.fadeInDown {
+  -webkit-animation-name: fadeInDown;
+          animation-name: fadeInDown; }
+
 /*
     http://www.fontspace.com/538fonts/dressedless
     https://everythingfonts.com/ttf-to-svg
@@ -114,6 +152,31 @@ html, body {
     margin-right: 0; }
   .nav-bar i {
     color: #70B7FD; }
+  .nav-bar > *:nth-child(1) {
+    -webkit-animation-duration: 500ms;
+            animation-duration: 500ms;
+    -webkit-animation-delay: 500ms;
+            animation-delay: 500ms; }
+  .nav-bar > *:nth-child(2) {
+    -webkit-animation-duration: 500ms;
+            animation-duration: 500ms;
+    -webkit-animation-delay: 650ms;
+            animation-delay: 650ms; }
+  .nav-bar > *:nth-child(3) {
+    -webkit-animation-duration: 500ms;
+            animation-duration: 500ms;
+    -webkit-animation-delay: 800ms;
+            animation-delay: 800ms; }
+  .nav-bar > *:nth-child(4) {
+    -webkit-animation-duration: 500ms;
+            animation-duration: 500ms;
+    -webkit-animation-delay: 950ms;
+            animation-delay: 950ms; }
+  .nav-bar > *:nth-child(5) {
+    -webkit-animation-duration: 500ms;
+            animation-duration: 500ms;
+    -webkit-animation-delay: 1100ms;
+            animation-delay: 1100ms; }
 
 @media (max-width: 34em) {
   .nav-bar {
@@ -223,6 +286,11 @@ html, body {
 
 body.mobile .variable-btns__copy {
   display: none !important; }
+
+@media (max-width: 767px) {
+  .search-form button.search {
+    border-top-right-radius: .25rem !important;
+    border-bottom-right-radius: .25rem !important; } }
 
 @media (max-width: 34em) {
   .search-result .ct {
@@ -362,10 +430,14 @@ body.mobile .variable-btns__copy {
     display: inline-block; }
 
 .bookmark-modal .tag-dots span {
-  margin-left: -.5rem; }
+  margin-left: .25rem; }
 
 .bookmark-user-modal .user-item:first-child {
   margin-top: 1rem; }
 
 .bookmark-user-modal .user-list .ctrl {
   margin-top: -0.25rem; }
+
+@media (max-width: 34em) {
+  .bookmark-modal .tag-dots span {
+    margin-left: -.25rem; } }

@@ -129,6 +129,14 @@
 body.mobile .variable-btns__copy {
   display: none !important;
 }
+@media (max-width: 767px){
+  .search-form {
+    button.search{
+      border-top-right-radius: .25rem !important;
+      border-bottom-right-radius: .25rem !important;;
+    }
+  }
+}
 @media (max-width: 34em) {
   .search-result {
     .ct {

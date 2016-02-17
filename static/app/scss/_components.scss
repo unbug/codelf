@@ -75,6 +75,14 @@
   i{
     color: #70B7FD;
   }
+  $anim-delay: 150ms;
+  $anim-duration: 500ms;
+  @for $i from 1 through 5 {
+    >*:nth-child(#{$i}) {
+      animation-duration: $anim-duration;
+      animation-delay: 500 + $anim-delay*($i - 1);
+    }
+  }
 }
 @media (max-width: 34em) {
   .nav-bar{
