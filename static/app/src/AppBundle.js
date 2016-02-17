@@ -46,6 +46,7 @@
 
 	$(function () {
 	  __webpack_require__(1);
+	  //require('./view/BoomarkView.js');
 	});
 
 
