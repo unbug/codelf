@@ -111,7 +111,7 @@
 	  donate: $('.donate'),
 	  donateTitle: $('.donate .title'),
 
-	  isGithub: /github/g.test(location.href),
+	  isDebug: Util.localParam()['search']['debug']==1,
 	  lastVal: ''
 	};
 
@@ -209,12 +209,11 @@
 	  renderLangMunu();
 	  onLocationHashChanged();
 	  renderAnalytics();
-	  //!els.isGithub && showBookmark();
 	}
 
 	function showSourceCode() {
 	  renderSourceCode();
-	  Model.searchcodeModel.requestSourceCode(this.dataset.id, renderSourceCode);
+	  Model.Searchcode.requestSourceCode(this.dataset.id, renderSourceCode);
 	  els.lastVariableKeyword = this.dataset.val || els.lastVariableKeyword;
 	  this.dataset.val && renderRelatedProperty(this.dataset.val);
 	  els.sourceCodeModal.modal('show');
@@ -283,13 +282,13 @@
 	  checked.each(function () {
 	    lang.push(this.value);
 	  });
-	  Model.searchcodeModel.setLang(lang.join(' '));
+	  Model.Searchcode.setLang(lang.join(' '));
 	  renderSearchBtn('Search');
 	}
 
 	function onResetLang() {
 	  els.searchDropdownMenu.find('input').removeAttr('checked');
-	  Model.searchcodeModel.setLang();
+	  Model.Searchcode.setLang();
 	  renderSearchBtn('Search');
 	}
 
@@ -319,7 +318,7 @@
 	      });
 	      els.lastVal = tmpval.join(' ');
 	      if (tmpch.length) {
-	        Model.youdaoTranslateModel.request(tmpch.join(' '), function (tdata) {
+	        Model.YoudaoTranslate.request(tmpch.join(' '), function (tdata) {
 	          //basic translate
 	          if (tdata.basic && tdata.basic.explains) {
 	            els.valHistory = tdata.basic.explains.join(' ');
@@ -365,13 +364,13 @@
 	function saveKeyWordRegs() {
 	  els.valRegs = [];
 	  els.lastVal.replace(/\s+/ig, '+').split('+').forEach(function (key) {
-	    key.length && els.valRegs.push(Model.beanHelpersModel.getKeyWordReg(key));
+	    key.length && els.valRegs.push(Model.BeanHelpers.getKeyWordReg(key));
 	  });
 	}
 
 	function doSearch() {
 	  if (els.lastVal && els.lastVal.length) {
-	    Model.searchcodeModel.request(els.lastVal, renderSearchResult);
+	    Model.Searchcode.request(els.lastVal, renderSearchResult);
 	    renderSearchResultHeader('loading');
 	    renderSearchBtn();
 	  } else {
@@ -379,7 +378,7 @@
 	    renderSearchBtn('Search');
 	  }
 
-	  els.isGithub && Model.DDMSModel.postKeyWords(els.lastInputVal);
+	  els.isDebug && Model.DDMS.postKeyWords(els.lastInputVal);
 	  renderAnalytics('q=' + els.lastInputVal);
 	}
 
@@ -431,9 +430,9 @@
 	}
 
 	function renderLangMunu() {
-	  var htm = [], storeLang = Model.searchcodeModel.getLang();
+	  var htm = [], storeLang = Model.Searchcode.getLang();
 	  storeLang = storeLang ? storeLang.split(' ') : [];
-	  Model.topProgramLan.forEach(function (key) {
+	  Model.TopProgramLan.forEach(function (key) {
 	    htm.push(els.searchDropdownMenuTpl
 	      .replace('{id}', key.id)
 	      .replace('{language}', key.language)
@@ -471,7 +470,7 @@
 	          vals.push(el);
 	          //render variable labels
 	          labels.push(els.searchResultTpl
-	            .replace('{label_type}', Model.beanHelpersModel.getRandomLabelType())
+	            .replace('{label_type}', Model.BeanHelpers.getRandomLabelType())
 	            .replace(/\{val\}/g, el)
 	            .replace('{id}', rkey.id)
 	            .replace('{repo}', rkey.repo)
@@ -628,7 +627,7 @@
 	          .replace(/\{repoName\}/g, repoNames[i])
 	          .replace(/\{repoFilePath\}/g, repoFilePaths[i])
 	          .replace(/\{lang\}/g, langs[i])
-	          .replace(/\{label_type\}/g, Model.beanHelpersModel.getRandomLabelType())
+	          .replace(/\{label_type\}/g, Model.BeanHelpers.getRandomLabelType())
 	      );
 	    }
 	  }
@@ -642,10 +641,10 @@
 
 	function renderBookmarkGroup(data) {
 	  if (!data || !data.repos || !data.users || !data.groups || !data.tags) {
-	    Model.bookmarkModel.getAll(renderBookmarkGroup);
+	    Model.Bookmark.getAll(renderBookmarkGroup);
 	    return;
 	  }
-	  var repos = Model.bookmarkModel.arrayToObj(data.repos,'originRepoId'),
+	  var repos = Model.Bookmark.arrayToObj(data.repos,'originRepoId'),
 	    htm = [],
 	    allRepoHtm = [],
 	    allGroupHtm = [],
@@ -712,8 +711,8 @@
 
 	function renderBookmarkGroupByTag(){
 	  var id = this.dataset.id;
-	  Model.bookmarkModel.getAll(function(data){
-	    var repoObjs = Model.bookmarkModel.arrayToObj(data.repos,'originRepoId'),
+	  Model.Bookmark.getAll(function(data){
+	    var repoObjs = Model.Bookmark.arrayToObj(data.repos,'originRepoId'),
 	      repos = [],
 	      repoIds;
 	    if(id){
@@ -802,7 +801,7 @@
 	}
 
 	function renderAnalytics(param) {
-	  els.isGithub && setTimeout(function () {
+	  els.isDebug && setTimeout(function () {
 	    Util.Navigator.getFrame(null).setAttribute('src', 'http://www.mihtool.com/analytics.html?codelf' + (param ? ('&' + param) : ''));
 	  }, param ? 500 : 3000);
 	}
@@ -837,11 +836,11 @@
 	    val = inputEl.val().trim();
 	  val = val.replace(/(\/)*$/, '').replace(/^(.{0,}\/)/, '').replace(/@/g,'');
 	  if (val.length) {
-	    Model.bookmarkModel.setCurUserName(val);
-	    Model.bookmarkModel.UserTable.add(val, function () {
+	    Model.Bookmark.setCurUserName(val);
+	    Model.Bookmark.UserTable.add(val, function () {
 	      beforeSyncUser(val);
 	    });
-	    els.isGithub && Model.DDMSModel.postBookmarkUser(val);
+	    els.isDebug && Model.DDMS.postBookmarkUser(val);
 	    renderAnalytics('bk&u=' + val);
 	  }
 	  inputEl.val('');
@@ -854,10 +853,10 @@
 
 	  if(val.length){
 	    if(id){
-	      Model.bookmarkModel.RepoGroupTable.updateName(id,val);
+	      Model.Bookmark.RepoGroupTable.updateName(id,val);
 	      els.bookmarkGroupModalInput.removeAttr('data-id');
 	    }else{
-	      Model.bookmarkModel.RepoGroupTable.add(val);
+	      Model.Bookmark.RepoGroupTable.add(val);
 	    }
 	  }
 	  els.bookmarkGroupModalInput.val('');
@@ -869,7 +868,7 @@
 	    id = el.attr('data-id');
 
 	  showConfirm("Remove this group?",function(){
-	    Model.bookmarkModel.RepoGroupTable.delete(id);
+	    Model.Bookmark.RepoGroupTable.delete(id);
 	  });
 	}
 
@@ -891,16 +890,16 @@
 	    targetGroupRepo = targetGoupEl.find('.repo-item[data-repoid="'+repoId+'"]');
 
 	  if (!selected) {
-	    Model.bookmarkModel.RepoGroupTable.addRopoId(targetGroupId, repoId);
+	    Model.Bookmark.RepoGroupTable.addRopoId(targetGroupId, repoId);
 
 	    if(!targetGroupRepo.length){
 	      targetGoupCountEl.html(++targetGoupCountNum);
 	      targetGoupEl.find('.repo-list').append(repoEl.clone());
 	    }
-	    els.isGithub && Model.DDMSModel.postBookmarkGroup(repoId,repoUrl,targetGroupName);
+	    els.isDebug && Model.DDMS.postBookmarkGroup(repoId,repoUrl,targetGroupName);
 
 	  } else{
-	    Model.bookmarkModel.RepoGroupTable.removeRopoId(targetGroupId, repoId);
+	    Model.Bookmark.RepoGroupTable.removeRopoId(targetGroupId, repoId);
 
 	    if(targetGroupId==curGroupId){
 	      repoEl.remove();
@@ -919,16 +918,16 @@
 	    repoId = repoEl.attr('data-repoid');
 
 	  if (targetId != undefined && targetId != 0){
-	    Model.bookmarkModel.RepoTagTable[selected?'removeRopoId':'addRopoId'](targetId, repoId);
+	    Model.Bookmark.RepoTagTable[selected?'removeRopoId':'addRopoId'](targetId, repoId);
 	  }
 	}
 
 	function beforeSyncUser(name) {
 	  if (name) {
 	    renderBookmarkHeader('loading');
-	    Model.bookmarkModel.setCurUserName(name);
-	    Model.bookmarkModel.syncGithub(function () {
-	      Model.bookmarkModel.getAll(renderBookmarkGroup);
+	    Model.Bookmark.setCurUserName(name);
+	    Model.Bookmark.syncGithub(function () {
+	      Model.Bookmark.getAll(renderBookmarkGroup);
 	    });
 	  }
 	}
@@ -938,20 +937,20 @@
 	    id = el.attr('data-id');
 
 	  showConfirm("Remove this user and all repos for the user?",function(){
-	    Model.bookmarkModel.UserTable.delete(id, function () {
+	    Model.Bookmark.UserTable.delete(id, function () {
 	      el.parents('.user-item').remove();
-	      Model.bookmarkModel.getAll(renderBookmarkGroup);
+	      Model.Bookmark.getAll(renderBookmarkGroup);
 	    });
 	  });
 	}
 
 	function updateBookmarkTagsData(){
-	  Model.bookmarkModel.RepoTagTable.getAll(function(res){
+	  Model.Bookmark.RepoTagTable.getAll(function(res){
 	    els.lastBookmarkTagsData = res;
 	  });
 	}
 	function updateBookmarkGroupsData(){
-	  Model.bookmarkModel.RepoGroupTable.getAll(function(res){
+	  Model.Bookmark.RepoGroupTable.getAll(function(res){
 	    els.lastBookmarkGroupsData = res;
 	  });
 	}
@@ -963,9 +962,8 @@
 /* 2 */
 /***/ function(module, exports) {
 
-	//utils
 	var appCache = window.applicationCache;
-	appCache.addEventListener('updateready', function(e) {
+	appCache.addEventListener('updateready', function() {
 	  if (appCache.status == appCache.UPDATEREADY){
 	    try{
 	      appCache.update();
@@ -992,7 +990,7 @@
 	if (ipod) os.ios = os.ipod = true, os.version = ipod[3] ? ipod[3].replace(/_/g, '.') : null;
 	exports.os = os;
 
-	var localStorage = new function () {
+	exports.localStorage = new function () {
 	  var lcst = window.localStorage;
 
 	  function getLocalValue(id) {
@@ -1045,7 +1043,6 @@
 	  this.get = getLocalValue;
 	  this.del = removeLocalValue;
 	};
-	exports.localStorage = localStorage;
 
 	var HashHandler = (function () {
 	  var lc = window.location;
@@ -1179,7 +1176,25 @@
 	};
 	exports.FormHandler = FormHandler;
 
-	function randomColor() {
+	exports.localParam = function localParam(search, hash) {
+	  search = search || window.location.search;
+	  hash = hash || window.location.hash;
+	  var fn = function (str, reg) {
+	    if (str) {
+	      var data = {};
+	      str.replace(reg, function ($0, $1, $2, $3) {
+	        data[$1] = $3;
+	      });
+	      return data;
+	    }
+	  }
+	  return {
+	    search: fn(search, new RegExp("([^?=&]+)(=([^&]*))?", "g")) || {},
+	    hash: fn(hash, new RegExp("([^#=&]+)(=([^&]*))?", "g")) || {}
+	  };
+	}
+
+	exports.randomColor = function randomColor() {
 	  var letters = '0123456789ABCDEF'.split('');
 	  var color = '#';
 	  for (var i = 0; i < 6; i++) {
@@ -1187,9 +1202,8 @@
 	  }
 	  return color;
 	}
-	exports.randomColor = randomColor;
 
-	function randomList(list, len, verify, ratio) {
+	exports.randomList = function randomList(list, len, verify, ratio) {
 	  var rs = [], _list = list.slice(0);
 	  len = len || _list.length;
 	  ratio = ratio ? ratio : 0;
@@ -1217,9 +1231,8 @@
 	  }
 	  return rs;
 	}
-	exports.randomList = randomList;
 
-	function isInArray(arr, val) {
+	exports.isInArray = function isInArray(arr, val) {
 	  if ($.inArray(val, arr) != -1) {
 	    return true;
 	  }
@@ -1230,10 +1243,6 @@
 	  }
 	  return false;
 	}
-	exports.isInArray = isInArray;
-
-	//end utils
-
 
 
 /***/ },
@@ -1244,7 +1253,7 @@
 
 	//model
 	//http://githut.info/
-	var topProgramLan = [{"id": "22,106", "language": "JavaScript, CoffeeScript"}, {
+	exports.TopProgramLan = [{"id": "22,106", "language": "JavaScript, CoffeeScript"}, {
 	  "id": "133,135",
 	  "language": "CSS"
 	}, {"id": "3,39", "language": "HTML"}, {"id": 137, "language": "Swift"}, {
@@ -1263,8 +1272,30 @@
 	  "id": 47,
 	  "language": "Scala"
 	}, {"id": "69,78,146", "language": "Shell"}, {"id": 29, "language": "Lisp"}, {"id": 42, "language": "ActionScript"}];
-	exports.topProgramLan = topProgramLan;
-	var searchcodeModel = new function () {
+
+	exports.BeanHelpers = new function () {
+	  this.getRandomLabelType = function () {
+	    var types = ['default', 'primary', 'success', 'info', 'warning', 'warning', 'danger'];
+	    return Util.randomList(types, 1)[0];
+	  };
+
+	  this.getKeyWordReg = function (key) {
+	    return new RegExp('([\\-_\\w\\d\\/\\$]{0,}){0,1}' + key + '([\\-_\\w\\d\\$]{0,}){0,1}', 'gi');
+	  }
+	};
+	exports.Searchcode = __webpack_require__(4);
+	exports.YoudaoTranslate = __webpack_require__(5);
+	exports.Bookmark = __webpack_require__(6);
+	exports.DDMS = __webpack_require__(7);
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Util = __webpack_require__(2);
+
+	module.exports = new function () {
 	  var persistLangsName = 'codelf_langs_selected';
 	  var langs = Util.localStorage.get(persistLangsName), langQuery;
 	  var page = 0;
@@ -1352,9 +1383,15 @@
 	    });
 	  }
 	};
-	exports.searchcodeModel = searchcodeModel;
 
-	var youdaoTranslateModel = new function () {
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Util = __webpack_require__(2);
+
+	module.exports = new function () {
 	  var lastVal;
 	  var translateRequestCallback;
 	  this.request = function (val, callback) {
@@ -1379,58 +1416,15 @@
 	    }
 	  }
 	};
-	exports.youdaoTranslateModel = youdaoTranslateModel;
 
-	var DDMSModel = new function () {
-	  var postAction = 'http://ddmsapi.mihtool.com/apis/v1/formdata/';
-	  var persistKeyWordsName = 'codelf_ddms_keywords';
-	  var persistKeyWordsTimerName = persistKeyWordsName + '_timer';
-	  var cacheKeyWords = (Util.localStorage.get(persistKeyWordsName) || '').split(',');
-	  var ot = new Date(Util.localStorage.get(persistKeyWordsTimerName) || 0);
-	  var nt = new Date().getTime();
 
-	  if ((nt - ot) > 1000 * 60 * 60 * 24) {
-	    cacheKeyWords = [];
-	    Util.localStorage.set(persistKeyWordsTimerName, nt);
-	  }
-	  function saveKeyWords(val) {
-	    if (!Util.isInArray(cacheKeyWords, val)) {
-	      cacheKeyWords.push(val);
-	      Util.localStorage.set(persistKeyWordsName, cacheKeyWords.join(',').replace(/^,*/g, '').replace(/,*&/g, ''));
-	    }
-	  }
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
 
-	  this.postKeyWords = function (val) {
-	    if (val && !Util.isInArray(cacheKeyWords, val)) {
-	      Util.FormHandler.asyncSubmit(postAction, {
-	        formid: '567ff8b0e454ee154de533dd',
-	        keywrod: val
-	      });
-	      saveKeyWords(val);
-	    }
-	  }
-	  this.postBookmarkUser = function (val) {
-	    if (val) {
-	      Util.FormHandler.asyncSubmit(postAction, {
-	        formid: '569c3740b6691c4e16fc9999',
-	        account: val
-	      });
-	    }
-	  }
-	  this.postBookmarkGroup = function (repoid,repourl,groupname) {
-	    if (repoid) {
-	      Util.FormHandler.asyncSubmit(postAction, {
-	        formid: '56a1a23fb6691c4e16fc99b8',
-	        repoid: repoid,
-	        repourl: repourl,
-	        groupname: groupname,
-	      });
-	    }
-	  }
-	};
-	exports.DDMSModel = DDMSModel;
+	var Util = __webpack_require__(2);
 
-	var bookmarkModel = new function () {
+	module.exports = new function () {
 	  var BM = this;
 	  var DB;
 	  var schemaBuilder = lf.schema.create('Codelf', 2);
@@ -1943,22 +1937,62 @@
 	    });
 	    return d;
 	  }
-
 	};
-	exports.bookmarkModel = bookmarkModel;
 
-	var beanHelpersModel = new function () {
-	  this.getRandomLabelType = function () {
-	    var types = ['default', 'primary', 'success', 'info', 'warning', 'warning', 'danger'];
-	    return Util.randomList(types, 1)[0];
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Util = __webpack_require__(2);
+
+	module.exports = new function () {
+	  var postAction = 'http://ddmsapi.mihtool.com/apis/v1/formdata/';
+	  var persistKeyWordsName = 'codelf_ddms_keywords';
+	  var persistKeyWordsTimerName = persistKeyWordsName + '_timer';
+	  var cacheKeyWords = (Util.localStorage.get(persistKeyWordsName) || '').split(',');
+	  var ot = new Date(Util.localStorage.get(persistKeyWordsTimerName) || 0);
+	  var nt = new Date().getTime();
+
+	  if ((nt - ot) > 1000 * 60 * 60 * 24) {
+	    cacheKeyWords = [];
+	    Util.localStorage.set(persistKeyWordsTimerName, nt);
+	  }
+	  function saveKeyWords(val) {
+	    if (!Util.isInArray(cacheKeyWords, val)) {
+	      cacheKeyWords.push(val);
+	      Util.localStorage.set(persistKeyWordsName, cacheKeyWords.join(',').replace(/^,*/g, '').replace(/,*&/g, ''));
+	    }
 	  }
 
-	  this.getKeyWordReg = function (key) {
-	    return new RegExp('([\\-_\\w\\d\\/\\$]{0,}){0,1}' + key + '([\\-_\\w\\d\\$]{0,}){0,1}', 'gi');
+	  this.postKeyWords = function (val) {
+	    if (val && !Util.isInArray(cacheKeyWords, val)) {
+	      Util.FormHandler.asyncSubmit(postAction, {
+	        formid: '567ff8b0e454ee154de533dd',
+	        keywrod: val
+	      });
+	      saveKeyWords(val);
+	    }
+	  }
+	  this.postBookmarkUser = function (val) {
+	    if (val) {
+	      Util.FormHandler.asyncSubmit(postAction, {
+	        formid: '569c3740b6691c4e16fc9999',
+	        account: val
+	      });
+	    }
+	  }
+	  this.postBookmarkGroup = function (repoid,repourl,groupname) {
+	    if (repoid) {
+	      Util.FormHandler.asyncSubmit(postAction, {
+	        formid: '56a1a23fb6691c4e16fc99b8',
+	        repoid: repoid,
+	        repourl: repourl,
+	        groupname: groupname,
+	      });
+	    }
 	  }
 	};
-	exports.beanHelpersModel = beanHelpersModel;
-	//end model
 
 
 /***/ }

@@ -1,5 +1,5 @@
-var Util = require('./Util.js');
-var Model = require('./Model.js');
+var Util = require('../Util.js');
+var Model = require('../model/Model.js');
 
 //view and render
 var els = {
@@ -56,7 +56,7 @@ var els = {
   donate: $('.donate'),
   donateTitle: $('.donate .title'),
 
-  isGithub: /github/g.test(location.href),
+  isDebug: Util.localParam()['search']['debug']==1,
   lastVal: ''
 };
 
@@ -154,12 +154,11 @@ function init() {
   renderLangMunu();
   onLocationHashChanged();
   renderAnalytics();
-  //!els.isGithub && showBookmark();
 }
 
 function showSourceCode() {
   renderSourceCode();
-  Model.searchcodeModel.requestSourceCode(this.dataset.id, renderSourceCode);
+  Model.Searchcode.requestSourceCode(this.dataset.id, renderSourceCode);
   els.lastVariableKeyword = this.dataset.val || els.lastVariableKeyword;
   this.dataset.val && renderRelatedProperty(this.dataset.val);
   els.sourceCodeModal.modal('show');
@@ -228,13 +227,13 @@ function onSelectLang() {
   checked.each(function () {
     lang.push(this.value);
   });
-  Model.searchcodeModel.setLang(lang.join(' '));
+  Model.Searchcode.setLang(lang.join(' '));
   renderSearchBtn('Search');
 }
 
 function onResetLang() {
   els.searchDropdownMenu.find('input').removeAttr('checked');
-  Model.searchcodeModel.setLang();
+  Model.Searchcode.setLang();
   renderSearchBtn('Search');
 }
 
@@ -264,7 +263,7 @@ function onSearch(val) {
       });
       els.lastVal = tmpval.join(' ');
       if (tmpch.length) {
-        Model.youdaoTranslateModel.request(tmpch.join(' '), function (tdata) {
+        Model.YoudaoTranslate.request(tmpch.join(' '), function (tdata) {
           //basic translate
           if (tdata.basic && tdata.basic.explains) {
             els.valHistory = tdata.basic.explains.join(' ');
@@ -310,13 +309,13 @@ function beforeDoSearch() {
 function saveKeyWordRegs() {
   els.valRegs = [];
   els.lastVal.replace(/\s+/ig, '+').split('+').forEach(function (key) {
-    key.length && els.valRegs.push(Model.beanHelpersModel.getKeyWordReg(key));
+    key.length && els.valRegs.push(Model.BeanHelpers.getKeyWordReg(key));
   });
 }
 
 function doSearch() {
   if (els.lastVal && els.lastVal.length) {
-    Model.searchcodeModel.request(els.lastVal, renderSearchResult);
+    Model.Searchcode.request(els.lastVal, renderSearchResult);
     renderSearchResultHeader('loading');
     renderSearchBtn();
   } else {
@@ -324,7 +323,7 @@ function doSearch() {
     renderSearchBtn('Search');
   }
 
-  els.isGithub && Model.DDMSModel.postKeyWords(els.lastInputVal);
+  els.isDebug && Model.DDMS.postKeyWords(els.lastInputVal);
   renderAnalytics('q=' + els.lastInputVal);
 }
 
@@ -376,9 +375,9 @@ function getBookmarkRopeHtm(repo, allGroupHtm, allTagHtm) {
 }
 
 function renderLangMunu() {
-  var htm = [], storeLang = Model.searchcodeModel.getLang();
+  var htm = [], storeLang = Model.Searchcode.getLang();
   storeLang = storeLang ? storeLang.split(' ') : [];
-  Model.topProgramLan.forEach(function (key) {
+  Model.TopProgramLan.forEach(function (key) {
     htm.push(els.searchDropdownMenuTpl
       .replace('{id}', key.id)
       .replace('{language}', key.language)
@@ -416,7 +415,7 @@ function renderSearchResult(data) {
           vals.push(el);
           //render variable labels
           labels.push(els.searchResultTpl
-            .replace('{label_type}', Model.beanHelpersModel.getRandomLabelType())
+            .replace('{label_type}', Model.BeanHelpers.getRandomLabelType())
             .replace(/\{val\}/g, el)
             .replace('{id}', rkey.id)
             .replace('{repo}', rkey.repo)
@@ -573,7 +572,7 @@ function renderRelatedProperty(name) {
           .replace(/\{repoName\}/g, repoNames[i])
           .replace(/\{repoFilePath\}/g, repoFilePaths[i])
           .replace(/\{lang\}/g, langs[i])
-          .replace(/\{label_type\}/g, Model.beanHelpersModel.getRandomLabelType())
+          .replace(/\{label_type\}/g, Model.BeanHelpers.getRandomLabelType())
       );
     }
   }
@@ -587,10 +586,10 @@ function renderBookmarkHeader(cls){
 
 function renderBookmarkGroup(data) {
   if (!data || !data.repos || !data.users || !data.groups || !data.tags) {
-    Model.bookmarkModel.getAll(renderBookmarkGroup);
+    Model.Bookmark.getAll(renderBookmarkGroup);
     return;
   }
-  var repos = Model.bookmarkModel.arrayToObj(data.repos,'originRepoId'),
+  var repos = Model.Bookmark.arrayToObj(data.repos,'originRepoId'),
     htm = [],
     allRepoHtm = [],
     allGroupHtm = [],
@@ -657,8 +656,8 @@ function renderBookmarkGroup(data) {
 
 function renderBookmarkGroupByTag(){
   var id = this.dataset.id;
-  Model.bookmarkModel.getAll(function(data){
-    var repoObjs = Model.bookmarkModel.arrayToObj(data.repos,'originRepoId'),
+  Model.Bookmark.getAll(function(data){
+    var repoObjs = Model.Bookmark.arrayToObj(data.repos,'originRepoId'),
       repos = [],
       repoIds;
     if(id){
@@ -747,7 +746,7 @@ function renderDonate(isZh) {
 }
 
 function renderAnalytics(param) {
-  els.isGithub && setTimeout(function () {
+  els.isDebug && setTimeout(function () {
     Util.Navigator.getFrame(null).setAttribute('src', 'http://www.mihtool.com/analytics.html?codelf' + (param ? ('&' + param) : ''));
   }, param ? 500 : 3000);
 }
@@ -782,11 +781,11 @@ function beforeAddBookmarkUser(el) {
     val = inputEl.val().trim();
   val = val.replace(/(\/)*$/, '').replace(/^(.{0,}\/)/, '').replace(/@/g,'');
   if (val.length) {
-    Model.bookmarkModel.setCurUserName(val);
-    Model.bookmarkModel.UserTable.add(val, function () {
+    Model.Bookmark.setCurUserName(val);
+    Model.Bookmark.UserTable.add(val, function () {
       beforeSyncUser(val);
     });
-    els.isGithub && Model.DDMSModel.postBookmarkUser(val);
+    els.isDebug && Model.DDMS.postBookmarkUser(val);
     renderAnalytics('bk&u=' + val);
   }
   inputEl.val('');
@@ -799,10 +798,10 @@ function beforeEditBookmarkGroup() {
 
   if(val.length){
     if(id){
-      Model.bookmarkModel.RepoGroupTable.updateName(id,val);
+      Model.Bookmark.RepoGroupTable.updateName(id,val);
       els.bookmarkGroupModalInput.removeAttr('data-id');
     }else{
-      Model.bookmarkModel.RepoGroupTable.add(val);
+      Model.Bookmark.RepoGroupTable.add(val);
     }
   }
   els.bookmarkGroupModalInput.val('');
@@ -814,7 +813,7 @@ function beforeDelBookmarkGroup() {
     id = el.attr('data-id');
 
   showConfirm("Remove this group?",function(){
-    Model.bookmarkModel.RepoGroupTable.delete(id);
+    Model.Bookmark.RepoGroupTable.delete(id);
   });
 }
 
@@ -836,16 +835,16 @@ function beforeAddRepoToGroup() {
     targetGroupRepo = targetGoupEl.find('.repo-item[data-repoid="'+repoId+'"]');
 
   if (!selected) {
-    Model.bookmarkModel.RepoGroupTable.addRopoId(targetGroupId, repoId);
+    Model.Bookmark.RepoGroupTable.addRopoId(targetGroupId, repoId);
 
     if(!targetGroupRepo.length){
       targetGoupCountEl.html(++targetGoupCountNum);
       targetGoupEl.find('.repo-list').append(repoEl.clone());
     }
-    els.isGithub && Model.DDMSModel.postBookmarkGroup(repoId,repoUrl,targetGroupName);
+    els.isDebug && Model.DDMS.postBookmarkGroup(repoId,repoUrl,targetGroupName);
 
   } else{
-    Model.bookmarkModel.RepoGroupTable.removeRopoId(targetGroupId, repoId);
+    Model.Bookmark.RepoGroupTable.removeRopoId(targetGroupId, repoId);
 
     if(targetGroupId==curGroupId){
       repoEl.remove();
@@ -864,16 +863,16 @@ function beforeAddRepoToTag() {
     repoId = repoEl.attr('data-repoid');
 
   if (targetId != undefined && targetId != 0){
-    Model.bookmarkModel.RepoTagTable[selected?'removeRopoId':'addRopoId'](targetId, repoId);
+    Model.Bookmark.RepoTagTable[selected?'removeRopoId':'addRopoId'](targetId, repoId);
   }
 }
 
 function beforeSyncUser(name) {
   if (name) {
     renderBookmarkHeader('loading');
-    Model.bookmarkModel.setCurUserName(name);
-    Model.bookmarkModel.syncGithub(function () {
-      Model.bookmarkModel.getAll(renderBookmarkGroup);
+    Model.Bookmark.setCurUserName(name);
+    Model.Bookmark.syncGithub(function () {
+      Model.Bookmark.getAll(renderBookmarkGroup);
     });
   }
 }
@@ -883,20 +882,20 @@ function beforeDelUser() {
     id = el.attr('data-id');
 
   showConfirm("Remove this user and all repos for the user?",function(){
-    Model.bookmarkModel.UserTable.delete(id, function () {
+    Model.Bookmark.UserTable.delete(id, function () {
       el.parents('.user-item').remove();
-      Model.bookmarkModel.getAll(renderBookmarkGroup);
+      Model.Bookmark.getAll(renderBookmarkGroup);
     });
   });
 }
 
 function updateBookmarkTagsData(){
-  Model.bookmarkModel.RepoTagTable.getAll(function(res){
+  Model.Bookmark.RepoTagTable.getAll(function(res){
     els.lastBookmarkTagsData = res;
   });
 }
 function updateBookmarkGroupsData(){
-  Model.bookmarkModel.RepoGroupTable.getAll(function(res){
+  Model.Bookmark.RepoGroupTable.getAll(function(res){
     els.lastBookmarkGroupsData = res;
   });
 }

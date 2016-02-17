@@ -1,6 +1,5 @@
-//utils
 var appCache = window.applicationCache;
-appCache.addEventListener('updateready', function(e) {
+appCache.addEventListener('updateready', function() {
   if (appCache.status == appCache.UPDATEREADY){
     try{
       appCache.update();
@@ -27,7 +26,7 @@ if (ipad) os.ios = os.ipad = true, os.version = ipad[2].replace(/_/g, '.')
 if (ipod) os.ios = os.ipod = true, os.version = ipod[3] ? ipod[3].replace(/_/g, '.') : null;
 exports.os = os;
 
-var localStorage = new function () {
+exports.localStorage = new function () {
   var lcst = window.localStorage;
 
   function getLocalValue(id) {
@@ -80,7 +79,6 @@ var localStorage = new function () {
   this.get = getLocalValue;
   this.del = removeLocalValue;
 };
-exports.localStorage = localStorage;
 
 var HashHandler = (function () {
   var lc = window.location;
@@ -214,7 +212,25 @@ var FormHandler = new function () {
 };
 exports.FormHandler = FormHandler;
 
-function randomColor() {
+exports.localParam = function localParam(search, hash) {
+  search = search || window.location.search;
+  hash = hash || window.location.hash;
+  var fn = function (str, reg) {
+    if (str) {
+      var data = {};
+      str.replace(reg, function ($0, $1, $2, $3) {
+        data[$1] = $3;
+      });
+      return data;
+    }
+  }
+  return {
+    search: fn(search, new RegExp("([^?=&]+)(=([^&]*))?", "g")) || {},
+    hash: fn(hash, new RegExp("([^#=&]+)(=([^&]*))?", "g")) || {}
+  };
+}
+
+exports.randomColor = function randomColor() {
   var letters = '0123456789ABCDEF'.split('');
   var color = '#';
   for (var i = 0; i < 6; i++) {
@@ -222,9 +238,8 @@ function randomColor() {
   }
   return color;
 }
-exports.randomColor = randomColor;
 
-function randomList(list, len, verify, ratio) {
+exports.randomList = function randomList(list, len, verify, ratio) {
   var rs = [], _list = list.slice(0);
   len = len || _list.length;
   ratio = ratio ? ratio : 0;
@@ -252,9 +267,8 @@ function randomList(list, len, verify, ratio) {
   }
   return rs;
 }
-exports.randomList = randomList;
 
-function isInArray(arr, val) {
+exports.isInArray = function isInArray(arr, val) {
   if ($.inArray(val, arr) != -1) {
     return true;
   }
@@ -265,7 +279,3 @@ function isInArray(arr, val) {
   }
   return false;
 }
-exports.isInArray = isInArray;
-
-//end utils
-
