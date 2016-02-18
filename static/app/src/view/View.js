@@ -1,5 +1,5 @@
-var Util = require('../Util.js');
-var Model = require('../model/Model.js');
+var Util = require('Util.js');
+var Model = require('model/Model.js');
 
 //view and render
 var els = {

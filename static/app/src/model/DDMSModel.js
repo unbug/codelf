@@ -1,4 +1,4 @@
-var Util = require('../Util.js');
+var Util = require('Util.js');
 
 module.exports = new function () {
   var postAction = 'http://ddmsapi.mihtool.com/apis/v1/formdata/';

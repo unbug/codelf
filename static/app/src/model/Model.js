@@ -1,4 +1,4 @@
-var Util = require('../Util.js');
+var Util = require('Util.js');
 
 //model
 //http://githut.info/

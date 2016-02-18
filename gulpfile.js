@@ -1,4 +1,5 @@
 require('date-utils');
+var path = require('path');
 var gulp = require('gulp');
 var through2 = require('through2');
 var $ = require('gulp-load-plugins')();
@@ -6,7 +7,7 @@ var runSequence = require('run-sequence');
 var browserSync = require('browser-sync');//http://www.browsersync.io/docs/gulp/
 var reload = browserSync.reload;
 var cachebust = new $.cachebust();
-var webpack = require("webpack");
+var webpack = require("webpack-stream");
 
 //build version:
 //script version
@@ -73,21 +74,19 @@ gulp.task('dist:libjs', function () {
     .pipe(cachebust.resources())
     .pipe(gulp.dest('./src/lib/'));
 });
-gulp.task("dist:appjs", function(callback) {
-  // run webpack
-  webpack({
-    entry: "./static/app/src/App.js",
-    output: {
-      path: __dirname + "/static/app/src",
-      filename: "AppBundle.js"
-    }
-  }, function(err, stats) {
-    if(err) throw new $.util.PluginError("webpack", err);
-    $.util.log("[webpack]", stats.toString({
-      // output options
-    }));
-    callback();
-  });
+gulp.task("dist:appjs", function() {
+  return gulp.src(['./static/app/src/App.js'])
+    .pipe(webpack({
+      resolve: {
+        root: [
+          path.resolve('./static/app/src')
+        ]
+      },
+      output: {
+        filename: "AppBundle.js"
+      }
+    }))
+    .pipe(gulp.dest('./static/app/src'));
 });
 gulp.task('dist:html', function () {
   return gulp.src(['./static/app/*.html'])
