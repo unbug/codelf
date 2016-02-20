@@ -993,7 +993,7 @@
 	  this.request = function (val, callback) {
 	    lastVal = val;
 	    translateRequestCallback = callback;
-	    lastVal && $.getJSON('http://fanyi.youdao.com/openapi.do?callback=?&keyfrom=Codelf&key=2023743559&type=data&doctype=jsonp&version=1.1',
+	    lastVal && $.getJSON('//fanyi.youdao.com/openapi.do?callback=?&keyfrom=Codelf&key=2023743559&type=data&doctype=jsonp&version=1.1',
 	      {
 	        q: lastVal
 	      },
