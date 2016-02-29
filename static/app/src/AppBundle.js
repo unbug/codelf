@@ -478,6 +478,7 @@
 	    renderAnalytics('vc&q=' + els.lastInputVal);
 	  }
 	}
+
 	function renderHighlightVariableKeyword(){
 	  els.sourceCodeContent.unhighlight();
 	  setTimeout(function(){
@@ -488,6 +489,15 @@
 	      });
 	    },300);
 	  },800);
+	}
+
+	function renderSourceCodeByWorker(){
+	  var blob = new Blob([document.querySelector('#worker1').textContent]);
+	  var worker = new Worker(window.URL.createObjectURL(blob));
+	  worker.onmessage = function(e) {
+	    log("Received: " + e.data);
+	  }
+	  worker.postMessage();
 	}
 
 	function renderRelatedProperty(name) {
