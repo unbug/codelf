@@ -1,4 +1,11 @@
 <script src="src/lib/all.js"></script>
+<script id="worker_prettify" type="javascript/worker">
+  self.onmessage = function(e) {
+    if(e.data=='before'){
+      self.postMessage('after');
+    }
+  };
+</script>
 <script>
   @@include("src/AppBundle.js")
 </script>

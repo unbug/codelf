@@ -279,3 +279,10 @@ exports.isInArray = function isInArray(arr, val) {
   }
   return false;
 }
+
+exports.InlineWebWorker = {
+  ready: window.Blob && window.Worker && window.URL,
+  create: function create(selector){
+    return new Worker(window.URL.createObjectURL(new Blob([document.querySelector(selector).textContent])));
+  }
+}

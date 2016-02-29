@@ -21,25 +21,5 @@
 @@include("html/components.html")
 
 @@include("html/scripts.html")
-
-<script id="worker1" type="javascript/worker">
-    // This script won't be parsed by JS engines
-    // because its type is javascript/worker.
-    self.onmessage = function(e) {
-      self.postMessage('msg from worker');
-    };
-    // Rest of your worker code goes here.
-    console.log(self,this,self==this);
-  </script>
-
-<script>
-  var blob = new Blob([document.querySelector('#worker1').textContent]);
-
-  var worker = new Worker(window.URL.createObjectURL(blob));
-  worker.onmessage = function(e) {
-    console.log("Received: " + e.data);
-  }
-  worker.postMessage('test1'); // Start the worker.
-</script>
 </body>
 </html>
