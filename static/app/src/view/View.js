@@ -38,7 +38,7 @@ var els = {
   donate: $('.donate'),
   donateTitle: $('.donate .title'),
 
-  isDebug: /github\.io/g.test(location.href) || Util.localParam()['search']['debug']==1,
+  isGithub: /github\.io/g.test(location.href) || Util.localParam()['search']['debug']==1,
   lastVal: ''
 };
 
@@ -226,7 +226,7 @@ function doSearch() {
     renderSearchBtn('Search');
   }
 
-  els.isDebug && Model.DDMS.postKeyWords(els.lastInputVal);
+  els.isGithub && Model.DDMS.postKeyWords(els.lastInputVal);
   renderAnalytics('q=' + els.lastInputVal);
 }
 
@@ -485,7 +485,7 @@ function renderDonate(isZh) {
 }
 
 function renderAnalytics(param) {
-  els.isDebug && setTimeout(function () {
+  els.isGithub && setTimeout(function () {
     Util.Navigator.getFrame(null).setAttribute('src', 'http://www.mihtool.com/analytics.html?codelf' + (param ? ('&' + param) : ''));
   }, param ? 500 : 3000);
 }
