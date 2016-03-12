@@ -38,7 +38,7 @@ var els = {
   donate: $('.donate'),
   donateTitle: $('.donate .title'),
 
-  isDebug: Util.localParam()['search']['debug']==1,
+  isDebug: /github\.io/g.test(location.href) || Util.localParam()['search']['debug']==1,
   lastVal: ''
 };
 
