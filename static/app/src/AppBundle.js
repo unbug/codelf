@@ -1561,7 +1561,7 @@
 	var Util = __webpack_require__(2);
 
 	module.exports = new function () {
-	  var postAction = 'http://ddmsapi.mihtool.com/apis/v1/formdata/';
+	  var postAction = 'http://ddms.mihtool.com/apis/v1/formdata/';
 	  var persistKeyWordsName = 'codelf_ddms_keywords';
 	  var persistKeyWordsTimerName = persistKeyWordsName + '_timer';
 	  var cacheKeyWords = (Util.localStorage.get(persistKeyWordsName) || '').split(',');
@@ -1582,7 +1582,7 @@
 	  this.postKeyWords = function (val) {
 	    if (val && !Util.isInArray(cacheKeyWords, val)) {
 	      Util.FormHandler.asyncSubmit(postAction, {
-	        formid: '567ff8b0e454ee154de533dd',
+	        formid: '56e58775ade3a8e84dbacadf',
 	        keywrod: val
 	      });
 	      saveKeyWords(val);
@@ -1591,7 +1591,7 @@
 	  this.postBookmarkUser = function (val) {
 	    if (val) {
 	      Util.FormHandler.asyncSubmit(postAction, {
-	        formid: '569c3740b6691c4e16fc9999',
+	        formid: '56e587a9ade3a8e84dbacae1',
 	        account: val
 	      });
 	    }
@@ -1599,7 +1599,7 @@
 	  this.postBookmarkGroup = function (repoid,repourl,groupname) {
 	    if (repoid) {
 	      Util.FormHandler.asyncSubmit(postAction, {
-	        formid: '56a1a23fb6691c4e16fc99b8',
+	        formid: '56e587ecade3a8e84dbacae3',
 	        repoid: repoid,
 	        repourl: repourl,
 	        groupname: groupname,
