@@ -26,7 +26,7 @@ var els = {
 
   confirmModal: $('.confirm-modal'),
 
-  isDebug: Util.localParam()['search']['debug']==1
+  isDebug: /github\.io/g.test(location.href) || Util.localParam()['search']['debug']==1
 };
 
 function bindEvent() {
