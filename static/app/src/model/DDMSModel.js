@@ -23,7 +23,7 @@ module.exports = new function () {
     if (val && !Util.isInArray(cacheKeyWords, val)) {
       Util.FormHandler.asyncSubmit(postAction, {
         formid: '56e58775ade3a8e84dbacadf',
-        keywrod: val
+        keyword: val
       });
       saveKeyWords(val);
     }
