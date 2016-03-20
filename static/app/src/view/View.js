@@ -429,10 +429,10 @@ function renderSourceCodeByWorker(callback){
   if(Util.InlineWebWorker.ready){
     if(!els.prettifyWorker){
       els.prettifyWorker = els.prettifyWorker || Util.InlineWebWorker.create('#worker_prettify');
-      els.prettifyWorker.onmessage = function(e){
-        if(e.data=='after'){
-          callback && callback();
-        }
+    }
+    els.prettifyWorker.onmessage = function(e){
+      if(e.data=='after'){
+        callback && callback();
       }
     }
     els.prettifyWorker.postMessage('before');
