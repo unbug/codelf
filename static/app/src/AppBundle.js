@@ -46,7 +46,7 @@
 
 	$(function () {
 	  __webpack_require__(1);
-	  __webpack_require__(8);
+	  __webpack_require__(9);
 	});
 
 
@@ -149,8 +149,15 @@
 	}
 
 	function showSourceCode() {
-	  renderSourceCode();
-	  Model.Searchcode.requestSourceCode(this.dataset.id, renderSourceCode);
+	  els.lastSourceCodeId = this.dataset.id;
+	  var htm = Model.Searchcode.getCacheSourceCodeHtmlById(this.dataset.id);
+	  if(htm){
+	    els.sourceCodeContentHd.hide();
+	    els.sourceCodeContent.html(htm);
+	  }else{
+	    renderSourceCode();
+	    Model.Searchcode.requestSourceCode(this.dataset.id, renderSourceCode);
+	  }
 	  els.lastVariableKeyword = this.dataset.val || els.lastVariableKeyword;
 	  this.dataset.val && renderRelatedProperty(this.dataset.val);
 	  els.sourceCodeModal.modal('show');
@@ -505,6 +512,9 @@
 	      els.sourceCodeContent.find('.highlight').each(function(idx){
 	        this.setAttribute('tabindex',idx+1);
 	      });
+	      setTimeout(function() {
+	        Model.Searchcode.setCacheSourceCodeHtmlById(els.lastSourceCodeId,els.sourceCodeContent.html());
+	      },300);
 	    },300);
 	  },800);
 	}
@@ -872,6 +882,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Util = __webpack_require__(2);
+	var Database = __webpack_require__(4);
 
 	//model
 	//http://githut.info/
@@ -905,10 +916,17 @@
 	    return new RegExp('([\\-_\\w\\d\\/\\$]{0,}){0,1}' + key + '([\\-_\\w\\d\\$]{0,}){0,1}', 'gi');
 	  }
 	};
-	exports.Searchcode = __webpack_require__(4);
-	exports.YoudaoTranslate = __webpack_require__(5);
-	exports.Bookmark = __webpack_require__(6);
-	exports.DDMS = __webpack_require__(7);
+	exports.Searchcode = __webpack_require__(5);
+	exports.YoudaoTranslate = __webpack_require__(6);
+	exports.Bookmark = __webpack_require__(7);
+	exports.DDMS = __webpack_require__(8);
+
+	//init DB
+	Database.schemaBuilder.connect({
+	  storeType: Util.os.ios?lf.schema.DataStoreType.WEB_SQL: null
+	}).then(function (db) {
+	  $(window).trigger('DB:ready',db);
+	});
 
 
 /***/ },
@@ -917,12 +935,45 @@
 
 	var Util = __webpack_require__(2);
 
+	exports.schemaBuilder = lf.schema.create('Codelf', 4);
+	exports.eventType = {
+	  C: 'CREATE',
+	  U: 'UPDATED',
+	  D: 'DELETE'
+	};
+
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Util = __webpack_require__(2);
+	var Database = __webpack_require__(4);
+
+
 	module.exports = new function () {
+	  var _this = this;
+	  var DB;
+	  var schemaBuilder = Database.schemaBuilder;
+	  var Tables;
+	  var DBEventType = Database.eventType;
+	  var win = $(window);
+
+	  schemaBuilder
+	    .createTable('SourceCode')
+	    .addColumn('id', lf.Type.INTEGER)
+	    .addColumn('sid', lf.Type.OBJECT)
+	    .addColumn('htm', lf.Type.OBJECT)
+	    .addColumn('create', lf.Type.DATE_TIME)
+	    .addPrimaryKey(['id'], true);
+
 	  var persistLangsName = 'codelf_langs_selected';
 	  var langs = Util.localStorage.get(persistLangsName), langQuery;
 	  var page = 0;
 	  var lastVal;
 	  var cacheSourceCodes = {};
+	  var cacheSourceCodeHtmls = {};
 	  var afterRequestSearchcode;
 
 	  genLangQuery(langs);
@@ -953,6 +1004,53 @@
 	    } else {
 	      langQuery = null;
 	    }
+	  }
+
+	  win.on('DB:ready', function (ev,db) {
+	    DB = db;
+	    Tables = {
+	      SourceCode: DB.getSchema().table('SourceCode')
+	    };
+	    _this.SourceCodeTable.getAll(function(rows){
+	      rows.forEach(function (key) {
+	        cacheSourceCodeHtmls[key.sid] = key.htm;
+	      });
+	    });
+	  });
+
+	  this.SourceCodeTable = new function () {
+	    this.add = function (sid, htm, callback) {
+	      if (!sid) {
+	        return;
+	      }
+	      var row = Tables.SourceCode.createRow({
+	        'sid': sid,
+	        'htm': htm,
+	        'create': new Date()
+	      });
+	      DB.insertOrReplace().into(Tables.SourceCode).values([row])
+	        .exec().then(function () {
+	        callback && callback();
+	        win.trigger('DB:Table.SourceCode.onchange', {type: DBEventType.C});
+	      });
+	    }
+
+	    this.getAll = function (callback) {
+	      DB.select()
+	        .from(Tables.SourceCode)
+	        .orderBy(Tables.SourceCode.id, lf.Order.DESC)
+	        .exec().then(function (rows) {
+	        callback && callback(rows);
+	      });
+	    }
+	  };
+
+	  this.setCacheSourceCodeHtmlById = function(id,htm){
+	    cacheSourceCodeHtmls[id] = htm;
+	    _this.SourceCodeTable.add(id,htm);
+	  }
+	  this.getCacheSourceCodeHtmlById = function(id){
+	    return cacheSourceCodeHtmls[id];
 	  }
 
 	  //search code by query
@@ -1008,7 +1106,7 @@
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Util = __webpack_require__(2);
@@ -1033,21 +1131,17 @@
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Util = __webpack_require__(2);
+	var Database = __webpack_require__(4);
 
 	module.exports = new function () {
 	  var BM = this;
 	  var DB;
-	  var schemaBuilder = lf.schema.create('Codelf', 2);
+	  var schemaBuilder = Database.schemaBuilder;
 	  var Tables;
-	  var DBEventType = {
-	    C: 'CREATE',
-	    U: 'UPDATED',
-	    D: 'DELETE'
-	  };
+	  var DBEventType = Database.eventType;
 	  var win = $(window);
 	  var curUserName;
 	  var curUser;
@@ -1087,9 +1181,7 @@
 	    .addColumn('create', lf.Type.DATE_TIME)
 	    .addPrimaryKey(['id'], true);
 
-	  schemaBuilder.connect({
-	    storeType: Util.os.ios?lf.schema.DataStoreType.WEB_SQL: null
-	  }).then(function (db) {
+	  win.on('DB:ready', function (ev,db) {
 	    DB = db;
 	    Tables = {
 	      User: DB.getSchema().table('User'),
@@ -1098,7 +1190,6 @@
 	      Repo: DB.getSchema().table('Repo')
 	    };
 	    BM.RepoTagTable.addDefaultTags();
-	    win.trigger('DB:ready');
 	  });
 
 	  this.UserTable = new function () {
@@ -1555,7 +1646,7 @@
 
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Util = __webpack_require__(2);
@@ -1610,7 +1701,7 @@
 
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Util = __webpack_require__(2);

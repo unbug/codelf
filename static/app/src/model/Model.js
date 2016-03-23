@@ -1,4 +1,5 @@
 var Util = require('Util.js');
+var Database = require('model/Database.js');
 
 //model
 //http://githut.info/
@@ -36,3 +37,10 @@ exports.Searchcode = require('./SearchcodeModel');
 exports.YoudaoTranslate = require('./YoudaoTranslateModel');
 exports.Bookmark = require('./BookmarkModel');
 exports.DDMS = require('./DDMSModel');
+
+//init DB
+Database.schemaBuilder.connect({
+  storeType: Util.os.ios?lf.schema.DataStoreType.WEB_SQL: null
+}).then(function (db) {
+  $(window).trigger('DB:ready',db);
+});

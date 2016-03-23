@@ -1,11 +1,29 @@
 var Util = require('Util.js');
+var Database = require('model/Database.js');
+
 
 module.exports = new function () {
+  var _this = this;
+  var DB;
+  var schemaBuilder = Database.schemaBuilder;
+  var Tables;
+  var DBEventType = Database.eventType;
+  var win = $(window);
+
+  schemaBuilder
+    .createTable('SourceCode')
+    .addColumn('id', lf.Type.INTEGER)
+    .addColumn('sid', lf.Type.OBJECT)
+    .addColumn('htm', lf.Type.OBJECT)
+    .addColumn('create', lf.Type.DATE_TIME)
+    .addPrimaryKey(['id'], true);
+
   var persistLangsName = 'codelf_langs_selected';
   var langs = Util.localStorage.get(persistLangsName), langQuery;
   var page = 0;
   var lastVal;
   var cacheSourceCodes = {};
+  var cacheSourceCodeHtmls = {};
   var afterRequestSearchcode;
 
   genLangQuery(langs);
@@ -36,6 +54,53 @@ module.exports = new function () {
     } else {
       langQuery = null;
     }
+  }
+
+  win.on('DB:ready', function (ev,db) {
+    DB = db;
+    Tables = {
+      SourceCode: DB.getSchema().table('SourceCode')
+    };
+    _this.SourceCodeTable.getAll(function(rows){
+      rows.forEach(function (key) {
+        cacheSourceCodeHtmls[key.sid] = key.htm;
+      });
+    });
+  });
+
+  this.SourceCodeTable = new function () {
+    this.add = function (sid, htm, callback) {
+      if (!sid) {
+        return;
+      }
+      var row = Tables.SourceCode.createRow({
+        'sid': sid,
+        'htm': htm,
+        'create': new Date()
+      });
+      DB.insertOrReplace().into(Tables.SourceCode).values([row])
+        .exec().then(function () {
+        callback && callback();
+        win.trigger('DB:Table.SourceCode.onchange', {type: DBEventType.C});
+      });
+    }
+
+    this.getAll = function (callback) {
+      DB.select()
+        .from(Tables.SourceCode)
+        .orderBy(Tables.SourceCode.id, lf.Order.DESC)
+        .exec().then(function (rows) {
+        callback && callback(rows);
+      });
+    }
+  };
+
+  this.setCacheSourceCodeHtmlById = function(id,htm){
+    cacheSourceCodeHtmls[id] = htm;
+    _this.SourceCodeTable.add(id,htm);
+  }
+  this.getCacheSourceCodeHtmlById = function(id){
+    return cacheSourceCodeHtmls[id];
   }
 
   //search code by query

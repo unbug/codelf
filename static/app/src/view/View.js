@@ -93,8 +93,15 @@ function init() {
 }
 
 function showSourceCode() {
-  renderSourceCode();
-  Model.Searchcode.requestSourceCode(this.dataset.id, renderSourceCode);
+  els.lastSourceCodeId = this.dataset.id;
+  var htm = Model.Searchcode.getCacheSourceCodeHtmlById(this.dataset.id);
+  if(htm){
+    els.sourceCodeContentHd.hide();
+    els.sourceCodeContent.html(htm);
+  }else{
+    renderSourceCode();
+    Model.Searchcode.requestSourceCode(this.dataset.id, renderSourceCode);
+  }
   els.lastVariableKeyword = this.dataset.val || els.lastVariableKeyword;
   this.dataset.val && renderRelatedProperty(this.dataset.val);
   els.sourceCodeModal.modal('show');
@@ -449,6 +456,9 @@ function renderHighlightVariableKeyword(){
       els.sourceCodeContent.find('.highlight').each(function(idx){
         this.setAttribute('tabindex',idx+1);
       });
+      setTimeout(function() {
+        Model.Searchcode.setCacheSourceCodeHtmlById(els.lastSourceCodeId,els.sourceCodeContent.html());
+      },300);
     },300);
   },800);
 }

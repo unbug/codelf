@@ -1,15 +1,11 @@
-var Util = require('Util.js');
+var Database = require('model/Database.js');
 
 module.exports = new function () {
   var BM = this;
   var DB;
-  var schemaBuilder = lf.schema.create('Codelf', 2);
+  var schemaBuilder = Database.schemaBuilder;
   var Tables;
-  var DBEventType = {
-    C: 'CREATE',
-    U: 'UPDATED',
-    D: 'DELETE'
-  };
+  var DBEventType = Database.eventType;
   var win = $(window);
   var curUserName;
   var curUser;
@@ -49,9 +45,7 @@ module.exports = new function () {
     .addColumn('create', lf.Type.DATE_TIME)
     .addPrimaryKey(['id'], true);
 
-  schemaBuilder.connect({
-    storeType: Util.os.ios?lf.schema.DataStoreType.WEB_SQL: null
-  }).then(function (db) {
+  win.on('DB:ready', function (ev,db) {
     DB = db;
     Tables = {
       User: DB.getSchema().table('User'),
@@ -60,7 +54,6 @@ module.exports = new function () {
       Repo: DB.getSchema().table('Repo')
     };
     BM.RepoTagTable.addDefaultTags();
-    win.trigger('DB:ready');
   });
 
   this.UserTable = new function () {
