@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <script type="text/javascript">
+    var thisPage = window.location.href
+      .replace(window.location.hash, '');
+    var thisPath = thisPage.substring(0, thisPage.lastIndexOf('/') + 1);
+    /**
+     * window.location.search
+     * window.location.hash
+     */
+    function localParam(search, hash) {
+      search = search || window.location.search;
+      hash = hash || window.location.hash;
+      var fn = function (str, reg) {
+        if (str) {
+          var data = {};
+          str.replace(reg, function ($0, $1, $2, $3) {
+            data[$1] = $3;
+          });
+          return data;
+        }
+      }
+      return {
+        search: fn(search, new RegExp("([^?=&]+)(=([^&]*))?", "g")) || {},
+        hash: fn(hash, new RegExp("([^#=&]+)(=([^&]*))?", "g")) || {}
+      };
+    }
+    var lp = localParam();
+    var callback = window.parent[lp.search['frame_callback']];
+    callback && callback(decodeURIComponent(window.location.href));
+  </script>
+</head>
+<body ontouchstart="">
+</body>
+</html>

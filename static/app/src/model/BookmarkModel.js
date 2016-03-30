@@ -179,6 +179,36 @@ module.exports = new function () {
       });
     }
 
+    this.deleteAll = function (callback) {
+      DB.delete()
+        .from(Tables.RepoGroup)
+        .exec().then(function (res) {
+        callback && callback(res);
+        win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.D});
+      });
+    }
+
+    this.addAll = function (data, callback) {
+      if(data){
+        this.deleteAll(function(){
+          var rows = [];
+          data.forEach(function(key){
+            rows.push(Tables.RepoGroup.createRow({
+              'name': key.name,
+              'repoIds': key.repoIds,
+              'order': key.order,
+              'create': new Date()
+            }));
+          });
+          DB.insertOrReplace().into(Tables.RepoGroup).values(rows)
+            .exec().then(function () {
+            callback && callback();
+            win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.C});
+          });
+        });
+      }
+    }
+
     this.getAll = function (callback) {
       DB.select()
         .from(Tables.RepoGroup)
@@ -310,9 +340,39 @@ module.exports = new function () {
         .from(Tables.RepoTag)
         .where(Tables.RepoTag.id.eq(id))
         .exec().then(function (res) {
-        callback && callback(res);
-        win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.D});
-      });
+          callback && callback(res);
+          win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.D});
+        });
+    }
+
+    this.deleteAll = function (callback) {
+      DB.delete()
+        .from(Tables.RepoTag)
+        .exec().then(function (res) {
+          callback && callback(res);
+          win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.D});
+        });
+    }
+
+    this.addAll = function (data, callback) {
+      if(data){
+        this.deleteAll(function(){
+          var rows = [];
+          data.forEach(function(key){
+            rows.push(Tables.RepoTag.createRow({
+              'name': key.name,
+              'color': key.color,
+              'repoIds': key.repoIds,
+              'create': new Date()
+            }));
+          });
+          DB.insertOrReplace().into(Tables.RepoTag).values(rows)
+            .exec().then(function () {
+              callback && callback();
+              win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.C});
+            });
+        });
+      }
     }
 
     this.getAll = function (callback) {
@@ -496,6 +556,14 @@ module.exports = new function () {
     });
 
     this.UserTable.updateSync(curUserName);
+  }
+
+  this.syncRepoGroup = function (){
+
+  }
+
+  this.syncRepoTag = function (){
+
   }
 
   this.arrayToObj = function (data,idName) {

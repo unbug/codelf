@@ -22,7 +22,8 @@ var els = {
   bookmarkUserModalUserTpl: $('.bookmark-user-modal .user-list script').html(),
 
   bookmarkGroupModal: $('.bookmark-group-modal'),
-  bookmarkGroupModalInput: $('.bookmark-group-modal input'),
+  bookmarkGroupModalInput: $('.bookmark-group-modal input.group-name'),
+  bookmarkGroupModalSyncInput: $('.bookmark-group-modal input.sync-id'),
 
   confirmModal: $('.confirm-modal'),
 
@@ -54,13 +55,9 @@ function bindEvent() {
       return false;
     }
   });
-  els.bookmarkGroupModal.on('click', '.submit', beforeEditBookmarkGroup);
-  els.bookmarkGroupModal.keypress(function (e) {
-    if (e.which == 13) {
-      beforeEditBookmarkGroup();
-      return false;
-    }
-  });
+  els.bookmarkGroupModal.on('click', '.submit-group', beforeEditBookmarkGroup);
+  els.bookmarkGroupModal.on('click', '.download', beforeDownloadBookmarkGroupsAndTags);
+  els.bookmarkGroupModal.on('click', '.upload', beforeUploadBookmarkGroupsAndTags);
   els.bookmarkModalContent.on('click', '.repo-group-item>.hd .ctrl .del', beforeDelBookmarkGroup);
   els.bookmarkModalContent.on('click', '.repo-group-item>.hd .ctrl .edit', function(){
     showBookmarkGroupModal(this.dataset.id,this.dataset.name);
@@ -115,6 +112,7 @@ function showBookmarkGroupModal(id,name) {
   }else{
     els.bookmarkGroupModalInput.removeAttr('data-id').val('');
   }
+  renderBookmarkSyncGroupsAndTags();
 }
 
 function hideBookmarkGroupModal() {
@@ -279,6 +277,14 @@ function renderBookmarkRepoTagDots(e){
   }
 }
 
+function renderBookmarkSyncGroupsAndTags(syncId) {
+  syncId = syncId || Model.DDMS.getOrganizerSyncId();
+  if(syncId){
+    els.bookmarkGroupModalSyncInput.val(syncId);
+    els.bookmarkGroupModal.find('.sync-note').html('Your current sync id is: '+ syncId);
+  }
+}
+
 function renderBookmarkSearchRepos(){
   var gEl = els.bookmarkModalContent.find('.repo-group-item[data-id="0"]'),
     inputEl = gEl.find('.hd .search input'),
@@ -417,6 +423,40 @@ function beforeDelUser() {
       Model.Bookmark.getAll(renderBookmarkGroup);
     });
   }]);
+}
+
+function beforeDownloadBookmarkGroupsAndTags(){
+  var id = els.bookmarkGroupModalSyncInput.val();
+  Model.DDMS.getBookmarkOrganizer(id,function(data){
+    if(data && data.code){
+      Model.DDMS.setOrganizerSyncId(id);
+      renderBookmarkSyncGroupsAndTags(id);
+      var json = JSON.parse(decodeURIComponent(data.data.data.data));
+      Model.Bookmark.RepoGroupTable.addAll(json.groups, function () {
+        Model.Bookmark.RepoTagTable.addAll(json.tags, function () {
+          Model.Bookmark.getAll(renderBookmarkGroup);
+        });
+      });
+    }
+  });
+}
+function beforeUploadBookmarkGroupsAndTags(){
+  Model.Bookmark.getAll(function(data){
+    var id = els.bookmarkGroupModalSyncInput.val(),
+      data = encodeURIComponent(JSON.stringify({groups: data.groups, tags: data.tags}));
+    if(!!id){
+      Model.DDMS.postUpdateBookmarkOrganizer(data, function (url) {
+        Model.DDMS.setOrganizerSyncId(id);
+        renderBookmarkSyncGroupsAndTags(id);
+      });
+    }else{
+      Model.DDMS.postBookmarkOrganizer(data, function(url){
+        id = Util.localParam(url).search['id'];
+        Model.DDMS.setOrganizerSyncId(id);
+        renderBookmarkSyncGroupsAndTags(id);
+      });
+    }
+  });
 }
 
 function updateBookmarkTagsData(){

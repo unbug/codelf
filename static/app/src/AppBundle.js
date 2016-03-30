@@ -876,6 +876,11 @@
 	  }
 	}
 
+	var thisPage = window.location.href.replace(window.location.hash, '');
+	var thisPath = thisPage.substring(0, thisPage.lastIndexOf('/') + 1);
+	exports.thisPage = thisPage;
+	exports.thisPath = thisPath;
+
 
 /***/ },
 /* 3 */
@@ -935,7 +940,7 @@
 
 	var Util = __webpack_require__(2);
 
-	exports.schemaBuilder = lf.schema.create('Codelf', 4);
+	exports.schemaBuilder = lf.schema.create('Codelf', 6);
 	exports.eventType = {
 	  C: 'CREATE',
 	  U: 'UPDATED',
@@ -1315,6 +1320,36 @@
 	      });
 	    }
 
+	    this.deleteAll = function (callback) {
+	      DB.delete()
+	        .from(Tables.RepoGroup)
+	        .exec().then(function (res) {
+	        callback && callback(res);
+	        win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.D});
+	      });
+	    }
+
+	    this.addAll = function (data, callback) {
+	      if(data){
+	        this.deleteAll(function(){
+	          var rows = [];
+	          data.forEach(function(key){
+	            rows.push(Tables.RepoGroup.createRow({
+	              'name': key.name,
+	              'repoIds': key.repoIds,
+	              'order': key.order,
+	              'create': new Date()
+	            }));
+	          });
+	          DB.insertOrReplace().into(Tables.RepoGroup).values(rows)
+	            .exec().then(function () {
+	            callback && callback();
+	            win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.C});
+	          });
+	        });
+	      }
+	    }
+
 	    this.getAll = function (callback) {
 	      DB.select()
 	        .from(Tables.RepoGroup)
@@ -1446,9 +1481,39 @@
 	        .from(Tables.RepoTag)
 	        .where(Tables.RepoTag.id.eq(id))
 	        .exec().then(function (res) {
-	        callback && callback(res);
-	        win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.D});
-	      });
+	          callback && callback(res);
+	          win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.D});
+	        });
+	    }
+
+	    this.deleteAll = function (callback) {
+	      DB.delete()
+	        .from(Tables.RepoTag)
+	        .exec().then(function (res) {
+	          callback && callback(res);
+	          win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.D});
+	        });
+	    }
+
+	    this.addAll = function (data, callback) {
+	      if(data){
+	        this.deleteAll(function(){
+	          var rows = [];
+	          data.forEach(function(key){
+	            rows.push(Tables.RepoTag.createRow({
+	              'name': key.name,
+	              'color': key.color,
+	              'repoIds': key.repoIds,
+	              'create': new Date()
+	            }));
+	          });
+	          DB.insertOrReplace().into(Tables.RepoTag).values(rows)
+	            .exec().then(function () {
+	              callback && callback();
+	              win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.C});
+	            });
+	        });
+	      }
 	    }
 
 	    this.getAll = function (callback) {
@@ -1634,6 +1699,14 @@
 	    this.UserTable.updateSync(curUserName);
 	  }
 
+	  this.syncRepoGroup = function (){
+
+	  }
+
+	  this.syncRepoTag = function (){
+
+	  }
+
 	  this.arrayToObj = function (data,idName) {
 	    var d = {};
 	    idName = idName || 'id';
@@ -1652,12 +1725,15 @@
 	var Util = __webpack_require__(2);
 
 	module.exports = new function () {
-	  var postAction = 'http://ddms.mihtool.com/apis/v1/formdata/';
+	  var formAction = 'http://ddms.mihtool.com/apis/v1/formdata/';
+	  var formDataAction = 'http://ddms.mihtool.com/apis/v1/formdata_detail/';
 	  var persistKeyWordsName = 'codelf_ddms_keywords';
+	  var persistOrganizerName = 'codelf_ddms_group_sync_id';
 	  var persistKeyWordsTimerName = persistKeyWordsName + '_timer';
 	  var cacheKeyWords = (Util.localStorage.get(persistKeyWordsName) || '').split(',');
 	  var ot = new Date(Util.localStorage.get(persistKeyWordsTimerName) || 0);
 	  var nt = new Date().getTime();
+	  var OrganizerSyncId;
 
 	  if ((nt - ot) > 1000 * 60 * 60 * 24) {
 	    cacheKeyWords = [];
@@ -1670,9 +1746,18 @@
 	    }
 	  }
 
+	  this.setOrganizerSyncId = function (val) {
+	    OrganizerSyncId = val;
+	    Util.localStorage.set(persistOrganizerName, val);
+	  }
+
+	  this.getOrganizerSyncId = function () {
+	    return OrganizerSyncId || Util.localStorage.get(persistOrganizerName);
+	  }
+
 	  this.postKeyWords = function (val) {
 	    if (val && !Util.isInArray(cacheKeyWords, val)) {
-	      Util.FormHandler.asyncSubmit(postAction, {
+	      Util.FormHandler.asyncSubmit(formAction, {
 	        formid: '56e58775ade3a8e84dbacadf',
 	        keyword: val
 	      });
@@ -1681,7 +1766,7 @@
 	  }
 	  this.postBookmarkUser = function (val) {
 	    if (val) {
-	      Util.FormHandler.asyncSubmit(postAction, {
+	      Util.FormHandler.asyncSubmit(formAction, {
 	        formid: '56e587a9ade3a8e84dbacae1',
 	        account: val
 	      });
@@ -1689,13 +1774,44 @@
 	  }
 	  this.postBookmarkGroup = function (repoid,repourl,groupname) {
 	    if (repoid) {
-	      Util.FormHandler.asyncSubmit(postAction, {
+	      Util.FormHandler.asyncSubmit(formAction, {
 	        formid: '56e587ecade3a8e84dbacae3',
 	        repoid: repoid,
 	        repourl: repourl,
 	        groupname: groupname,
 	      });
 	    }
+	  }
+	  this.postBookmarkOrganizer = function (data, callback) {
+	    if (data) {
+	      window.afterPostBookmarkOrganizer = callback;
+	      Util.FormHandler.asyncSubmit(formAction, {
+	        formid: '56fb7d9dade3a8e84dbacaf0',
+	        success_url: Util.thisPath+'ddms_frame_callback.html?frame_callback=afterPostBookmarkOrganizer',
+	        data: data
+	      });
+	    }
+	  }
+	  this.postUpdateBookmarkOrganizer = function (data, callback) {
+	    if (data) {
+	      window.afterPostUpdateBookmarkOrganizer = callback;
+	      Util.FormHandler.asyncSubmit(formDataAction, {
+	        id: '56fb7d9dade3a8e84dbacaf0',
+	        success_url: Util.thisPath+'ddms_frame_callback.html?frame_callback=afterPostUpdateBookmarkOrganizer',
+	        data: data
+	      });
+	    }
+	  }
+	  this.getBookmarkOrganizer = function (id, callback) {
+	    $.getJSON(formDataAction+'?callback=?',
+	      {
+	        id: id
+	      },
+	      function (data) {
+	        if (data) {
+	          callback && callback(data);
+	        }
+	      });
 	  }
 	};
 
@@ -1728,7 +1844,8 @@
 	  bookmarkUserModalUserTpl: $('.bookmark-user-modal .user-list script').html(),
 
 	  bookmarkGroupModal: $('.bookmark-group-modal'),
-	  bookmarkGroupModalInput: $('.bookmark-group-modal input'),
+	  bookmarkGroupModalInput: $('.bookmark-group-modal input.group-name'),
+	  bookmarkGroupModalSyncInput: $('.bookmark-group-modal input.sync-id'),
 
 	  confirmModal: $('.confirm-modal'),
 
@@ -1760,13 +1877,9 @@
 	      return false;
 	    }
 	  });
-	  els.bookmarkGroupModal.on('click', '.submit', beforeEditBookmarkGroup);
-	  els.bookmarkGroupModal.keypress(function (e) {
-	    if (e.which == 13) {
-	      beforeEditBookmarkGroup();
-	      return false;
-	    }
-	  });
+	  els.bookmarkGroupModal.on('click', '.submit-group', beforeEditBookmarkGroup);
+	  els.bookmarkGroupModal.on('click', '.download', beforeDownloadBookmarkGroupsAndTags);
+	  els.bookmarkGroupModal.on('click', '.upload', beforeUploadBookmarkGroupsAndTags);
 	  els.bookmarkModalContent.on('click', '.repo-group-item>.hd .ctrl .del', beforeDelBookmarkGroup);
 	  els.bookmarkModalContent.on('click', '.repo-group-item>.hd .ctrl .edit', function(){
 	    showBookmarkGroupModal(this.dataset.id,this.dataset.name);
@@ -1821,6 +1934,7 @@
 	  }else{
 	    els.bookmarkGroupModalInput.removeAttr('data-id').val('');
 	  }
+	  renderBookmarkSyncGroupsAndTags();
 	}
 
 	function hideBookmarkGroupModal() {
@@ -1985,6 +2099,14 @@
 	  }
 	}
 
+	function renderBookmarkSyncGroupsAndTags(syncId) {
+	  syncId = syncId || Model.DDMS.getOrganizerSyncId();
+	  if(syncId){
+	    els.bookmarkGroupModalSyncInput.val(syncId);
+	    els.bookmarkGroupModal.find('.sync-note').html('Your current sync id is: '+ syncId);
+	  }
+	}
+
 	function renderBookmarkSearchRepos(){
 	  var gEl = els.bookmarkModalContent.find('.repo-group-item[data-id="0"]'),
 	    inputEl = gEl.find('.hd .search input'),
@@ -2123,6 +2245,40 @@
 	      Model.Bookmark.getAll(renderBookmarkGroup);
 	    });
 	  }]);
+	}
+
+	function beforeDownloadBookmarkGroupsAndTags(){
+	  var id = els.bookmarkGroupModalSyncInput.val();
+	  Model.DDMS.getBookmarkOrganizer(id,function(data){
+	    if(data && data.code){
+	      Model.DDMS.setOrganizerSyncId(id);
+	      renderBookmarkSyncGroupsAndTags(id);
+	      var json = JSON.parse(decodeURIComponent(data.data.data.data));
+	      Model.Bookmark.RepoGroupTable.addAll(json.groups, function () {
+	        Model.Bookmark.RepoTagTable.addAll(json.tags, function () {
+	          Model.Bookmark.getAll(renderBookmarkGroup);
+	        });
+	      });
+	    }
+	  });
+	}
+	function beforeUploadBookmarkGroupsAndTags(){
+	  Model.Bookmark.getAll(function(data){
+	    var id = els.bookmarkGroupModalSyncInput.val(),
+	      data = encodeURIComponent(JSON.stringify({groups: data.groups, tags: data.tags}));
+	    if(!!id){
+	      Model.DDMS.postUpdateBookmarkOrganizer(data, function (url) {
+	        Model.DDMS.setOrganizerSyncId(id);
+	        renderBookmarkSyncGroupsAndTags(id);
+	      });
+	    }else{
+	      Model.DDMS.postBookmarkOrganizer(data, function(url){
+	        id = Util.localParam(url).search['id'];
+	        Model.DDMS.setOrganizerSyncId(id);
+	        renderBookmarkSyncGroupsAndTags(id);
+	      });
+	    }
+	  });
 	}
 
 	function updateBookmarkTagsData(){

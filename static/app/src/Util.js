@@ -286,3 +286,8 @@ exports.InlineWebWorker = {
     return new Worker(window.URL.createObjectURL(new Blob([document.querySelector(selector).textContent])));
   }
 }
+
+var thisPage = window.location.href.replace(window.location.hash, '');
+var thisPath = thisPage.substring(0, thisPage.lastIndexOf('/') + 1);
+exports.thisPage = thisPage;
+exports.thisPath = thisPath;
