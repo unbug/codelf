@@ -426,37 +426,41 @@ function beforeDelUser() {
 }
 
 function beforeDownloadBookmarkGroupsAndTags(){
-  var id = els.bookmarkGroupModalSyncInput.val();
-  Model.DDMS.getBookmarkOrganizer(id,function(data){
-    if(data && data.code){
-      Model.DDMS.setOrganizerSyncId(id);
-      renderBookmarkSyncGroupsAndTags(id);
-      var json = JSON.parse(decodeURIComponent(data.data.data.data));
-      Model.Bookmark.RepoGroupTable.addAll(json.groups, function () {
-        Model.Bookmark.RepoTagTable.addAll(json.tags, function () {
-          Model.Bookmark.getAll(renderBookmarkGroup);
+  els.win.trigger('MainView:showConfirm',["Download will overwrite all local groups, are you sure?",function(){
+    var id = els.bookmarkGroupModalSyncInput.val();
+    Model.DDMS.getBookmarkOrganizer(id,function(data){
+      if(data && data.code){
+        Model.DDMS.setOrganizerSyncId(id);
+        renderBookmarkSyncGroupsAndTags(id);
+        var json = JSON.parse(decodeURIComponent(data.data.data.data));
+        Model.Bookmark.RepoGroupTable.addAll(json.groups, function () {
+          Model.Bookmark.RepoTagTable.addAll(json.tags, function () {
+            Model.Bookmark.getAll(renderBookmarkGroup);
+          });
         });
-      });
-    }
-  });
+      }
+    });
+  }]);
 }
 function beforeUploadBookmarkGroupsAndTags(){
-  Model.Bookmark.getAll(function(data){
-    var id = els.bookmarkGroupModalSyncInput.val(),
-      data = encodeURIComponent(JSON.stringify({groups: data.groups, tags: data.tags}));
-    if(!!id){
-      Model.DDMS.postUpdateBookmarkOrganizer(data, function (url) {
-        Model.DDMS.setOrganizerSyncId(id);
-        renderBookmarkSyncGroupsAndTags(id);
-      });
-    }else{
-      Model.DDMS.postBookmarkOrganizer(data, function(url){
-        id = Util.localParam(url).search['id'];
-        Model.DDMS.setOrganizerSyncId(id);
-        renderBookmarkSyncGroupsAndTags(id);
-      });
-    }
-  });
+    Model.Bookmark.getAll(function(data){
+      var id = els.bookmarkGroupModalSyncInput.val(),
+        data = encodeURIComponent(JSON.stringify({groups: data.groups, tags: data.tags}));
+      if(!!id){
+        els.win.trigger('MainView:showConfirm',["Upload will overwrite groups belong to this sync id on the server, are you sure?",function(){
+            Model.DDMS.postUpdateBookmarkOrganizer(data, function () {
+            Model.DDMS.setOrganizerSyncId(id);
+            renderBookmarkSyncGroupsAndTags(id);
+          });
+        }]);
+      }else{
+        Model.DDMS.postBookmarkOrganizer(data, function(url){
+          id = Util.localParam(url).search['id'];
+          Model.DDMS.setOrganizerSyncId(id);
+          renderBookmarkSyncGroupsAndTags(id);
+        });
+      }
+    });
 }
 
 function updateBookmarkTagsData(){
