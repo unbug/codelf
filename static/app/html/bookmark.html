@@ -20,6 +20,7 @@
             </div>
           </div>
         </div>
+        <button class="btn btn-primary-outline btn-sm sync"><i class="fa fa-cloud"></i> Sync</button>
       </div>
       <div class="modal-body">
         <header class="hd empty">
@@ -163,26 +164,34 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h6 class="modal-title">Group</h6>
+        <h6 class="modal-title">Edit group</h6>
       </div>
       <div class="modal-body">
-        <div class="text-muted">Edit group</div>
-        <div class="input-group">
           <input type="text" class="form-control group-name" placeholder="New group name">
-          <span class="input-group-btn">
-            <button class="btn btn-secondary submit-group" type="button" data-dismiss="modal">Done</button>
-          </span>
-        </div>
-        <hr>
-        <div class="text-muted">Sync (download/upload) groups and tags with a sync id</div>
-        <div class="input-group">
-          <input type="text" class="form-control sync-id" placeholder="Sync id">
-          <span class="input-group-btn">
-            <button class="btn btn-secondary download" type="button" data-dismiss="modal">Download</button>
-            <button class="btn btn-secondary upload" type="button" data-dismiss="modal">Upload</button>
-          </span>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary submit-group" type="button" data-dismiss="modal">Done</button>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="modal fade bookmark-sync-modal" tabindex="-1" role="dialog" aria-labelledby="bookmarkSyncModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h6 class="modal-title">Sync</h6>
+      </div>
+      <div class="modal-body">
+        <div class="text-muted">Download/upload groups and tags with a sync id</div>
+        <input type="text" class="form-control sync-id" placeholder="Sync id">
         <div class="text-danger sync-note">Click "Upload" to upload groups and get a sync id</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary download" type="button" data-dismiss="modal"><i class="fa fa-cloud-download"></i> Download</button>
+        <button class="btn btn-secondary upload" type="button" data-dismiss="modal"><i class="fa fa-cloud-upload"></i> Upload</button>
       </div>
     </div>
   </div>

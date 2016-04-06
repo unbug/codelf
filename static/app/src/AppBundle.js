@@ -1845,7 +1845,8 @@
 
 	  bookmarkGroupModal: $('.bookmark-group-modal'),
 	  bookmarkGroupModalInput: $('.bookmark-group-modal input.group-name'),
-	  bookmarkGroupModalSyncInput: $('.bookmark-group-modal input.sync-id'),
+	  bookmarkSyncModal: $('.bookmark-sync-modal'),
+	  bookmarkSyncModalInput: $('.bookmark-sync-modal input.sync-id'),
 
 	  confirmModal: $('.confirm-modal'),
 
@@ -1861,6 +1862,9 @@
 	  els.bookmarkModal.on('click', '.add-account', showBookmarkUserModal);
 	  els.bookmarkModal.on('click', '.add-group', function(){
 	    showBookmarkGroupModal();
+	  });
+	  els.bookmarkModal.on('click', '.modal-header .sync', function(){
+	    showBookmarkSyncModal();
 	  });
 	  els.bookmarkModalContentHd.on('click', '.submit', function(){
 	    beforeAddBookmarkUser(els.bookmarkModalContentHd);
@@ -1878,8 +1882,8 @@
 	    }
 	  });
 	  els.bookmarkGroupModal.on('click', '.submit-group', beforeEditBookmarkGroup);
-	  els.bookmarkGroupModal.on('click', '.download', beforeDownloadBookmarkGroupsAndTags);
-	  els.bookmarkGroupModal.on('click', '.upload', beforeUploadBookmarkGroupsAndTags);
+	  els.bookmarkSyncModal.on('click', '.download', beforeDownloadBookmarkGroupsAndTags);
+	  els.bookmarkSyncModal.on('click', '.upload', beforeUploadBookmarkGroupsAndTags);
 	  els.bookmarkModalContent.on('click', '.repo-group-item>.hd .ctrl .del', beforeDelBookmarkGroup);
 	  els.bookmarkModalContent.on('click', '.repo-group-item>.hd .ctrl .edit', function(){
 	    showBookmarkGroupModal(this.dataset.id,this.dataset.name);
@@ -1900,6 +1904,7 @@
 	  els.bookmarkUserModalUserList.on('click', '.del', beforeDelUser);
 	  els.bookmarkGroupModal.on('hidden.bs.modal', showBookmark);
 	  els.bookmarkUserModal.on('hidden.bs.modal', showBookmark);
+	  els.bookmarkSyncModal.on('hidden.bs.modal', showBookmark);
 	}
 
 	function init() {
@@ -1934,11 +1939,20 @@
 	  }else{
 	    els.bookmarkGroupModalInput.removeAttr('data-id').val('');
 	  }
-	  renderBookmarkSyncGroupsAndTags();
 	}
 
 	function hideBookmarkGroupModal() {
 	  els.bookmarkGroupModal.modal('hide');
+	}
+
+	function showBookmarkSyncModal() {
+	  hideBookmark();
+	  els.bookmarkSyncModal.modal('show');
+	  renderBookmarkSyncGroupsAndTags();
+	}
+
+	function hideBookmarkSyncModal() {
+	  els.bookmarkSyncModal.modal('hide');
 	}
 
 	function getBookmarkRopeHtm(repo, allGroupHtm, allTagHtm) {
@@ -2102,8 +2116,8 @@
 	function renderBookmarkSyncGroupsAndTags(syncId) {
 	  syncId = syncId || Model.DDMS.getOrganizerSyncId();
 	  if(syncId){
-	    els.bookmarkGroupModalSyncInput.val(syncId);
-	    els.bookmarkGroupModal.find('.sync-note').html('Your current sync id is: '+ syncId);
+	    els.bookmarkSyncModalInput.val(syncId);
+	    els.bookmarkSyncModal.find('.sync-note').html('Your current sync id is: '+ syncId);
 	  }
 	}
 
@@ -2249,7 +2263,7 @@
 
 	function beforeDownloadBookmarkGroupsAndTags(){
 	  els.win.trigger('MainView:showConfirm',["Download will overwrite all local groups, are you sure?",function(){
-	    var id = els.bookmarkGroupModalSyncInput.val();
+	    var id = els.bookmarkSyncModalInput.val();
 	    Model.DDMS.getBookmarkOrganizer(id,function(data){
 	      if(data && data.code){
 	        Model.DDMS.setOrganizerSyncId(id);
@@ -2266,7 +2280,7 @@
 	}
 	function beforeUploadBookmarkGroupsAndTags(){
 	    Model.Bookmark.getAll(function(data){
-	      var id = els.bookmarkGroupModalSyncInput.val(),
+	      var id = els.bookmarkSyncModalInput.val(),
 	        data = encodeURIComponent(JSON.stringify({groups: data.groups, tags: data.tags}));
 	      if(!!id){
 	        els.win.trigger('MainView:showConfirm',["Upload will overwrite groups belong to this sync id on the server, are you sure?",function(){

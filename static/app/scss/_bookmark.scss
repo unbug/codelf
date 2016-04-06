@@ -4,8 +4,17 @@
 }
 
 .bookmark-modal {
-  .modal-header > .btn {
-    margin-right: .4rem;
+  .modal-header{
+    .btn, .btn-group{
+      margin-right: .4rem;
+      &:last-child{
+        margin-right: 0;
+      }
+    }
+    .btn-group{
+      padding: 0;
+      margin: 0;
+    }
   }
   .modal-body > .hd {
     padding-bottom: 1rem;
@@ -110,6 +119,12 @@
   .bookmark-modal {
     .tag-dots span {
       margin-left: -.25rem;
+    }
+    .modal-header {
+      .btn{
+        padding: .25rem;
+        margin-right: .25rem;
+      }
     }
   }
 }

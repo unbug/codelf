@@ -358,8 +358,14 @@ body.mobile .variable-btns__copy {
   cursor: pointer;
   color: #70B7FD; }
 
-.bookmark-modal .modal-header > .btn {
+.bookmark-modal .modal-header .btn, .bookmark-modal .modal-header .btn-group {
   margin-right: .4rem; }
+  .bookmark-modal .modal-header .btn:last-child, .bookmark-modal .modal-header .btn-group:last-child {
+    margin-right: 0; }
+
+.bookmark-modal .modal-header .btn-group {
+  padding: 0;
+  margin: 0; }
 
 .bookmark-modal .modal-body > .hd {
   padding-bottom: 1rem;
@@ -442,4 +448,7 @@ body.mobile .variable-btns__copy {
 
 @media (max-width: 34em) {
   .bookmark-modal .tag-dots span {
-    margin-left: -.25rem; } }
+    margin-left: -.25rem; }
+  .bookmark-modal .modal-header .btn {
+    padding: .25rem;
+    margin-right: .25rem; } }
