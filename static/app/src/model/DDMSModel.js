@@ -48,14 +48,15 @@ module.exports = new function () {
       });
     }
   }
-  this.postBookmarkGroup = function (repoid,repourl,groupname,lang) {
+  this.postBookmarkGroup = function (repoid,repourl,groupname,lang,stars) {
     if (repoid) {
       Util.FormHandler.asyncSubmit(formAction, {
         formid: '56e587ecade3a8e84dbacae3',
         repoid: repoid,
         repourl: repourl,
         groupname: groupname,
-        lang: lang
+        lang: lang,
+        stars: stars
       });
     }
   }
