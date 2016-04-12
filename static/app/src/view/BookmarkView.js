@@ -141,6 +141,7 @@ function getBookmarkRopeHtm(repo, allGroupHtm, allTagHtm) {
     .replace(/\{_full_name\}/g, repo.data.full_name.toLowerCase())
     .replace(/\{description\}/g, repo.data.description||'')
     .replace(/\{html_url\}/g, repo.data.html_url)
+    .replace(/\{language\}/g, repo.data.language||'')
     .replace(/\{groupItems\}/g, allGroupHtm)
     .replace(/\{tagItems\}/g, allTagHtm)
 }
@@ -373,6 +374,7 @@ function beforeAddRepoToGroup() {
     repoEl = el.parents('.repo-item'),
     repoId = repoEl.attr('data-repoid'),
     repoUrl = repoEl.find('.repo-item__hd a').attr('href'),
+    repoLang = repoEl.attr('data-repolang'),
     curGroupEl = el.parents('.repo-group-item'),
     curGroupId = curGroupEl.attr('data-id'),
     curGroupElCountEl = curGroupEl.find('.hd>.count'),
@@ -390,7 +392,7 @@ function beforeAddRepoToGroup() {
       targetGoupCountEl.html(++targetGoupCountNum);
       targetGoupEl.find('.repo-list').append(repoEl.clone());
     }
-    els.isDebug && Model.DDMS.postBookmarkGroup(repoId,repoUrl,targetGroupName);
+    els.isDebug && Model.DDMS.postBookmarkGroup(repoId,repoUrl,targetGroupName,repoLang);
 
   } else{
     Model.Bookmark.RepoGroupTable.removeRopoId(targetGroupId, repoId);
