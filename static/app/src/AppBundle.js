@@ -1966,7 +1966,7 @@
 	    .replace(/\{description\}/g, repo.data.description||'')
 	    .replace(/\{html_url\}/g, repo.data.html_url)
 	    .replace(/\{language\}/g, repo.data.language||'')
-	    .replace(/\{stargazers_count\}/g, repo.data.stargazers_count||0)
+	    .replace(/\{stargazers_count\}/g, repo.data.stargazers_count||'')
 	    .replace(/\{groupItems\}/g, allGroupHtm)
 	    .replace(/\{tagItems\}/g, allTagHtm)
 	}
@@ -2218,7 +2218,7 @@
 	      targetGoupCountEl.html(++targetGoupCountNum);
 	      targetGoupEl.find('.repo-list').append(repoEl.clone());
 	    }
-	    els.isDebug && Model.DDMS.postBookmarkGroup(repoId,repoUrl,targetGroupName,repoLang,repoStar);
+	    els.isDebug && Model.DDMS.postBookmarkGroup(repoId,repoUrl,targetGroupName,repoLang,repoStar||0);
 
 	  } else{
 	    Model.Bookmark.RepoGroupTable.removeRopoId(targetGroupId, repoId);
