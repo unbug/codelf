@@ -70,11 +70,11 @@ module.exports = new function () {
       });
     }
   }
-  this.postUpdateBookmarkOrganizer = function (data, callback) {
-    if (data) {
+  this.postUpdateBookmarkOrganizer = function (id, data, callback) {
+    if (id && data) {
       window.afterPostUpdateBookmarkOrganizer = callback;
       Util.FormHandler.asyncSubmit(formDataAction, {
-        id: '56fb7d9dade3a8e84dbacaf0',
+        id: id,
         success_url: Util.thisPath+'ddms_frame_callback.html?frame_callback=afterPostUpdateBookmarkOrganizer',
         data: data
       });

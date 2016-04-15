@@ -1794,11 +1794,11 @@
 	      });
 	    }
 	  }
-	  this.postUpdateBookmarkOrganizer = function (data, callback) {
-	    if (data) {
+	  this.postUpdateBookmarkOrganizer = function (id, data, callback) {
+	    if (id && data) {
 	      window.afterPostUpdateBookmarkOrganizer = callback;
 	      Util.FormHandler.asyncSubmit(formDataAction, {
-	        id: '56fb7d9dade3a8e84dbacaf0',
+	        id: id,
 	        success_url: Util.thisPath+'ddms_frame_callback.html?frame_callback=afterPostUpdateBookmarkOrganizer',
 	        data: data
 	      });
@@ -2288,14 +2288,17 @@
 	    Model.Bookmark.getAll(function(data){
 	      var id = els.bookmarkSyncModalInput.val(),
 	        data = encodeURIComponent(JSON.stringify({groups: data.groups, tags: data.tags}));
+	      //update
 	      if(!!id){
 	        els.win.trigger('MainView:showConfirm',["Upload will overwrite groups belong to this sync id on the server, are you sure?",function(){
-	            Model.DDMS.postUpdateBookmarkOrganizer(data, function () {
+	            Model.DDMS.postUpdateBookmarkOrganizer(id, data, function () {
 	            Model.DDMS.setOrganizerSyncId(id);
 	            renderBookmarkSyncGroupsAndTags(id);
 	          });
 	        }]);
-	      }else{
+	      }
+	      //create
+	      else{
 	        Model.DDMS.postBookmarkOrganizer(data, function(url){
 	          id = Util.localParam(url).search['id'];
 	          Model.DDMS.setOrganizerSyncId(id);

@@ -464,14 +464,17 @@ function beforeUploadBookmarkGroupsAndTags(){
     Model.Bookmark.getAll(function(data){
       var id = els.bookmarkSyncModalInput.val(),
         data = encodeURIComponent(JSON.stringify({groups: data.groups, tags: data.tags}));
+      //update
       if(!!id){
         els.win.trigger('MainView:showConfirm',["Upload will overwrite groups belong to this sync id on the server, are you sure?",function(){
-            Model.DDMS.postUpdateBookmarkOrganizer(data, function () {
+            Model.DDMS.postUpdateBookmarkOrganizer(id, data, function () {
             Model.DDMS.setOrganizerSyncId(id);
             renderBookmarkSyncGroupsAndTags(id);
           });
         }]);
-      }else{
+      }
+      //create
+      else{
         Model.DDMS.postBookmarkOrganizer(data, function(url){
           id = Util.localParam(url).search['id'];
           Model.DDMS.setOrganizerSyncId(id);
