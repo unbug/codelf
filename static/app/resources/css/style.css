@@ -273,6 +273,16 @@ html, body {
     .search-result .hd .logo {
       margin: 0 auto 1rem; }
 
+.react-native-training {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5rem;
+  padding: 1rem;
+  text-align: center;
+  background: #fff; }
+
 .popover--variable {
   background-color: transparent;
   border-left: 0;
