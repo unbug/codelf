@@ -1067,10 +1067,10 @@
 	    lastVal = val;
 	    lastVal && $.ajax({
 	      type: 'GET',
-	      //dataType: 'jsonp',
-	      dataType: 'json',
-	      url: 'https://searchcode.com/api/codesearch_I/' + (langQuery ? ('?' + langQuery) : ''),
-	      //url: 'https://searchcode.com/api/jsonp_codesearch_I/' + (langQuery ? ('?' + langQuery) : ''),
+	      dataType: 'jsonp',
+	      //dataType: 'json',
+	      //url: 'https://searchcode.com/api/codesearch_I/' + (langQuery ? ('?' + langQuery) : ''),
+	      url: 'https://searchcode.com/api/jsonp_codesearch_I/' + (langQuery ? ('?' + langQuery) : ''),
 	      data: {
 	        q: lastVal,
 	        p: page,
