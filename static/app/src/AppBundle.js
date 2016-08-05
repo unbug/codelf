@@ -557,6 +557,7 @@
 	}
 
 	function renderBaiduShare() {
+	  return;
 	  if (els.hasBaiduShare || !els.isZHSearchKeyWords) {
 	    return;
 	  }
