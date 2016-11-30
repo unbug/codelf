@@ -1896,6 +1896,7 @@
 	  els.bookmarkModalContent.on('click', '.repo-item .group-menu', renderBookmarkRepoGroupMenu);
 	  els.bookmarkModalContent.on('click', '.repo-item .tag-menu', renderBookmarkRepoTagMenu);
 	  els.bookmarkModalContent.on('mouseenter mouseleave ontouchstart ontouchend', '.repo-item', renderBookmarkRepoTagDots);
+	  els.bookmarkModalContent.on('mouseenter', '.repo-item', renderBookmarkRepoTitle);
 	  els.bookmarkModalContent.on('keyup','.repo-group-item>.hd .search input',renderBookmarkSearchRepos);
 	  els.bookmarkModalContent.on('click','.repo-group-item>.hd .search submit',renderBookmarkSearchRepos);
 	  els.bookmarkUserModal.on('click', '.submit', function(){
@@ -2098,6 +2099,18 @@
 	    el.find('.add-repo[data-id="'+key.id+'"]')[key.repoIds.indexOf(id)==-1?'removeAttr':'attr']('data-selected',true);
 	  });
 	}
+
+	function renderBookmarkRepoTitle(){
+	  var el = $(this),
+	    id = el.attr('data-repoid'),
+	    groups = [];
+	  els.lastBookmarkGroupsData.forEach(function(key){
+	    key.repoIds.indexOf(id)!=-1 && groups.push(key.name);
+	  });
+
+	  el.attr('title', groups.length? ('Group: '+ groups.join(', ')): '');
+	}
+
 	function renderBookmarkRepoTagDots(e){
 	  var el = $(this),
 	    id = el.attr('data-repoid'),
