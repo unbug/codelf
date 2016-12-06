@@ -283,7 +283,7 @@ function renderBookmarkRepoTitle(){
     key.repoIds.indexOf(id)!=-1 && groups.push(key.name);
   });
 
-  el.attr('title', groups.length? ('Group: '+ groups.join(', ')): '');
+  el.attr('title', groups.length? ('Group: '+ groups.join('\n\t   ')): '');
 }
 
 function renderBookmarkRepoTagDots(e){
