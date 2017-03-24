@@ -17,12 +17,12 @@ Apps
 
 Plugins
 =================
-###Codelf for Atom
+### Codelf for Atom
 
-#####Install
+##### Install
   Codelf is [on Atom package](https://atom.io/packages/codelf).Search "codelf" on Atom setting pane and click install.Please see [using-atom-atom-packages](https://atom.io/docs/v1.4.1/using-atom-atom-packages) 
 
-#####Usage
+##### Usage
   1. Select text, right-click and click "Codelf".
   2. Open Packages menu select "Codelf"
   3. Press CTRL+ALT+E to open Codelf
@@ -32,15 +32,15 @@ Plugins
   Also see [How to use Codelf on Atom](https://github.com/unbug/atom-codelf#usage)
 
 
-###Codelf for Sublime Text
+### Codelf for Sublime Text
 
-#####Install
+##### Install
   1. [Download Codelf for Sublime](https://github.com/unbug/codelf/archive/st-0.0.3.zip) or [Select a "st-" version to download](https://github.com/unbug/codelf/tags)
   2. Unzip and rename the folder to `Codelf`
   3. Copy the folder into `Packages` directory, which you can find using the menu item `Sublime Text -> Preferences -> Browse Packages...`
   4. Restart Sublime Text
 
-#####Usage
+##### Usage
   1. Select text, right-click and click "Codelf". 
   
   ![ST Right Click](https://cloud.githubusercontent.com/assets/799578/12536608/655d4f72-c2e5-11e5-8836-7ce733f47eed.png)
