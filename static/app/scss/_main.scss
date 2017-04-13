@@ -110,7 +110,7 @@
     }
   }
 }
-.react-native-training{
+.notice-link{
   position: fixed;
   bottom: 0;
   left: 0;
@@ -119,6 +119,9 @@
   padding: 1rem;
   text-align: center;
   background: #fff;
+}
+.notice-link a {
+  display: none;
 }
 .popover--variable {
   background-color: transparent;

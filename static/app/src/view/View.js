@@ -37,6 +37,7 @@ var els = {
   githubCorner: $('.github-corner svg'),
   donate: $('.donate'),
   donateTitle: $('.donate .title'),
+  noticeLinks: $('.notice-link a'),
 
   isGithub: /github\.io/g.test(location.href) || Util.localParam()['search']['debug']==1,
   lastVal: ''
@@ -90,6 +91,7 @@ function init() {
   renderLangMunu();
   onLocationHashChanged();
   renderAnalytics();
+  renderNotice();
 }
 
 function showSourceCode() {
@@ -492,6 +494,12 @@ function renderDonate(isZh) {
   isZh = isZh || els.isZHSearchKeyWords;
   els.donate.removeAttr('hidden');
   els.donateTitle.removeClass('cn en').addClass(isZh ? 'cn' : 'en');
+}
+
+function renderNotice() {
+  els.noticeLinks.hide();
+  els.noticeLinks.eq(Math.floor(Math.random() * els.noticeLinks.length)).show();
+  setTimeout(renderNotice, 5 * 1000);
 }
 
 function renderAnalytics(param) {

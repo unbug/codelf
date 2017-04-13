@@ -10,6 +10,17 @@
 .animated.hinge {
   animation-duration: 2s;
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes fadeInDown {
   from {
     opacity: 0;
@@ -20,6 +31,10 @@
     opacity: 1;
     transform: none;
   }
+}
+
+.fadeIn {
+  animation-name: fadeIn;
 }
 
 .fadeInDown {
