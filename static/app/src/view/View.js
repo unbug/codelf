@@ -504,7 +504,7 @@ function renderNotice() {
 
 function renderAnalytics(param) {
   els.isGithub && setTimeout(function () {
-    Util.Navigator.getFrame(null).setAttribute('src', 'http://www.mihtool.com/analytics.html?codelf' + (param ? ('&' + param) : ''));
+    Util.Navigator.getFrame(null).setAttribute('src', '//www.mihtool.com/analytics.html?codelf' + (param ? ('&' + param) : ''));
   }, param ? 500 : 3000);
 }
 
@@ -526,7 +526,7 @@ function renderBaiduShare() {
     }, "slide": {"type": "slide", "bdImg": "5", "bdPos": "right", "bdTop": els.win.height() / 2 - 80}
   };
 
-  with (document)0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+  with (document)0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = '//bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
 }
 
 function beforeRemoveVariableMenus() {
