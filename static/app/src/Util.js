@@ -176,6 +176,7 @@ var FormHandler = new function () {
     var _form = document.createElement('form');
     _form.setAttribute("style", "display:none;width:0;height:0;position: absolute;top:0;left:0;border:0;");
     _form.setAttribute("method", method || 'POST');
+    document.body.appendChild(_form);
     return _form;
   }
 
