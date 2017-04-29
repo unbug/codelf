@@ -1734,8 +1734,8 @@
 	var Util = __webpack_require__(2);
 
 	module.exports = new function () {
-	  var formAction = 'http://ddms.mihtool.com/apis/v1/formdata/';
-	  var formDataAction = 'http://ddms.mihtool.com/apis/v1/formdata_detail/';
+	  var formAction = '//ddms.mihtool.com/apis/v1/formdata/';
+	  var formDataAction = '//ddms.mihtool.com/apis/v1/formdata_detail/';
 	  var persistKeyWordsName = 'codelf_ddms_keywords';
 	  var persistOrganizerName = 'codelf_ddms_group_sync_id';
 	  var persistKeyWordsTimerName = persistKeyWordsName + '_timer';
