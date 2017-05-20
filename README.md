@@ -17,10 +17,20 @@ Apps
 
 Plugins
 =================
+### Codelf for VS Code
+
+##### Install
+  Codelf is on VS Code Extension Marketplace. Just search "codelf" on VS Code EXTENSIONS pane and click install.
+
+##### Usage
+  1. Select text, right-click and select "Codelf". 
+  
+  <img width="521" alt="select" src="https://cloud.githubusercontent.com/assets/799578/26273099/199ab0b0-3d5b-11e7-9cb6-b48a035b0a1f.png">
+
 ### Codelf for Atom
 
 ##### Install
-  Codelf is [on Atom package](https://atom.io/packages/codelf).Search "codelf" on Atom setting pane and click install.Please see [using-atom-atom-packages](https://atom.io/docs/v1.4.1/using-atom-atom-packages) 
+  Codelf is [on Atom package](https://atom.io/packages/codelf). Search "codelf" on Atom setting pane and click install.Please see [using-atom-atom-packages](https://atom.io/docs/v1.4.1/using-atom-atom-packages) 
 
 ##### Usage
   1. Select text, right-click and click "Codelf".
@@ -47,6 +57,7 @@ Plugins
   2. Open Command Palette using menu item Tools -> Command Palette... --> Type "E" or "Codelf" -->Select "Search Selection" or "Search From Input"
   
   ![ST Command Palette...](https://cloud.githubusercontent.com/assets/799578/12536569/10422964-c2e4-11e5-9530-6efb742dad3c.png)
+
   
 
 Build
