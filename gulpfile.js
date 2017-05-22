@@ -91,7 +91,7 @@ gulp.task("dist:appjs", function() {
 gulp.task("dist:swjs", function() {
   return gulp.src(['./static/app/src/sw.js'])
     .pipe(cachebust.references())
-    .pipe(gulp.dest('./src/'));
+    .pipe(gulp.dest('./'));
 });
 gulp.task('dist:html', function () {
   return gulp.src(['./static/app/*.html'])
