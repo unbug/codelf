@@ -110,7 +110,7 @@ gulp.task('dist:html', function () {
 //generate cache.manifest
 gulp.task('manifest', function (cb) {
   var resources = [];
-  gulp.src(['./resources/**/*.*','./src/**/*.js'])
+  gulp.src(['./resources/**/*.*','./src/**/*.js', '!./src/sw.js'])
     .pipe(through2.obj(function (file, enc, next) {
       this.push(file.path.replace(__dirname+'/',''));
       next();
