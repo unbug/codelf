@@ -88,6 +88,11 @@ gulp.task("dist:appjs", function() {
     }))
     .pipe(gulp.dest('./static/app/src'));
 });
+gulp.task("dist:swjs", function() {
+  return gulp.src(['./static/app/src/sw.js'])
+    .pipe(cachebust.references())
+    .pipe(gulp.dest('./src/'));
+});
 gulp.task('dist:html', function () {
   return gulp.src(['./static/app/*.html'])
     .pipe($.fileInclude({
@@ -150,7 +155,7 @@ gulp.task('prepare', function (cb) {
   runSequence('build_version', cb);
 });
 gulp.task('compile', function (cb) {
-  runSequence('prepare', 'sass', 'dist:libjs', 'dist:appjs', 'dist:html', 'manifest', cb);
+  runSequence('prepare', 'sass', 'dist:libjs', 'dist:appjs', 'dist:swjs', 'dist:html', 'manifest', cb);
 });
 gulp.task('default', function (cb) {
   runSequence('clean:dist', 'compile', 'watch', 'serve', cb);
