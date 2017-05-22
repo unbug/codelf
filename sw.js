@@ -6,25 +6,23 @@ self.addEventListener('install', function(event) {
   // long install takes, and if it failed
   event.waitUntil(
     // We open a cache…
-    caches.open('simple-sw-v1').then(function(cache) {
+    caches.open('20170522090851').then(function(cache) {
       // And add resources to it
-      return cache.addAll([
-        './',
-        'src/lib/all.207da233.js',
-        'resources/fonts/Dressedless_Three.svg',
-        'resources/fonts/Dressedless_Three.ttf',
-        'resources/fonts/FontAwesome.otf',
-        'resources/fonts/fontawesome-webfont.eot',
-        'resources/fonts/fontawesome-webfont.svg',
-        'resources/fonts/fontawesome-webfont.ttf',
-        'resources/fonts/fontawesome-webfont.woff',
-        'resources/fonts/fontawesome-webfont.woff2',
-        'resources/images/codelf_logo.png',
-        'resources/images/paypal.png',
-        'resources/images/twohardtings.jpg',
-        'resources/images/wechatpay.jpg',
-        'resources/images/zhifubao.png'
-      ]);
+      return cache.addAll(["./",
+"resources/fonts/Dressedless_Three.svg",
+"resources/fonts/Dressedless_Three.ttf",
+"resources/fonts/FontAwesome.otf",
+"resources/fonts/fontawesome-webfont.eot",
+"resources/fonts/fontawesome-webfont.svg",
+"resources/fonts/fontawesome-webfont.ttf",
+"resources/fonts/fontawesome-webfont.woff",
+"resources/fonts/fontawesome-webfont.woff2",
+"resources/images/codelf_logo.png",
+"resources/images/paypal.png",
+"resources/images/twohardtings.jpg",
+"resources/images/wechatpay.jpg",
+"resources/images/zhifubao.png",
+"src/lib/all.207da233.js"]);
     })
   );
 });

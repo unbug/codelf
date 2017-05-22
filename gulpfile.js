@@ -88,11 +88,6 @@ gulp.task("dist:appjs", function() {
     }))
     .pipe(gulp.dest('./static/app/src'));
 });
-gulp.task("dist:swjs", function() {
-  return gulp.src(['./static/app/src/sw.js'])
-    .pipe(cachebust.references())
-    .pipe(gulp.dest('./'));
-});
 gulp.task('dist:html', function () {
   return gulp.src(['./static/app/*.html'])
     .pipe($.fileInclude({
@@ -110,7 +105,7 @@ gulp.task('dist:html', function () {
 //generate cache.manifest
 gulp.task('manifest', function (cb) {
   var resources = [];
-  gulp.src(['./resources/**/*.*','./src/**/*.js', '!./src/sw.js'])
+  gulp.src(['./resources/**/*.*','./src/**/*.js'])
     .pipe(through2.obj(function (file, enc, next) {
       this.push(file.path.replace(__dirname+'/',''));
       next();
@@ -122,6 +117,27 @@ gulp.task('manifest', function (cb) {
       gulp.src(['./static/app/cache.manifest'])
         .pipe($.replace(/_BUILD_VERSION_/g, buildVersion))
         .pipe($.replace(/_FILES_/g, resources.join('\n')))
+        .pipe(gulp.dest('./'))
+        .on('end', function () {
+          cb();
+        });
+    });
+});
+//generate service workers
+gulp.task('serviceworkers', function (cb) {
+  var resources = ['"./"'];
+  gulp.src(['./resources/**/*.*','./src/**/*.js'])
+    .pipe(through2.obj(function (file, enc, next) {
+      this.push('"' + file.path.replace(__dirname+'/','') + '"');
+      next();
+    }))
+    .on('data', function (data) {
+      resources.push(data)
+    })
+    .on('end', function () {
+      gulp.src(['./static/app/sw.js'])
+        .pipe($.replace(/_BUILD_VERSION_/g, buildVersion))
+        .pipe($.replace(/_FILES_/g, resources.join(',\n')))
         .pipe(gulp.dest('./'))
         .on('end', function () {
           cb();
@@ -155,7 +171,7 @@ gulp.task('prepare', function (cb) {
   runSequence('build_version', cb);
 });
 gulp.task('compile', function (cb) {
-  runSequence('prepare', 'sass', 'dist:libjs', 'dist:appjs', 'dist:swjs', 'dist:html', 'manifest', cb);
+  runSequence('prepare', 'sass', 'dist:libjs', 'dist:appjs', 'dist:html', 'manifest', 'serviceworkers', cb);
 });
 gulp.task('default', function (cb) {
   runSequence('clean:dist', 'compile', 'watch', 'serve', cb);
