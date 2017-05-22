@@ -9,8 +9,21 @@ self.addEventListener('install', function(event) {
     caches.open('simple-sw-v1').then(function(cache) {
       // And add resources to it
       return cache.addAll([
-        'index.html',
-        'src/lib/all.js'
+        './',
+        'src/lib/all.js',
+        'resources/fonts/Dressedless_Three.svg',
+        'resources/fonts/Dressedless_Three.ttf',
+        'resources/fonts/FontAwesome.otf',
+        'resources/fonts/fontawesome-webfont.eot',
+        'resources/fonts/fontawesome-webfont.svg',
+        'resources/fonts/fontawesome-webfont.ttf',
+        'resources/fonts/fontawesome-webfont.woff',
+        'resources/fonts/fontawesome-webfont.woff2',
+        'resources/images/codelf_logo.png',
+        'resources/images/paypal.png',
+        'resources/images/twohardtings.jpg',
+        'resources/images/wechatpay.jpg',
+        'resources/images/zhifubao.png'
       ]);
     })
   );
