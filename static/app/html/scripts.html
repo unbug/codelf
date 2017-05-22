@@ -13,7 +13,7 @@
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
       navigator.serviceWorker.register('src/sw.js', {
-        scope: '/codelf/'
+        scope: '/codelf-sw/'
       }).then(function(registration) {
         // Registration was successful
         console.log('ServiceWorker registration successful with scope: ', registration.scope);
