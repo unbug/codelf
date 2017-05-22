@@ -34,14 +34,17 @@ self.addEventListener('fetch', function(event) {
   // Calling event.respondWith means we're in charge
   // of providing the response. We pass in a promise
   // that resolves with a response object
-  event.respondWith(
-    // First we look for something in the caches that
-    // matches the request
-    caches.match(event.request).then(function(response) {
-      // If we get something, we return it, otherwise
-      // it's null, and we'll pass the request to
-      // fetch, which will use the network.
-      return response || fetch(event.request);
-    })
-  );
+  var requestURL = new URL(event.request.url);
+  if (requestURL.origin == location.origin) {
+    event.respondWith(
+      // First we look for something in the caches that
+      // matches the request
+      caches.match(event.request).then(function(response) {
+        // If we get something, we return it, otherwise
+        // it's null, and we'll pass the request to
+        // fetch, which will use the network.
+        return response || fetch(event.request);
+      })
+    );
+  }
 });
