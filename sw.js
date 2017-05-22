@@ -6,9 +6,14 @@ self.addEventListener('install', function(event) {
   // long install takes, and if it failed
   event.waitUntil(
     // We open a cache…
-    caches.open('20170522090851').then(function(cache) {
+    caches.open('20170522092056').then(function(cache) {
       // And add resources to it
       return cache.addAll(["./",
+"resources/images/codelf_logo.png",
+"resources/images/paypal.png",
+"resources/images/twohardtings.jpg",
+"resources/images/wechatpay.jpg",
+"resources/images/zhifubao.png",
 "resources/fonts/Dressedless_Three.svg",
 "resources/fonts/Dressedless_Three.ttf",
 "resources/fonts/FontAwesome.otf",
@@ -17,11 +22,6 @@ self.addEventListener('install', function(event) {
 "resources/fonts/fontawesome-webfont.ttf",
 "resources/fonts/fontawesome-webfont.woff",
 "resources/fonts/fontawesome-webfont.woff2",
-"resources/images/codelf_logo.png",
-"resources/images/paypal.png",
-"resources/images/twohardtings.jpg",
-"resources/images/wechatpay.jpg",
-"resources/images/zhifubao.png",
 "src/lib/all.207da233.js"]);
     })
   );
@@ -41,7 +41,7 @@ self.addEventListener('fetch', function(event) {
       // If we get something, we return it, otherwise
       // it's null, and we'll pass the request to
       // fetch, which will use the network.
-      return response || 'Out of scope!';
+      return response || fetch(event.request);
     })
   );
 });
