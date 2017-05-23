@@ -6,14 +6,9 @@ self.addEventListener('install', function(event) {
   // long install takes, and if it failed
   event.waitUntil(
     // We open a cache…
-    caches.open('20170522092056').then(function(cache) {
+    caches.open('20170523103709').then(function(cache) {
       // And add resources to it
       return cache.addAll(["./",
-"resources/images/codelf_logo.png",
-"resources/images/paypal.png",
-"resources/images/twohardtings.jpg",
-"resources/images/wechatpay.jpg",
-"resources/images/zhifubao.png",
 "resources/fonts/Dressedless_Three.svg",
 "resources/fonts/Dressedless_Three.ttf",
 "resources/fonts/FontAwesome.otf",
@@ -22,6 +17,11 @@ self.addEventListener('install', function(event) {
 "resources/fonts/fontawesome-webfont.ttf",
 "resources/fonts/fontawesome-webfont.woff",
 "resources/fonts/fontawesome-webfont.woff2",
+"resources/images/codelf_logo.png",
+"resources/images/paypal.png",
+"resources/images/twohardtings.jpg",
+"resources/images/wechatpay.jpg",
+"resources/images/zhifubao.png",
 "src/lib/all.207da233.js"]);
     })
   );
@@ -34,17 +34,14 @@ self.addEventListener('fetch', function(event) {
   // Calling event.respondWith means we're in charge
   // of providing the response. We pass in a promise
   // that resolves with a response object
-  var requestURL = new URL(event.request.url);
-  if (requestURL.origin == location.origin) {
-    event.respondWith(
-      // First we look for something in the caches that
-      // matches the request
-      caches.match(event.request).then(function(response) {
-        // If we get something, we return it, otherwise
-        // it's null, and we'll pass the request to
-        // fetch, which will use the network.
-        return response || fetch(event.request);
-      })
-    );
-  }
+  event.respondWith(
+    // First we look for something in the caches that
+    // matches the request
+    caches.match(event.request).then(function(response) {
+      // If we get something, we return it, otherwise
+      // it's null, and we'll pass the request to
+      // fetch, which will use the network.
+      return response || fetch(event.request);
+    })
+  );
 });
