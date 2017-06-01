@@ -343,7 +343,7 @@ function renderSearchResult(data) {
   renderTitle();
   renderDonate();
   renderBaiduShare();
-  els.subTitle.css({'max-height': 0});
+  els.subTitle.css({'max-height': 0, padding: 0, margin: 0});
 }
 
 function renderSearchBtn(str) {
@@ -389,7 +389,7 @@ function renderTooltips() {
     els.showNextTipTimer = now;
     setTimeout(function () {
       els.searchBtn.tooltip('show');
-    }, 350);
+    }, 1000);
     setTimeout(function () {
       els.searchBtn.tooltip('dispose');
     }, 3000);
