@@ -247,6 +247,10 @@ html, body {
       .main-title h1.animated span:nth-child(6) {
         color: #d50f25;
         transition-delay: 950ms; }
+  .main-title h5 {
+    max-height: 300px;
+    transition: all 250ms ease-in-out;
+    overflow: hidden; }
 
 .search-form {
   padding: 1rem 0; }

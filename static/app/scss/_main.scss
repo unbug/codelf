@@ -51,6 +51,11 @@
       }
     }
   }
+  h5 {
+    max-height: 300px;
+    transition: all 250ms ease-in-out;
+    overflow: hidden;
+  }
 }
 
 .search-form {

@@ -399,7 +399,7 @@
 	  renderTitle();
 	  renderDonate();
 	  renderBaiduShare();
-	  els.subTitle.hide();
+	  els.subTitle.css({'max-height': 0});
 	}
 
 	function renderSearchBtn(str) {
