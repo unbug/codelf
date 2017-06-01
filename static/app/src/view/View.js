@@ -387,7 +387,9 @@ function renderTooltips() {
   var now = new Date().getTime();
   if (now - els.showNextTipTimer > 1000 * 1800) {
     els.showNextTipTimer = now;
-    els.searchBtn.tooltip('show');
+    setTimeout(function () {
+      els.searchBtn.tooltip('show');
+    }, 350);
     setTimeout(function () {
       els.searchBtn.tooltip('dispose');
     }, 3000);
