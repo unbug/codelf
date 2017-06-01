@@ -7,6 +7,7 @@ var els = {
   body: $('body'),
 
   title: $('.main-title>header h1'),
+  subTitle: $('.main-title h5'),
   searchForm: $('.search-form'),
   searchInput: $('.search-form input'),
   searchBtn: $('.search-form button.search'),
@@ -342,6 +343,7 @@ function renderSearchResult(data) {
   renderTitle();
   renderDonate();
   renderBaiduShare();
+  els.subTitle.hide();
 }
 
 function renderSearchBtn(str) {
