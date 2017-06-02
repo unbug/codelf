@@ -251,9 +251,24 @@ html, body {
     max-height: 300px;
     transition: all 250ms ease-in-out;
     overflow: hidden; }
+    .main-title h5 .label {
+      background-color: #373a3c; }
 
 .search-form {
   padding: 1rem 0; }
+  .search-form .input-group {
+    height: 44px;
+    border-radius: 2px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1); }
+    .search-form .input-group:focus, .search-form .input-group:active, .search-form .input-group:hover {
+      box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.08); }
+  .search-form input, .search-form button, .search-form a {
+    height: 44px;
+    line-height: 44px;
+    padding-top: 0;
+    padding-bottom: 0;
+    border: 0 !important; }
   .search-form .dropdown-menu {
     max-height: 320px;
     overflow-y: scroll;
