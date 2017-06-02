@@ -927,7 +927,7 @@
 
 	exports.BeanHelpers = new function () {
 	  this.getRandomLabelType = function () {
-	    var types = ['default', 'primary', 'success', 'info', 'warning', 'warning', 'danger'];
+	    var types = ['primary', 'success', 'info', 'warning', 'warning', 'danger'];
 	    return Util.randomList(types, 1)[0];
 	  };
 
