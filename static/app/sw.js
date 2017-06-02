@@ -32,9 +32,7 @@ var CURRENT_CACHES = {
 self.addEventListener('install', function(event) {
   var now = Date.now();
 
-  var urlsToPrefetch = [
-    cache.addAll([_FILES_]);
-  ];
+  var urlsToPrefetch = [_FILES_];
 
   // All of these logging statements should be visible via the "Inspect" interface
   // for the relevant SW accessed via chrome://serviceworker-internals
