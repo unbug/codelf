@@ -6,7 +6,7 @@ self.addEventListener('install', function(event) {
   // long install takes, and if it failed
   event.waitUntil(
     // We open a cache…
-    caches.open('20170602091503').then(function(cache) {
+    caches.open('20170602094159').then(function(cache) {
       // And add resources to it
       return cache.addAll(["./",
 "resources/fonts/Dressedless_Three.svg",
