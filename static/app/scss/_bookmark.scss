@@ -16,23 +16,26 @@
       margin: 0;
     }
   }
-  .modal-body > .hd {
-    padding-bottom: 1rem;
-    display: none;
-    > div {
+  .modal-body {
+    padding: 0;
+    > .hd {
       display: none;
-    }
-    &.loading, &.empty, &.loading > .loading, &.empty > .empty {
-      display: block;
-      margin: 0 auto;
-    }
-    > .empty {
-      text-align: center;
-      .top {
-        margin: 2rem;
+      padding: 1rem;
+      > div {
+        display: none;
       }
-      .tip {
-        text-align: left;
+      &.loading, &.empty, &.loading > .loading, &.empty > .empty {
+        display: block;
+        margin: 0 auto;
+      }
+      > .empty {
+        text-align: center;
+        .top {
+          margin: 2rem;
+        }
+        .tip {
+          text-align: left;
+        }
       }
     }
   }
@@ -40,7 +43,7 @@
     padding: .5rem;
   }
   .card-footer {
-    padding: 0 0 .2rem 0;
+    padding: 0 0 .2rem .2rem;
   }
   .repo-list {
     padding-right: 0;
@@ -48,6 +51,8 @@
     padding-bottom: 0;
   }
   .repo-group-item {
+    border: 0;
+    margin-bottom: 0;
     > .hd {
       .dropdown-menu {
         min-width: initial;
@@ -72,6 +77,7 @@
     }
     .repo-item {
       border-top: 0;
+      border-bottom: 0;
       border-left: 0;
       border-right: 0;
       border-radius: 0;
@@ -80,6 +86,9 @@
       }
       .card-footer {
         border-top: 0;
+      }
+      a {
+        word-break: break-all;
       }
     }
   }
