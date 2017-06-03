@@ -1,7 +1,8 @@
 html, body {
   width: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  -webkit-font-smoothing: antialiased; }
+  -webkit-font-smoothing: antialiased;
+  transition: all 350ms ease-in-out; }
 
 .fix-break-word, p {
   word-break: break-all;
@@ -295,6 +296,10 @@ html, body {
   .search-result .variable-wrap {
     display: inline-block;
     cursor: pointer; }
+    .search-result .variable-wrap .btn-sm {
+      margin-right: .4rem;
+      padding: 0 .4em;
+      font-weight: bold; }
   .search-result a:hover {
     text-decoration: underline; }
   .search-result .hd {
@@ -337,6 +342,20 @@ html, body {
 
 body.mobile .variable-btns__copy {
   display: none !important; }
+
+body.dark .search-form .input-group {
+  box-shadow: 0 2px 2px 0 rgba(255, 255, 255, 0.16), 0 0 0 1px rgba(255, 255, 255, 0.08); }
+  body.dark .search-form .input-group:focus, body.dark .search-form .input-group:active, body.dark .search-form .input-group:hover {
+    box-shadow: 0 3px 12px 0 rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.08); }
+
+body.dark .search-result .ct, body.dark .search-result hr {
+  border-color: rgba(0, 0, 0, 0.16); }
+
+body.dark .notice-link {
+  background: #272b38; }
+
+body.dark .popover--variable {
+  border-bottom: 0; }
 
 @media (max-width: 767px) {
   .search-form button.search {
@@ -389,6 +408,9 @@ body.mobile .variable-btns__copy {
 
 .paypal {
   width: 5rem; }
+
+body.dark .zhifubao, body.dark .wechatpay, body.dark .paypal {
+  background-color: #fff; }
 
 .sourcecode-modal .dropdown-menu {
   max-height: 320px;
@@ -501,3 +523,7 @@ body.mobile .variable-btns__copy {
   .bookmark-modal .modal-header .btn {
     padding: .25rem;
     margin-right: .25rem; } }
+
+body.dark {
+  background: #272b38;
+  color: #fff; }

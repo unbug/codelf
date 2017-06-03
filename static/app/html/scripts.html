@@ -10,7 +10,7 @@
   @@include("src/AppBundle.js")
 </script>
 <script>
-  if ('serviceWorker' in navigator) {
+  if (/https/.test(location.protocol) && 'serviceWorker' in navigator) {
     if (!Cache.prototype.add) {
       Cache.prototype.add = function add(request) {
         return this.addAll([request]);

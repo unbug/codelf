@@ -275,6 +275,11 @@ function getRelatedProperty(name) {
   return els.storeRelatedProperties[name];
 }
 
+function renderDark() {
+  var hour = new Date().getHours();
+  !(hour >= 12 && hour <= 13) && els.body.addClass('dark');
+}
+
 function renderLangMunu() {
   var htm = [], storeLang = Model.Searchcode.getLang();
   storeLang = storeLang ? storeLang.split(' ') : [];
@@ -340,6 +345,7 @@ function renderSearchResult(data) {
   } else {
     renderSearchResultHeader('error');
   }
+  renderDark();
   renderTitle();
   renderDonate();
   renderBaiduShare();

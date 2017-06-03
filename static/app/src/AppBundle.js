@@ -331,6 +331,11 @@
 	  return els.storeRelatedProperties[name];
 	}
 
+	function renderDark() {
+	  var hour = new Date().getHours();
+	  !(hour >= 12 && hour <= 13) && els.body.addClass('dark');
+	}
+
 	function renderLangMunu() {
 	  var htm = [], storeLang = Model.Searchcode.getLang();
 	  storeLang = storeLang ? storeLang.split(' ') : [];
@@ -396,6 +401,7 @@
 	  } else {
 	    renderSearchResultHeader('error');
 	  }
+	  renderDark();
 	  renderTitle();
 	  renderDonate();
 	  renderBaiduShare();
@@ -927,7 +933,7 @@
 
 	exports.BeanHelpers = new function () {
 	  this.getRandomLabelType = function () {
-	    var types = ['primary', 'success', 'info', 'warning', 'warning', 'danger'];
+	    var types = ['primary', 'secondary', 'success', 'info', 'warning', 'danger'];
 	    return Util.randomList(types, 1)[0];
 	  };
 

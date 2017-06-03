@@ -33,3 +33,9 @@
 .paypal {
   width: 5rem;
 }
+
+body.dark {
+  .zhifubao, .wechatpay, .paypal {
+    background-color: #fff;
+  }
+}
