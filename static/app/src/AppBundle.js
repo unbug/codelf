@@ -548,7 +548,7 @@
 	          .replace(/\{repoName\}/g, repoNames[i])
 	          .replace(/\{repoFilePath\}/g, repoFilePaths[i])
 	          .replace(/\{lang\}/g, langs[i])
-	          .replace(/\{label_type\}/g, Model.BeanHelpers.getRandomLabelType())
+	          .replace(/\{label_type\}/g, Model.BeanHelpers.getRandomLabelType().replace('secondary', 'default'))
 	      );
 	    }
 	  }
