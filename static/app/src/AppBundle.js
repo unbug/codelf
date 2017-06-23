@@ -1918,6 +1918,9 @@
 	  els.bookmarkModalContent.on('mouseenter', '.repo-item', renderBookmarkRepoTitle);
 	  els.bookmarkModalContent.on('keyup','.repo-group-item>.hd .search input',renderBookmarkSearchRepos);
 	  els.bookmarkModalContent.on('click','.repo-group-item>.hd .search submit',renderBookmarkSearchRepos);
+	  els.bookmarkModalContent.on('show.bs.collapse hide.bs.collapse','.repo-group-item>.repo-list',function () {
+	    this !== els.bookmarkModalContent.find('.repo-group-item:last-child .collapse')[0] && toggleLastBookmarkGroup();
+	  });
 	  els.bookmarkUserModal.on('click', '.submit', function(){
 	    beforeAddBookmarkUser();
 	  });
@@ -2070,12 +2073,16 @@
 	    renderBookmarkHeader('empty');
 	  }
 	  setTimeout(function () {
-	    els.bookmarkModalContent.find('.repo-group-item:last-child .collapse').addClass('in');
+	    toggleLastBookmarkGroup(true);
 	  }, 100);
 
 	  updateBookmarkGroupsData();
 	  renderBookmarkTagMenu(allTagHtm);
 	  renderBookmarkUsers(data.users);
+	}
+
+	function toggleLastBookmarkGroup(show) {
+	  els.bookmarkModalContent.find('.repo-group-item:last-child .collapse')[show ? 'addClass' : 'removeClass']('in');
 	}
 
 	function renderBookmarkGroupByTag(){
