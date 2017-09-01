@@ -278,7 +278,7 @@
 	function saveKeyWordRegs() {
 	  els.valRegs = [];
 	  els.lastVal.replace(/\s+/ig, '+').split('+').forEach(function (key) {
-	    key.length && els.valRegs.push(Model.BeanHelpers.getKeyWordReg(key));
+	    key.length && key.length > 1 && els.valRegs.push(Model.BeanHelpers.getKeyWordReg(key));
 	  });
 	}
 
