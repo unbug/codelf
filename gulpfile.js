@@ -78,7 +78,7 @@ gulp.task("dist:appjs", function() {
   return gulp.src(['./static/app/src/App.js'])
     .pipe(webpack({
       resolve: {
-        root: [
+        modules: [
           path.resolve('./static/app/src')
         ]
       },

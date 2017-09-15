@@ -21,7 +21,8 @@
     "gulp-util": "^3.0.7",
     "run-sequence": "^1.0.2",
     "through2": "^0.6.3",
-    "webpack": "^1.12.12"
+    "webpack": "^1.12.12",
+    "webpack-stream": "^4.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
