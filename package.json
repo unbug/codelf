@@ -1,6 +1,6 @@
 {
   "name": "Codelf",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "description": "Organize your GitHub stars and repositories.Search over projects from GitHub, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Project to find real-world usage variable names.",
   "dependencies": {},
   "devDependencies": {
