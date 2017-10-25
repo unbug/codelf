@@ -39,6 +39,7 @@ var els = {
   donate: $('.donate'),
   donateTitle: $('.donate .title'),
   noticeLinks: $('.notice-link a'),
+  noticeIndex: 0,
 
   isGithub: /github\.io/g.test(location.href) || Util.localParam()['search']['debug']==1,
   lastVal: ''
@@ -507,8 +508,12 @@ function renderDonate(isZh) {
 }
 
 function renderNotice() {
+  els.noticeIndex += 1;
+  if (els.noticeIndex >= els.noticeLinks.length) {
+    els.noticeIndex = 0;
+  }
   els.noticeLinks.hide();
-  els.noticeLinks.eq(Math.floor(Math.random() * els.noticeLinks.length)).show();
+  els.noticeLinks.eq(els.noticeIndex).show();
   setTimeout(renderNotice, 5 * 1000);
 }
 
