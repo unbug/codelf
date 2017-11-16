@@ -31,7 +31,7 @@ Plugins
 ### Codelf for Atom
 
 ##### Install
-  Codelf is [on Atom package](https://atom.io/packages/codelf). Search "codelf" on Atom setting pane and click install.Please see [using-atom-atom-packages](https://atom.io/docs/v1.4.1/using-atom-atom-packages) 
+  Codelf is [on Atom package](https://atom.io/packages/codelf). Search "codelf" on Atom setting pane and click install.Please see [Atom Packages in the Atom Flight Manual](http://flight-manual.atom.io/using-atom/sections/atom-packages/) 
 
 ##### Usage
   1. Select text, right-click and click "Codelf".
