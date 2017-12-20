@@ -9,9 +9,16 @@ import sublime_plugin
 import subprocess
 import webbrowser
 
+try:
+    # python2
+    from urllib import quote
+except ImportError:
+    # python3
+    from urllib.parse import quote
+
 
 def SearchFor(text):
-    url = 'http://unbug.github.io/codelf/#' + text.replace(' ', '%20')
+    url = 'http://unbug.github.io/codelf/#' + quote(text)
     webbrowser.open_new_tab(url)
 
 
@@ -40,4 +47,3 @@ class CodelfSelectionCommand(sublime_plugin.TextCommand):
 
             text = self.view.substr(selection)
             SearchFor(text)
-
