@@ -2,6 +2,7 @@
 Thumbs.db
 .sass-cache
 node_modules
+package-lock.json
 dist
 .idea
 test
