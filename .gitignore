@@ -5,3 +5,4 @@ node_modules
 dist
 .idea
 test
+package-lock.json
