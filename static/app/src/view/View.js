@@ -386,7 +386,8 @@ function renderVariableMenu() {
     '</div>'
   });
   $(this).popover('show');
-  els.variableClipboard = new ZeroClipboard($('.variable-btns__copy')[0]);
+  els.variableClipboard && els.variableClipboard.destroy();
+  els.variableClipboard = new ClipboardJS('.variable-btns__copy');
 }
 
 function renderTooltips() {
