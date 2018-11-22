@@ -12,6 +12,12 @@
   <link rel="apple-touch-icon-precomposed" href="resources/images/codelf_logo.png">
   <link title="CODELF" type="application/opensearchdescription+xml" rel="search" href="./opensearch.xml">
   @@include("html/styles.html")
+  <script>
+    // auto redirect to HTTPS
+    if (window.location.host.indexOf('github.io') != -1 && window.location.protocol != "https:"){
+      window.location.protocol = "https";
+    }
+  </script>
 </head>
 <body ontouchstart="">
 @@include("html/main.html")
