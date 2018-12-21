@@ -6,7 +6,7 @@ Best GitHub stars, repositories tagger and organizer. Search over projects from 
 
   >There are only two hard things in Computer Science: cache invalidation and naming things.-- Phil Karlton
   >
-  >![twohardtings](http://unbug.github.io/codelf/resources/images/twohardtings.jpg)
+  >![twohardtings](https://user-images.githubusercontent.com/799578/50353054-00dece80-0582-11e9-86aa-caf4ff105a7f.png)
 
 WIKI
 =================
