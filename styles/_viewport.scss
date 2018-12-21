@@ -1,0 +1,142 @@
+/**
+  A set of media query helpers for the layout system.
+  Most of the time you only need pass the min size to @viewport($min). With this rule,
+  keep order of the sizes start from xs to xlg.
+
+  1. Value of $factor in $viewport($min, $max) and $viewport-all($size):
+    The $factor will be the same value as it in $breakpoint-factor.
+    e.g.
+    .selector {
+      @include viewport(xs) {
+        width: $factor * 100px; // same as xs in $breakpoint-factor
+      }
+    }
+
+
+  2. $viewport-all($size):
+    This will make the @content apply to all breakpoint size. The media query order is from xs to xlg by default.
+    e.g.
+    .selector {
+      @include viewport-all(min) {
+        width: $factor * 100px;
+      }
+    }
+    The output will be (from xs to xlg):
+    @media screen and (min-width: 512px) { .selector { width: 75px; } }
+    @media screen and (min-width: 880px) { .selector { width: 100px; } }
+    @media screen and (min-width: 960px) { .selector { width: 100px; } }
+    @media screen and (min-width: 1360px) { .selector { width: 100px; } }
+    @media screen and (min-width: 1600px) { .selector { width: 150px; } }
+ */
+// Make sure each size must show up in $breakpoint-factor and $breakpoint-width
+$breakpoint-sizes: (xs, sm, md, lg, xlg);
+
+$breakpoint-factor: (
+  xs: 0.75,
+  sm: 1,
+  md: 1,
+  lg: 1,
+  xlg: 1.5
+);
+
+$breakpoint-width: (
+  xs: 512px,
+  sm: 880px,
+  md: 1200px, // 1280x720(16:9, 720p TV), 1280x800(8:5), 1360x768(16:9)
+  lg: 1400px, // 1440x900(8:5)
+  xlg: 1600px // 1600x900(16:9), 1680x1050(8:5), 1920x1080(16:9, 1080p TV)
+);
+
+$breakpoint-height: (
+  xs: 288px,
+  sm: 495px,
+  md: 675px,
+  lg: 783px,
+  xlg: 900px
+);
+
+$factor: 1;
+
+// Returns the scare factor for the given size.
+@function factor($size: default) {
+  @if map-has-key($breakpoint-factor, $size) {
+    @return map-get($breakpoint-factor, $size);
+  }
+  @return 1;
+}
+
+// Makes the @content apply to the given breakpoint and wider.
+// The output will be '@media screen and (min-width: #{$min}){ @content;}'
+@mixin media-breakpoint-min($min) {
+  @media screen and (min-width: #{$min}) {
+    @content;
+  }
+}
+
+// Makes the @content apply to the given breakpoint and narrower.
+// The output will be '@media screen and (max-width: #{$max}){ @content;}'
+@mixin media-breakpoint-max($max) {
+  @media screen and (max-width: #{$max}) {
+    @content;
+  }
+}
+
+// Makes the @content apply between the min and max breakpoints.
+// The output will be '@media screen and (min-width: #{$min}) and (max-width: #{$max}){ @content;}'
+@mixin media-breakpoint-between($min, $max) {
+  @include media-breakpoint-min($min) {
+    @include media-breakpoint-max($max) {
+      @content;
+    }
+  }
+}
+
+// Makes the @content apply to the given size.
+// If both min and max are not null, makes the @content apply between the min and max size.
+// Most of the time you only need the first param.
+@mixin viewport($min: null, $max: null) {
+  @if $min and $max {
+    @include media-breakpoint-between(map-get($breakpoint-width, $min), map-get($breakpoint-width, $max)) {
+      @content;
+    }
+  } @else if $min {
+    @include media-breakpoint-min(map-get($breakpoint-width, $min)) {
+      $factor: factor($min) !global;
+      @content;
+    }
+  } @else if $max {
+    @include media-breakpoint-max(map-get($breakpoint-width, $max)) {
+      $factor: factor($max) !global;
+      @content;
+    }
+  }
+}
+
+// Makes the @content apply to all breakpoint size.
+// The default is 'min', media query order is from xs to xlg. If it's 'max', the media query order is from xlg to xs.
+// Most of the time you only need the default param.
+@mixin viewport-all($size: min) {
+  $start: 1;
+  $end: length($breakpoint-sizes);
+  @for $i from $start through $end {
+    $j: $i;
+    @if $size == max {
+      $j: length($breakpoint-sizes) - $i + 1;
+    }
+    @include viewport(
+      if($size == min, nth($breakpoint-sizes, $j), null),
+      if($size == max, nth($breakpoint-sizes, $j), null)) {
+      @content;
+    }
+  }
+}
+
+// Makes the @content apply to the given breakpoint and narrower.
+// The output will be '@media screen and (max-width: #{$max}){ @content;}'
+@mixin viewport-size($max) {
+  @media screen and (min-width: #{map-get($breakpoint-width, $max)}) {
+    @media screen and (min-height: #{map-get($breakpoint-height, $max)}) {
+      @content;
+    }
+  }
+}
