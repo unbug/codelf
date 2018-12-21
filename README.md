@@ -68,9 +68,9 @@ Build
 
 Thanks
 =================
-  * API powerd by [searchcode](http://searchcode.com/) & [youdao](http://fanyi.youdao.com/)
-  * UI powerd by [Bootstrap v4.0](http://v4-alpha.getbootstrap.com/)
-  * Syntax highlighting of source code powerd by [google-code-prettify](https://github.com/google/code-prettify)
+  * API powered by [searchcode](http://searchcode.com/) & [youdao](http://fanyi.youdao.com/)
+  * UI powered by [Bootstrap v4.0](http://v4-alpha.getbootstrap.com/)
+  * Syntax highlighting of source code powered by [google-code-prettify](https://github.com/google/code-prettify)
   * [Google Lovefield](https://github.com/google/lovefield)
   * [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard)
   * Utils - [generator-webappstarter](https://github.com/unbug/generator-webappstarter)
