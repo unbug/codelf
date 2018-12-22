@@ -16,3 +16,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.fix-break-word, p {
+  word-break: break-all;
+  word-break: break-word;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}

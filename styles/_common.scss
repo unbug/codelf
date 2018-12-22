@@ -3,3 +3,12 @@
 :before {
   -webkit-box-sizing: border-box; /*size not include padding and margin*/
 }
+/*
+    http://www.fontspace.com/538fonts/dressedless
+    https://everythingfonts.com/ttf-to-svg
+    */
+@font-face {
+  font-family: 'Dressedless Three';
+  src: url('../fonts/Dressedless_Three.ttf') format("truetype"), url('../fonts/Dressedless_Three.svg') format("svg");
+  /* Legacy iOS */
+}

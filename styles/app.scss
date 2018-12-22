@@ -1,12 +1,23 @@
 @charset "UTF-8";
 @import 'constants';
-@import 'viewport';
-
-.app {
+html, body {
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #373a3c;
+  background-color: #fff;
+  transition: all 350ms $anim-cubic-bezier;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  .dark {
+    background: $dark;
+    color: #fff;
+  }
+}
 
-  @import 'common';
+@import 'common';
+.app {
   @import 'utils';
   @import 'components';
   @import 'containers';

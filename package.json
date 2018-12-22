@@ -62,6 +62,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
+    "animate.css": "^3.7.0",
     "events": "^3.0.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",

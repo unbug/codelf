@@ -1,0 +1,6 @@
+%animate {
+  animation-duration: $anim-default-time;
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+  animation-timing-function: $anim-cubic-bezier;
+}

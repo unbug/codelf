@@ -52,6 +52,11 @@ gulp.task('build:images', 'Builds the app style.', () => {
     .pipe(gulp.dest('./app/images/'));
 });
 
+gulp.task('build:fonts', 'Builds the app fonts.', () => {
+  return gulp.src('./assets/fonts/**/*.*')
+    .pipe(gulp.dest('./app/fonts/'));
+});
+
 gulp.task('build:extra', 'Builds extra files.', () => {
   return Promise.all(require('../lib.config').extra.map(key => {
     const dest = Object.keys(key);
@@ -62,5 +67,13 @@ gulp.task('build:extra', 'Builds extra files.', () => {
 });
 
 gulp.task('build', 'Builds the app.', cb => {
-  runSequence(['build:extra', 'build:images', 'build:app-js', 'build:lib-css', 'build:app-css', 'build:lib-js'], cb);
+  runSequence([
+    'build:extra',
+    'build:fonts',
+    'build:images',
+    'build:app-js',
+    'build:lib-css',
+    'build:app-css',
+    'build:lib-js'
+  ], cb);
 });

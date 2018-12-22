@@ -13,7 +13,8 @@ gulp.task('default', (cb) => {
   );
   runSequence(
     'clean', 'lint',
-    'build:extra', 'build:images', 'build:app-css', 'build:lib-js', 'build:lib-css', 'watch', 'server', () => {
+    'build:fonts', 'build:extra', 'build:images', 'build:app-css', 'build:lib-js', 'build:lib-css',
+    'watch', 'server', () => {
     cb();
     $.util.log(
       $.util.colors.green('Ready! Run "gulp help" for more build command usages.'), '\n'
