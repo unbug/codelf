@@ -63,7 +63,7 @@ export default class MainContainer extends React.Component {
     if (val === this.state.searchValue) {
       page += 1;
     }
-    this.setState({isSearchingVariable: true});
+    this.setState({searchValue: val, isSearchingVariable: true});
     SearchcodeModel.requestVariable(val, page,  this.state.searchLang);
   }
 
