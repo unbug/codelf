@@ -44,6 +44,7 @@ gulp.task('build:lib-js', 'Builds the lib scripts.', () => {
 gulp.task('build:lib-css', 'Builds the lib style.', () => {
   return gulp.src(require('../lib.config').css)
     .pipe($.concat('lib.css'))
+    .pipe($.replace('@import url(https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin);', ''))
     .pipe(gulp.dest('./app/css/'));
 });
 

@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+
   .title {
     text-align: center;
     padding-top: 3rem;
@@ -10,6 +11,7 @@
       padding-top: 8rem;
       padding-bottom: 2rem;
     }
+
     a {
       color: inherit;
       text-decoration: none;
@@ -21,13 +23,14 @@
     }
 
     span {
-      font-family: "Dressedless Three", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-family: "Dressedless Three", Lato, Roboto, 'Helvetica Neue', Arial, Helvetica, sans-serif;
       text-transform: uppercase;
       font-size: 3.5rem;
       @media screen and (min-width: 800px) {
         font-size: 5rem;
       }
     }
+
     &.animated span {
       transition: color 250ms linear;
       /*C*/
@@ -97,19 +100,23 @@
         box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.08);
         border-color: transparent;
       }
+
       input {
         border-radius: 5rem;
         border: 0 !important;
       }
     }
+
     &__dropdown {
       display: flex;
       justify-content: center;
       align-items: center;
       margin-top: -0.6rem;
       margin-left: 1rem;
+
       i {
         opacity: 0.5;
+
         &:hover {
           opacity: 1;
         }
