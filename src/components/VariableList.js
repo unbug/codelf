@@ -58,8 +58,8 @@ export default class VariableList extends React.Component {
   renderPage() {
     let pages = [];
     this.props.variableList.forEach(list => {
-      const variables = list.map((variable, i) => {
-        return <Variable key={i} {...variable} {...this.props}/>
+      const variables = list.map(variable => {
+        return <Variable key={Tools.uuid()} {...variable} {...this.props}/>
       });
       if (variables && variables.length) {
         if (pages.length) {

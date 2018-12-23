@@ -48,7 +48,8 @@ export default class SearchBar extends React.Component {
         <div className='search-bar__desc'>
           Search over GitHub, Bitbucket, GitLab to find real-world usage variable names
         </div>
-        <Input ref={this.input} className='search-bar__input'
+        <Input ref={this.input}
+               className={`search-bar__input${this.props.variableList.length ? ' search-bar__input--dark' :''}`}
                icon fluid placeholder={this.props.placeholder} size={this.state.inputSize}>
           <Dropdown text='' icon='filter' className='search-bar__dropdown'>
             <Dropdown.Menu>

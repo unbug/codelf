@@ -100,7 +100,12 @@
 
       &:focus, &:active, &:hover {
         box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.08);
-        border-color: transparent;
+      }
+      &--dark {
+        box-shadow: 0 1px 5px 0 rgba(255,255,255,.2), 0 0 0 1px rgba(255,255,255,.08);
+        &:focus, &:active, &:hover {
+          box-shadow: 1px 3px 12px 0 rgba(255,255,255,.35), 0 0 0 1px rgba(255,255,255,.08);
+        }
       }
 
       input {
@@ -133,7 +138,7 @@
       margin: 0.4rem 0.4rem 0 0;
     }
     hr {
-      width: 80%;
+      width: 90%;
       border-color: rgba(0,0,0,.16);
       margin-top: 1rem;
     }

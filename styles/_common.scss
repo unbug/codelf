@@ -8,14 +8,14 @@ html, body {
   width: 100%;
   font-size: 1rem;
   line-height: 1.5;
-  color: #373a3c;
-  background-color: #fff;
-  transition: all 350ms $anim-cubic-bezier;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body {
+  background: #fff;
+  color: #373a3c;
+  transition: all 350ms $anim-cubic-bezier;
   &.dark {
     background: $dark;
     color: #fff;
