@@ -8,9 +8,11 @@ export default class SearchBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      type: 'title',
-      prevProps: props
+      lang: null,
+      prevProps: props,
+      inputSize: 'huge'
     }
+    window.addEventListener('resize', this.resizeInput, false)
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -20,17 +22,22 @@ export default class SearchBar extends React.Component {
       prevProps: nextProps // prevProps memoization
     }
     // derived state from props
-    if (prevState.prevProps.searchType != nextProps.searchType) {
-      newState.type = nextProps.searchType;
+    if (prevState.prevProps.searchLang != nextProps.searchLang) {
+      newState.lang = nextProps.searchLang;
     }
     return newState;
   }
 
+  componentDidMount() {
+    this.resizeInput();
+  }
+
+  resizeInput = () => {
+    this.setState({inputSize: document.body.offsetWidth < 800 ? '' : 'huge'})
+  }
+
   handleSearch = () => {
-    this.props.onSearch({
-      type: this.state.type,
-      value: this.input.current.inputRef.value
-    });
+    this.props.onSearch(this.input.current.inputRef.value, this.state.lang);
   }
 
   handleTypeChange = (e, { value }) => this.setState({ type: value });
@@ -41,8 +48,8 @@ export default class SearchBar extends React.Component {
         <div className='search-bar__desc'>
           Search over GitHub, Bitbucket, GitLab to find real-world usage variable names
         </div>
-        <Input className='search-bar__input'
-               icon fluid placeholder={this.props.placeholder} size={document.body.offsetWidth > 800 ? 'huge' : ''}>
+        <Input ref={this.input} className='search-bar__input'
+               icon fluid placeholder={this.props.placeholder} size={this.state.inputSize}>
           <Dropdown text='' icon='filter' className='search-bar__dropdown'>
             <Dropdown.Menu>
               <Dropdown.Item icon='undo' text='All 90 Languages (Reset)' />

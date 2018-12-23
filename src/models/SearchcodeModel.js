@@ -1,155 +1,118 @@
-var Util = require('Util.js');
-var Database = require('model/Database.js');
+import BaseModel from './BaseModel';
+import * as Tools from '../utils/Tools';
 
-
-module.exports = new function () {
-  var _this = this;
-  var DB;
-  var schemaBuilder = Database.schemaBuilder;
-  var Tables;
-  var DBEventType = Database.eventType;
-  var win = $(window);
-
-  schemaBuilder
-    .createTable('SourceCode')
-    .addColumn('id', lf.Type.INTEGER)
-    .addColumn('sid', lf.Type.OBJECT)
-    .addColumn('htm', lf.Type.OBJECT)
-    .addColumn('create', lf.Type.DATE_TIME)
-    .addPrimaryKey(['id'], true);
-
-  var persistLangsName = 'codelf_langs_selected';
-  var langs = Util.localStorage.get(persistLangsName), langQuery;
-  var page = 0;
-  var lastVal;
-  var cacheSourceCodes = {};
-  var cacheSourceCodeHtmls = {};
-  var afterRequestSearchcode;
-
-  genLangQuery(langs);
-
-  this.resetPage = function () {
-    page = 0;
-  }
-
-  this.setLang = function (val) {
-    langs = val || null;
-    genLangQuery(val);
-    this.resetPage();
-    Util.localStorage[langs ? 'set' : 'del'](persistLangsName, langs);
-  }
-
-  this.getLang = function () {
-    return langs;
-  }
-
-  function genLangQuery(val) {
-    if (!!val) {
-      var arr1 = val.replace(/\s+/g, ',').split(','),
-        arr2 = [];
-      arr1.forEach(function (key) {
-        arr2.push('lan=' + key);
-      });
-      langQuery = arr2.join('&');
-    } else {
-      langQuery = null;
-    }
-  }
-
-  win.on('DB:ready', function (ev,db) {
-    DB = db;
-    Tables = {
-      SourceCode: DB.getSchema().table('SourceCode')
+class SearchcodeModel extends BaseModel {
+  constructor() {
+    super();
+    this._data = {
+      searchValue: null,
+      searchLang: null,
+      page: 0,
+      variableList: []
     };
-    _this.SourceCodeTable.getAll(function(rows){
-      rows.forEach(function (key) {
-        cacheSourceCodeHtmls[key.sid] = key.htm;
-      });
-    });
-  });
-
-  this.SourceCodeTable = new function () {
-    this.add = function (sid, htm, callback) {
-      if (!sid) {
-        return;
-      }
-      var row = Tables.SourceCode.createRow({
-        'sid': sid,
-        'htm': htm,
-        'create': new Date()
-      });
-      DB.insertOrReplace().into(Tables.SourceCode).values([row])
-        .exec().then(function () {
-        callback && callback();
-        win.trigger('DB:Table.SourceCode.onchange', {type: DBEventType.C});
-      });
-    }
-
-    this.getAll = function (callback) {
-      DB.select()
-        .from(Tables.SourceCode)
-        .orderBy(Tables.SourceCode.id, lf.Order.DESC)
-        .exec().then(function (rows) {
-        callback && callback(rows);
-      });
-    }
-  };
-
-  this.setCacheSourceCodeHtmlById = function(id,htm){
-    cacheSourceCodeHtmls[id] = htm;
-    _this.SourceCodeTable.add(id,htm);
-  }
-  this.getCacheSourceCodeHtmlById = function(id){
-    return cacheSourceCodeHtmls[id];
+    this._variableRepoMapping = {};
   }
 
   //search code by query
-  this.request = function (val, callback) {
-    afterRequestSearchcode = callback;
-    if (val != lastVal) {
-      this.resetPage();
+  requestVariable(val, page, lang) {
+    if (val !== undefined && val !== null) {
+      val = val.trim().replace(/\s+/ig, ' '); // filter spaces
     }
-    lastVal = val;
-    lastVal && $.ajax({
-      type: 'GET',
-      dataType: 'jsonp',
-      //dataType: 'json',
-      //url: 'https://searchcode.com/api/codesearch_I/' + (langQuery ? ('?' + langQuery) : ''),
-      url: 'https://searchcode.com/api/jsonp_codesearch_I/' + (langQuery ? ('?' + langQuery) : ''),
-      data: {
-        q: lastVal,
-        p: page,
-        per_page: 42,
-        callback: 'afterRequestSearchcode'
-      },
-      jsonp: false,
-      jsonpCallback: false,
-      success: function (data) {
-        callback && callback(data, page);
-        page++;
-      }
-    })
-  };
-
-  window.afterRequestSearchcode = function(data){
-    afterRequestSearchcode && afterRequestSearchcode(data, page);
-    page++;
-  }
-
-  //get source code by id
-  this.requestSourceCode = function (id, callback) {
-    if (cacheSourceCodes[id]) {
-      callback && callback(cacheSourceCodes[id]);
-      return;
-    }
-    id && $.ajax({
-      type: 'GET',
-      dataType: 'json',
-      url: 'https://searchcode.com/api/result/' + id + '/',
-      success: function (data) {
-        cacheSourceCodes[id] = data;
-        callback && callback(data);
-      }
+    if (val.length < 1) { return; }
+    // multiple val separate with '+'
+    const url = `//searchcode.com/api/codesearch_I/?q=${val.replace(' ', '+')}&p=${page}&per_page=42${lang ? ('&lan=' + lang) : ''}`;
+    val && fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        this.update({
+          searchValue: val,
+          page: page,
+          variableList: [...this._data.variableList, this._parseVariableList(data.results, val)],
+          searchLang: lang
+        });
+    }).catch(err => {
+      this.update({
+        searchValue: val,
+        page: page,
+        variableList: [...this.variableList, []],
+        searchLang: lang
+      });
     });
   }
-};
+
+  getKeyWordReg(key) {
+    return new RegExp('([\\-_\\w\\d\\/\\$]{0,}){0,1}' + key + '([\\-_\\w\\d\\$]{0,}){0,1}', 'gi');
+  }
+
+  getKeyWroddRegs(vals) {
+    return vals.split(' ').reduce((accumulator, curr) => {
+      if (curr.length && curr.length > 1) {
+        return accumulator.concat(this.getKeyWordReg(curr));
+      }
+    }, []);
+  }
+
+  _parseVariableList(results, keywords) {
+    let vals = [], variables = [];
+    results.forEach(res => {
+      //filter codes
+      const lineStr = Object.keys(res.lines).reduce((accu, line) => {
+        let lstr = res.lines[line];
+        //no base64
+        if (!(/;base64,/g.test(lstr) && lstr.length > 256)) {
+          return accu.concat(lstr);
+        }
+      }, []).join('').replace(/\r\n/g, ' '); // remove \r\n
+      //match variables
+      this.getKeyWroddRegs(keywords).forEach(reg => {
+        (lineStr.match(reg) || []).forEach(val => {
+          //remove "-" and "/" from the start and the end
+          val = val.replace(/^(-|\/)*/, '').replace(/(-|\/)*$/, '');
+          if (
+            !/\//g.test(val) /*exclude links*/
+            && vals.indexOf(val) === -1
+            && vals.indexOf(val.toLowerCase()) === -1
+            && vals.indexOf(val.toUpperCase()) === -1
+            && val.length < 64 /*too long*/
+          ) {
+            vals.push(val);
+            this._updateVariableRepoMapping(val, res);
+            //render variable labels
+            variables.push({
+              keyword: val,
+              repo: res,
+              repoLen: this._variableRepoMapping[val].length,
+              color: Tools.randomLabelColor()
+            });
+          }
+        });
+      });
+    });
+    return variables;
+  }
+
+  _updateVariableRepoMapping(val, repo) {
+    this._variableRepoMapping[val] = this._variableRepoMapping[val] || [];
+    if (!this._variableRepoMapping[val].find(key => key.id === repo.id)) {
+      this._variableRepoMapping[val].push(repo);
+    }
+  }
+
+  get searchValue() {
+    return this._data.searchValue;
+  }
+
+  get searchLang() {
+    return this._data.searchLang;
+  }
+
+  get page() {
+    return this._data.page;
+  }
+
+  get variableList() {
+    return this._data.variableList;
+  }
+}
+
+export default new SearchcodeModel();

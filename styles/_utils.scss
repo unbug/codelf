@@ -17,6 +17,23 @@
   text-overflow: ellipsis;
 }
 
+.up-first {
+  &::first-letter {
+    text-transform: uppercase
+  }
+}
+
+.pointer-link {
+  cursor: pointer;
+}
+
+.hidden-link {
+  color: #000 !important;
+  &:hover {
+    color: #1e70bf !important;
+  }
+}
+
 .fix-break-word, p {
   word-break: break-all;
   word-break: break-word;

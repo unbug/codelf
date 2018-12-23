@@ -1,3 +1,4 @@
+import 'whatwg-fetch';
 import ReactDOM from 'react-dom';
 import MainContainer from './containers/MainContainer';
 

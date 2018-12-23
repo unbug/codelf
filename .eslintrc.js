@@ -5,6 +5,7 @@ module.exports = {
   ],
   'rules': {
     'no-unused-vars': [2, {'vars': 'all', 'args': 'none'}],
+    'no-empty': [0],
     'react/prop-types': [0],
     'react/no-unescaped-entities': [0]
   },
@@ -18,7 +19,8 @@ module.exports = {
     'ReactDOM': true,
     'Promise': true,
     'd3': true,
-    'NProgress': true
+    'NProgress': true,
+    'ClipboardJS': true
   },
   "parser": "babel-eslint",
   'parserOptions': {

@@ -83,10 +83,12 @@
       padding-left: 0.8rem;
       font-size: 0.8rem;
       line-height: 1;
+      margin-bottom: 0.2rem;
       @media screen and (min-width: 800px) {
         padding-left: 1.4rem;
         font-size: 1rem;
         line-height: 1.5;
+        margin-bottom: 0;
       }
     }
 
@@ -121,6 +123,19 @@
           opacity: 1;
         }
       }
+    }
+  }
+
+  .variable-list {
+    text-align: center;
+    .label {
+      @extend .pointer-link;
+      margin: 0.4rem 0.4rem 0 0;
+    }
+    hr {
+      width: 80%;
+      border-color: rgba(0,0,0,.16);
+      margin-top: 1rem;
     }
   }
 }

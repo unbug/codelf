@@ -64,11 +64,13 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "animate.css": "^3.7.0",
+    "clipboard": "^2.0.4",
     "events": "^3.0.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-router-dom": "^4.3.1",
     "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.82.5"
+    "semantic-ui-react": "^0.82.5",
+    "whatwg-fetch": "^3.0.0"
   }
 }
