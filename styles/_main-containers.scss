@@ -2,11 +2,10 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-
+  padding-bottom: 2rem;
   .title {
     text-align: center;
     padding-top: 3rem;
-    padding-bottom: 1rem;
     @media screen and (min-width: 800px) {
       padding-top: 8rem;
       padding-bottom: 2rem;
@@ -102,9 +101,8 @@
         box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.08);
       }
       &--dark {
-        box-shadow: 0 1px 5px 0 rgba(255,255,255,.2), 0 0 0 1px rgba(255,255,255,.08);
         &:focus, &:active, &:hover {
-          box-shadow: 1px 3px 12px 0 rgba(255,255,255,.35), 0 0 0 1px rgba(255,255,255,.08);
+          box-shadow: $box-shadow;
         }
       }
 
@@ -132,15 +130,34 @@
   }
 
   .variable-list {
+    width: 100%;
     text-align: center;
     .label {
       @extend .pointer-link;
       margin: 0.4rem 0.4rem 0 0;
+      &:hover {
+        box-shadow: $box-shadow;
+      }
     }
     hr {
-      width: 90%;
+      width: 60%;
       border-color: rgba(0,0,0,.16);
       margin-top: 1rem;
+    }
+  }
+
+  .search-error {
+    margin: 1rem 0;
+  }
+
+  .default {
+    padding: 2rem 1rem;
+    @media screen and (min-width: 800px) {
+      padding: 5rem 1rem;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
     }
   }
 }

@@ -1,14 +1,17 @@
 import BaseModel from './BaseModel';
 import * as Tools from '../utils/Tools';
+import YoudaoTranslateData from './metadata/YoudaoTranslateData';
 
 class SearchcodeModel extends BaseModel {
   constructor() {
     super();
     this._data = {
+      isZh: false,
       searchValue: null,
-      searchLang: null,
+      searchLang: [],
       page: 0,
-      variableList: []
+      variableList: [],
+      suggestion: []
     };
     this._variableRepoMapping = {};
   }
@@ -19,33 +22,52 @@ class SearchcodeModel extends BaseModel {
       val = val.trim().replace(/\s+/ig, ' '); // filter spaces
     }
     if (val.length < 1) { return; }
-    // multiple val separate with '+'
-    const url = `//searchcode.com/api/codesearch_I/?q=${val.replace(' ', '+')}&p=${page}&per_page=42${lang ? ('&lan=' + lang) : ''}`;
-    val && fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        this.update({
-          searchValue: val,
-          page: page,
-          variableList: [...this._data.variableList, this._parseVariableList(data.results, val)],
-          searchLang: lang
+    let q = val;
+    let suggestion = this.suggestion;
+    let isZh = this._isZh(val);
+    const fn = () => {
+      // multiple val separate with '+'
+      const url = `//searchcode.com/api/codesearch_I/?q=${q.replace(' ', '+')}&p=${page}&per_page=42${lang.length ? ('&lan=' + lang.join(',')) : ''}`;
+      val && fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          this.update({
+            searchValue: val,
+            page: page,
+            variableList: [...this._data.variableList, this._parseVariableList(data.results, q)],
+            searchLang: lang,
+            suggestion: suggestion,
+            isZh: isZh || this.isZh
+          });
+        }).catch(err => {
+          this.update({
+            searchValue: val,
+            page: page,
+            variableList: [...this.variableList, []],
+            searchLang: lang,
+            suggestion: suggestion,
+            isZh: isZh || this.isZh
+          });
         });
-    }).catch(err => {
-      this.update({
-        searchValue: val,
-        page: page,
-        variableList: [...this.variableList, []],
-        searchLang: lang
+    }
+    if (isZh) {
+      // translate by youdao
+      YoudaoTranslateData.request(val).then(translate => {
+        q = translate.translation;
+        suggestion = translate.suggestion;
+        fn();
       });
-    });
+    } else {
+      fn();
+    }
   }
 
-  getKeyWordReg(key) {
-    return new RegExp('([\\-_\\w\\d\\/\\$]{0,}){0,1}' + key + '([\\-_\\w\\d\\$]{0,}){0,1}', 'gi');
+  getKeyWordReg(keyword) {
+    return new RegExp('([\\-_\\w\\d\\/\\$]{0,}){0,1}' + keyword + '([\\-_\\w\\d\\$]{0,}){0,1}', 'gi');
   }
 
-  getKeyWroddRegs(vals) {
-    return vals.split(' ').reduce((accumulator, curr) => {
+  getKeyWroddRegs(keywords) {
+    return keywords.split(' ').reduce((accumulator, curr) => {
       if (curr.length && curr.length > 1) {
         return accumulator.concat(this.getKeyWordReg(curr));
       }
@@ -98,6 +120,16 @@ class SearchcodeModel extends BaseModel {
     }
   }
 
+  _isZh(val) {
+    let isZh = false;
+    val.replace(/\s+/ig, '+').split('+').forEach((key) => {
+      if (/[^\x00-\xff]/gi.test(key)) {
+        isZh = true;
+      }
+    });
+    return isZh;
+  }
+
   get searchValue() {
     return this._data.searchValue;
   }
@@ -112,6 +144,14 @@ class SearchcodeModel extends BaseModel {
 
   get variableList() {
     return this._data.variableList;
+  }
+
+  get suggestion() {
+    return this._data.suggestion;
+  }
+
+  get isZh() {
+    return this._data.isZh;
   }
 }
 

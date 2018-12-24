@@ -1,5 +1,5 @@
 import React from 'react';
-import {Popup, Label, Button} from 'semantic-ui-react';
+import {Button, Label, Popup} from 'semantic-ui-react';
 import * as Tools from '../utils/Tools';
 
 const formatRepobUrl = url => {
@@ -27,9 +27,9 @@ class Variable extends React.Component {
       <Popup style={{padding: '0'}}
              position='top center'
              trigger={
-              <Label circular color={this.props.color}>
-                {this.props.keyword}
-              </Label>}
+               <Label circular color={this.props.color} className={this.props.className} style={this.props.style}>
+                 {this.props.keyword}
+               </Label>}
              onMount={this.handlePopOnMount}
              onUnmount={this.handlePopUnmount}
              hoverable={true}>
@@ -46,20 +46,32 @@ class Variable extends React.Component {
   }
 }
 
-
 export default class VariableList extends React.Component {
+
+  lastPageLen = 0;
 
   constructor(props) {
     super(props);
-    this.state = {
-    }
+    this.state = {}
   }
 
   renderPage() {
     let pages = [];
-    this.props.variableList.forEach(list => {
+    const pageLen = this.props.variableList.length;
+    this.props.variableList.forEach((list, i) => {
+      const isLast = i === pageLen - 1 && this.lastPageLen != pageLen;
       const variables = list.map(variable => {
-        return <Variable key={Tools.uuid()} {...variable} {...this.props}/>
+        let style = {}, className = '';
+        if (isLast) {
+          className = 'animated';
+          style = {
+            opacity: 0,
+            animationName: 'fadeIn',
+            animationDelay: 0.1 + Math.random() + 's',
+            animationDuration: 0.35 + Math.random() + 's'
+          };
+        }
+        return <Variable key={Tools.uuid()} {...variable} {...this.props} style={style} className={className}/>
       });
       if (variables && variables.length) {
         if (pages.length) {
@@ -68,6 +80,7 @@ export default class VariableList extends React.Component {
         Array.prototype.unshift.apply(pages, variables)
       }
     });
+    this.lastPageLen = pageLen;
     return pages;
   }
 
