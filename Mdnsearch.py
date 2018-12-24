@@ -18,7 +18,7 @@ except ImportError:
 
 
 def SearchFor(text):
-    url = 'http://unbug.github.io/codelf/#' + quote(text)
+    url = 'https://unbug.github.io/codelf/#' + quote(text)
     webbrowser.open_new_tab(url)
 
 
