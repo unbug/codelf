@@ -25,7 +25,7 @@ class AppModel extends BaseModel {
   analytics(param) {
     (this.isGithub || this.debug) && setTimeout(function () {
       Navigator.getFrame(null).setAttribute('src', '//www.mihtool.com/analytics.html?codelf' + (param ? ('&' + param) : ''));
-    }, param ? 500 : 3000);
+    }, param ? 500 : 1000);
   }
 
   get debug() {
