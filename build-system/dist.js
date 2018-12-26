@@ -1,12 +1,15 @@
 'use strict';
-
+require('date-utils');
 const gulp = require('gulp-help')(require('gulp'));
 const $ = require('./util');
 const pngquant = require('imagemin-pngquant');
 const runSequence = require('run-sequence');
 const cachebust = $.cachebust();
+const through2 = require('through2');
+
 
 const distPath = './dist';
+const buildVersion = (new Date()).toFormat('YYYYMMDDHHMISS');
 
 gulp.task('dist:all', 'Copy all to dist.', () => {
   return gulp.src(['./app/**/**'])
@@ -50,6 +53,30 @@ gulp.task('dist:html', 'Compress html to dist.', () => {
     .pipe($.size({title: 'dist:html'}));
 });
 
+
+//generate service workers
+gulp.task('dist:serviceworkers', function (cb) {
+  let resources = ['"./"'];
+  const rootPath = __dirname.replace('build-system', '') + 'dist/';
+  gulp.src([distPath + '/**/*.*'])
+    .pipe(through2.obj(function (file, enc, next) {
+      !/sw\.js|.*.html/.test(file.path) && this.push('"' + file.path.replace(rootPath,'') + '"');
+      next();
+    }))
+    .on('data', function (data) {
+      resources.push(data)
+    })
+    .on('end', function () {
+      gulp.src(['./src/sw.js'])
+        .pipe($.replace(/_BUILD_VERSION_/g, buildVersion))
+        .pipe($.replace(/_FILES_/g, resources.join(',\n')))
+        .pipe(gulp.dest(distPath))
+        .on('end', function () {
+          cb();
+        });
+    });
+});
+
 gulp.task('dist', 'Dist the app.', cb => {
-  runSequence('clean:dist', 'dist:all', 'dist:images', 'dist:css', 'dist:js', 'dist:html', cb);
+  runSequence('clean:dist', 'dist:all', 'dist:images', 'dist:css', 'dist:js', 'dist:html', 'dist:serviceworkers', cb);
 });

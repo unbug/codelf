@@ -13,7 +13,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "gulp",
     "build": "NODE_ENV=production gulp build",
-    "dist": "NODE_ENV=production gulp build && gulp dist"
+    "dist": "NODE_ENV=production gulp build && gulp dist",
+    "gh-pages": "git push origin `git subtree split --prefix dist master`:gh-pages --force"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
@@ -26,6 +27,7 @@
     "browser-sync": "^2.26.3",
     "css-loader": "^1.0.1",
     "cssnano": "^4.1.7",
+    "date-utils": "^1.2.21",
     "del": "^3.0.0",
     "eslint": "^5.10.0",
     "eslint-plugin-react": "^7.10.0",
@@ -55,6 +57,7 @@
     "run-sequence": "^2.2.1",
     "sass-loader": "^7.1.0",
     "serve-index": "^1.9.1",
+    "through2": "^3.0.0",
     "webpack": "^4.28.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10",
