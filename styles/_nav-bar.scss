@@ -1,6 +1,6 @@
 .nav-bar{
   position: absolute;
-  top: -0.55rem;;
+  top: -0.25rem;
   right: 0;
   z-index: 10;
   display: inline-block;
@@ -31,6 +31,7 @@
     }
   }
   @media screen and (min-width: 50rem) {
+    top: -0.55rem;
     i{
       width: auto;
       height: 3.4rem;
