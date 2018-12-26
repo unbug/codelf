@@ -22,7 +22,9 @@ module.exports = {
     'Promise': true,
     'd3': true,
     'NProgress': true,
-    'ClipboardJS': true
+    'ClipboardJS': true,
+    'PR': true,
+    'Mark': true
   },
   "parser": "babel-eslint",
   'parserOptions': {

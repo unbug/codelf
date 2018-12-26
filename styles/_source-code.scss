@@ -1,0 +1,23 @@
+@at-root {
+  .source-code {
+    > .header {
+      padding: 0.8rem 1rem !important;
+    }
+    > .content {
+      pre {
+        margin: 0;
+        padding: 0;
+      }
+      code {
+        display: inline-block;
+        color: #000;
+      }
+    }
+    .ui.dropdown .menu>.item {
+      padding: 0.4rem 0 0 0.4rem !important;
+      &:last-child {
+        padding-bottom: 0.4rem !important;
+      }
+    }
+  }
+}

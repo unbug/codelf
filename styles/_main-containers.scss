@@ -8,7 +8,7 @@
   .title {
     text-align: center;
     padding-top: 3rem;
-    @media screen and (min-width: 800px) {
+    @media screen and (min-width: 50rem) {
       padding-top: 8rem;
       padding-bottom: 2rem;
     }
@@ -27,7 +27,7 @@
       font-family: "Dressedless Three", Lato, Roboto, 'Helvetica Neue', Arial, Helvetica, sans-serif;
       text-transform: uppercase;
       font-size: 3.5rem;
-      @media screen and (min-width: 800px) {
+      @media screen and (min-width: 50rem) {
         font-size: 5rem;
       }
     }
@@ -75,7 +75,7 @@
   .search-bar {
     padding: 1rem 0;
     width: 100%;
-    @media screen and (min-width: 800px) {
+    @media screen and (min-width: 50rem) {
       width: 45rem;
     }
 
@@ -85,7 +85,7 @@
       font-size: 0.8rem;
       line-height: 1;
       margin-bottom: 0.2rem;
-      @media screen and (min-width: 800px) {
+      @media screen and (min-width: 50rem) {
         padding-left: 1.4rem;
         font-size: 1rem;
         line-height: 1.5;
@@ -141,7 +141,7 @@
       a:hover {
         text-decoration: underline;
       }
-      @media screen and (min-width: 800px) {
+      @media screen and (min-width: 50rem) {
         font-size: 1rem;
       }
     }
@@ -150,7 +150,7 @@
   .suggestion {
     padding-bottom: 2rem;
     max-width: 100%;
-    @media screen and (min-width: 800px) {
+    @media screen and (min-width: 50rem) {
       min-width: 43rem;
     }
     a {
@@ -186,7 +186,7 @@
 
   .slogan-image {
     padding: 2rem 1rem;
-    @media screen and (min-width: 800px) {
+    @media screen and (min-width: 50rem) {
       padding: 5rem 1rem;
     }
 

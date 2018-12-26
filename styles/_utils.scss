@@ -40,3 +40,30 @@
   -webkit-hyphens: auto;
   hyphens: auto;
 }
+
+.modal--fix {
+  height: 94%;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+  .content {
+    padding: 0.4rem !important;
+    margin: 0 !important;
+    height: 90%;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+@media (min-width: 50rem) {
+  .modal--fix {
+    height: auto;
+    overflow: visible;
+    .close.icon {
+      top: -2rem;
+      right: -2rem;
+    }
+    .content {
+      height: auto;
+      overflow-y: visible;
+    }
+  }
+}

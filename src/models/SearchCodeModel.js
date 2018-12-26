@@ -1,9 +1,10 @@
 import BaseModel from './BaseModel';
 import * as Tools from '../utils/Tools';
 import YoudaoTranslateData from './metadata/YoudaoTranslateData';
-import JSONP from "../utils/JSONP";
+import JSONP from '../utils/JSONP';
+import Store from './Store';
 
-class SearchcodeModel extends BaseModel {
+class SearchCodeModel extends BaseModel {
   constructor() {
     super();
     this._data = {
@@ -12,9 +13,11 @@ class SearchcodeModel extends BaseModel {
       searchLang: [],
       page: 0,
       variableList: [],
-      suggestion: []
+      suggestion: [],
+      sourceCode: null
     };
     this._variableRepoMapping = {};
+    this._sourceCodeStore = new Store(Infinity);
   }
 
   //search code by query
@@ -61,6 +64,21 @@ class SearchcodeModel extends BaseModel {
       });
   }
 
+  //get source code by id
+  requestSourceCode(id) {
+    const cache = this._sourceCodeStore.get(id);
+    if (cache) {
+      this.update({sourceCode: cache});
+      return;
+    }
+    id && fetch('https://searchcode.com/api/result/' + id + '/')
+      .then(res => res.json())
+      .then(data => {
+        this._sourceCodeStore.save(id, data.code);
+        this.update({sourceCode: data.code});
+      });
+  }
+
   getKeyWordReg(keyword) {
     return new RegExp('([\\-_\\w\\d\\/\\$]{0,}){0,1}' + keyword + '([\\-_\\w\\d\\$]{0,}){0,1}', 'gi');
   }
@@ -76,6 +94,7 @@ class SearchcodeModel extends BaseModel {
   _parseVariableList(results, keywords) {
     let vals = [], variables = [];
     results.forEach(res => {
+      res.repo = res.repo.replace('git://github.com', 'https://github.com');
       //filter codes
       const lineStr = Object.keys(res.lines).reduce((accu, line) => {
         let lstr = res.lines[line];
@@ -98,10 +117,9 @@ class SearchcodeModel extends BaseModel {
             && val.length < 64 /*too long*/
           ) {
             vals.push(val);
-            //render variable labels
             variables.push({
               keyword: val,
-              repo: res,
+              repoLink: res.repo,
               color: Tools.randomLabelColor()
             });
           }
@@ -109,7 +127,7 @@ class SearchcodeModel extends BaseModel {
       });
     });
     return variables.map(val => {
-      val.repoLen = this._getVariableRepoMappingLength(val.keyword);
+      val.repoList = this._getVariableRepoMapping(val.keyword);
       return val;
     });
   }
@@ -132,9 +150,9 @@ class SearchcodeModel extends BaseModel {
     }
   }
 
-  _getVariableRepoMappingLength(val) {
+  _getVariableRepoMapping(val) {
     val = `__${val.toLowerCase()}`;
-    return this._variableRepoMapping[val].length;
+    return this._variableRepoMapping[val];
   }
 
   _isZH(val) {
@@ -170,6 +188,10 @@ class SearchcodeModel extends BaseModel {
   get isZH() {
     return this._data.isZH;
   }
+
+  get sourceCode() {
+    return this._data.sourceCode;
+  }
 }
 
-export default new SearchcodeModel();
+export default new SearchCodeModel();

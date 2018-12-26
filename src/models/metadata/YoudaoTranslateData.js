@@ -16,11 +16,12 @@ class YoudaoTranslateData {
     try{
       let suggestionStr = '';
       let tmp = [];
-      let suggestion = null;
-      let translation = null;
+      let suggestion;
+      let translation;
       //basic translate
       if (data.basic && data.basic.explains) {
         suggestionStr += data.basic.explains.join(' ');
+        translation = suggestionStr;
       }
       //web translate
       if (data.web && data.web) {

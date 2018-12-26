@@ -64,16 +64,17 @@
   "dependencies": {
     "@babel/polyfill": "^7.2.3",
     "animate.css": "^3.7.0",
+    "clipboard": "^2.0.4",
     "events": "^3.0.0",
     "file-saver": "^2.0.0",
     "lodash": "^4.17.11",
+    "mark.js": "^8.11.1",
     "nprogress": "^0.2.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-router-dom": "^4.3.1",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.82.5",
-    "clipboard": "^2.0.4",
     "whatwg-fetch": "^3.0.0"
   }
 }

@@ -3,12 +3,15 @@
 exports.js = [
   './node_modules/react/umd/react.production.min.js',
   './node_modules/react-dom/umd/react-dom.production.min.js',
-  './node_modules/clipboard/dist/clipboard.min.js'
+  './node_modules/clipboard/dist/clipboard.min.js',
+  './src/vendors/prettify.js',
+  './node_modules/mark.js/dist/mark.min.js'
 ];
 
 exports.css = [
   './node_modules/semantic-ui-css/semantic.min.css',
-  './node_modules/animate.css/animate.min.css'
+  './node_modules/animate.css/animate.min.css',
+  './src/vendors/prettify.css'
 ];
 
 exports.extra = [{

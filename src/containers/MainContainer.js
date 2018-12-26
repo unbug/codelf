@@ -2,7 +2,7 @@ import React from 'react';
 import {Container} from 'semantic-ui-react';
 import SearchBar from '../components/SearchBar';
 import Title from '../components/Title';
-import SearchcodeModel from '../models/SearchcodeModel';
+import SearchCodeModel from '../models/SearchCodeModel';
 import HashHandler from '../utils/HashHandler';
 import VariableList from '../components/VariableList';
 import SearchError from '../components/SearchError';
@@ -11,25 +11,32 @@ import Donate from '../components/Donate';
 import NoticeLinks from '../components/NoticeLinks';
 import Suggestion from '../components/Suggestion';
 import NavBar from '../components/NavBar';
-import Sourcecode from '../components/Sourcecode';
+import SourceCode from '../components/SourceCode';
+import AppModel from '../models/AppModel';
 
 export default class MainContainer extends React.Component {
   state = {
-    sourcecodeVisible: false,
     isZH: false,
     isError: false,
-    isSearchingVariable: false,
-    searchValue: SearchcodeModel.searchValue,
-    searchLang: SearchcodeModel.searchLang,
-    page: SearchcodeModel.page,
-    variableList: SearchcodeModel.variableList,
-    suggestion: SearchcodeModel.suggestion
+    requestingVariable: false,
+    searchValue: SearchCodeModel.searchValue,
+    searchLang: SearchCodeModel.searchLang,
+    page: SearchCodeModel.page,
+    variableList: SearchCodeModel.variableList,
+    suggestion: SearchCodeModel.suggestion,
+    requestingSourceCode: false,
+    sourceCodeVisible: false,
+    sourceCodeVariable: null,
+    sourceCodeRepo: null,
   }
+
+  repoList = null;
 
   constructor(props) {
     super(props);
-    SearchcodeModel.onUpdated(this.handleSearchcodeModelUpdate);
+    SearchCodeModel.onUpdated(this.handleSearchCodeModelUpdate);
     window.addEventListener('hashchange', this.handleLocationHashChanged, false);
+    AppModel.analytics();
   }
 
   componentDidUpdate(prevProps) {
@@ -40,39 +47,8 @@ export default class MainContainer extends React.Component {
     this.handleLocationHashChanged();
   }
 
-  handleLocationHashChanged = e => {
-    e && e.preventDefault();
-    const hash = HashHandler.get();
-    hash && this.requestVariable(hash.replace(/(\?.*)/, ''));
-  }
-
-  handleSearchcodeModelUpdate = (curr, prev, mutation) => {
-    this.setState({
-      isZH: SearchcodeModel.isZH || this.state.isZH,
-      isError: this.checkError(curr),
-      isSearchingVariable: !mutation.variableList,
-      searchValue: SearchcodeModel.searchValue,
-      searchLang: SearchcodeModel.searchLang,
-      page: SearchcodeModel.page,
-      variableList: SearchcodeModel.variableList,
-      suggestion: SearchcodeModel.suggestion
-    });
-  }
-
-  handleSearch = (val, lang) => {
-    this.setState({searchLang: lang});
-    if (val === null || val === undefined || this.state.isSearchingVariable) { return; }
-    val = val.trim().replace(/\s+/ig, ' '); // filter spaces
-    if (val.length < 1) { return; }
-    if (val == this.state.searchValue) {
-      this.requestVariable(val, lang);
-    } else  {
-      HashHandler.set(val); // update window.location.hash
-    }
-  }
-
   checkError(data) {
-    if (this.state.isSearchingVariable) {
+    if (this.state.requestingVariable) {
       // no search result
       if (data.variableList.length < 1 || data.variableList[data.variableList.length - 1].length < 1)  {
         return true;
@@ -89,8 +65,71 @@ export default class MainContainer extends React.Component {
     } else {
       page = 0;
     }
-    this.setState({searchValue: val, isSearchingVariable: true});
-    SearchcodeModel.requestVariable(val, page,  lang || this.state.searchLang);
+    this.setState({searchValue: val, requestingVariable: true});
+    SearchCodeModel.requestVariable(val, page,  lang || this.state.searchLang);
+    AppModel.analytics('q=' + val);
+  }
+
+  requestSourceCode(repo) {
+    this.setState({
+      sourceCodeVisible: true,
+      requestingSourceCode: true,
+      sourceCodeRepo: repo
+    });
+    SearchCodeModel.requestSourceCode(repo.id);
+    AppModel.analytics('vc&q=' + this.sourceCodeVariable.keyword);
+  }
+
+  handleLocationHashChanged = e => {
+    e && e.preventDefault();
+    const hash = HashHandler.get();
+    hash && this.requestVariable(hash.replace(/(\?.*)/, ''));
+  }
+
+  handleSearchCodeModelUpdate = (curr, prev, mutation) => {
+    if (mutation.variableList) {
+      this.setState({
+        isZH: SearchCodeModel.isZH || this.state.isZH,
+        isError: this.checkError(curr),
+        requestingVariable: !mutation.variableList,
+        searchValue: SearchCodeModel.searchValue,
+        searchLang: SearchCodeModel.searchLang,
+        page: SearchCodeModel.page,
+        variableList: SearchCodeModel.variableList,
+        suggestion: SearchCodeModel.suggestion
+      });
+    }
+    if (mutation.sourceCode) {
+      this.setState({
+        requestingSourceCode: false,
+        sourceCode: SearchCodeModel.sourceCode
+      });
+    }
+  }
+
+  handleSearch = (val, lang) => {
+    this.setState({searchLang: lang});
+    if (val === null || val === undefined || this.state.requestingVariable) { return; }
+    val = val.trim().replace(/\s+/ig, ' '); // filter spaces
+    if (val.length < 1) { return; }
+    if (val == this.state.searchValue) {
+      this.requestVariable(val, lang);
+    } else  {
+      HashHandler.set(val); // update window.location.hash
+    }
+  }
+
+  handleOpenSourceCode = variable => {
+    this.setState({sourceCodeVariable: variable});
+    this.requestSourceCode(variable.repoList[0]);
+  }
+
+  handleCloseSourceCode = () => {
+    this.setState({sourceCodeVisible: false});
+  }
+
+  handleRequestSourceCode = repo => {
+    this.requestSourceCode(repo);
   }
 
   renderSloganImage() {
@@ -104,13 +143,15 @@ export default class MainContainer extends React.Component {
         <Title {...this.state}/>
         <SearchBar placeholder='AI 人工智能' {...this.state} onSearch={this.handleSearch}/>
         <Suggestion {...this.state}/>
-        {this.state.isSearchingVariable ? <Loading/> : (this.state.isError ? <SearchError/> : '')}
+        {this.state.requestingVariable ? <Loading/> : (this.state.isError ? <SearchError/> : '')}
         {this.renderSloganImage()}
-        <VariableList {...this.state}/>
+        <VariableList {...this.state} onOpenSourceCode={this.handleOpenSourceCode}/>
         {this.state.variableList.length ? <Donate {...this.state}/> : ''}
         <NoticeLinks/>
         <NavBar/>
-        <Sourcecode {...this.state}/>
+        <SourceCode {...this.state}
+                    onRequestSourceCode={this.handleRequestSourceCode}
+                    onCloseSourceCode={this.handleCloseSourceCode}/>
       </Container>
     )
   }

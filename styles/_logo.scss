@@ -1,12 +1,14 @@
-.logo {
-  margin: 1rem auto;
-  width: 3rem;
-  height: 3rem;
+@at-root {
+  .logo {
+    margin: 1rem auto;
+    width: 3rem;
+    height: 3rem;
 
-  img {
-    display: inherit;
-    width: 100%;
-    height: 100%;
-    border-radius: 20%;
+    img {
+      display: inherit;
+      width: 100%;
+      height: 100%;
+      border-radius: 20%;
+    }
   }
 }

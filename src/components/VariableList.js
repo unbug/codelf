@@ -2,10 +2,6 @@ import React from 'react';
 import {Button, Label, Popup} from 'semantic-ui-react';
 import * as Tools from '../utils/Tools';
 
-const formatRepobUrl = url => {
-  return url.replace('git://github.com', 'https://github.com');
-}
-
 class Variable extends React.Component {
   clipboardId = `clipboardId-${Tools.uuid()}`;
   clipboard = null;
@@ -23,22 +19,23 @@ class Variable extends React.Component {
   }
 
   render() {
+    const variable = this.props.variable;
     return (
       <Popup style={{padding: '0'}}
              position='top center'
              trigger={
-               <Label circular color={this.props.color} className={this.props.className} style={this.props.style}>
-                 {this.props.keyword}
+               <Label circular color={variable.color} className={this.props.className} style={this.props.style}>
+                 {variable.keyword}
                </Label>}
              onMount={this.handlePopOnMount}
              onUnmount={this.handlePopUnmount}
              hoverable={true}>
         <Button.Group vertical basic style={{border: 0}}>
-          <Button compact as='a' href={`#${this.props.keyword}`}>Search</Button>
-          <Button compact as='a' href={formatRepobUrl(this.props.repo.repo)} target='_blank'>Repo</Button>
-          <Button compact data-clipboard-text={this.props.keyword} id={this.clipboardId}>Copy</Button>
-          <Button compact>
-            Codes <Label size='mini' circular color={this.props.color}>{this.props.repoLen}</Label>
+          <Button compact as='a' href={`#${variable.keyword}`}>Search</Button>
+          <Button compact as='a' href={variable.repoLink} target='_blank'>Repo</Button>
+          <Button compact data-clipboard-text={variable.keyword} id={this.clipboardId}>Copy</Button>
+          <Button compact onClick={() => this.props.onOpenSourceCode(variable)}>
+            Codes <Label size='mini' circular color={variable.color}>{variable.repoList.length}</Label>
           </Button>
         </Button.Group>
       </Popup>
@@ -68,10 +65,11 @@ export default class VariableList extends React.Component {
           style = {
             animationName: this.animationName,
             animationDelay: duration + 's',
-            animationDuration: duration +  Math.random() + 's'
+            animationDuration: Math.min(duration, 0.8) +  Math.random() + 's'
           };
         }
-        return <Variable key={Tools.uuid()} {...variable} {...this.props} style={style} className={className}/>
+        return <Variable key={Tools.uuid()} variable={variable}
+                         onOpenSourceCode={this.props.onOpenSourceCode} style={style} className={className}/>
       });
       if (variables && variables.length) {
         if (pages.length) {
