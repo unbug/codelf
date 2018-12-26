@@ -7,7 +7,9 @@ module.exports = {
     'no-unused-vars': [2, {'vars': 'all', 'args': 'none'}],
     'no-empty': [0],
     'react/prop-types': [0],
-    'react/no-unescaped-entities': [0]
+    'react/no-unescaped-entities': [0],
+    'no-useless-escape': [0],
+    'no-control-regex': [0]
   },
   'env': {
     'es6': true,

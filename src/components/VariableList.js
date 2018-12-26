@@ -49,6 +49,7 @@ class Variable extends React.Component {
 export default class VariableList extends React.Component {
 
   lastPageLen = 0;
+  animationName = Math.random() > 0.5 ? 'zoomInDown' : 'zoomInUp';
 
   constructor(props) {
     super(props);
@@ -60,15 +61,14 @@ export default class VariableList extends React.Component {
     const pageLen = this.props.variableList.length;
     this.props.variableList.forEach((list, i) => {
       const isLast = i === pageLen - 1 && this.lastPageLen != pageLen;
-      const variables = list.map(variable => {
-        let style = {}, className = '';
+      const variables = list.map((variable, j) => {
+        let style = {}, className = '', duration = (list.length - j) / list.length;
         if (isLast) {
           className = 'animated';
           style = {
-            opacity: 0,
-            animationName: 'fadeIn',
-            animationDelay: 0.1 + Math.random() + 's',
-            animationDuration: 0.35 + Math.random() + 's'
+            animationName: this.animationName,
+            animationDelay: duration + 's',
+            animationDuration: duration +  Math.random() + 's'
           };
         }
         return <Variable key={Tools.uuid()} {...variable} {...this.props} style={style} className={className}/>

@@ -4,7 +4,7 @@ const path = require('path');
 const merge = require('webpack-merge');
 
 const common = {
-  entry: './src/App.js',
+  entry: ['@babel/polyfill', './src/App.js'],
   output: {
     filename: 'app.js',
     path: path.resolve(__dirname, 'app/js'),

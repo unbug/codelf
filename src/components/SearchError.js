@@ -9,7 +9,7 @@ export default class SearchError extends React.Component {
   render() {
     return (
       <div className='search-error'>
-        <div>Nothing found, please come back later, or try  <Label>Suggestions</Label> :)</div>
+        <div>Nothing found, please try  <Label color='grey' size='mini'>Quick Search</Label> or come back later :)</div>
       </div>
     );
   }

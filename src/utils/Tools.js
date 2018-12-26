@@ -97,7 +97,7 @@ const randomLabelColor = () => {
     'purple',
     'pink',
     'brown',
-    'grey'];
+    'gray'];
   return randomList(colors, 1)[0];
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dropdown, Icon, Input, Checkbox} from 'semantic-ui-react';
+import {Dropdown, Icon, Input} from 'semantic-ui-react';
 
 // http://githut.info/
 const topProgramLan = [
@@ -27,8 +27,6 @@ const topProgramLan = [
   {id: 29, language: 'Lisp'},
   {id: 42, language: 'ActionScript'}
 ];
-
-
 
 export default class SearchBar extends React.Component {
   input = React.createRef();
@@ -124,7 +122,16 @@ export default class SearchBar extends React.Component {
           <Icon name={this.props.variableList.length ? 'search plus' : 'search'}
                 link onClick={() => this.handleSearch()}/>
         </Input>
-        <div className='search-bar__helper'>
+        <div className='search-bar__plugins'>
+          <Icon name='plug'/>For:&nbsp;
+          <a href='https://github.com/unbug/codelf#codelf-for-vs-code'
+             target='_blank' rel='noopener noreferrer'>VS Code</a>,&nbsp;
+          <a className='text-muted' href='https://atom.io/packages/codelf'
+             target='_blank' rel='noopener noreferrer'>Atom</a>,&nbsp;
+          <a className='text-muted' href='https://github.com/unbug/codelf#codelf-for-sublime-text'
+             target='_blank' rel='noopener noreferrer'>Sublime Text</a>,&nbsp;
+          <a href='https://chrome.google.com/webstore/detail/codelf-best-github-stars/jnmjaglhmmcplekpfnblniiammmdpaan'
+             target='_blank' rel='noopener noreferrer'>Chrome</a>
         </div>
       </div>
     )

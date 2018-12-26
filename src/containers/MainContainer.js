@@ -7,15 +7,20 @@ import HashHandler from '../utils/HashHandler';
 import VariableList from '../components/VariableList';
 import SearchError from '../components/SearchError';
 import Loading from '../components/Loading';
+import Donate from "../components/Donate";
+import NoticeLinks from "../components/NoticeLinks";
+import Suggestion from "../components/Suggestion";
 
 export default class MainContainer extends React.Component {
   state = {
+    isZH: false,
     isError: false,
     isSearchingVariable: false,
     searchValue: SearchcodeModel.searchValue,
     searchLang: SearchcodeModel.searchLang,
     page: SearchcodeModel.page,
-    variableList: SearchcodeModel.variableList
+    variableList: SearchcodeModel.variableList,
+    suggestion: SearchcodeModel.suggestion
   }
 
   constructor(props) {
@@ -40,12 +45,14 @@ export default class MainContainer extends React.Component {
 
   handleSearchcodeModelUpdate = (curr, prev, mutation) => {
     this.setState({
+      isZH: SearchcodeModel.isZH || this.state.isZH,
       isError: this.checkError(curr),
       isSearchingVariable: !mutation.variableList,
       searchValue: SearchcodeModel.searchValue,
       searchLang: SearchcodeModel.searchLang,
       page: SearchcodeModel.page,
-      variableList: SearchcodeModel.variableList
+      variableList: SearchcodeModel.variableList,
+      suggestion: SearchcodeModel.suggestion
     });
   }
 
@@ -76,14 +83,16 @@ export default class MainContainer extends React.Component {
     let page = this.state.page;
     if (val === this.state.searchValue) {
       page += 1;
+    } else {
+      page = 0;
     }
     this.setState({searchValue: val, isSearchingVariable: true});
     SearchcodeModel.requestVariable(val, page,  lang || this.state.searchLang);
   }
 
-  renderDefault() {
+  renderSloganImage() {
     if (this.state.page > 0 || this.state.variableList.length) { return ''; }
-    return <div className='default'><img src="images/twohardtings.jpg"/></div>;
+    return <div className='slogan-image'><img src="images/twohardtings.jpg"/></div>;
   }
 
   render() {
@@ -91,9 +100,12 @@ export default class MainContainer extends React.Component {
       <Container className='main'>
         <Title {...this.state}/>
         <SearchBar placeholder='AI 人工智能' {...this.state} onSearch={this.handleSearch}/>
+        <Suggestion {...this.state}/>
         {this.state.isSearchingVariable ? <Loading/> : (this.state.isError ? <SearchError/> : '')}
-        {this.renderDefault()}
+        {this.renderSloganImage()}
         <VariableList {...this.state}/>
+        {this.state.variableList.length ? <Donate {...this.state}/> : ''}
+        <NoticeLinks/>
       </Container>
     )
   }

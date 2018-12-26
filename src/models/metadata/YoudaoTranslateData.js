@@ -6,13 +6,14 @@ class YoudaoTranslateData {
     this._store = new Store(Infinity);
   }
 
-  request(val) {
+  async request(val) {
     const cache = this._store.get(val);
     if (cache) {
-       return Promise.resolve(cache);
+       return cache;
     }
     const url = `//fanyi.youdao.com/openapi.do?callback=?&keyfrom=Codelf&key=2023743559&type=data&doctype=jsonp&version=1.1&q=${val}`;
-    return JSONP(url).then(data => {
+    const data = await JSONP(url);
+    try{
       let suggestionStr = '';
       let tmp = [];
       let suggestion = null;
@@ -51,7 +52,9 @@ class YoudaoTranslateData {
       let response = {suggestion, translation};
       this._store.save(val, response);
       return response;
-    });
+    }catch (e) {
+      return null;
+    }
   }
 }
 

@@ -1,12 +1,13 @@
 import BaseModel from './BaseModel';
 import * as Tools from '../utils/Tools';
 import YoudaoTranslateData from './metadata/YoudaoTranslateData';
+import JSONP from "../utils/JSONP";
 
 class SearchcodeModel extends BaseModel {
   constructor() {
     super();
     this._data = {
-      isZh: false,
+      isZH: false,
       searchValue: null,
       searchLang: [],
       page: 0,
@@ -17,49 +18,47 @@ class SearchcodeModel extends BaseModel {
   }
 
   //search code by query
-  requestVariable(val, page, lang) {
+  async requestVariable(val, page, lang) {
     if (val !== undefined && val !== null) {
       val = val.trim().replace(/\s+/ig, ' '); // filter spaces
     }
-    if (val.length < 1) { return; }
+    if (val.length < 1) {
+      return;
+    }
     let q = val;
-    let suggestion = this.suggestion;
-    let isZh = this._isZh(val);
-    const fn = () => {
-      // multiple val separate with '+'
-      const url = `//searchcode.com/api/codesearch_I/?q=${q.replace(' ', '+')}&p=${page}&per_page=42${lang.length ? ('&lan=' + lang.join(',')) : ''}`;
-      val && fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          this.update({
-            searchValue: val,
-            page: page,
-            variableList: [...this._data.variableList, this._parseVariableList(data.results, q)],
-            searchLang: lang,
-            suggestion: suggestion,
-            isZh: isZh || this.isZh
-          });
-        }).catch(err => {
-          this.update({
-            searchValue: val,
-            page: page,
-            variableList: [...this.variableList, []],
-            searchLang: lang,
-            suggestion: suggestion,
-            isZh: isZh || this.isZh
-          });
-        });
-    }
-    if (isZh) {
+    let suggestion = this._parseSuggestion(val.split(' '));
+    let isZH = this._isZH(val);
+    if (isZH) {
       // translate by youdao
-      YoudaoTranslateData.request(val).then(translate => {
-        q = translate.translation;
-        suggestion = translate.suggestion;
-        fn();
-      });
-    } else {
-      fn();
+      const translate = await YoudaoTranslateData.request(val);
+      q = translate.translation;
+      suggestion = this._parseSuggestion(translate.suggestion, suggestion);
+      suggestion = this._parseSuggestion(q.split(' '), suggestion);
     }
+    // multiple val separate with '+'
+    // const url = `//searchcode.com/api/codesearch_I/?q=${q.replace(' ', '+')}&p=${page}&per_page=42${lang.length ? ('&lan=' + lang.join(',')) : ''}`;
+    const url = `//searchcode.com/api/jsonp_codesearch_I/?callback=?&q=${q.replace(' ', '+')}&p=${page}&per_page=42${lang.length ? ('&lan=' + lang.join(',')) : ''}`;
+    val && JSONP(url)
+      // .then(res => res.json())
+      .then(data => {
+        this.update({
+          searchValue: val,
+          page: page,
+          variableList: [...this._data.variableList, this._parseVariableList(data.results, q)],
+          searchLang: lang,
+          suggestion: suggestion,
+          isZH: isZH || this.isZH
+        });
+      }).catch(err => {
+        this.update({
+          searchValue: val,
+          page: page,
+          variableList: [...this.variableList, []],
+          searchLang: lang,
+          suggestion: suggestion,
+          isZH: isZH || this.isZH
+        });
+      });
   }
 
   getKeyWordReg(keyword) {
@@ -89,7 +88,7 @@ class SearchcodeModel extends BaseModel {
       this.getKeyWroddRegs(keywords).forEach(reg => {
         (lineStr.match(reg) || []).forEach(val => {
           //remove "-" and "/" from the start and the end
-          val = val.replace(/^(-|\/)*/, '').replace(/(-|\/)*$/, '');
+          val = val.replace(/^(\-|\/)*/, '').replace(/(\-|\/)*$/, '');
           if (
             !/\//g.test(val) /*exclude links*/
             && vals.indexOf(val) === -1
@@ -113,6 +112,14 @@ class SearchcodeModel extends BaseModel {
     return variables;
   }
 
+  _parseSuggestion(keywords, curr) {
+    let suggestion = curr || this.suggestion;
+    if (keywords) {
+      suggestion = keywords.concat(suggestion);
+    }
+    return [...new Set(suggestion)].filter((item, i) => !this._isZH(item) && i < 12);
+  }
+
   _updateVariableRepoMapping(val, repo) {
     this._variableRepoMapping[val] = this._variableRepoMapping[val] || [];
     if (!this._variableRepoMapping[val].find(key => key.id === repo.id)) {
@@ -120,14 +127,14 @@ class SearchcodeModel extends BaseModel {
     }
   }
 
-  _isZh(val) {
-    let isZh = false;
+  _isZH(val) {
+    let isZH = false;
     val.replace(/\s+/ig, '+').split('+').forEach((key) => {
       if (/[^\x00-\xff]/gi.test(key)) {
-        isZh = true;
+        isZH = true;
       }
     });
-    return isZh;
+    return isZH;
   }
 
   get searchValue() {
@@ -150,8 +157,8 @@ class SearchcodeModel extends BaseModel {
     return this._data.suggestion;
   }
 
-  get isZh() {
-    return this._data.isZh;
+  get isZH() {
+    return this._data.isZH;
   }
 }
 

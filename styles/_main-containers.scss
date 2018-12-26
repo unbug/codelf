@@ -2,7 +2,8 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding-bottom: 2rem;
+  padding-bottom: 3rem;
+
   .title {
     text-align: center;
     padding-top: 3rem;
@@ -100,6 +101,7 @@
       &:focus, &:active, &:hover {
         box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.08);
       }
+
       &--dark {
         &:focus, &:active, &:hover {
           box-shadow: $box-shadow;
@@ -127,21 +129,48 @@
         }
       }
     }
+    &__plugins {
+      padding-left: 0.8rem;
+      color: inherit;
+      opacity: 0.5;
+      a, a:hover, a:link, a:active, a:focus, a:visited {
+        color: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .suggestion {
+    padding-bottom: 2rem;
+    max-width: 100%;
+    @media screen and (min-width: 800px) {
+      min-width: 43rem;
+    }
+    a {
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 
   .variable-list {
     width: 100%;
     text-align: center;
+
     .label {
       @extend .pointer-link;
       margin: 0.4rem 0.4rem 0 0;
+
       &:hover {
         box-shadow: $box-shadow;
       }
     }
+
     hr {
-      width: 60%;
-      border-color: rgba(0,0,0,.16);
+      width: 70%;
+      border-color: rgba(0, 0, 0, .16);
       margin-top: 1rem;
     }
   }
@@ -150,14 +179,66 @@
     margin: 1rem 0;
   }
 
-  .default {
+  .slogan-image {
     padding: 2rem 1rem;
     @media screen and (min-width: 800px) {
       padding: 5rem 1rem;
     }
+
     img {
       max-width: 100%;
       height: auto;
+    }
+  }
+
+  .donate {
+    padding: 2rem 0;
+    text-align: center;
+
+    form {
+      display: inline-block;
+    }
+
+    .hd {
+      padding-bottom: .8rem;
+      text-align: center;
+    }
+
+    .bd {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .zhifubao,
+    .wechatpay,
+    .paypal {
+      margin: 0 0.5rem;
+      width: 5rem;
+      background: #fff;
+      border-radius: 0.1rem;
+    }
+  }
+
+  .notice-links {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding-bottom: 1.5rem;
+    padding-top: 0.5rem;
+    text-align: center;
+    transition: background-color $anim-default-time ease-in-out;
+    @at-root {
+      body.dark .notice-links {
+        background: $dark;
+      }
+    }
+    a {
+      display: none;
+      &.show {
+        display: block;
+      }
     }
   }
 }
