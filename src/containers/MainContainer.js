@@ -13,6 +13,7 @@ import Suggestion from '../components/Suggestion';
 import NavBar from '../components/NavBar';
 import SourceCode from '../components/SourceCode';
 import AppModel from '../models/AppModel';
+import DDMSModel from '../models/DDMSModel';
 
 export default class MainContainer extends React.Component {
   state = {
@@ -68,6 +69,7 @@ export default class MainContainer extends React.Component {
     this.setState({searchValue: val, requestingVariable: true});
     SearchCodeModel.requestVariable(val, page,  lang || this.state.searchLang);
     AppModel.analytics('q=' + val);
+    DDMSModel.postKeyWords(val);
   }
 
   requestSourceCode(repo) {

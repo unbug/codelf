@@ -1,3 +1,5 @@
+import Navigator from './Navigator';
+
 const FormHandler = new function () {
   function getForm(method) {
     let _form = document.createElement('form');
