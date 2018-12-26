@@ -11,9 +11,11 @@ import Donate from '../components/Donate';
 import NoticeLinks from '../components/NoticeLinks';
 import Suggestion from '../components/Suggestion';
 import NavBar from '../components/NavBar';
+import Sourcecode from '../components/Sourcecode';
 
 export default class MainContainer extends React.Component {
   state = {
+    sourcecodeVisible: false,
     isZH: false,
     isError: false,
     isSearchingVariable: false,
@@ -108,6 +110,7 @@ export default class MainContainer extends React.Component {
         {this.state.variableList.length ? <Donate {...this.state}/> : ''}
         <NoticeLinks/>
         <NavBar/>
+        <Sourcecode {...this.state}/>
       </Container>
     )
   }

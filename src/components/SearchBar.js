@@ -107,7 +107,7 @@ export default class SearchBar extends React.Component {
         <Input ref={this.input}
                className={`search-bar__input${this.props.variableList.length ? ' search-bar__input--dark' : ''}`}
                icon fluid placeholder={this.props.placeholder} size={this.state.inputSize}>
-          <Dropdown text='' icon='filter' className='search-bar__dropdown'>
+          <Dropdown floating text='' icon='filter' className='search-bar__dropdown'>
             <Dropdown.Menu>
               <Dropdown.Item icon='undo' text='All 90 Languages (Reset)' onClick={this.handleRestLang}/>
               <Dropdown.Menu scrolling>

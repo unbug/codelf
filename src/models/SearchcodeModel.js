@@ -89,6 +89,7 @@ class SearchcodeModel extends BaseModel {
         (lineStr.match(reg) || []).forEach(val => {
           //remove "-" and "/" from the start and the end
           val = val.replace(/^(\-|\/)*/, '').replace(/(\-|\/)*$/, '');
+          this._updateVariableRepoMapping(val, res);
           if (
             !/\//g.test(val) /*exclude links*/
             && vals.indexOf(val) === -1
@@ -97,19 +98,20 @@ class SearchcodeModel extends BaseModel {
             && val.length < 64 /*too long*/
           ) {
             vals.push(val);
-            this._updateVariableRepoMapping(val, res);
             //render variable labels
             variables.push({
               keyword: val,
               repo: res,
-              repoLen: this._variableRepoMapping[val].length,
               color: Tools.randomLabelColor()
             });
           }
         });
       });
     });
-    return variables;
+    return variables.map(val => {
+      val.repoLen = this._getVariableRepoMappingLength(val.keyword);
+      return val;
+    });
   }
 
   _parseSuggestion(keywords, curr) {
@@ -117,14 +119,22 @@ class SearchcodeModel extends BaseModel {
     if (keywords) {
       suggestion = keywords.concat(suggestion);
     }
-    return [...new Set(suggestion)].filter((item, i) => !this._isZH(item) && i < 12);
+    return [...new Set(suggestion)].filter((item, i) => !this._isZH(item));
   }
 
   _updateVariableRepoMapping(val, repo) {
-    this._variableRepoMapping[val] = this._variableRepoMapping[val] || [];
-    if (!this._variableRepoMapping[val].find(key => key.id === repo.id)) {
-      this._variableRepoMapping[val].push(repo);
+    if (!/\//g.test(val) /*exclude links*/ && val.length < 64 /*too long*/) {
+      val = `__${val.toLowerCase()}`;
+      this._variableRepoMapping[val] = this._variableRepoMapping[val] || [];
+      if (!this._variableRepoMapping[val].find(key => key.id == repo.id)) {
+        this._variableRepoMapping[val].push(repo);
+      }
     }
+  }
+
+  _getVariableRepoMappingLength(val) {
+    val = `__${val.toLowerCase()}`;
+    return this._variableRepoMapping[val].length;
   }
 
   _isZH(val) {
