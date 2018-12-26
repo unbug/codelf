@@ -7,9 +7,10 @@ import HashHandler from '../utils/HashHandler';
 import VariableList from '../components/VariableList';
 import SearchError from '../components/SearchError';
 import Loading from '../components/Loading';
-import Donate from "../components/Donate";
-import NoticeLinks from "../components/NoticeLinks";
-import Suggestion from "../components/Suggestion";
+import Donate from '../components/Donate';
+import NoticeLinks from '../components/NoticeLinks';
+import Suggestion from '../components/Suggestion';
+import NavBar from '../components/NavBar';
 
 export default class MainContainer extends React.Component {
   state = {
@@ -92,7 +93,7 @@ export default class MainContainer extends React.Component {
 
   renderSloganImage() {
     if (this.state.page > 0 || this.state.variableList.length) { return ''; }
-    return <div className='slogan-image'><img src="images/twohardtings.jpg"/></div>;
+    return <div className='slogan-image'><img src='images/twohardtings.jpg'/></div>;
   }
 
   render() {
@@ -106,6 +107,7 @@ export default class MainContainer extends React.Component {
         <VariableList {...this.state}/>
         {this.state.variableList.length ? <Donate {...this.state}/> : ''}
         <NoticeLinks/>
+        <NavBar/>
       </Container>
     )
   }
