@@ -115,7 +115,7 @@ export default class SearchBar extends React.Component {
               </Dropdown.Menu>
             </Dropdown.Menu>
           </Dropdown>
-          <input defaultValue={this.props.searchValue}
+          <input type='search' name='search' defaultValue={this.props.searchValue}
                  onKeyPress={e => {
                    e.key === 'Enter' && this.handleSearch()
                  }}/>
