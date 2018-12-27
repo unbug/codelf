@@ -1,4 +1,4 @@
-  <img src="http://unbug.github.io/codelf/resources/images/codelf_logo.png" width="80">
+  <img src="https://user-images.githubusercontent.com/799578/50462941-8075fe80-09c3-11e9-89e7-af0cb7991406.png" width="80">
 
 Codelf(变量命名神器)
 =================
@@ -6,7 +6,7 @@ Best GitHub stars, repositories tagger and organizer. Search over projects from 
 
   >There are only two hard things in Computer Science: cache invalidation and naming things.-- Phil Karlton
   >
-  >![twohardtings](http://unbug.github.io/codelf/resources/images/twohardtings.jpg)
+  >![twohardtings](https://user-images.githubusercontent.com/799578/50462942-8075fe80-09c3-11e9-9c7f-b38d495b925d.jpg)
 
 WIKI
 =================
