@@ -63,12 +63,12 @@ export default class SourceCode extends React.Component {
     const sourceCodeVariable = this.props.sourceCodeVariable;
     return (
       <Modal open={this.props.sourceCodeVisible} onClose={this.handleClose}
-             centered={false} closeIcon className='source-code modal--fix'>
+             centered={false} closeIcon className='source-code fix-modal'>
         <Modal.Header>
           <Dropdown floating labeled button blurring className='mini icon'
                     text={`Matched results (${sourceCodeVariable.repoList.length})`}>
             <Dropdown.Menu>
-              <Dropdown.Menu scrolling>
+              <Dropdown.Menu scrolling className='fix-dropdown-menu'>
                 {this.renderDropdownItem()}
               </Dropdown.Menu>
             </Dropdown.Menu>

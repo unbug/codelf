@@ -110,7 +110,7 @@ export default class SearchBar extends React.Component {
           <Dropdown floating text='' icon='filter' className='search-bar__dropdown'>
             <Dropdown.Menu>
               <Dropdown.Item icon='undo' text='All 90 Languages (Reset)' onClick={this.handleRestLang}/>
-              <Dropdown.Menu scrolling>
+              <Dropdown.Menu scrolling className='fix-dropdown-menu'>
                 {this.renderItems()}
               </Dropdown.Menu>
             </Dropdown.Menu>

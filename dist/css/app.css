@@ -133,14 +133,14 @@ body.dark {
       hyphens: auto;
 }
 
-.modal--fix {
+.fix-modal {
   height: 94%;
   overflow: hidden;
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
 }
 
-.modal--fix .content {
+.fix-modal .content {
   padding: 0.4rem !important;
   margin: 0 !important;
   height: 90%;
@@ -149,18 +149,22 @@ body.dark {
 }
 
 @media (min-width: 50rem) {
-  .modal--fix {
+  .fix-modal {
     height: auto;
     overflow: visible;
   }
-  .modal--fix .close.icon {
+  .fix-modal .close.icon {
     top: -2rem;
     right: -2rem;
   }
-  .modal--fix .content {
+  .fix-modal .content {
     height: auto;
     overflow-y: visible;
   }
+}
+
+.fix-dropdown-menu {
+  -webkit-overflow-scrolling: touch;
 }
 
 /*https://github.com/tobiasahlin/SpinKit*/

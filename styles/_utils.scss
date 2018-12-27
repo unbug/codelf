@@ -41,7 +41,7 @@
   hyphens: auto;
 }
 
-.modal--fix {
+.fix-modal {
   height: 94%;
   overflow: hidden;
   transform: translate3d(0, 0, 0);
@@ -54,7 +54,7 @@
   }
 }
 @media (min-width: 50rem) {
-  .modal--fix {
+  .fix-modal {
     height: auto;
     overflow: visible;
     .close.icon {
@@ -66,4 +66,8 @@
       overflow-y: visible;
     }
   }
+}
+
+.fix-dropdown-menu {
+  -webkit-overflow-scrolling: touch;
 }
