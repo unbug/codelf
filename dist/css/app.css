@@ -117,12 +117,12 @@ body.dark {
   cursor: pointer;
 }
 
-.hidden-link {
-  color: #000 !important;
+.hidden-link.hidden-link {
+  color: #000;
 }
 
-.hidden-link:hover {
-  color: #1e70bf !important;
+.hidden-link.hidden-link:hover {
+  color: #1e70bf;
 }
 
 .fix-break-word, p {
@@ -140,9 +140,9 @@ body.dark {
           transform: translate3d(0, 0, 0);
 }
 
-.fix-modal .content {
-  padding: 0.4rem !important;
-  margin: 0 !important;
+.fix-modal.fix-modal > .content {
+  padding: 0.4rem;
+  margin: 0;
   height: 90%;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
@@ -157,7 +157,7 @@ body.dark {
     top: -2rem;
     right: -2rem;
   }
-  .fix-modal .content {
+  .fix-modal.fix-modal > .content {
     height: auto;
     overflow-y: visible;
   }
@@ -339,13 +339,13 @@ body.dark {
   bottom: 0;
   left: 0;
   width: 100%;
-  padding-bottom: 1.5rem;
+  padding-bottom: 1rem;
   padding-top: 0.5rem;
   text-align: center;
   transition: background-color 0.6s ease-in-out;
 }
 
-body.dark .notice-links {
+body.dark .app .notice-links {
   background: #272b38;
 }
 
@@ -358,8 +358,8 @@ body.dark .notice-links {
   display: block;
 }
 
-.source-code > .header {
-  padding: 0.8rem 1rem !important;
+.source-code.source-code > .header {
+  padding: 0.8rem 1rem;
 }
 
 .source-code > .content pre {
@@ -372,11 +372,11 @@ body.dark .notice-links {
   color: #000;
 }
 
-.source-code .ui.dropdown .menu > .item {
+.source-code.source-code .ui.dropdown .menu > .item {
   padding: 0.4rem 0 0 0.4rem !important;
 }
 
-.source-code .ui.dropdown .menu > .item:last-child {
+.source-code.source-code .ui.dropdown .menu > .item:last-child {
   padding-bottom: 0.4rem !important;
 }
 
@@ -390,14 +390,15 @@ body.dark .notice-links {
 
 .app .main .title {
   text-align: center;
-  padding-top: 3rem;
-  padding-bottom: 1rem;
+  margin-top: 6rem;
+  margin-bottom: 2rem;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @media screen and (min-width: 50rem) {
   .app .main .title {
-    padding-top: 8rem;
-    padding-bottom: 2rem;
+    margin-top: 10rem;
+    margin-bottom: 3rem;
   }
 }
 
@@ -463,6 +464,18 @@ body.dark .notice-links {
   transition-delay: 950ms;
 }
 
+body.dark .app .main .title {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+
+@media screen and (min-width: 50rem) {
+  body.dark .app .main .title {
+    margin-top: 8rem;
+    margin-bottom: 2rem;
+  }
+}
+
 .app .main .search-bar {
   padding: 1rem 0;
   width: 100%;
@@ -502,10 +515,6 @@ body.dark .notice-links {
   box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
-.app .main .search-bar__input--dark:focus, .app .main .search-bar__input--dark:active, .app .main .search-bar__input--dark:hover {
-  box-shadow: #bbbbbb 0px 2px 8px !important;
-}
-
 .app .main .search-bar__input input {
   border-radius: 5rem;
   border: 0 !important;
@@ -521,11 +530,17 @@ body.dark .notice-links {
 
 .app .main .search-bar__dropdown i {
   opacity: 0.5;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .app .main .search-bar__dropdown i:hover {
   opacity: 1;
+}
+
+@media screen and (min-width: 50rem) {
+  .app .main .search-bar__dropdown i {
+    font-size: 1.2rem;
+  }
 }
 
 .app .main .search-bar__plugins {
@@ -545,8 +560,13 @@ body.dark .notice-links {
 
 @media screen and (min-width: 50rem) {
   .app .main .search-bar__plugins {
+    padding-left: 1.4rem;
     font-size: 1rem;
   }
+}
+
+body.dark .app .main .search-bar__input:focus, body.dark .app .main .search-bar__input:active, body.dark .app .main .search-bar__input:hover {
+  box-shadow: #bbbbbb 0px 2px 8px !important;
 }
 
 .app .main .suggestion {
