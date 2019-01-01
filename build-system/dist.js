@@ -59,7 +59,7 @@ gulp.task('dist:serviceworkers', function (cb) {
   const rootPath = __dirname.replace('build-system', '') + 'dist/';
   gulp.src([distPath + '/**/*.*'])
     .pipe(through2.obj(function (file, enc, next) {
-      !/sw\.js|.*\.html|\.map/.test(file.path) && this.push('"' + file.path.replace(rootPath,'') + '"');
+      !/sw\.js|\.html|\.map/.test(file.path) && this.push('"' + file.path.replace(rootPath,'') + '"');
       next();
     }))
     .on('data', function (data) {
