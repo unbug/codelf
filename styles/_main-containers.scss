@@ -9,7 +9,7 @@
     text-align: center;
     margin-top: 6rem;
     margin-bottom: 2rem;
-    transition: all $anim-default-time $anim-cubic-bezier;
+    transition: margin 0.35s $anim-cubic-bezier;
     @media screen and (min-width: 50rem) {
       margin-top: 10rem;
       margin-bottom: 3rem;
