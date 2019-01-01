@@ -58,7 +58,7 @@ class SearchCodeModel extends BaseModel {
         });
       }
     }
-    const cacheId = md5(q + page);
+    const cacheId = md5(q + page + (lang ? lang.sort().join(',') : ''));
     const cache = this._variableListStore.get(cacheId);
     if (cache) {
       this.update(cache);
