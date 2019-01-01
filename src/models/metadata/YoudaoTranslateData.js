@@ -1,9 +1,13 @@
 import Store from '../Store';
 import JSONP from '../../utils/JSONP';
+import AppModel from '../AppModel';
 
 class YoudaoTranslateData {
   constructor() {
-    this._store = new Store(Infinity);
+    this._store = new Store(Infinity, {
+      persistence: 'session',
+      persistenceKey: AppModel.genPersistenceKey('youdao_translate_key')
+    });
   }
 
   async request(val) {

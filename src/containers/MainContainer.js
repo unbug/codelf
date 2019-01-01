@@ -72,14 +72,14 @@ export default class MainContainer extends React.Component {
     DDMSModel.postKeyWords(val);
   }
 
-  requestSourceCode(repo) {
+  requestSourceCode = repo => {
     this.setState({
       sourceCodeVisible: true,
       requestingSourceCode: true,
       sourceCodeRepo: repo
     });
     SearchCodeModel.requestSourceCode(repo.id);
-    AppModel.analytics('vc&q=' + this.sourceCodeVariable.keyword);
+    AppModel.analytics('vc&q=' + this.state.sourceCodeVariable.keyword);
   }
 
   handleLocationHashChanged = e => {
@@ -123,7 +123,7 @@ export default class MainContainer extends React.Component {
 
   handleOpenSourceCode = variable => {
     this.setState({sourceCodeVariable: variable});
-    this.requestSourceCode(variable.repoList[0]);
+    setTimeout(() => this.requestSourceCode(variable.repoList[0]), 0);
   }
 
   handleCloseSourceCode = () => {

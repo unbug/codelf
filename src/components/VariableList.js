@@ -35,7 +35,7 @@ class Variable extends React.Component {
           <Button compact as='a' href={variable.repoLink} target='_blank'>Repo</Button>
           <Button compact data-clipboard-text={variable.keyword} id={this.clipboardId}>Copy</Button>
           <Button compact onClick={() => this.props.onOpenSourceCode(variable)}>
-            Codes <Label size='mini' circular color={variable.color}>{variable.repoList.length}</Label>
+            [{variable.repoLang}] Codes <Label size='mini' circular color={variable.color}>{variable.repoList.length}</Label>
           </Button>
         </Button.Group>
       </Popup>

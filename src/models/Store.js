@@ -1,3 +1,5 @@
+import LocalStorage, {SessionStorage} from '../utils/LocalStorage';
+import md5 from 'md5';
 /**
  * Store data in memory cache.
  */
@@ -7,9 +9,19 @@ export default class Store {
    *
    * @param expire expire time in seconds for each record, Infinity value will never expire. default (60 * 60 * 1000)s.
    */
-  constructor(expire) {
+  constructor(expire, options) {
     this._expire = expire || (60 * 60 * 1000);
     this._cache = {};
+    this._options = options || {};
+    if (this._options.persistence === 'local') {
+      this._local = LocalStorage;
+    }
+    if (this._options.persistence === 'session') {
+      this._local = SessionStorage;
+    }
+    if (this._local && this._options.persistenceKey) {
+      this._cache = this._local.getItem(this._options.persistenceKey) || {};
+    }
   }
 
   /**
@@ -21,6 +33,7 @@ export default class Store {
    */
   get(id) {
     if (id !== undefined || id != null) {
+      id = md5(id);
       let record = this._cache[id];
       if (record) {
         // delete record when it is expired
@@ -44,11 +57,13 @@ export default class Store {
    */
   save(id, data) {
     if (id !== undefined || id != null) {
+      id = md5(id);
       this._cache[id] = {
         id: id,
         data: data,
         created: Date.now()
       };
+      this._persist();
     }
   }
 
@@ -57,5 +72,12 @@ export default class Store {
    */
   clear() {
     this._cache = {};
+    this._persist();
+  }
+
+  _persist() {
+    if (this._local && this._options.persistenceKey) {
+      this._local.setItem(this._options.persistenceKey, this._cache)
+    }
   }
 }

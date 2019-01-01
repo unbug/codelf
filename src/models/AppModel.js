@@ -28,6 +28,13 @@ class AppModel extends BaseModel {
     }, param ? 500 : 1000);
   }
 
+  genPersistenceKey(key) {
+    if (key !== undefined && key !== null) {
+      return `${this._data.appName}_${key}`;
+    }
+    return null;
+  }
+
   get debug() {
     return this._data.debug;
   }

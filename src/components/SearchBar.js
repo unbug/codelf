@@ -66,6 +66,7 @@ export default class SearchBar extends React.Component {
   }
 
   handleSearch = () => {
+    document.body.focus();
     this.props.onSearch(this.input.current.inputRef.value, this.state.lang);
   }
 
@@ -105,7 +106,7 @@ export default class SearchBar extends React.Component {
           Search over GitHub, Bitbucket, GitLab to find real-world usage variable names
         </div>
         <Input ref={this.input}
-               className={`search-bar__input${this.props.variableList.length ? ' search-bar__input--dark' : ''}`}
+               className='search-bar__input'
                icon fluid placeholder={this.props.placeholder} size={this.state.inputSize}>
           <Dropdown floating text='' icon='filter' className='search-bar__dropdown'>
             <Dropdown.Menu>
@@ -123,7 +124,7 @@ export default class SearchBar extends React.Component {
                 link onClick={() => this.handleSearch()}/>
         </Input>
         <div className='search-bar__plugins'>
-          <Icon name='plug'/>For:&nbsp;
+          Extensions:&nbsp;
           <a href='https://github.com/unbug/codelf#codelf-for-vs-code'
              target='_blank' rel='noopener noreferrer'>VS Code</a>,&nbsp;
           <a className='text-muted' href='https://atom.io/packages/codelf'

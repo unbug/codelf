@@ -3,6 +3,8 @@ import * as Tools from '../utils/Tools';
 import YoudaoTranslateData from './metadata/YoudaoTranslateData';
 import JSONP from '../utils/JSONP';
 import Store from './Store';
+import AppModel from './AppModel';
+import md5 from 'md5';
 
 class SearchCodeModel extends BaseModel {
   constructor() {
@@ -17,7 +19,14 @@ class SearchCodeModel extends BaseModel {
       sourceCode: null
     };
     this._variableRepoMapping = {};
-    this._sourceCodeStore = new Store(Infinity);
+    this._sourceCodeStore = new Store(Infinity, {
+      persistence: 'session',
+      persistenceKey: AppModel.genPersistenceKey('source_code_key')
+    });
+    this._variableListStore = new Store(Infinity, {
+      persistence: 'session',
+      persistenceKey: AppModel.genPersistenceKey('variable_list_key')
+    });
   }
 
   //search code by query
@@ -34,24 +43,42 @@ class SearchCodeModel extends BaseModel {
     if (isZH) {
       // translate by youdao
       const translate = await YoudaoTranslateData.request(val);
-      q = translate.translation;
-      suggestion = this._parseSuggestion(translate.suggestion, suggestion);
-      suggestion = this._parseSuggestion(q.split(' '), suggestion);
+      if (translate) {
+        q = translate.translation;
+        suggestion = this._parseSuggestion(translate.suggestion, suggestion);
+        suggestion = this._parseSuggestion(q.split(' '), suggestion);
+      } else {
+        this.update({
+          searchValue: val,
+          page: page,
+          variableList: [...this.variableList, []],
+          searchLang: lang,
+          suggestion: suggestion,
+          isZH: isZH || this.isZH
+        });
+      }
+    }
+    const cacheId = md5(q + page);
+    const cache = this._variableListStore.get(cacheId);
+    if (cache) {
+      this.update(cache);
+      return;
     }
     // multiple val separate with '+'
     // const url = `//searchcode.com/api/codesearch_I/?q=${q.replace(' ', '+')}&p=${page}&per_page=42${lang.length ? ('&lan=' + lang.join(',')) : ''}`;
     const url = `//searchcode.com/api/jsonp_codesearch_I/?callback=?&q=${q.replace(' ', '+')}&p=${page}&per_page=42${lang.length ? ('&lan=' + lang.join(',')) : ''}`;
     val && JSONP(url)
-      // .then(res => res.json())
       .then(data => {
-        this.update({
+        const cdata = {
           searchValue: val,
           page: page,
           variableList: [...this._data.variableList, this._parseVariableList(data.results, q)],
           searchLang: lang,
           suggestion: suggestion,
           isZH: isZH || this.isZH
-        });
+        };
+        this.update(cdata);
+        this._variableListStore.save(cacheId, cdata);
       }).catch(err => {
         this.update({
           searchValue: val,
@@ -120,6 +147,7 @@ class SearchCodeModel extends BaseModel {
             variables.push({
               keyword: val,
               repoLink: res.repo,
+              repoLang: res.language,
               color: Tools.randomLabelColor()
             });
           }

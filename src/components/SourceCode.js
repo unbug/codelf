@@ -47,6 +47,7 @@ export default class SourceCode extends React.Component {
   }
 
   renderDropdownItem() {
+    if (!this.props.sourceCodeVariable) { return null; }
     return this.props.sourceCodeVariable.repoList.map(repo => {
       return (
         <Dropdown.Item key={Tools.uuid()}>
@@ -59,14 +60,19 @@ export default class SourceCode extends React.Component {
   }
 
   render() {
-    if (!this.props.sourceCodeVariable) { return null; }
+    if (!this.props.sourceCodeVariable || !this.props.sourceCodeRepo) { return null; }
     const sourceCodeVariable = this.props.sourceCodeVariable;
+    const dropText = (
+      <div>All Codes <Label size='mini' circular color={sourceCodeVariable.color}>
+        {sourceCodeVariable.repoList.length}
+      </Label></div>
+    );
     return (
       <Modal open={this.props.sourceCodeVisible} onClose={this.handleClose}
              centered={false} closeIcon className='source-code fix-modal'>
         <Modal.Header>
-          <Dropdown floating labeled button blurring className='mini icon'
-                    text={`Matched results (${sourceCodeVariable.repoList.length})`}>
+          <Dropdown floating labeled button blurring className='mini icon' style={{padding: '0.35rem 0'}}
+                    text={dropText}>
             <Dropdown.Menu>
               <Dropdown.Menu scrolling className='fix-dropdown-menu'>
                 {this.renderDropdownItem()}
