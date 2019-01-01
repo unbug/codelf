@@ -1,7 +1,7 @@
 @at-root {
   .source-code {
-    > .header {
-      padding: 0.8rem 1rem !important;
+    &#{&}> .header {
+      padding: 0.8rem 1rem;
     }
     > .content {
       pre {
@@ -13,7 +13,7 @@
         color: #000;
       }
     }
-    .ui.dropdown .menu>.item {
+    &#{&} .ui.dropdown .menu>.item {
       padding: 0.4rem 0 0 0.4rem !important;
       &:last-child {
         padding-bottom: 0.4rem !important;

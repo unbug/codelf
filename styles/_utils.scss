@@ -28,9 +28,11 @@
 }
 
 .hidden-link {
-  color: #000 !important;
-  &:hover {
-    color: #1e70bf !important;
+  &#{&} {
+    color: #000;
+  }
+  &#{&}:hover {
+    color: #1e70bf;
   }
 }
 
@@ -45,9 +47,9 @@
   height: 94%;
   overflow: hidden;
   transform: translate3d(0, 0, 0);
-  .content {
-    padding: 0.4rem !important;
-    margin: 0 !important;
+  &#{&} > .content {
+    padding: 0.4rem;
+    margin: 0;
     height: 90%;
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
@@ -61,7 +63,7 @@
       top: -2rem;
       right: -2rem;
     }
-    .content {
+    &#{&} > .content {
       height: auto;
       overflow-y: visible;
     }
