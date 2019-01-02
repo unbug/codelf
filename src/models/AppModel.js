@@ -1,18 +1,18 @@
 import BaseModel from './BaseModel';
 import LocalStorage from '../utils/LocalStorage';
 import * as Tools from '../utils/Tools';
+import * as Configs from '../constants/Configs';
 import {searchParams} from '../utils/Param';
 import Navigator from '../utils/Navigator';
 
-const APP_NANE = 'codelf';
-const DEVICE_ID_KEY = `${APP_NANE}_device_id`;
+const DEVICE_ID_KEY = `${Configs.APP_NANE}_device_id`;
 
 class AppModel extends BaseModel {
   constructor() {
     super();
     this._data = {
       debug: searchParams()['debug'],
-      appName: APP_NANE,
+      appName: Configs.APP_NANE,
       deviceId: LocalStorage.getItem(DEVICE_ID_KEY),
       isGithub: /github\.io/g.test(window.location.href)
     };

@@ -59,9 +59,10 @@ export default class MainContainer extends React.Component {
   }
 
   requestVariable = (val, lang) => {
+    const langChanged = lang ? (lang.join(',') != this.state.searchLang.join(',')) : this.state.searchLang != lang;
     val = decodeURIComponent(val);
     let page = this.state.page;
-    if (val === this.state.searchValue) {
+    if (val == this.state.searchValue && !langChanged) {
       page += 1;
     } else {
       page = 0;
@@ -110,13 +111,13 @@ export default class MainContainer extends React.Component {
   }
 
   handleSearch = (val, lang) => {
-    this.setState({searchLang: lang});
     if (val === null || val === undefined || this.state.requestingVariable) { return; }
     val = val.trim().replace(/\s+/ig, ' '); // filter spaces
     if (val.length < 1) { return; }
     if (val == this.state.searchValue) {
       this.requestVariable(val, lang);
     } else  {
+      this.setState({searchLang: lang});
       HashHandler.set(val); // update window.location.hash
     }
   }

@@ -5,6 +5,10 @@ import JSONP from '../utils/JSONP';
 import Store from './Store';
 import AppModel from './AppModel';
 import md5 from 'md5';
+import {SessionStorage} from '../utils/LocalStorage';
+import * as Configs from '../constants/Configs';
+
+const SEARCH_LANG_KEY = `${Configs.APP_NANE}_search_lang_key`;
 
 class SearchCodeModel extends BaseModel {
   constructor() {
@@ -12,7 +16,7 @@ class SearchCodeModel extends BaseModel {
     this._data = {
       isZH: false,
       searchValue: null,
-      searchLang: [],
+      searchLang: SessionStorage.getItem(SEARCH_LANG_KEY) || [],
       page: 0,
       variableList: [],
       suggestion: [],
@@ -31,6 +35,7 @@ class SearchCodeModel extends BaseModel {
 
   //search code by query
   async requestVariable(val, page, lang) {
+    SessionStorage.setItem(SEARCH_LANG_KEY, lang || []); // persist lang
     if (val !== undefined && val !== null) {
       val = val.trim().replace(/\s+/ig, ' '); // filter spaces
     }
@@ -66,7 +71,9 @@ class SearchCodeModel extends BaseModel {
     }
     // multiple val separate with '+'
     // const url = `//searchcode.com/api/codesearch_I/?q=${q.replace(' ', '+')}&p=${page}&per_page=42${lang.length ? ('&lan=' + lang.join(',')) : ''}`;
-    const url = `//searchcode.com/api/jsonp_codesearch_I/?callback=?&q=${q.replace(' ', '+')}&p=${page}&per_page=42${lang.length ? ('&lan=' + lang.join(',')) : ''}`;
+    const langParams = lang.length ? ('&lan=' + lang.join(',').split(',').join('&lan=')) : '';
+    const qParams = q.replace(' ', '+');
+    const url = `//searchcode.com/api/jsonp_codesearch_I/?callback=?&q=${qParams}&p=${page}&per_page=42${langParams}`;
     val && JSONP(url)
       .then(data => {
         const cdata = {
@@ -115,6 +122,7 @@ class SearchCodeModel extends BaseModel {
       if (curr.length && curr.length > 1) {
         return accumulator.concat(this.getKeyWordReg(curr));
       }
+      return accumulator;
     }, []);
   }
 
@@ -129,6 +137,7 @@ class SearchCodeModel extends BaseModel {
         if (!(/;base64,/g.test(lstr) && lstr.length > 256)) {
           return accu.concat(lstr);
         }
+        return accu;
       }, []).join('').replace(/\r\n/g, ' '); // remove \r\n
       //match variables
       this.getKeyWroddRegs(keywords).forEach(reg => {

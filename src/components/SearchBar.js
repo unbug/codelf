@@ -37,7 +37,8 @@ export default class SearchBar extends React.Component {
     this.state = {
       lang: [],
       prevProps: props,
-      inputSize: 'huge'
+      inputSize: 'huge',
+      inputChanged: false
     }
     window.addEventListener('resize', this.resizeInput, false)
   }
@@ -67,21 +68,22 @@ export default class SearchBar extends React.Component {
 
   handleSearch = () => {
     document.body.focus();
+    this.setState({inputChanged: false});
     this.props.onSearch(this.input.current.inputRef.value, this.state.lang);
   }
 
   handleRestLang = () => {
-    this.setState({lang: []})
+    this.setState({lang: [], inputChanged: true});
   }
 
   handleSelectLang = id => {
-    this.setState({lang: this.state.lang.concat(id)})
+    this.setState({lang: this.state.lang.concat(id).sort(), inputChanged: true});
   }
 
   handleDeselectLang = id => {
     let lang = this.state.lang;
     lang.splice(this.state.lang.indexOf(id), 1);
-    this.setState({lang: lang})
+    this.setState({lang: lang.sort(), inputChanged: true});
   }
 
   handleToggleSelectLang = id => {
@@ -106,6 +108,7 @@ export default class SearchBar extends React.Component {
           Search over GitHub, Bitbucket, GitLab to find real-world usage variable names
         </div>
         <Input ref={this.input}
+               onChange={() => this.setState({inputChanged: true})}
                className='search-bar__input'
                icon fluid placeholder={this.props.placeholder} size={this.state.inputSize}>
           <Dropdown floating text='' icon='filter' className='search-bar__dropdown'>
@@ -120,7 +123,7 @@ export default class SearchBar extends React.Component {
                  onKeyPress={e => {
                    e.key === 'Enter' && this.handleSearch()
                  }}/>
-          <Icon name={this.props.variableList.length ? 'search plus' : 'search'}
+          <Icon name={(this.props.variableList.length && !this.state.inputChanged) ? 'search plus' : 'search'}
                 link onClick={() => this.handleSearch()}/>
         </Input>
         <div className='search-bar__plugins'>
