@@ -7,10 +7,12 @@ const JSONP = url => {
       window.clearTimeout(timer);
       document.body.removeChild(script);
       resolve(...args);
+      window[callbackName] = null;
     };
     setTimeout(() => {
       document.body.removeChild(script);
       reject();
+      window[callbackName] = null;
     }, 5 * 60 * 1000); // timeout in 5 min
     script.src = url.replace('=?', `=${callbackName}&_=${Date.now()}`);
     document.body.appendChild(script);
