@@ -10,7 +10,7 @@ export default class NoticeLinks extends React.Component {
   }
 
   componentDidMount() {
-    setInterval(() => this.renderItem(this.list.current.children), 5000);
+    setInterval(() => this.renderItem(this.list.current.children), 10000);
   }
 
   renderItem(list) {
@@ -43,6 +43,10 @@ export default class NoticeLinks extends React.Component {
         <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
            href='https://www.gitbook.com/book/unbug/react-native-training/details'>
           <Icon name='video'/> [开源] React Native 开发培训资料和视频
+        </a>
+        <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
+           href='https://www.zhihu.com/question/27097399/answer/78619944'>
+          <Icon name='question circle'/> 编程的时候命名方法或变量词穷了怎么办？
         </a>
       </div>
     )
