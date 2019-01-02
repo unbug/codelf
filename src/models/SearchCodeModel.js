@@ -16,7 +16,7 @@ class SearchCodeModel extends BaseModel {
     this._data = {
       isZH: false,
       searchValue: null,
-      searchLang: SessionStorage.getItem(SEARCH_LANG_KEY) || [],
+      searchLang: SessionStorage.getItem(SEARCH_LANG_KEY),
       page: 0,
       variableList: [],
       suggestion: [],
@@ -35,7 +35,8 @@ class SearchCodeModel extends BaseModel {
 
   //search code by query
   async requestVariable(val, page, lang) {
-    SessionStorage.setItem(SEARCH_LANG_KEY, lang || []); // persist lang
+    lang = lang || this.searchLang;
+    SessionStorage.setItem(SEARCH_LANG_KEY, lang); // persist lang
     if (val !== undefined && val !== null) {
       val = val.trim().replace(/\s+/ig, ' '); // filter spaces
     }
@@ -207,7 +208,7 @@ class SearchCodeModel extends BaseModel {
   }
 
   get searchLang() {
-    return this._data.searchLang;
+    return this._data.searchLang || SessionStorage.getItem(SEARCH_LANG_KEY) || [];
   }
 
   get page() {

@@ -68,7 +68,7 @@ export default class MainContainer extends React.Component {
       page = 0;
     }
     this.setState({searchValue: val, requestingVariable: true});
-    SearchCodeModel.requestVariable(val, page,  lang || this.state.searchLang);
+    SearchCodeModel.requestVariable(val, page,  lang);
     AppModel.analytics('q=' + val);
     DDMSModel.postKeyWords(val);
   }

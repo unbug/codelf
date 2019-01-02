@@ -35,7 +35,7 @@ export default class SearchBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      lang: [],
+      lang: props && props.searchLang ? props.searchLang : [],
       prevProps: props,
       inputSize: 'huge',
       inputChanged: false
