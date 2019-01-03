@@ -183,6 +183,8 @@ class SearchCodeModel extends BaseModel {
       val = `__${val.toLowerCase()}`;
       this._variableRepoMapping[val] = this._variableRepoMapping[val] || [];
       if (!this._variableRepoMapping[val].find(key => key.id == repo.id)) {
+        repo.lines = null;
+        delete repo.lines;
         this._variableRepoMapping[val].push(repo);
       }
     }
