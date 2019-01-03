@@ -35,41 +35,38 @@
     }
 
     &.animated span {
-      transition: color 250ms linear;
+      @extend %animate;
+      animation-name: fadeIn;
+      animation-duration: 250ms;
+      animation-delay: 100ms;
       /*C*/
       &:nth-child(1) {
-        color: #3369e8;
-        transition-delay: 200ms;
+        color: #4285F4;
       }
 
       /*O*/
       &:nth-child(2) {
-        color: #d50f25;
-        transition-delay: 350ms;
+        color: #DB4437;
       }
 
       /*D*/
       &:nth-child(3) {
-        color: #eeb211;
-        transition-delay: 500ms;
+        color: #F4B400;
       }
 
       /*E*/
       &:nth-child(4) {
-        color: #3369e8;
-        transition-delay: 650ms;
+        color: #4285F4;
       }
 
       /*L*/
       &:nth-child(5) {
-        color: #009925;
-        transition-delay: 800ms;
+        color: #0F9D58;
       }
 
       /*F*/
       &:nth-child(6) {
-        color: #d50f25;
-        transition-delay: 950ms;
+        color: #DB4437;
       }
     }
   }

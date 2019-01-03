@@ -167,6 +167,17 @@ body.dark {
   -webkit-overflow-scrolling: touch;
 }
 
+.app .main .title.animated span {
+  -webkit-animation-duration: 0.6s;
+          animation-duration: 0.6s;
+  -webkit-animation-iteration-count: 1;
+          animation-iteration-count: 1;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+          animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /*https://github.com/tobiasahlin/SpinKit*/
 .spinner {
   -webkit-animation: sk-rotateplane 1.2s infinite cubic-bezier(0.4, 0, 0.2, 1);
@@ -425,7 +436,12 @@ body.dark .app .notice-links {
 }
 
 .app .main .title.animated span {
-  transition: color 250ms linear;
+  -webkit-animation-name: fadeIn;
+          animation-name: fadeIn;
+  -webkit-animation-duration: 250ms;
+          animation-duration: 250ms;
+  -webkit-animation-delay: 100ms;
+          animation-delay: 100ms;
   /*C*/
   /*O*/
   /*D*/
@@ -435,33 +451,27 @@ body.dark .app .notice-links {
 }
 
 .app .main .title.animated span:nth-child(1) {
-  color: #3369e8;
-  transition-delay: 200ms;
+  color: #4285F4;
 }
 
 .app .main .title.animated span:nth-child(2) {
-  color: #d50f25;
-  transition-delay: 350ms;
+  color: #DB4437;
 }
 
 .app .main .title.animated span:nth-child(3) {
-  color: #eeb211;
-  transition-delay: 500ms;
+  color: #F4B400;
 }
 
 .app .main .title.animated span:nth-child(4) {
-  color: #3369e8;
-  transition-delay: 650ms;
+  color: #4285F4;
 }
 
 .app .main .title.animated span:nth-child(5) {
-  color: #009925;
-  transition-delay: 800ms;
+  color: #0F9D58;
 }
 
 .app .main .title.animated span:nth-child(6) {
-  color: #d50f25;
-  transition-delay: 950ms;
+  color: #DB4437;
 }
 
 body.dark .app .main .title {
