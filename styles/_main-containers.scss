@@ -107,9 +107,8 @@
     }
 
     &__input {
-      background: #fff;
+      background: #F1F3F4;
       border-radius: 5rem;
-      box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
       transition: box-shadow 350ms $anim-cubic-bezier;
 
       &:focus, &:active, &:hover {
@@ -117,6 +116,7 @@
       }
 
       input {
+        background: #F1F3F4;
         border-radius: 5rem;
         border: 0 !important;
       }
