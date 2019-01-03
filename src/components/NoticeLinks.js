@@ -32,7 +32,7 @@ export default class NoticeLinks extends React.Component {
       <div className='notice-links' ref={this.list}>
         <a className='animated fadeIn show' target='_blank' rel='noopener noreferrer'
            href='https://github.com/unbug/snts'>
-          <Icon name='heart'/> SAY NO TO SUICIDE PUBLIC LICENSE
+          <Icon name='heartbeat'/> SAY NO TO SUICIDE PUBLIC LICENSE
         </a>
         <a className='animated fadeIn' target='_blank' rel='noopener noreferrer' href='//mihtool.com/'>
           <Icon name='code'/> [MIHTool] iOS 上调试和优化页面的工具
@@ -46,7 +46,7 @@ export default class NoticeLinks extends React.Component {
         </a>
         <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
            href='https://www.zhihu.com/question/27097399/answer/78619944'>
-          <Icon name='question circle'/> 编程的时候命名方法或变量词穷了怎么办？
+          [知乎] 编程的时候命名方法或变量词穷了怎么办？
         </a>
       </div>
     )

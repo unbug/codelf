@@ -24,7 +24,7 @@
 // cache, then increment the CACHE_VERSION value. It will kick off the service worker update
 // flow and the old cache(s) will be purged as part of the activate event handler when the
 // updated service worker is activated.
-var CACHE_VERSION = '2019-01-02T17:31:14.844Z';
+var CACHE_VERSION = '2019-01-03T12:46:12.878Z';
 var CURRENT_CACHES = {
   prefetch: 'prefetch-cache-v' + CACHE_VERSION
 };
@@ -37,6 +37,10 @@ self.addEventListener('install', function(event) {
 "css/app.css",
 "css/lib.365f8ae0.css",
 "css/lib.css",
+"js/app.05ced74b.js",
+"js/app.js",
+"js/lib.2ef380a5.js",
+"js/lib.js",
 "fonts/Dressedless_Three.svg",
 "fonts/Dressedless_Three.ttf",
 "fonts/FontAwesome.otf",
@@ -61,10 +65,6 @@ self.addEventListener('install', function(event) {
 "images/wechatpay.jpg",
 "images/zhifubao.70c19370.png",
 "images/zhifubao.png",
-"js/app.b9bd7941.js",
-"js/app.js",
-"js/lib.2ef380a5.js",
-"js/lib.js",
 "css/themes/default/assets/fonts/brand-icons.eot",
 "css/themes/default/assets/fonts/brand-icons.svg",
 "css/themes/default/assets/fonts/brand-icons.ttf",
