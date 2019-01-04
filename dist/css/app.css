@@ -499,6 +499,12 @@ body.dark .app .main .title {
   }
 }
 
+.app .main .search-bar form {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
 .app .main .search-bar__desc {
   opacity: 0.5;
   padding-left: 0.8rem;

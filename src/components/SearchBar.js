@@ -107,6 +107,7 @@ export default class SearchBar extends React.Component {
         <div className='search-bar__desc'>
           Search over GitHub, Bitbucket, GitLab to find real-world usage variable names
         </div>
+        <form action="javascript:void(0);">
         <Input ref={this.input}
                onChange={() => this.setState({inputChanged: true})}
                className='search-bar__input'
@@ -119,6 +120,7 @@ export default class SearchBar extends React.Component {
               </Dropdown.Menu>
             </Dropdown.Menu>
           </Dropdown>
+
           <input type='search' name='search' defaultValue={this.props.searchValue}
                  onKeyPress={e => {
                    e.key === 'Enter' && this.handleSearch()
@@ -126,6 +128,7 @@ export default class SearchBar extends React.Component {
           <Icon name={(this.props.variableList.length && !this.state.inputChanged) ? 'search plus' : 'search'}
                 link onClick={() => this.handleSearch()}/>
         </Input>
+        </form>
         <div className='search-bar__plugins'>
           Extensions:&nbsp;
           <a href='https://github.com/unbug/codelf#codelf-for-vs-code'
