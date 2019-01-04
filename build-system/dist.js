@@ -6,7 +6,6 @@ const runSequence = require('run-sequence');
 const cachebust = $.cachebust();
 const through2 = require('through2');
 
-
 const distPath = './dist';
 const buildVersion = (new Date()).toISOString();
 

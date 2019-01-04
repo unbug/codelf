@@ -427,6 +427,7 @@ body.dark .app .notice-links {
   font-family: "Dressedless Three", Lato, Roboto, 'Helvetica Neue', Arial, Helvetica, sans-serif;
   text-transform: uppercase;
   font-size: 3.5rem;
+  font-weight: 100;
 }
 
 @media screen and (min-width: 50rem) {
