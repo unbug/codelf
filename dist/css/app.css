@@ -133,31 +133,32 @@ body.dark {
       hyphens: auto;
 }
 
-.fix-modal {
-  height: 94%;
+.fix-modal.fix-modal.fix-modal.fix-modal {
+  height: 97%;
+  margin: 0 auto;
   overflow: hidden;
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
 }
 
-.fix-modal.fix-modal > .content {
+.fix-modal.fix-modal.fix-modal.fix-modal.fix-modal.fix-modal.fix-modal.fix-modal > .content {
   padding: 0.4rem;
   margin: 0;
-  height: 90%;
+  height: 91%;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
 }
 
 @media (min-width: 50rem) {
-  .fix-modal {
+  .fix-modal.fix-modal.fix-modal.fix-modal {
     height: auto;
     overflow: visible;
   }
-  .fix-modal .close.icon {
+  .fix-modal.fix-modal.fix-modal.fix-modal .close.icon {
     top: -2rem;
     right: -2rem;
   }
-  .fix-modal.fix-modal > .content {
+  .fix-modal.fix-modal.fix-modal.fix-modal.fix-modal.fix-modal.fix-modal.fix-modal > .content {
     height: auto;
     overflow-y: visible;
   }
