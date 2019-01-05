@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Label, Popup} from 'semantic-ui-react';
 import * as Tools from '../utils/Tools';
 
-const notFound = val => /59ce9297fba93aeb9d693a2f61922fb6|bfd876277827a33f49d363e8857977a0/ig.test(val);
+const notFound = val => val && /59ce9297fba93aeb9d693a2f61922fb6|bfd876277827a33f49d363e8857977a0/g.test(Tools.MD5(val));
 const notFoundImg = '//user-images.githubusercontent.com/799578/50722775-1a9a1d00-110f-11e9-9bcc-efe5465a4ad5.jpg';
 
 class Variable extends React.Component {
@@ -58,6 +58,9 @@ export default class VariableList extends React.Component {
 
   renderPage() {
     let pages = [];
+    if (notFound(this.props.searchValue)) {
+      pages.push(<img style={{maxWidth: '100%'}} src={notFoundImg}/>);
+    }
     const pageLen = this.props.variableList.length;
     this.props.variableList.forEach((list, i) => {
       const isLast = i === pageLen - 1 && this.lastPageLen != pageLen;
@@ -85,18 +88,10 @@ export default class VariableList extends React.Component {
     return pages;
   }
 
-  renderResult() {
-    // display not found
-    if (this.props.searchValue && notFound(Tools.MD5(this.props.searchValue))) {
-      return <img style={{maxWidth: '100%'}} src={notFoundImg}/>
-    }
-    return this.renderPage();
-  }
-
   render() {
     return (
       <div className='variable-list'>
-        {this.renderResult()}
+        {this.renderPage()}
       </div>
     )
   }
