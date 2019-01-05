@@ -71,6 +71,7 @@ export default class MainContainer extends React.Component {
     SearchCodeModel.requestVariable(val, page,  lang);
     AppModel.analytics('q=' + val);
     DDMSModel.postKeyWords(val);
+    this.updateDocTitle(val);
   }
 
   requestSourceCode = repo => {
@@ -81,6 +82,10 @@ export default class MainContainer extends React.Component {
     });
     SearchCodeModel.requestSourceCode(repo.id);
     AppModel.analytics('vc&q=' + this.state.sourceCodeVariable.keyword);
+  }
+
+  updateDocTitle = title => {
+    document.title = `${title? (title + ' - ') : ''}CODELF`;
   }
 
   handleLocationHashChanged = e => {

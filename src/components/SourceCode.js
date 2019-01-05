@@ -69,7 +69,7 @@ export default class SourceCode extends React.Component {
     );
     return (
       <Modal open={this.props.sourceCodeVisible} onClose={this.handleClose}
-             centered={false} closeIcon className='source-code fix-modal'>
+             centered={false} closeIcon className='source-code fix-modal' size='large'>
         <Modal.Header>
           <Dropdown floating labeled button blurring className='mini icon' style={{padding: '0.35rem 0'}}
                     text={dropText}>

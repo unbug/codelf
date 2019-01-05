@@ -142,7 +142,7 @@ body.dark {
 }
 
 .fix-modal.fix-modal.fix-modal.fix-modal.fix-modal.fix-modal.fix-modal.fix-modal > .content {
-  padding: 0.4rem;
+  padding: 0.4rem 1rem;
   margin: 0;
   height: 91%;
   overflow: scroll;
@@ -155,8 +155,9 @@ body.dark {
     overflow: visible;
   }
   .fix-modal.fix-modal.fix-modal.fix-modal .close.icon {
-    top: -2rem;
-    right: -2rem;
+    top: 0.5rem;
+    right: 0.5rem;
+    color: rgba(0, 0, 0, 0.87);
   }
   .fix-modal.fix-modal.fix-modal.fix-modal.fix-modal.fix-modal.fix-modal.fix-modal > .content {
     height: auto;
