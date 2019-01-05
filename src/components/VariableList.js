@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button, Label, Popup} from 'semantic-ui-react';
 import * as Tools from '../utils/Tools';
+import md5 from 'md5';
 
 class Variable extends React.Component {
   clipboardId = `clipboardId-${Tools.uuid()}`;
@@ -82,10 +83,20 @@ export default class VariableList extends React.Component {
     return pages;
   }
 
+  renderResult() {
+    // display not found
+    if (this.props.searchValue
+      && /59ce9297fba93aeb9d693a2f61922fb6|bfd876277827a33f49d363e8857977a0/.test(md5(this.props.searchValue))) {
+      return <img style={{maxWidth: '100%'}}
+                  src='https://user-images.githubusercontent.com/799578/50722069-7dd28200-1104-11e9-9529-22d686ae2ddf.png'/>
+    }
+    return this.renderPage();
+  }
+
   render() {
     return (
       <div className='variable-list'>
-        {this.renderPage()}
+        {this.renderResult()}
       </div>
     )
   }
