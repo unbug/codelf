@@ -101,4 +101,7 @@ const randomLabelColor = () => {
   return randomList(colors, 1)[0];
 };
 
-export {os, thisPage, thisPath, randomColor, InlineWebWorker, uuid, randomLabelColor}
+import SparkMD5 from 'spark-md5';
+const MD5 = SparkMD5.hash;
+
+export {os, thisPage, thisPath, randomColor, InlineWebWorker, uuid, randomLabelColor, MD5}

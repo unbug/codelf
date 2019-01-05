@@ -71,13 +71,13 @@
     "file-saver": "^2.0.0",
     "lodash": "^4.17.11",
     "mark.js": "^8.11.1",
-    "md5": "^2.2.1",
     "nprogress": "^0.2.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-router-dom": "^4.3.1",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.82.5",
+    "spark-md5": "^3.0.0",
     "whatwg-fetch": "^3.0.0"
   }
 }

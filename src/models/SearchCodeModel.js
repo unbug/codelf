@@ -4,7 +4,6 @@ import YoudaoTranslateData from './metadata/YoudaoTranslateData';
 import JSONP from '../utils/JSONP';
 import Store from './Store';
 import AppModel from './AppModel';
-import md5 from 'md5';
 import {SessionStorage} from '../utils/LocalStorage';
 import * as Configs from '../constants/Configs';
 
@@ -64,7 +63,7 @@ class SearchCodeModel extends BaseModel {
         });
       }
     }
-    const cacheId = md5(q + page + (lang && lang.length ? lang.join(',') : ''));
+    const cacheId = Tools.MD5(q + page + (lang && lang.length ? lang.join(',') : ''));
     const cache = this._variableListStore.get(cacheId);
     if (cache) {
       this.update(cache);

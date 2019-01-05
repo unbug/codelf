@@ -1,5 +1,5 @@
 import LocalStorage, {SessionStorage} from '../utils/LocalStorage';
-import md5 from 'md5';
+import * as Tools from '../utils/Tools';
 /**
  * Store data in memory cache.
  */
@@ -33,7 +33,7 @@ export default class Store {
    */
   get(id) {
     if (id !== undefined || id != null) {
-      id = md5(id);
+      id = Tools.MD5(id.toString());
       let record = this._cache[id];
       if (record) {
         // delete record when it is expired
@@ -57,7 +57,7 @@ export default class Store {
    */
   save(id, data) {
     if (id !== undefined || id != null) {
-      id = md5(id);
+      id = Tools.MD5(id.toString());
       this._cache[id] = {
         id: id,
         data: data,
