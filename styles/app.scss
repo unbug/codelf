@@ -1,9 +1,0 @@
-@charset "UTF-8";
-@import 'constants';
-@import 'common';
-@import 'utils';
-@import "animation";
-.app {
-  @import 'components';
-  @import 'containers';
-}
