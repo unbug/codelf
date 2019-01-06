@@ -7,12 +7,11 @@
   padding-bottom: 3rem;
   .title {
     text-align: center;
-    margin-top: 6rem;
+    margin-top: 5rem;
     margin-bottom: 2rem;
     transition: margin 0.35s $anim-cubic-bezier;
     @media screen and (min-width: 50rem) {
-      margin-top: 10rem;
-      margin-bottom: 3rem;
+      margin-top: 8rem;
     }
 
     a {
@@ -75,10 +74,10 @@
   #{$dark-theme} {
     .title {
       margin-top: 3rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0;
       @media screen and (min-width: 50rem) {
-        margin-top: 8rem;
-        margin-bottom: 2rem;
+        margin-top: 5rem;
+        margin-bottom: 1rem;
       }
     }
   }
@@ -213,7 +212,7 @@
   .slogan-image {
     padding: 2rem 1rem;
     @media screen and (min-width: 50rem) {
-      padding: 5rem 1rem;
+      padding: 4rem 1rem;
     }
 
     img {

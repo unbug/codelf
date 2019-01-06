@@ -42,6 +42,14 @@ class AppModel extends BaseModel {
   get isGithub() {
     return this._data.isGithub;
   }
+
+  get appName() {
+    return this._data.appName;
+  }
+
+  get deviceId() {
+    return this._data.deviceId;
+  }
 }
 
 export default new AppModel();

@@ -403,15 +403,14 @@ body.dark .app .notice-links {
 
 .app .main .title {
   text-align: center;
-  margin-top: 6rem;
+  margin-top: 5rem;
   margin-bottom: 2rem;
   transition: margin 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @media screen and (min-width: 50rem) {
   .app .main .title {
-    margin-top: 10rem;
-    margin-bottom: 3rem;
+    margin-top: 8rem;
   }
 }
 
@@ -479,13 +478,13 @@ body.dark .app .notice-links {
 
 body.dark .app .main .title {
   margin-top: 3rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 
 @media screen and (min-width: 50rem) {
   body.dark .app .main .title {
-    margin-top: 8rem;
-    margin-bottom: 2rem;
+    margin-top: 5rem;
+    margin-bottom: 1rem;
   }
 }
 
@@ -632,7 +631,7 @@ body.dark .app .main .search-bar__input:focus, body.dark .app .main .search-bar_
 
 @media screen and (min-width: 50rem) {
   .app .main .slogan-image {
-    padding: 5rem 1rem;
+    padding: 4rem 1rem;
   }
 }
 
