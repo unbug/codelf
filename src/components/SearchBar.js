@@ -67,9 +67,9 @@ export default class SearchBar extends React.Component {
   }
 
   handleSearch = () => {
-    document.body.focus();
     this.setState({inputChanged: false});
     this.props.onSearch(this.input.current.inputRef.value, this.state.lang);
+    this.input.current.inputRef.blur();
   }
 
   handleRestLang = () => {
