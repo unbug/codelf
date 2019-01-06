@@ -355,11 +355,12 @@ body.dark {
   padding-bottom: 1rem;
   padding-top: 0.5rem;
   text-align: center;
-  transition: background-color 0.6s ease-in-out;
+  background-color: #fff;
+  transition: background-color 150ms ease-in-out;
 }
 
 body.dark .app .notice-links {
-  background: #272b38;
+  background-color: #272b38;
 }
 
 .app .notice-links a {

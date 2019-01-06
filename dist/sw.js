@@ -24,7 +24,7 @@
 // cache, then increment the CACHE_VERSION value. It will kick off the service worker update
 // flow and the old cache(s) will be purged as part of the activate event handler when the
 // updated service worker is activated.
-var CACHE_VERSION = '2019-01-06T09:47:33.028Z';
+var CACHE_VERSION = '2019-01-06T09:53:00.542Z';
 var CURRENT_CACHES = {
   prefetch: 'prefetch-cache-v' + CACHE_VERSION
 };
@@ -34,7 +34,7 @@ self.addEventListener('install', function(event) {
 
   var urlsToPrefetch = ["./",
 "opensearch.xml",
-"css/app.1cef792c.css",
+"css/app.8321b671.css",
 "css/app.css",
 "css/lib.365f8ae0.css",
 "css/lib.css",

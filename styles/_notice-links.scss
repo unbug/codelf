@@ -7,10 +7,11 @@
   padding-bottom: 1rem;
   padding-top: 0.5rem;
   text-align: center;
-  transition: background-color $anim-default-time ease-in-out;
+  background-color: #fff;
+  transition: background-color 150ms ease-in-out;
   @at-root {
     #{$dark-theme} {
-      background: $dark;
+      background-color: $dark;
     }
   }
   a {
