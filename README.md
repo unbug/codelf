@@ -111,3 +111,12 @@ Screenshots
 ![bnk1](https://cloud.githubusercontent.com/assets/799578/12507895/9945d290-c133-11e5-8bb9-ff5d5dec0cfe.png)
 
 ![bmk2](https://cloud.githubusercontent.com/assets/799578/12507854/5d2d328a-c133-11e5-85eb-d4da1c38a747.png)
+
+### Code Visualization:
+
+Here is a cool visualization of the code evolution
+
+ [![Watch the video](https://img.youtube.com/vi/1Sg-jeGIq1Q/0.jpg)](https://www.youtube.com/watch?v=1Sg-jeGIq1Q)
+
+ [https://www.youtube.com/watch?v=1Sg-jeGIq1Q](https://www.youtube.com/watch?v=1Sg-jeGIq1Q)
+
