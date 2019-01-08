@@ -136,9 +136,11 @@ export default class SearchBar extends React.Component {
           <a className='text-muted' href='https://atom.io/packages/codelf'
              target='_blank' rel='noopener noreferrer'>Atom</a>,&nbsp;
           <a className='text-muted' href='https://github.com/unbug/codelf#codelf-for-sublime-text'
-             target='_blank' rel='noopener noreferrer'>Sublime Text</a>,&nbsp;
-          <a href='https://chrome.google.com/webstore/detail/codelf-best-github-stars/jnmjaglhmmcplekpfnblniiammmdpaan'
-             target='_blank' rel='noopener noreferrer'>Chrome</a>
+             target='_blank' rel='noopener noreferrer'>Sublime</a>,&nbsp;
+          <a href='https://github.com/unbug/codelf/issues/24'
+             target='_blank' rel='noopener noreferrer'>WebStorm</a>,&nbsp;
+          <a href='https://github.com/unbug/codelf/issues/63'
+             target='_blank' rel='noopener noreferrer'>Alfred</a>
         </div>
       </div>
     )
