@@ -24,10 +24,20 @@
 // cache, then increment the CACHE_VERSION value. It will kick off the service worker update
 // flow and the old cache(s) will be purged as part of the activate event handler when the
 // updated service worker is activated.
-var CACHE_VERSION = '2019-01-08T11:07:52.093Z';
+var CACHE_VERSION = '2019-01-09T11:29:12.581Z';
 var CURRENT_CACHES = {
   prefetch: 'prefetch-cache-v' + CACHE_VERSION
 };
+
+var CACHE_HOSTS = [];
+
+var EXCLUDED_PATHS = [];
+
+var isExcluded = function(path) {
+  return EXCLUDED_PATHS.find(function (p) {
+    return path.indexOf(p) !== -1;
+  });
+}
 
 self.addEventListener('install', function(event) {
   var now = Date.now();
@@ -38,6 +48,18 @@ self.addEventListener('install', function(event) {
 "css/app.css",
 "css/lib.365f8ae0.css",
 "css/lib.css",
+"images/404_dribbble.ae94d03c.gif",
+"images/404_dribbble.gif",
+"images/codelf_logo.f4ae25bd.png",
+"images/codelf_logo.png",
+"images/paypal.69412e83.png",
+"images/paypal.png",
+"images/twohardtings.0db8462a.jpg",
+"images/twohardtings.jpg",
+"images/wechatpay.48ba089d.jpg",
+"images/wechatpay.jpg",
+"images/zhifubao.70c19370.png",
+"images/zhifubao.png",
 "fonts/Dressedless_Three.svg",
 "fonts/Dressedless_Three.ttf",
 "fonts/FontAwesome.otf",
@@ -54,18 +76,7 @@ self.addEventListener('install', function(event) {
 "js/app.js",
 "js/lib.2ef380a5.js",
 "js/lib.js",
-"images/404_dribbble.ae94d03c.gif",
-"images/404_dribbble.gif",
-"images/codelf_logo.f4ae25bd.png",
-"images/codelf_logo.png",
-"images/paypal.69412e83.png",
-"images/paypal.png",
-"images/twohardtings.0db8462a.jpg",
-"images/twohardtings.jpg",
-"images/wechatpay.48ba089d.jpg",
-"images/wechatpay.jpg",
-"images/zhifubao.70c19370.png",
-"images/zhifubao.png",
+"css/themes/default/assets/images/flags.png",
 "css/themes/default/assets/fonts/brand-icons.eot",
 "css/themes/default/assets/fonts/brand-icons.svg",
 "css/themes/default/assets/fonts/brand-icons.ttf",
@@ -81,8 +92,7 @@ self.addEventListener('install', function(event) {
 "css/themes/default/assets/fonts/outline-icons.svg",
 "css/themes/default/assets/fonts/outline-icons.ttf",
 "css/themes/default/assets/fonts/outline-icons.woff",
-"css/themes/default/assets/fonts/outline-icons.woff2",
-"css/themes/default/assets/images/flags.png"];
+"css/themes/default/assets/fonts/outline-icons.woff2"];
 
   // All of these logging statements should be visible via the "Inspect" interface
   // for the relevant SW accessed via chrome://serviceworker-internals
@@ -161,32 +171,73 @@ self.addEventListener('activate', function(event) {
 self.addEventListener('fetch', function(event) {
   console.log('Handling fetch event for', event.request.url);
   var requestURL = new URL(event.request.url);
-  requestURL.origin == location.origin && event.respondWith(
-    // caches.match() will look for a cache entry in all of the caches available to the service worker.
-    // It's an alternative to first opening a specific named cache and then matching on that.
-    caches.match(event.request).then(function(response) {
-      if (response) {
-        console.log('Found response in cache:', response);
+  if (requestURL.origin == location.origin) {
+    event.respondWith(
+      // caches.match() will look for a cache entry in all of the caches available to the service worker.
+      // It's an alternative to first opening a specific named cache and then matching on that.
+      caches.match(event.request).then(function(response) {
+        if (response) {
+          console.log('Found response in cache:', response);
 
-        return response;
-      }
+          return response;
+        }
 
-      console.log('No response found in cache. About to fetch from network...');
+        console.log('No response found in cache. About to fetch from network...');
 
-      // event.request will always have the proper mode set ('cors, 'no-cors', etc.) so we don't
-      // have to hardcode 'no-cors' like we do when fetch()ing in the install handler.
-      return fetch(event.request).then(function(response) {
-        console.log('Response from network is:', response);
+        // event.request will always have the proper mode set ('cors, 'no-cors', etc.) so we don't
+        // have to hardcode 'no-cors' like we do when fetch()ing in the install handler.
+        return fetch(event.request).then(function(response) {
+          console.log('Response from network is:', response);
 
-        return response;
-      }).catch(function(error) {
-        // This catch() will handle exceptions thrown from the fetch() operation.
-        // Note that a HTTP error response (e.g. 404) will NOT trigger an exception.
-        // It will return a normal response object that has the appropriate error code set.
-        console.error('Fetching failed:', error);
+          return response;
+        }).catch(function(error) {
+          // This catch() will handle exceptions thrown from the fetch() operation.
+          // Note that a HTTP error response (e.g. 404) will NOT trigger an exception.
+          // It will return a normal response object that has the appropriate error code set.
+          console.error('Fetching failed:', error);
 
-        throw error;
-      });
-    })
-  );
+          throw error;
+        });
+      })
+    );
+  } else if (CACHE_HOSTS.indexOf(requestURL.host) != -1 && /get/i.test(event.request.method)) {
+    if (isExcluded(requestURL.pathname)) {
+      console.log('network-falling-back-to-caches:', event.request.url);
+      // https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#network-falling-back-to-cache
+      event.respondWith(
+        caches.open(CURRENT_CACHES.prefetch).then(function(cache) {
+          return fetch(event.request).then(function(networkResponse) {
+            // save to cache
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          }).catch(function () {
+            return cache.match(event.request).then(function(response) {
+              return response;
+            });
+          });
+        })
+      );
+    } else {
+      console.log('cache-then-network:', event.request.url);
+      // https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-then-network
+      event.respondWith(
+        caches.open(CURRENT_CACHES.prefetch).then(function(cache) {
+          return cache.match(event.request).then(function(response) {
+            var fetchPromise = fetch(event.request).then(function(networkResponse) {
+              // save to cache
+              cache.put(event.request, networkResponse.clone());
+              return networkResponse;
+            });
+            return response || fetchPromise;
+          });
+        })
+      );
+    }
+  }
 });
+if ('storage' in navigator && 'estimate' in navigator.storage) {
+  navigator.storage.estimate().then(estimate => {
+    console.log(`Using ${estimate.usage} out of ${estimate.quota} bytes.`);
+  });
+}
+

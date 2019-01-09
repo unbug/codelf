@@ -17,3 +17,10 @@ exports.css = [
 exports.extra = [{
   'css/themes': './node_modules/semantic-ui-css/themes/**'
 }];
+
+exports.serviceWorker = {
+  hosts: [ // cache hosts for service worker, get request only, cache then network
+  ],
+  excludedPaths: [ // exclude cache path for service worker, get request only, network-falling-back-to-cache
+  ]
+}

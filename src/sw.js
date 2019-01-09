@@ -29,6 +29,16 @@ var CURRENT_CACHES = {
   prefetch: 'prefetch-cache-v' + CACHE_VERSION
 };
 
+var CACHE_HOSTS = [_CACHE_HOSTS_];
+
+var EXCLUDED_PATHS = [_EXCLUDED_PATHS_];
+
+var isExcluded = function(path) {
+  return EXCLUDED_PATHS.find(function (p) {
+    return path.indexOf(p) !== -1;
+  });
+}
+
 self.addEventListener('install', function(event) {
   var now = Date.now();
 
@@ -111,32 +121,73 @@ self.addEventListener('activate', function(event) {
 self.addEventListener('fetch', function(event) {
   console.log('Handling fetch event for', event.request.url);
   var requestURL = new URL(event.request.url);
-  requestURL.origin == location.origin && event.respondWith(
-    // caches.match() will look for a cache entry in all of the caches available to the service worker.
-    // It's an alternative to first opening a specific named cache and then matching on that.
-    caches.match(event.request).then(function(response) {
-      if (response) {
-        console.log('Found response in cache:', response);
+  if (requestURL.origin == location.origin) {
+    event.respondWith(
+      // caches.match() will look for a cache entry in all of the caches available to the service worker.
+      // It's an alternative to first opening a specific named cache and then matching on that.
+      caches.match(event.request).then(function(response) {
+        if (response) {
+          console.log('Found response in cache:', response);
 
-        return response;
-      }
+          return response;
+        }
 
-      console.log('No response found in cache. About to fetch from network...');
+        console.log('No response found in cache. About to fetch from network...');
 
-      // event.request will always have the proper mode set ('cors, 'no-cors', etc.) so we don't
-      // have to hardcode 'no-cors' like we do when fetch()ing in the install handler.
-      return fetch(event.request).then(function(response) {
-        console.log('Response from network is:', response);
+        // event.request will always have the proper mode set ('cors, 'no-cors', etc.) so we don't
+        // have to hardcode 'no-cors' like we do when fetch()ing in the install handler.
+        return fetch(event.request).then(function(response) {
+          console.log('Response from network is:', response);
 
-        return response;
-      }).catch(function(error) {
-        // This catch() will handle exceptions thrown from the fetch() operation.
-        // Note that a HTTP error response (e.g. 404) will NOT trigger an exception.
-        // It will return a normal response object that has the appropriate error code set.
-        console.error('Fetching failed:', error);
+          return response;
+        }).catch(function(error) {
+          // This catch() will handle exceptions thrown from the fetch() operation.
+          // Note that a HTTP error response (e.g. 404) will NOT trigger an exception.
+          // It will return a normal response object that has the appropriate error code set.
+          console.error('Fetching failed:', error);
 
-        throw error;
-      });
-    })
-  );
+          throw error;
+        });
+      })
+    );
+  } else if (CACHE_HOSTS.indexOf(requestURL.host) != -1 && /get/i.test(event.request.method)) {
+    if (isExcluded(requestURL.pathname)) {
+      console.log('network-falling-back-to-caches:', event.request.url);
+      // https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#network-falling-back-to-cache
+      event.respondWith(
+        caches.open(CURRENT_CACHES.prefetch).then(function(cache) {
+          return fetch(event.request).then(function(networkResponse) {
+            // save to cache
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          }).catch(function () {
+            return cache.match(event.request).then(function(response) {
+              return response;
+            });
+          });
+        })
+      );
+    } else {
+      console.log('cache-then-network:', event.request.url);
+      // https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-then-network
+      event.respondWith(
+        caches.open(CURRENT_CACHES.prefetch).then(function(cache) {
+          return cache.match(event.request).then(function(response) {
+            var fetchPromise = fetch(event.request).then(function(networkResponse) {
+              // save to cache
+              cache.put(event.request, networkResponse.clone());
+              return networkResponse;
+            });
+            return response || fetchPromise;
+          });
+        })
+      );
+    }
+  }
 });
+if ('storage' in navigator && 'estimate' in navigator.storage) {
+  navigator.storage.estimate().then(estimate => {
+    console.log(`Using ${estimate.usage} out of ${estimate.quota} bytes.`);
+  });
+}
+
