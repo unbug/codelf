@@ -14,7 +14,7 @@
     "start": "gulp",
     "build": "NODE_ENV=production gulp build",
     "dist": "NODE_ENV=production gulp build && gulp dist",
-    "gh-pages": "git push origin `git subtree split --prefix dist master`:gh-pages --force"
+    "gh-pages": "npm run dist && sleep 3 && git add dist/ && git commit -m \"build dist\" && git push origin `git subtree split --prefix dist HEAD`:gh-pages --force"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
