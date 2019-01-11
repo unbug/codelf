@@ -18,6 +18,11 @@
 <body ontouchstart>
 <div class="app"></div>
 <script src="./js/app.js"></script>
-<iframe src="sw.html" style="display: none"></iframe>
+<script>
+  var frame = document.createElement('iframe');
+  frame.style.display = "none";
+  frame.src = 'sw.html?' + Date.now();
+  document.body.appendChild(frame);
+</script>
 </body>
 </html>
