@@ -1,8 +1,10 @@
-const JSONP = url => {
+const JSONP = (url, options) => {
+  options = options || {};
+  url = options.url || url;
   return new Promise((resolve, reject) => {
     let timer = 0;
     let script = document.createElement('script');
-    const callbackName = `__jsonp_${Date.now()}_callback`;
+    const callbackName = options.callbackName || `__jsonp_${Date.now()}_callback`;
     window[callbackName] = (...args) => {
       window.clearTimeout(timer);
       document.body.removeChild(script);
@@ -14,7 +16,7 @@ const JSONP = url => {
       reject();
       window[callbackName] = null;
     }, 5 * 60 * 1000); // timeout in 5 min
-    script.src = url.replace('=?', `=${callbackName}&_=${Date.now()}`);
+    script.src = url.replace('=?', `=${callbackName}${options.nocache ? ('&_=' + Date.now()) : ''}`);
     document.body.appendChild(script);
   });
 }
