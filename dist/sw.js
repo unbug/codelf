@@ -24,7 +24,7 @@
 // cache, then increment the CACHE_VERSION value. It will kick off the service worker update
 // flow and the old cache(s) will be purged as part of the activate event handler when the
 // updated service worker is activated.
-var CACHE_VERSION = '2019-01-12T09:46:25.242Z';
+var CACHE_VERSION = '2019-01-12T09:51:10.834Z';
 var CURRENT_CACHES = {
   prefetch: 'prefetch-cache-v' + CACHE_VERSION
 };
@@ -49,18 +49,6 @@ self.addEventListener('install', function(event) {
 "css/app.css",
 "css/lib.365f8ae0.css",
 "css/lib.css",
-"fonts/Dressedless_Three.svg",
-"fonts/Dressedless_Three.ttf",
-"fonts/FontAwesome.otf",
-"fonts/LatoLatin-Bold.woff2",
-"fonts/LatoLatin-BoldItalic.woff2",
-"fonts/LatoLatin-Italic.woff2",
-"fonts/LatoLatin-Regular.woff2",
-"fonts/fontawesome-webfont.eot",
-"fonts/fontawesome-webfont.svg",
-"fonts/fontawesome-webfont.ttf",
-"fonts/fontawesome-webfont.woff",
-"fonts/fontawesome-webfont.woff2",
 "images/404_dribbble.ae94d03c.gif",
 "images/404_dribbble.gif",
 "images/codelf_logo.f4ae25bd.png",
@@ -73,6 +61,18 @@ self.addEventListener('install', function(event) {
 "images/wechatpay.jpg",
 "images/zhifubao.70c19370.png",
 "images/zhifubao.png",
+"fonts/Dressedless_Three.svg",
+"fonts/Dressedless_Three.ttf",
+"fonts/FontAwesome.otf",
+"fonts/LatoLatin-Bold.woff2",
+"fonts/LatoLatin-BoldItalic.woff2",
+"fonts/LatoLatin-Italic.woff2",
+"fonts/LatoLatin-Regular.woff2",
+"fonts/fontawesome-webfont.eot",
+"fonts/fontawesome-webfont.svg",
+"fonts/fontawesome-webfont.ttf",
+"fonts/fontawesome-webfont.woff",
+"fonts/fontawesome-webfont.woff2",
 "js/app.50dadb57.js",
 "js/app.js",
 "js/lib.2ef380a5.js",
