@@ -18,11 +18,18 @@ exports.extra = [{
   'css/themes': './node_modules/semantic-ui-css/themes/**'
 }];
 
+// configs for service worker, get request only, not in "included" url won't be cached
 exports.serviceWorker = {
-  hosts: [ // cache hosts for service worker, get request only, cache then network
+  included: [ // cache then network, url must start with it's host
     '"searchcode.com"',
     '"fanyi.youdao.com"'
   ],
-  excludedPaths: [ // exclude cache path for service worker, get request only, network-falling-back-to-cache
+  networkOnly: [ // network falling back to cache, url|path|etc must included in "included"
+  ],
+  cacheOnly: [ // cache fallback to network, url|path|etc must included in "included"
+    '"fanyi.youdao.com"'
+  ],
+  excluded: [ // won't be cache, url|path|etc must included in "included"
+    '"youdao"'
   ]
 }

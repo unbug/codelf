@@ -29,17 +29,21 @@ var CURRENT_CACHES = {
   prefetch: 'prefetch-cache-v' + CACHE_VERSION
 };
 
-var CACHE_HOSTS = [_CACHE_HOSTS_];
+var INCLUDED = [_INCLUDED_];
 
-var EXCLUDED_PATHS = [_EXCLUDED_PATHS_];
+var CACHE_ONLY = [_CACHE_ONLY_];
 
-var isExcluded = function(path) {
-  return EXCLUDED_PATHS.find(function (p) {
-    return path.indexOf(p) !== -1;
+var NETWORK_ONLY = [_NETWORK_ONLY_];
+
+var EXCLUDED = [_EXCLUDED_];
+
+function matchLocation(url, caches) {
+  return caches.find(function (l) {
+    return url.indexOf(l) !== -1;
   });
 }
 
-self.addEventListener('install', function(event) {
+self.addEventListener('install', function (event) {
   self.skipWaiting(); // make new service worker activate ASAP
   var now = Date.now();
 
@@ -50,8 +54,8 @@ self.addEventListener('install', function(event) {
   console.log('Handling install event. Resources to prefetch:', urlsToPrefetch);
 
   event.waitUntil(
-    caches.open(CURRENT_CACHES.prefetch).then(function(cache) {
-      var cachePromises = urlsToPrefetch.map(function(urlToPrefetch) {
+    caches.open(CURRENT_CACHES.prefetch).then(function (cache) {
+      var cachePromises = urlsToPrefetch.map(function (urlToPrefetch) {
         // This constructs a new URL object using the service worker's script location as the base
         // for relative URLs.
         var url = new URL(urlToPrefetch, location.href);
@@ -74,7 +78,7 @@ self.addEventListener('install', function(event) {
         // and it is not possible to determine whether an opaque response represents a success or failure
         // (https://github.com/whatwg/fetch/issues/14).
         var request = new Request(url, {mode: 'no-cors'});
-        return fetch(request).then(function(response) {
+        return fetch(request).then(function (response) {
           if (response.status >= 400) {
             throw new Error('request for ' + urlToPrefetch +
               ' failed with status ' + response.statusText);
@@ -82,32 +86,32 @@ self.addEventListener('install', function(event) {
 
           // Use the original URL without the cache-busting parameter as the key for cache.put().
           return cache.put(urlToPrefetch, response);
-        }).catch(function(error) {
+        }).catch(function (error) {
           console.error('Not caching ' + urlToPrefetch + ' due to ' + error);
         });
       });
 
-      return Promise.all(cachePromises).then(function() {
+      return Promise.all(cachePromises).then(function () {
         console.log('Pre-fetching complete.');
       });
-    }).catch(function(error) {
+    }).catch(function (error) {
       console.error('Pre-fetching failed:', error);
     })
   );
 });
 
-self.addEventListener('activate', function(event) {
+self.addEventListener('activate', function (event) {
   // Delete all caches that aren't named in CURRENT_CACHES.
   // While there is only one cache in this example, the same logic will handle the case where
   // there are multiple versioned caches.
-  var expectedCacheNames = Object.keys(CURRENT_CACHES).map(function(key) {
+  var expectedCacheNames = Object.keys(CURRENT_CACHES).map(function (key) {
     return CURRENT_CACHES[key];
   });
 
   event.waitUntil(
-    caches.keys().then(function(cacheNames) {
+    caches.keys().then(function (cacheNames) {
       return Promise.all(
-        cacheNames.map(function(cacheName) {
+        cacheNames.map(function (cacheName) {
           if (expectedCacheNames.indexOf(cacheName) === -1) {
             // If this cache name isn't present in the array of "expected" cache names, then delete it.
             console.log('Deleting out of date cache:', cacheName);
@@ -119,20 +123,22 @@ self.addEventListener('activate', function(event) {
   );
 });
 
-self.addEventListener('fetch', function(event) {
+self.addEventListener('fetch', function (event) {
   console.log('Handling fetch event for', event.request.url);
+  var requestURL = new URL(event.request.url);
   // https://developers.google.com/web/fundamentals/primers/service-workers/high-performance-loading
   if (event.request.mode === 'navigate') {
+    console.log('request mode:', event.request.mode);
     // See /web/fundamentals/getting-started/primers/async-functions
     // for an async/await primer.
-    event.respondWith(async function() {
+    event.respondWith(async function () {
       // Optional: Normalize the incoming URL by removing query parameters.
       // Instead of https://example.com/page?key=value,
       // use https://example.com/page when reading and writing to the cache.
       // For static HTML documents, it's unlikely your query parameters will
       // affect the HTML returned. But if you do use query parameters that
       // uniquely determine your HTML, modify this code to retain them.
-      const normalizedUrl = new URL(event.request.url);
+      const normalizedUrl = requestURL;
       normalizedUrl.search = '';
 
       // Create promises for both the network response,
@@ -142,7 +148,7 @@ self.addEventListener('fetch', function(event) {
 
       // event.waitUntil() ensures that the service worker is kept alive
       // long enough to complete the cache update.
-      event.waitUntil(async function() {
+      event.waitUntil(async function () {
         const cache = await caches.open(CURRENT_CACHES.prefetch);
         await cache.put(normalizedUrl, await fetchResponseCloneP);
       }());
@@ -150,14 +156,63 @@ self.addEventListener('fetch', function(event) {
       // Prefer the cached response, falling back to the fetch response.
       return (await caches.match(normalizedUrl)) || fetchResponseP;
     }());
-    return;
-  }
-  var requestURL = new URL(event.request.url);
-  if (requestURL.origin == location.origin) {
+  } else if (
+    matchLocation(requestURL.href, INCLUDED)
+    && !matchLocation(requestURL.href, EXCLUDED)
+    && /get/i.test(event.request.method)
+  ) {
+    if (matchLocation(requestURL.href, NETWORK_ONLY)) {
+      console.log('network-falling-back-to-caches:', event.request.url);
+      // https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#network-falling-back-to-cache
+      event.respondWith(
+        caches.open(CURRENT_CACHES.prefetch).then(function (cache) {
+          return fetch(event.request).then(function (networkResponse) {
+            // save to cache
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          }).catch(function () {
+            return cache.match(event.request).then(function (response) {
+              return response;
+            });
+          });
+        })
+      );
+    } else if (matchLocation(requestURL.href, CACHE_ONLY)) {
+      console.log('cache-falling-back-to-network:', event.request.url);
+      // https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-falling-back-to-network
+      event.respondWith(
+        caches.open(CURRENT_CACHES.prefetch).then(function (cache) {
+          return cache.match(event.request).then(function (response) {
+            return response || fetch(event.request).then(function (networkResponse) {
+              // save to cache
+              cache.put(event.request, networkResponse.clone());
+              return networkResponse;
+            });
+          });
+        })
+      );
+    } else {
+      console.log('cache-then-network:', event.request.url);
+      // https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-then-network
+      event.respondWith(
+        caches.open(CURRENT_CACHES.prefetch).then(function (cache) {
+          return cache.match(event.request).then(function (response) {
+            var fetchPromise = fetch(event.request).then(function (networkResponse) {
+              // save to cache
+              cache.put(event.request, networkResponse.clone());
+              return networkResponse;
+            });
+            return response || fetchPromise;
+          });
+        })
+      );
+    }
+  } else if (requestURL.origin == location.origin) {
+    console.log('request origin:', requestURL.origin);
     event.respondWith(
       // caches.match() will look for a cache entry in all of the caches available to the service worker.
       // It's an alternative to first opening a specific named cache and then matching on that.
-      caches.match(event.request).then(function(response) {
+      caches.match(event.request).then(function (response) {
         if (response) {
           console.log('Found response in cache:', response);
 
@@ -168,11 +223,11 @@ self.addEventListener('fetch', function(event) {
 
         // event.request will always have the proper mode set ('cors, 'no-cors', etc.) so we don't
         // have to hardcode 'no-cors' like we do when fetch()ing in the install handler.
-        return fetch(event.request).then(function(response) {
+        return fetch(event.request).then(function (response) {
           console.log('Response from network is:', response);
 
           return response;
-        }).catch(function(error) {
+        }).catch(function (error) {
           // This catch() will handle exceptions thrown from the fetch() operation.
           // Note that a HTTP error response (e.g. 404) will NOT trigger an exception.
           // It will return a normal response object that has the appropriate error code set.
@@ -182,39 +237,6 @@ self.addEventListener('fetch', function(event) {
         });
       })
     );
-  } else if (CACHE_HOSTS.indexOf(requestURL.host) != -1 && /get/i.test(event.request.method)) {
-    if (isExcluded(requestURL.pathname)) {
-      console.log('network-falling-back-to-caches:', event.request.url);
-      // https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#network-falling-back-to-cache
-      event.respondWith(
-        caches.open(CURRENT_CACHES.prefetch).then(function(cache) {
-          return fetch(event.request).then(function(networkResponse) {
-            // save to cache
-            cache.put(event.request, networkResponse.clone());
-            return networkResponse;
-          }).catch(function () {
-            return cache.match(event.request).then(function(response) {
-              return response;
-            });
-          });
-        })
-      );
-    } else {
-      console.log('cache-then-network:', event.request.url);
-      // https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-then-network
-      event.respondWith(
-        caches.open(CURRENT_CACHES.prefetch).then(function(cache) {
-          return cache.match(event.request).then(function(response) {
-            var fetchPromise = fetch(event.request).then(function(networkResponse) {
-              // save to cache
-              cache.put(event.request, networkResponse.clone());
-              return networkResponse;
-            });
-            return response || fetchPromise;
-          });
-        })
-      );
-    }
   }
 });
 if ('storage' in navigator && 'estimate' in navigator.storage) {

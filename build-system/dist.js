@@ -69,8 +69,10 @@ gulp.task('dist:serviceworkers', function (cb) {
       gulp.src(['./src/sw.js'])
         .pipe($.replace(/_BUILD_VERSION_/g, buildVersion))
         .pipe($.replace(/_FILES_/g, resources.join(',\n')))
-        .pipe($.replace(/_CACHE_HOSTS_/g, swConfig.hosts.join(',\n')))
-        .pipe($.replace(/_EXCLUDED_PATHS_/g, swConfig.excludedPaths.join(',\n')))
+        .pipe($.replace(/_INCLUDED_/g, swConfig.included.join(',\n')))
+        .pipe($.replace(/_NETWORK_ONLY_/g, swConfig.networkOnly.join(',\n')))
+        .pipe($.replace(/_CACHE_ONLY_/g, swConfig.cacheOnly.join(',\n')))
+        .pipe($.replace(/_EXCLUDED_/g, swConfig.excluded.join(',\n')))
         .pipe(gulp.dest(distPath))
         .on('end', function () {
           cb();
