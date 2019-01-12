@@ -223,3 +223,5 @@ if ('storage' in navigator && 'estimate' in navigator.storage) {
   });
 }
 
+// debug with chrome
+// /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --user-data-dir=/tmp/foo --ignore-certificate-errors --unsafely-treat-insecure-origin-as-secure=https://localhost:1123

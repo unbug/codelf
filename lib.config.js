@@ -20,6 +20,8 @@ exports.extra = [{
 
 exports.serviceWorker = {
   hosts: [ // cache hosts for service worker, get request only, cache then network
+    '"searchcode.com"',
+    '"fanyi.youdao.com"'
   ],
   excludedPaths: [ // exclude cache path for service worker, get request only, network-falling-back-to-cache
   ]
