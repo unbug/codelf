@@ -30,6 +30,5 @@ exports.serviceWorker = {
     '"fanyi.youdao.com"'
   ],
   excluded: [ // won't be cache, url|path|etc must included in "included"
-    '"youdao"'
   ]
 }
