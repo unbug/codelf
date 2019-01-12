@@ -46,7 +46,7 @@ gulp.task('dist:js', 'Compress js to dist.', () => {
 gulp.task('dist:html', 'Compress html to dist.', () => {
   return gulp.src(['./app/*.html'])
     .pipe(cachebust.references())
-    .pipe($.htmlmin({collapseWhitespace: true}))
+    .pipe($.htmlmin({collapseWhitespace: true, minifyCSS: true, minifyJS: true}))
     .pipe(gulp.dest(distPath))
     .pipe($.size({title: 'dist:html'}));
 });
