@@ -22,10 +22,7 @@ class SearchCodeModel extends BaseModel {
       sourceCode: null
     };
     this._variableRepoMapping = {};
-    this._sourceCodeStore = new Store(Infinity, {
-      persistence: 'session',
-      persistenceKey: AppModel.genPersistenceKey('source_code_key')
-    });
+    this._sourceCodeStore = new Store(Infinity);
     this._variableListStore = new Store(Infinity, {
       persistence: 'session',
       persistenceKey: AppModel.genPersistenceKey('variable_list_key')
@@ -74,7 +71,7 @@ class SearchCodeModel extends BaseModel {
     const langParams = lang.length ? ('&lan=' + lang.join(',').split(',').join('&lan=')) : '';
     const qParams = q.replace(' ', '+');
     const url = `//searchcode.com/api/jsonp_codesearch_I/?callback=?&q=${qParams}&p=${page}&per_page=42${langParams}`;
-    val && JSONP(url)
+    val && JSONP(url, {callbackName: 'searchcodeRequestVariableCallback'})
       .then(data => {
         const cdata = {
           searchValue: val,

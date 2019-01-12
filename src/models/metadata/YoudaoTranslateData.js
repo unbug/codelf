@@ -16,7 +16,7 @@ class YoudaoTranslateData {
        return cache;
     }
     const url = `//fanyi.youdao.com/openapi.do?callback=?&keyfrom=Codelf&key=2023743559&type=data&doctype=jsonp&version=1.1&q=${val}`;
-    const data = await JSONP(url);
+    const data = await JSONP(url, {callbackName: 'youdaoFanyiRequestCallback'});
     try{
       let suggestionStr = '';
       let tmp = [];
