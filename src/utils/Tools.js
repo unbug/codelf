@@ -1,20 +1,3 @@
-let appCache = window.applicationCache;
-appCache.addEventListener('updateready', function () {
-  if (appCache.status == appCache.UPDATEREADY) {
-    try {
-      appCache.update();
-      if (appCache.status == appCache.UPDATEREADY) {
-        try {
-          appCache.swapCache();
-          window.location.reload(false);
-        } catch (err) {
-        }
-      }
-    } catch (err) {
-    }
-  }
-}, false);
-
 const ua = navigator.userAgent;
 const android = ua.match(/(Android);?[\s/]+([\d.]+)?/);
 const ipad = ua.match(/(iPad).*OS\s([\d_]+)/);
