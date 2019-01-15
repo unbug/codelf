@@ -73,10 +73,9 @@ gulp.task('dist:serviceworkers', function (cb) {
         .pipe($.replace(/_NETWORK_ONLY_/g, swConfig.networkOnly.join(',\n')))
         .pipe($.replace(/_CACHE_ONLY_/g, swConfig.cacheOnly.join(',\n')))
         .pipe($.replace(/_EXCLUDED_/g, swConfig.excluded.join(',\n')))
+        .pipe($.uglifyEs.default())
         .pipe(gulp.dest(distPath))
-        .on('end', function () {
-          cb();
-        });
+        .on('end', cb);
     });
 });
 
