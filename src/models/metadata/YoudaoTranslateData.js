@@ -15,6 +15,12 @@ class YoudaoTranslateData {
     if (cache) {
        return cache;
     }
+    /**
+     * 特别重要，必读！
+     * CODELF 用的是有道翻译 API 的免费套餐，1小时仅有1K的请求次数限制！
+     * 所以，如果你想二次开发，请单独申请自己的有道翻译 API 的 KEY，否则会直接影响 CODELF 的用户。
+     * 有道翻译 API 申请参看： http://fanyi.youdao.com/openapi?path=data-mode
+     */
     const url = `//fanyi.youdao.com/openapi.do?callback=?&keyfrom=Codelf&key=2023743559&type=data&doctype=jsonp&version=1.1&q=${val}`;
     const data = await JSONP(url, {callbackName: 'youdaoFanyiRequestCallback'});
     try{
