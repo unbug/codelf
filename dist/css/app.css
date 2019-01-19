@@ -295,6 +295,10 @@ body.dark {
   font-size: 2.3rem;
 }
 
+.app .nav-bar .copybook-btn {
+  display: none;
+}
+
 @media screen and (min-width: 50rem) {
   .app .nav-bar {
     top: -0.55rem;
@@ -303,6 +307,9 @@ body.dark {
     width: auto;
     height: 3.4rem;
     font-size: 3rem;
+  }
+  .app .nav-bar .copybook-btn.copybook-btn.copybook-btn {
+    display: inline-block;
   }
   .app .nav-bar .github-corner {
     margin-top: -0.2rem;
@@ -377,6 +384,7 @@ body.dark .app .notice-links {
 }
 
 .source-code > .content pre {
+  display: inline-block;
   margin: 0;
   padding: 0;
 }
@@ -392,6 +400,60 @@ body.dark .app .notice-links {
 
 .source-code.source-code .ui.dropdown .menu > .item:last-child {
   padding-bottom: 0.4rem !important;
+}
+
+.copybook.copybook > .header {
+  padding: 0.8rem 1rem;
+}
+
+.copybook > .content {
+  position: relative;
+}
+
+.copybook > .content:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.copybook > .content:hover:after, .copybook > .content:focus:after {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.copybook > .content pre {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  min-width: 98%;
+}
+
+.copybook > .content code {
+  display: inline-block;
+  color: #000;
+}
+
+.copybook__title {
+  text-align: center;
+  font-size: 1rem;
+  margin-bottom: -1rem;
+}
+
+.copybook__editor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
+  color: #000;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  outline: none;
 }
 
 .app .main {
