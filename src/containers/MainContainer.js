@@ -173,6 +173,7 @@ export default class MainContainer extends React.Component {
 
   handleOpenCopybook = () => {
     this.setState({copybookVisible: true});
+    AppModel.analytics('copybook&q=read');
   }
 
   handleCloseCopybook = () => {
