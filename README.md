@@ -2,7 +2,8 @@
 
 Codelf(变量命名神器)
 =================
-Best GitHub stars, repositories tagger and organizer. Search over projects from Github, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Project, GitLab to find real-world usage variable names. 
+  Search over projects from Github, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Project, GitLab to find real-world usage variable names.
+  >GitHub stars, repositories tagger and organizer tool currently is not available. 
 
   >There are only two hard things in Computer Science: cache invalidation and naming things.-- Phil Karlton
   >

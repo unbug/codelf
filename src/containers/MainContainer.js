@@ -14,6 +14,8 @@ import NavBar from '../components/NavBar';
 import SourceCode from '../components/SourceCode';
 import AppModel from '../models/AppModel';
 import DDMSModel from '../models/DDMSModel';
+import CopybookModel from '../models/CopybookModel';
+import Copybook from '../components/Copybook';
 
 export default class MainContainer extends React.Component {
   state = {
@@ -29,6 +31,11 @@ export default class MainContainer extends React.Component {
     sourceCodeVisible: false,
     sourceCodeVariable: null,
     sourceCodeRepo: null,
+    requestingCopybook: false,
+    copybookVisible: false,
+    copybookFileList: CopybookModel.fileList,
+    copybookSelectedFile: CopybookModel.selectedFile,
+    copybookFileContent: CopybookModel.fileContent,
   }
 
   repoList = null;
@@ -36,6 +43,7 @@ export default class MainContainer extends React.Component {
   constructor(props) {
     super(props);
     SearchCodeModel.onUpdated(this.handleSearchCodeModelUpdate);
+    CopybookModel.onUpdated(this.handleCopybookModelUpdate);
     window.addEventListener('hashchange', this.handleLocationHashChanged, false);
     AppModel.analytics();
   }
@@ -81,7 +89,15 @@ export default class MainContainer extends React.Component {
       sourceCodeRepo: repo
     });
     SearchCodeModel.requestSourceCode(repo.id);
-    AppModel.analytics('vc&q=' + this.state.sourceCodeVariable.keyword);
+    AppModel.analytics('sourcecode&q=' + this.state.sourceCodeVariable.keyword);
+  }
+
+  requestCopybookFile = file => {
+    this.setState({
+      requestingCopybook: true,
+    });
+    CopybookModel.requestJavascriptAlgorithmsRepoFile(file);
+    AppModel.analytics('copybook&q=read');
   }
 
   updateDocTitle = title => {
@@ -115,6 +131,21 @@ export default class MainContainer extends React.Component {
     }
   }
 
+  handleCopybookModelUpdate = (curr, prev, mutation) => {
+    if (mutation.fileList) {
+      this.setState({
+        copybookFileList: CopybookModel.fileList
+      });
+    }
+    if (mutation.fileContent) {
+      this.setState({
+        requestingCopybook: false,
+        copybookSelectedFile: CopybookModel.selectedFile,
+        copybookFileContent: CopybookModel.fileContent,
+      });
+    }
+  }
+
   handleSearch = (val, lang) => {
     if (val === null || val === undefined || this.state.requestingVariable) { return; }
     val = val.trim().replace(/\s+/ig, ' '); // filter spaces
@@ -140,6 +171,18 @@ export default class MainContainer extends React.Component {
     this.requestSourceCode(repo);
   }
 
+  handleOpenCopybook = () => {
+    this.setState({copybookVisible: true});
+  }
+
+  handleCloseCopybook = () => {
+    this.setState({copybookVisible: false});
+  }
+
+  handleRequestCopybookFile = file => {
+    this.requestCopybookFile(file);
+  }
+
   renderSloganImage() {
     if (this.state.page > 0 || this.state.variableList.length) { return ''; }
     return <div className='slogan-image'><img src='images/twohardtings.jpg'/></div>;
@@ -156,10 +199,13 @@ export default class MainContainer extends React.Component {
         <VariableList {...this.state} onOpenSourceCode={this.handleOpenSourceCode}/>
         {this.state.variableList.length ? <Donate {...this.state}/> : ''}
         <NoticeLinks/>
-        <NavBar/>
+        <NavBar onOpenCopybook={this.handleOpenCopybook}/>
         <SourceCode {...this.state}
                     onRequestSourceCode={this.handleRequestSourceCode}
                     onCloseSourceCode={this.handleCloseSourceCode}/>
+        <Copybook {...this.state}
+                  onRequestCopybookFile={this.handleRequestCopybookFile}
+                  onCloseCopybook={this.handleCloseCopybook}/>
       </Container>
     )
   }

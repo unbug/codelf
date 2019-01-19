@@ -30,12 +30,18 @@
       font-size: 2.3rem;
     }
   }
+  .copybook-btn {
+    display: none;
+  }
   @media screen and (min-width: 50rem) {
     top: -0.55rem;
     i{
       width: auto;
       height: 3.4rem;
       font-size: 3rem;
+    }
+    .copybook-btn.copybook-btn.copybook-btn {
+      display: inline-block;
     }
     .github-corner {
       margin-top: -0.2rem;
