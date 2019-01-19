@@ -5,6 +5,7 @@ import Loading from "./Loading";
 
 export default class Copybook extends React.Component {
   code = React.createRef();
+  editor = React.createRef();
   visible = false;
   constructor(props) {
     super(props);
@@ -29,6 +30,9 @@ export default class Copybook extends React.Component {
 
   renderPrettyPrint = () => {
     setTimeout(() => {
+      if (this.editor.current) {
+        this.editor.current.innerHTML = '';
+      }
       if (this.code.current) {
         this.code.current.classList.remove('prettyprinted');
         setTimeout(() => PR.prettyPrint(), 100);
@@ -91,7 +95,7 @@ export default class Copybook extends React.Component {
           {this.props.requestingCopybook ? <Loading/> : ''}
           <pre>
             <code className='prettyprint' ref={this.code}>{this.props.copybookFileContent.content}</code>
-            <div className='copybook__editor' contentEditable={true}></div>
+            <div className='copybook__editor' contentEditable={true} ref={this.editor}></div>
           </pre>
         </Modal.Content>
       </Modal>
