@@ -31,7 +31,7 @@ export default class NavBar extends React.Component {
         <Popup
           hoverable={true}
           trigger={
-            <a href='https://github.com/unbug/codelf' className='github-corner animated fadeInDown'
+            <a href='https://github.com/unbug/codelf/issues' className='github-corner animated fadeInDown'
                target='_blank' rel='noopener noreferrer'>
               <Icon name='github square'/>
             </a>
