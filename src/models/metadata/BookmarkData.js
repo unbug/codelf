@@ -1,3 +1,4 @@
+/* eslint-disable */
 var Database = require('model/Database.js');
 
 module.exports = new function () {

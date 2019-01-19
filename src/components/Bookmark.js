@@ -42,7 +42,6 @@ export default class Bookmark extends React.Component {
   render() {
     const dropText = (
       <div>All Codes <Label size='mini' circular>
-        {sourceCodeVariable.repoList.length}
       </Label></div>
     );
     return (
