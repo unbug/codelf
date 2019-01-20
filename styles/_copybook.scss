@@ -32,10 +32,18 @@
         color: #000;
       }
     }
+    .ui.search.selection.dropdown {
+      font-size: .8rem;
+      min-width: 30rem;
+      .menu>.item {
+        font-size: .8rem;
+      }
+    }
     &__title {
       text-align: center;
       font-size: 1rem;
-      margin-bottom: -1rem;
+      margin-bottom: -0.2rem;
+      margin-top: -1rem;
     }
     &__editor {
       position: absolute;

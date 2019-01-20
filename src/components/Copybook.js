@@ -1,12 +1,12 @@
 import React from 'react';
-import {Modal, Button, Dropdown, Label} from 'semantic-ui-react';
-import * as Tools from '../utils/Tools';
+import {Button, Dropdown, Modal} from 'semantic-ui-react';
 import Loading from "./Loading";
 
 export default class Copybook extends React.Component {
   code = React.createRef();
   editor = React.createRef();
   visible = false;
+
   constructor(props) {
     super(props);
   }
@@ -28,6 +28,14 @@ export default class Copybook extends React.Component {
     this.props.onCloseCopybook();
   }
 
+  handleDropdownChange = (e, { searchQuery, value }) => {
+    if (value != this.props.copybookSelectedFile.path) {
+      this.props.onRequestCopybookFile(
+        this.props.copybookFileList.find(f => f.path.substr(4, f.path.length) === value)
+      );
+    }
+  }
+
   renderPrettyPrint = () => {
     setTimeout(() => {
       if (this.editor.current) {
@@ -41,14 +49,15 @@ export default class Copybook extends React.Component {
   }
 
   renderDropdownItem() {
-    if (!this.props.copybookFileList) { return null; }
-    return this.props.copybookFileList.map(file => {
-      return (
-        <Dropdown.Item key={Tools.uuid()} selected={this.props.copybookSelectedFile.url === file.url}
-                       onClick={() => this.props.onRequestCopybookFile(file)}>
-          {file.path.substr(4, file.path.length)}
-        </Dropdown.Item>
-      )
+    if (!this.props.copybookFileList) {
+      return null;
+    }
+    return this.props.copybookFileList.map((file, idx) => {
+      return {
+        key: file.path.substr(4, file.path.length),
+        value: file.path.substr(4, file.path.length),
+        text: (idx + 1) + '. ' + file.path.substr(4, file.path.length)
+      }
     });
   }
 
@@ -60,7 +69,7 @@ export default class Copybook extends React.Component {
         <Modal open={this.props.copybookVisible} onClose={this.handleClose}
                centered={false} closeIcon className='copybook fix-modal' size='large'>
           <Modal.Header>
-            <div className='copybook__title'>Daily Algorithm</div>
+            <div className='copybook__title'>Daily Algorithm Copybook</div>
           </Modal.Header>
           <Modal.Content>
             <Loading/>
@@ -69,27 +78,21 @@ export default class Copybook extends React.Component {
         </Modal>
       );
     }
-    const copybookFileList = this.props.copybookFileList;
     const copybookSelectedFile = this.props.copybookSelectedFile;
-    const dropText = (
-      <div>Algorithms <Label size='mini' circular>{copybookFileList.length}</Label></div>
-    );
     return (
       <Modal open={this.props.copybookVisible} onClose={this.handleClose}
              centered={false} closeIcon className='copybook fix-modal' size='large'>
         <Modal.Header>
-          <Dropdown floating labeled button blurring className='mini icon' style={{padding: '0.35rem 0'}}
-                    text={dropText}>
-            <Dropdown.Menu>
-              <Dropdown.Menu scrolling className='fix-dropdown-menu'>
-                {this.renderDropdownItem()}
-              </Dropdown.Menu>
-            </Dropdown.Menu>
-          </Dropdown>
-          <Button size='mini' as='a' href={this.props.copybookSelectedFile.link} target='_blank'>View In GitHub</Button>
-          <div className='copybook__title'>
-            Daily Algorithm: {copybookSelectedFile.path.substr(4, copybookSelectedFile.path.length)}
-          </div>
+          <div className='copybook__title'>Daily Algorithm Copybook</div>
+          <Button size='tiny' as='a' basic
+                  href={this.props.copybookSelectedFile.link}
+                  target='_blank'>View In GitHub</Button>
+          <Dropdown
+            search
+            selection
+            onChange={this.handleDropdownChange}
+            value={copybookSelectedFile.path.substr(4, copybookSelectedFile.path.length)}
+            options={this.renderDropdownItem()}/>
         </Modal.Header>
         <Modal.Content>
           {this.props.requestingCopybook ? <Loading/> : ''}
