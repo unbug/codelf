@@ -31,7 +31,7 @@ export default class Copybook extends React.Component {
   handleDropdownChange = (e, { searchQuery, value }) => {
     if (value != this.props.copybookSelectedFile.path) {
       this.props.onRequestCopybookFile(
-        this.props.copybookFileList.find(f => f.path.substr(4, f.path.length) === value)
+        this.props.copybookFileList.find(f => f.path === value)
       );
     }
   }
@@ -54,9 +54,9 @@ export default class Copybook extends React.Component {
     }
     return this.props.copybookFileList.map((file, idx) => {
       return {
-        key: file.path.substr(4, file.path.length),
-        value: file.path.substr(4, file.path.length),
-        text: (idx + 1) + '. ' + file.path.substr(4, file.path.length)
+        key: file.path,
+        value: file.path,
+        text: (idx + 1) + '. ' + file.path
       }
     });
   }
@@ -91,7 +91,7 @@ export default class Copybook extends React.Component {
             search
             selection
             onChange={this.handleDropdownChange}
-            value={copybookSelectedFile.path.substr(4, copybookSelectedFile.path.length)}
+            value={copybookSelectedFile.path}
             options={this.renderDropdownItem()}/>
         </Modal.Header>
         <Modal.Content>

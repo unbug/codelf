@@ -96,7 +96,7 @@ export default class MainContainer extends React.Component {
     this.setState({
       requestingCopybook: true,
     });
-    CopybookModel.requestJavascriptAlgorithmsRepoFile(file);
+    CopybookModel.requestRepoFile(file);
     AppModel.analytics('copybook&q=read');
   }
 
