@@ -79,13 +79,14 @@ Screenshots
 ================
 
 ### Search variable
-![jan-20-2019 14-29-06](https://user-images.githubusercontent.com/799578/51436194-75ad4180-1cc3-11e9-9ca0-80a0a56b9d7c.gif)
 
 ![image](https://user-images.githubusercontent.com/799578/51435477-f748a380-1cb2-11e9-89df-3ae5d99ed7e6.png)
 
 ![image](https://user-images.githubusercontent.com/799578/51435487-1b0be980-1cb3-11e9-9379-58c2ec678a81.png)
 
 ### Daily Algorithm Copybook
+
+![jan-20-2019 14-29-06](https://user-images.githubusercontent.com/799578/51436194-75ad4180-1cc3-11e9-9ca0-80a0a56b9d7c.gif)
 
 ![image](https://user-images.githubusercontent.com/799578/51435445-71c4f380-1cb2-11e9-87a4-edc54cbe7052.png)
 
