@@ -4,13 +4,15 @@ Codelf(变量命名神器)
 =================
   Search over projects from Github, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Project, GitLab to find real-world usage variable names.
   
-  Daily Algorithm Copybook
+  Also a daily Algorithm Copybook.
   
-  >GitHub stars, repositories tagger and organizer tool currently is not available. 
+  Also a GitHub stars, repositories tagger and organizer tool.
 
   >There are only two hard things in Computer Science: cache invalidation and naming things.-- Phil Karlton
   >
   >![twohardtings](https://user-images.githubusercontent.com/799578/50462942-8075fe80-09c3-11e9-9c7f-b38d495b925d.jpg)
+  
+  ![image](https://user-images.githubusercontent.com/799578/51435509-a2595d00-1cb3-11e9-8f4e-85ecbc3a2325.png)
 
 WIKI
 =================
