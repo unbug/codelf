@@ -438,10 +438,20 @@ body.dark .app .notice-links {
   color: #000;
 }
 
+.copybook .ui.search.selection.dropdown {
+  font-size: .8rem;
+  min-width: 30rem;
+}
+
+.copybook .ui.search.selection.dropdown .menu > .item {
+  font-size: .8rem;
+}
+
 .copybook__title {
   text-align: center;
   font-size: 1rem;
-  margin-bottom: -1rem;
+  margin-bottom: -0.2rem;
+  margin-top: -1rem;
 }
 
 .copybook__editor {
