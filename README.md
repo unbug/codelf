@@ -18,10 +18,6 @@ WIKI
 =================
 [简体中文](https://github.com/unbug/codelf/wiki)
   
-Apps
-=================
-[Codelf Chrome App](https://chrome.google.com/webstore/detail/codelf-best-github-stars/jnmjaglhmmcplekpfnblniiammmdpaan)
-
 Plugins
 =================
 ### Codelf for VS Code
@@ -65,38 +61,11 @@ Plugins
   
   ![ST Command Palette...](https://cloud.githubusercontent.com/assets/799578/12536569/10422964-c2e4-11e5-9530-6efb742dad3c.png)
 
-  
-
-Build
+Apps
 =================
-1. install requirements run ```npm install```
-2. build and watch run ```gulp```
+[Codelf Chrome App](https://chrome.google.com/webstore/detail/codelf-best-github-stars/jnmjaglhmmcplekpfnblniiammmdpaan)
 
-Thanks
-=================
-  * API powered by [searchcode](http://searchcode.com/) & [youdao](http://fanyi.youdao.com/)
-  * UI powered by [Bootstrap v4.0](http://v4-alpha.getbootstrap.com/)
-  * Syntax highlighting of source code powered by [google-code-prettify](https://github.com/google/code-prettify)
-  * [Google Lovefield](https://github.com/google/lovefield)
-  * [ZeroClipboard](https://github.com/zeroclipboard/zeroclipboard)
-  * Utils - [generator-webappstarter](https://github.com/unbug/generator-webappstarter)
-  * [Data Drive Management System](https://github.com/unbug/ddms)
   
-
-Programming naming convention
-=============================
-  * [Google Style Guides](https://github.com/google/styleguide)
-  * [The Ruby Style Guide](https://github.com/bbatsov/ruby-style-guide)
-  * [Style guide & coding conventions for Swift projects](https://github.com/github/swift-style-guide)
-  * CSS Architecture
-    * [OOCSS](http://github.com/stubbornella/oocss/wiki) - Object Oriented CSS
-    * [ACSS](https://www.lucidchart.com/techblog/2014/01/31/atomic-css-tool-set/) - Atomic CSS
-    * [oCSS](http://krasimir.github.io/organic-css/) - organic cascade style sheet
-    * [SMACSS](http://smacss.com/) - Scalable and Modular Architecture for CSS
-    * [BEM](http://bem.info/) [getbem](http://getbem.com/) - Block, Element, Modifier
-    * [evolve CSS](http://www.evolvecss.com/) - A Sass-based CSS architecture style guide 
-    
-
 Find me
 =================
   * Twitter [@unbug](https://twitter.com/unbug)
