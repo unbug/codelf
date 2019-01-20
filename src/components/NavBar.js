@@ -17,7 +17,7 @@ export default class NavBar extends React.Component {
               <Icon name='clipboard'/>
             </div>
           }>
-          <Icon name='thumbs up outline'/> Daily algorithm copybook. Don't give up!
+          <Icon name='thumbs up outline'/> Daily algorithm copybook, learn algorithm easily!
         </Popup>
         <Popup
           hoverable={true}
