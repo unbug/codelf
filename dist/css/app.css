@@ -422,7 +422,7 @@ body.dark .app .notice-links {
 }
 
 .copybook > .content:hover:after, .copybook > .content:focus:after {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.76);
 }
 
 .copybook > .content pre {
