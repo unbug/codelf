@@ -71,27 +71,34 @@ class SearchCodeModel extends BaseModel {
     const langParams = lang.length ? ('&lan=' + lang.join(',').split(',').join('&lan=')) : '';
     const qParams = q.replace(' ', '+');
     const url = `//searchcode.com/api/jsonp_codesearch_I/?callback=?&q=${qParams}&p=${page}&per_page=42${langParams}`;
+    const done = data => {
+      const cdata = {
+        searchValue: val,
+        page: page,
+        variableList: [...this._data.variableList, this._parseVariableList(data.results, q)],
+        searchLang: lang,
+        suggestion: suggestion,
+        isZH: isZH || this.isZH
+      };
+      this.update(cdata);
+      this._variableListStore.save(cacheId, cdata);
+    };
     val && JSONP(url, {callbackName: 'searchcodeRequestVariableCallback'})
-      .then(data => {
-        const cdata = {
-          searchValue: val,
-          page: page,
-          variableList: [...this._data.variableList, this._parseVariableList(data.results, q)],
-          searchLang: lang,
-          suggestion: suggestion,
-          isZH: isZH || this.isZH
-        };
-        this.update(cdata);
-        this._variableListStore.save(cacheId, cdata);
-      }).catch(err => {
-        this.update({
-          searchValue: val,
-          page: page,
-          variableList: [...this.variableList, []],
-          searchLang: lang,
-          suggestion: suggestion,
-          isZH: isZH || this.isZH
-        });
+      .then(done).catch(() => {
+        // fallback to fetch
+        fetch(`//searchcode.com/api/codesearch_I/?q=${qParams}&p=${page}&per_page=42${langParams}`)
+          .then(res => res.json())
+          .then(done)
+          .catch(() => {
+            this.update({
+              searchValue: val,
+              page: page,
+              variableList: [...this.variableList, []],
+              searchLang: lang,
+              suggestion: suggestion,
+              isZH: isZH || this.isZH
+            });
+          });
       });
   }
 
