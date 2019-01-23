@@ -196,6 +196,7 @@ export default class MainContainer extends React.Component {
         <SearchBar placeholder='AI 人工智能' {...this.state} onSearch={this.handleSearch}/>
         <Suggestion {...this.state}/>
         {this.state.requestingVariable ? <Loading/> : (this.state.isError ? <SearchError/> : '')}
+        <SearchError/>
         {this.renderSloganImage()}
         <VariableList {...this.state} onOpenSourceCode={this.handleOpenSourceCode}/>
         {this.state.variableList.length ? <Donate {...this.state}/> : ''}
