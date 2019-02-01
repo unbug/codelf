@@ -41,7 +41,7 @@ export default class NoticeLinks extends React.Component {
           <Icon name='hand rock'/> WebAssembly Rocks
         </a>
         <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
-           href='https://www.gitbook.com/book/unbug/react-native-training/details'>
+           href='https://github.com/unbug/react-native-train/blob/master/README.md'>
           <Icon name='video'/> [开源] React Native 开发培训资料和视频
         </a>
         <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
