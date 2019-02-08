@@ -1,7 +1,7 @@
 import React from 'react';
 import {Container} from 'semantic-ui-react';
 import SearchBar from '../components/SearchBar';
-import Title from '../components/Title';
+import TitleLogo from '../components/TitleLogo';
 import SearchCodeModel from '../models/SearchCodeModel';
 import HashHandler from '../utils/HashHandler';
 import VariableList from '../components/VariableList';
@@ -192,7 +192,7 @@ export default class MainContainer extends React.Component {
   render() {
     return (
       <Container className='main'>
-        <Title {...this.state}/>
+        <TitleLogo/>
         <SearchBar placeholder='AI 人工智能' {...this.state} onSearch={this.handleSearch}/>
         <Suggestion {...this.state}/>
         {this.state.requestingVariable ? <Loading/> : (this.state.isError ? <SearchError/> : '')}
