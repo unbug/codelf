@@ -1,13 +1,17 @@
 module.exports = {
   'extends': [
-    "eslint:recommended",
-    "plugin:react/recommended"
+    'eslint:recommended',
+    'plugin:react/recommended'
+  ],
+  'plugins': [
+    'react-hooks'
   ],
   'rules': {
     'no-unused-vars': [2, {'vars': 'all', 'args': 'none'}],
     'no-empty': [0],
     'react/prop-types': [0],
     'react/no-unescaped-entities': [0],
+    'react-hooks/rules-of-hooks': 'error',
     'no-useless-escape': [0],
     'no-control-regex': [0]
   },
@@ -26,7 +30,7 @@ module.exports = {
     'PR': true,
     'Mark': true
   },
-  "parser": "babel-eslint",
+  'parser': 'babel-eslint',
   'parserOptions': {
     'sourceType': 'module'
   }
