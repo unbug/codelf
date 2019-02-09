@@ -123,6 +123,7 @@ function useInputSize(val) {
   const [size, setSize] = useState(val);
 
   useEffect(() => {
+    resizeInput();
     window.addEventListener('resize', resizeInput, false);
     return () => window.removeEventListener('resize', resizeInput, false);
   }, []);// run an effect and clean it up only once (on mount and unmount), you can pass an empty array ([])
