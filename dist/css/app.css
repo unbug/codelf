@@ -113,7 +113,7 @@ body.dark {
   text-transform: uppercase;
 }
 
-.pointer-link, .app .main .variable-list .label {
+.pointer-link, .app .main-container .variable-list .label {
   cursor: pointer;
 }
 
@@ -169,7 +169,7 @@ body.dark {
   -webkit-overflow-scrolling: touch;
 }
 
-.app .main .title.animated span {
+.app .main-container .title.animated span {
   -webkit-animation-duration: 0.6s;
           animation-duration: 0.6s;
   -webkit-animation-iteration-count: 1;
@@ -211,6 +211,10 @@ body.dark {
     transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
     -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
   }
+}
+
+.app {
+  position: relative;
 }
 
 .logo {
@@ -255,27 +259,32 @@ body.dark {
   border-radius: 0.1rem;
 }
 
-.app .nav-bar {
-  position: absolute;
+.app .nav-bar-container {
+  position: relative;
+  top: 0;
+  z-index: 10;
+}
+
+.app .nav-bar-container .bd {
   top: -0.25rem;
   right: 0;
-  z-index: 10;
+  position: absolute;
   display: inline-block;
   transition: all 1s;
 }
 
-.app .nav-bar > * {
+.app .nav-bar-container .bd > * {
   float: left;
   display: inline-block;
   cursor: pointer;
   margin-right: 0.4rem;
 }
 
-.app .nav-bar:last-child {
+.app .nav-bar-container .bd:last-child {
   margin-right: 0;
 }
 
-.app .nav-bar i {
+.app .nav-bar-container .bd i {
   width: auto;
   height: auto;
   margin: 0 !important;
@@ -283,100 +292,75 @@ body.dark {
   color: #70B7FD;
 }
 
-.app .nav-bar i:hover, .app .nav-bar i:active {
+.app .nav-bar-container .bd i:hover, .app .nav-bar-container .bd i:active {
   color: #59AAF9;
 }
 
-.app .nav-bar .github-corner {
+.app .nav-bar-container .bd .github-corner {
   margin-top: -0.2rem;
 }
 
-.app .nav-bar .github-corner i {
+.app .nav-bar-container .bd .github-corner i {
   font-size: 2.3rem;
 }
 
-.app .nav-bar .copybook-btn {
+.app .nav-bar-container .bd .copybook-btn {
   display: none;
 }
 
-@media screen and (min-width: 50rem) {
-  .app .nav-bar {
-    top: -0.55rem;
-  }
-  .app .nav-bar i {
-    width: auto;
-    height: 3.4rem;
-    font-size: 3rem;
-  }
-  .app .nav-bar .copybook-btn.copybook-btn.copybook-btn {
-    display: inline-block;
-  }
-  .app .nav-bar .github-corner {
-    margin-top: -0.2rem;
-  }
-  .app .nav-bar .github-corner i {
-    font-size: 3.3rem;
-  }
-}
-
-.app .nav-bar > *:nth-child(1) {
+.app .nav-bar-container .bd > *:nth-child(1) {
   -webkit-animation-duration: 500ms;
           animation-duration: 500ms;
   -webkit-animation-delay: 500ms;
           animation-delay: 500ms;
 }
 
-.app .nav-bar > *:nth-child(2) {
+.app .nav-bar-container .bd > *:nth-child(2) {
   -webkit-animation-duration: 500ms;
           animation-duration: 500ms;
   -webkit-animation-delay: 650ms;
           animation-delay: 650ms;
 }
 
-.app .nav-bar > *:nth-child(3) {
+.app .nav-bar-container .bd > *:nth-child(3) {
   -webkit-animation-duration: 500ms;
           animation-duration: 500ms;
   -webkit-animation-delay: 800ms;
           animation-delay: 800ms;
 }
 
-.app .nav-bar > *:nth-child(4) {
+.app .nav-bar-container .bd > *:nth-child(4) {
   -webkit-animation-duration: 500ms;
           animation-duration: 500ms;
   -webkit-animation-delay: 950ms;
           animation-delay: 950ms;
 }
 
-.app .nav-bar > *:nth-child(5) {
+.app .nav-bar-container .bd > *:nth-child(5) {
   -webkit-animation-duration: 500ms;
           animation-duration: 500ms;
   -webkit-animation-delay: 1100ms;
           animation-delay: 1100ms;
 }
 
-.app .notice-links {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding-bottom: 1rem;
-  padding-top: 0.5rem;
-  text-align: center;
-  background-color: #fff;
-  transition: background-color 150ms ease-in-out;
-}
-
-body.dark .app .notice-links {
-  background-color: #272b38;
-}
-
-.app .notice-links a {
-  display: none;
-  color: #70B7FD;
-}
-
-.app .notice-links a.show {
-  display: block;
+@media screen and (min-width: 50rem) {
+  .app .nav-bar-container {
+    top: -0.55rem;
+  }
+  .app .nav-bar-container .bd i {
+    width: auto;
+    height: 3.4rem;
+    font-size: 3rem;
+  }
+  .app .nav-bar-container .bd .copybook-btn.copybook-btn.copybook-btn {
+    display: inline-block;
+  }
+  .app .nav-bar-container .bd .github-corner {
+    margin-top: -0.2rem;
+  }
+  .app .nav-bar-container .bd .github-corner i {
+    font-size: 3.3rem;
+  }
 }
 
 .source-code.source-code > .header {
@@ -402,71 +386,7 @@ body.dark .app .notice-links {
   padding-bottom: 0.4rem !important;
 }
 
-.copybook.copybook > .header {
-  padding: 0.8rem 1rem;
-}
-
-.copybook > .content {
-  position: relative;
-}
-
-.copybook > .content:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
-  transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.copybook > .content:hover:after, .copybook > .content:focus:after {
-  background: rgba(255, 255, 255, 0.76);
-}
-
-.copybook > .content pre {
-  position: relative;
-  display: inline-block;
-  margin: 0;
-  padding: 0;
-  min-width: 98%;
-}
-
-.copybook > .content code {
-  display: inline-block;
-  color: #000;
-}
-
-.copybook .ui.search.selection.dropdown {
-  font-size: .8rem;
-  min-width: 30rem;
-}
-
-.copybook .ui.search.selection.dropdown .menu > .item {
-  font-size: .8rem;
-}
-
-.copybook__title {
-  text-align: center;
-  font-size: 1rem;
-  margin-bottom: -0.2rem;
-  margin-top: -1rem;
-}
-
-.copybook__editor {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 4;
-  color: #000;
-  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-  outline: none;
-}
-
-.app .main {
+.app .main-container {
   position: relative;
   display: flex;
   align-items: center;
@@ -474,7 +394,7 @@ body.dark .app .notice-links {
   padding-bottom: 3rem;
 }
 
-.app .main .title {
+.app .main-container .title {
   text-align: center;
   margin-top: 5rem;
   margin-bottom: 2rem;
@@ -482,22 +402,22 @@ body.dark .app .notice-links {
 }
 
 @media screen and (min-width: 50rem) {
-  .app .main .title {
+  .app .main-container .title {
     margin-top: 8rem;
   }
 }
 
-.app .main .title a {
+.app .main-container .title a {
   color: inherit;
   text-decoration: none;
 }
 
-.app .main .title a:visited, .app .main .title a:link, .app .main .title a:active, .app .main .title a:hover {
+.app .main-container .title a:visited, .app .main-container .title a:link, .app .main-container .title a:active, .app .main-container .title a:hover {
   color: inherit;
   text-decoration: none;
 }
 
-.app .main .title span {
+.app .main-container .title span {
   font-family: "Dressedless Three", Lato, Roboto, 'Helvetica Neue', Arial, Helvetica, sans-serif;
   text-transform: uppercase;
   font-size: 3.5rem;
@@ -505,12 +425,12 @@ body.dark .app .notice-links {
 }
 
 @media screen and (min-width: 50rem) {
-  .app .main .title span {
+  .app .main-container .title span {
     font-size: 5rem;
   }
 }
 
-.app .main .title.animated span {
+.app .main-container .title.animated span {
   -webkit-animation-name: fadeIn;
           animation-name: fadeIn;
   -webkit-animation-duration: 250ms;
@@ -525,60 +445,60 @@ body.dark .app .notice-links {
   /*F*/
 }
 
-.app .main .title.animated span:nth-child(1) {
+.app .main-container .title.animated span:nth-child(1) {
   color: #4285F4;
 }
 
-.app .main .title.animated span:nth-child(2) {
+.app .main-container .title.animated span:nth-child(2) {
   color: #DB4437;
 }
 
-.app .main .title.animated span:nth-child(3) {
+.app .main-container .title.animated span:nth-child(3) {
   color: #F4B400;
 }
 
-.app .main .title.animated span:nth-child(4) {
+.app .main-container .title.animated span:nth-child(4) {
   color: #4285F4;
 }
 
-.app .main .title.animated span:nth-child(5) {
+.app .main-container .title.animated span:nth-child(5) {
   color: #0F9D58;
 }
 
-.app .main .title.animated span:nth-child(6) {
+.app .main-container .title.animated span:nth-child(6) {
   color: #DB4437;
 }
 
-body.dark .app .main .title {
+body.dark .app .main-container .title {
   margin-top: 3rem;
   margin-bottom: 0;
 }
 
 @media screen and (min-width: 50rem) {
-  body.dark .app .main .title {
+  body.dark .app .main-container .title {
     margin-top: 5rem;
     margin-bottom: 1rem;
   }
 }
 
-.app .main .search-bar {
+.app .main-container .search-bar {
   padding: 1rem 0;
   width: 100%;
 }
 
 @media screen and (min-width: 50rem) {
-  .app .main .search-bar {
+  .app .main-container .search-bar {
     width: 45rem;
   }
 }
 
-.app .main .search-bar form {
+.app .main-container .search-bar form {
   padding: 0;
   margin: 0;
   border: 0;
 }
 
-.app .main .search-bar__desc {
+.app .main-container .search-bar__desc {
   opacity: 0.5;
   padding-left: 0.8rem;
   font-size: 0.8rem;
@@ -587,7 +507,7 @@ body.dark .app .main .title {
 }
 
 @media screen and (min-width: 50rem) {
-  .app .main .search-bar__desc {
+  .app .main-container .search-bar__desc {
     padding-left: 1.4rem;
     font-size: 1rem;
     line-height: 1.5;
@@ -595,23 +515,23 @@ body.dark .app .main .title {
   }
 }
 
-.app .main .search-bar__input {
+.app .main-container .search-bar__input {
   background: #F1F3F4;
   border-radius: 5rem;
   transition: box-shadow 350ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.app .main .search-bar__input:focus, .app .main .search-bar__input:active, .app .main .search-bar__input:hover {
+.app .main-container .search-bar__input:focus, .app .main-container .search-bar__input:active, .app .main-container .search-bar__input:hover {
   box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
-.app .main .search-bar__input input {
+.app .main-container .search-bar__input input {
   background: #F1F3F4;
   border-radius: 5rem;
   border: 0 !important;
 }
 
-.app .main .search-bar__dropdown {
+.app .main-container .search-bar__dropdown {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -619,98 +539,187 @@ body.dark .app .main .title {
   margin-left: 1rem;
 }
 
-.app .main .search-bar__dropdown i {
+.app .main-container .search-bar__dropdown i {
   opacity: 0.5;
   font-size: 1rem;
 }
 
-.app .main .search-bar__dropdown i:hover {
+.app .main-container .search-bar__dropdown i:hover {
   opacity: 1;
 }
 
 @media screen and (min-width: 50rem) {
-  .app .main .search-bar__dropdown i {
+  .app .main-container .search-bar__dropdown i {
     font-size: 1.2rem;
   }
 }
 
-.app .main .search-bar__plugins {
+.app .main-container .search-bar__plugins {
   padding-left: 0.8rem;
   color: inherit;
   opacity: 0.5;
   font-size: 0.8rem;
 }
 
-.app .main .search-bar__plugins a, .app .main .search-bar__plugins a:hover, .app .main .search-bar__plugins a:link, .app .main .search-bar__plugins a:active, .app .main .search-bar__plugins a:focus, .app .main .search-bar__plugins a:visited {
+.app .main-container .search-bar__plugins a, .app .main-container .search-bar__plugins a:hover, .app .main-container .search-bar__plugins a:link, .app .main-container .search-bar__plugins a:active, .app .main-container .search-bar__plugins a:focus, .app .main-container .search-bar__plugins a:visited {
   color: inherit;
 }
 
-.app .main .search-bar__plugins a:hover {
+.app .main-container .search-bar__plugins a:hover {
   text-decoration: underline;
 }
 
 @media screen and (min-width: 50rem) {
-  .app .main .search-bar__plugins {
+  .app .main-container .search-bar__plugins {
     padding-left: 1.4rem;
     font-size: 1rem;
   }
 }
 
-body.dark .app .main .search-bar__input:focus, body.dark .app .main .search-bar__input:active, body.dark .app .main .search-bar__input:hover {
+body.dark .app .main-container .search-bar__input:focus, body.dark .app .main-container .search-bar__input:active, body.dark .app .main-container .search-bar__input:hover {
   box-shadow: #bbbbbb 0px 2px 8px !important;
 }
 
-.app .main .suggestion {
+.app .main-container .suggestion {
   padding-bottom: 2rem;
   max-width: 100%;
 }
 
 @media screen and (min-width: 50rem) {
-  .app .main .suggestion {
+  .app .main-container .suggestion {
     min-width: 43rem;
   }
 }
 
-.app .main .suggestion a:hover {
+.app .main-container .suggestion a:hover {
   text-decoration: underline;
 }
 
-.app .main .variable-list {
+.app .main-container .variable-list {
   width: 100%;
   text-align: center;
 }
 
-.app .main .variable-list .label {
+.app .main-container .variable-list .label {
   margin: 0.4rem 0.4rem 0 0;
 }
 
-.app .main .variable-list .label:hover {
+.app .main-container .variable-list .label:hover {
   box-shadow: #bbbbbb 0px 2px 8px !important;
 }
 
-.app .main .variable-list hr {
+.app .main-container .variable-list hr {
   width: 70%;
   border-color: rgba(0, 0, 0, 0.16);
   margin-top: 1rem;
 }
 
-.app .main .search-error {
+.app .main-container .search-error {
   margin: 1rem 0;
 }
 
-.app .main .slogan-image {
+.app .main-container .slogan-image {
   padding: 2rem 1rem;
 }
 
 @media screen and (min-width: 50rem) {
-  .app .main .slogan-image {
+  .app .main-container .slogan-image {
     padding: 4rem 1rem;
   }
 }
 
-.app .main .slogan-image img {
+.app .main-container .slogan-image img {
   max-width: 100%;
   height: auto;
+}
+
+.copybook-container.copybook-container > .header {
+  padding: 0.8rem 1rem;
+}
+
+.copybook-container > .content {
+  position: relative;
+}
+
+.copybook-container > .content:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.copybook-container > .content:hover:after, .copybook-container > .content:focus:after {
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.copybook-container > .content pre {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  min-width: 98%;
+}
+
+.copybook-container > .content code {
+  display: inline-block;
+  color: #000;
+}
+
+.copybook-container .ui.search.selection.dropdown {
+  font-size: .8rem;
+  min-width: 30rem;
+}
+
+.copybook-container .ui.search.selection.dropdown .menu > .item {
+  font-size: .8rem;
+}
+
+.copybook-container .title {
+  text-align: center;
+  font-size: 1rem;
+  margin-bottom: -0.2rem;
+  margin-top: -1rem;
+}
+
+.copybook-container .editor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
+  color: #000;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  outline: none;
+}
+
+.app .notice-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding-bottom: 1rem;
+  padding-top: 0.5rem;
+  text-align: center;
+  background-color: #fff;
+  transition: background-color 150ms ease-in-out;
+}
+
+body.dark .app .notice-container {
+  background-color: #272b38;
+}
+
+.app .notice-container a {
+  display: none;
+  color: #70B7FD;
+}
+
+.app .notice-container a.show {
+  display: block;
 }
 
 /*# sourceMappingURL=../app.css.map */
