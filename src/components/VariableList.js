@@ -9,6 +9,7 @@ let lastPageLen = 0;
 
 export default function VariableList(props) {
   const variableList = props.variableList;
+  lastPageLen = variableList.length < variableList ? 0 : variableList;
   const list = useMemo(() => { // same as "shouldComponentUpdate", only compute when "variableList" has changed
     const pageLen = variableList.length;
     let pages = [];

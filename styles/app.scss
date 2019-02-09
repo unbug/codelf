@@ -4,6 +4,7 @@
 @import 'utils';
 @import "animation";
 .app {
+  position: relative;
   @import 'components';
   @import 'containers';
 }

@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react';
 import {Icon} from 'semantic-ui-react';
 
-export default function NoticeLinks() {
+export default function NoticeContainer() {
   const listEl = useRef(null);
   useSliderEffect(listEl);
 
   return (
-    <div className='notice-links' ref={listEl}>
+    <div className='notice-container' ref={listEl}>
       <a className='animated fadeIn show' target='_blank' rel='noopener noreferrer'
          href='https://github.com/unbug/snts'>
         <Icon name='heartbeat'/> SAY NO TO SUICIDE PUBLIC LICENSE

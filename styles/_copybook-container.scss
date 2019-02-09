@@ -1,5 +1,5 @@
 @at-root {
-  .copybook {
+  .copybook-container {
     &#{&}> .header {
       padding: 0.8rem 1rem;
     }
@@ -39,13 +39,13 @@
         font-size: .8rem;
       }
     }
-    &__title {
+    .title {
       text-align: center;
       font-size: 1rem;
       margin-bottom: -0.2rem;
       margin-top: -1rem;
     }
-    &__editor {
+    .editor {
       position: absolute;
       top: 0;
       left: 0;

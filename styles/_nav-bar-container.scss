@@ -1,0 +1,67 @@
+.nav-bar-container {
+  position: relative;
+  top: 0;
+  z-index: 10;
+  .bd {
+    top: -0.25rem;
+    right: 0;
+    position: absolute;
+    display: inline-block;
+    transition: all 1s;
+    >*{
+      float: left;
+      display: inline-block;
+      cursor: pointer;
+      margin-right: 0.4rem;
+    }
+    &:last-child{
+      margin-right: 0;
+    }
+    i{
+      width: auto;
+      height: auto;
+      margin: 0 !important;
+      font-size: 2rem;
+      color: #70B7FD;
+      &:hover,&:active{
+        color: #59AAF9;
+      }
+    }
+    .github-corner {
+      margin-top: -0.2rem;
+      i {
+        font-size: 2.3rem;
+      }
+    }
+    .copybook-btn {
+      display: none;
+    }
+    $anim-delay: 150ms;
+    $anim-duration: 500ms;
+    @for $i from 1 through 5 {
+      >*:nth-child(#{$i}) {
+        animation-duration: $anim-duration;
+        animation-delay: 500 + $anim-delay*($i - 1);
+      }
+    }
+  }
+  @media screen and (min-width: 50rem) {
+    top: -0.55rem;
+    .bd {
+      i{
+        width: auto;
+        height: 3.4rem;
+        font-size: 3rem;
+      }
+      .copybook-btn.copybook-btn.copybook-btn {
+        display: inline-block;
+      }
+      .github-corner {
+        margin-top: -0.2rem;
+        i {
+          font-size: 3.3rem;
+        }
+      }
+    }
+  }
+}

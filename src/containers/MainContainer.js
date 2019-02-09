@@ -8,34 +8,25 @@ import VariableList from '../components/VariableList';
 import SearchError from '../components/SearchError';
 import Loading from '../components/Loading';
 import Donate from '../components/Donate';
-import NoticeLinks from '../components/NoticeLinks';
 import Suggestion from '../components/Suggestion';
-import NavBar from '../components/NavBar';
 import SourceCode from '../components/SourceCode';
 import AppModel from '../models/AppModel';
 import DDMSModel from '../models/DDMSModel';
-import CopybookModel from '../models/CopybookModel';
-import Copybook from '../components/Copybook';
 
 export default class MainContainer extends React.Component {
   state = {
     isZH: false,
     isError: false,
-    requestingVariable: false,
+    variableRequesting: false,
     searchValue: SearchCodeModel.searchValue,
     searchLang: SearchCodeModel.searchLang,
     page: SearchCodeModel.page,
     variableList: SearchCodeModel.variableList,
     suggestion: SearchCodeModel.suggestion,
-    requestingSourceCode: false,
+    sourceCodeRequesting: false,
     sourceCodeVisible: false,
     sourceCodeVariable: null,
     sourceCodeRepo: null,
-    requestingCopybook: false,
-    copybookVisible: false,
-    copybookFileList: CopybookModel.fileList,
-    copybookSelectedFile: CopybookModel.selectedFile,
-    copybookFileContent: CopybookModel.fileContent,
   }
 
   repoList = null;
@@ -43,7 +34,6 @@ export default class MainContainer extends React.Component {
   constructor(props) {
     super(props);
     SearchCodeModel.onUpdated(this.handleSearchCodeModelUpdate);
-    CopybookModel.onUpdated(this.handleCopybookModelUpdate);
     window.addEventListener('hashchange', this.handleLocationHashChanged, false);
     AppModel.analytics();
   }
@@ -57,7 +47,7 @@ export default class MainContainer extends React.Component {
   }
 
   checkError(data) {
-    if (this.state.requestingVariable) {
+    if (this.state.variableRequesting) {
       // no search result
       if (data.variableList.length < 1 || data.variableList[data.variableList.length - 1].length < 1)  {
         return true;
@@ -75,7 +65,7 @@ export default class MainContainer extends React.Component {
     } else {
       page = 0;
     }
-    this.setState({searchValue: val, requestingVariable: true});
+    this.setState({searchValue: val, variableRequesting: true});
     SearchCodeModel.requestVariable(val, page,  lang || this.state.searchLang);
     AppModel.analytics('q=' + val);
     DDMSModel.postKeyWords(val);
@@ -85,19 +75,11 @@ export default class MainContainer extends React.Component {
   requestSourceCode = repo => {
     this.setState({
       sourceCodeVisible: true,
-      requestingSourceCode: true,
+      sourceCodeRequesting: true,
       sourceCodeRepo: repo
     });
     SearchCodeModel.requestSourceCode(repo.id);
     AppModel.analytics('sourcecode&q=' + this.state.sourceCodeVariable.keyword);
-  }
-
-  requestCopybookFile = file => {
-    this.setState({
-      requestingCopybook: true,
-    });
-    CopybookModel.requestRepoFile(file);
-    AppModel.analytics('copybook&q=read');
   }
 
   updateDocTitle = title => {
@@ -115,7 +97,7 @@ export default class MainContainer extends React.Component {
       this.setState({
         isZH: SearchCodeModel.isZH || this.state.isZH,
         isError: this.checkError(curr),
-        requestingVariable: !mutation.variableList,
+        variableRequesting: !mutation.variableList,
         searchValue: SearchCodeModel.searchValue,
         searchLang: SearchCodeModel.searchLang,
         page: SearchCodeModel.page,
@@ -125,29 +107,14 @@ export default class MainContainer extends React.Component {
     }
     if (mutation.sourceCode) {
       this.setState({
-        requestingSourceCode: false,
+        sourceCodeRequesting: false,
         sourceCode: SearchCodeModel.sourceCode
       });
     }
   }
 
-  handleCopybookModelUpdate = (curr, prev, mutation) => {
-    if (mutation.fileList) {
-      this.setState({
-        copybookFileList: CopybookModel.fileList
-      });
-    }
-    if (mutation.fileContent) {
-      this.setState({
-        requestingCopybook: false,
-        copybookSelectedFile: CopybookModel.selectedFile,
-        copybookFileContent: CopybookModel.fileContent,
-      });
-    }
-  }
-
   handleSearch = (val, lang) => {
-    if (val === null || val === undefined || this.state.requestingVariable) { return; }
+    if (val === null || val === undefined || this.state.variableRequesting) { return; }
     val = val.trim().replace(/\s+/ig, ' '); // filter spaces
     if (val.length < 1) { return; }
     if (val == this.state.searchValue) {
@@ -171,19 +138,6 @@ export default class MainContainer extends React.Component {
     this.requestSourceCode(repo);
   }
 
-  handleOpenCopybook = () => {
-    this.setState({copybookVisible: true});
-    AppModel.analytics('copybook&q=read');
-  }
-
-  handleCloseCopybook = () => {
-    this.setState({copybookVisible: false});
-  }
-
-  handleRequestCopybookFile = file => {
-    this.requestCopybookFile(file);
-  }
-
   renderSloganImage() {
     if (this.state.page > 0 || this.state.variableList.length) { return ''; }
     return <div className='slogan-image'><img src='images/twohardtings.jpg'/></div>;
@@ -191,22 +145,17 @@ export default class MainContainer extends React.Component {
 
   render() {
     return (
-      <Container className='main'>
+      <Container className='main-container'>
         <TitleLogo/>
         <SearchBar placeholder='AI 人工智能' {...this.state} onSearch={this.handleSearch}/>
         <Suggestion {...this.state}/>
-        {this.state.requestingVariable ? <Loading/> : (this.state.isError ? <SearchError/> : '')}
+        {this.state.variableRequesting ? <Loading/> : (this.state.isError ? <SearchError/> : '')}
         {this.renderSloganImage()}
         <VariableList {...this.state} onOpenSourceCode={this.handleOpenSourceCode}/>
         {this.state.variableList.length ? <Donate {...this.state}/> : ''}
-        <NoticeLinks/>
-        <NavBar onOpenCopybook={this.handleOpenCopybook}/>
         <SourceCode {...this.state}
                     onRequestSourceCode={this.handleRequestSourceCode}
                     onCloseSourceCode={this.handleCloseSourceCode}/>
-        <Copybook {...this.state}
-                  onRequestCopybookFile={this.handleRequestCopybookFile}
-                  onCloseCopybook={this.handleCloseCopybook}/>
       </Container>
     )
   }

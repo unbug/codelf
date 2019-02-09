@@ -10,6 +10,7 @@ class CopybookModel extends BaseModel {
   constructor() {
     super();
     this._data = {
+      visible: false,
       fileList: [],
       selectedFile: null,
       fileContent: null,
@@ -82,6 +83,10 @@ class CopybookModel extends BaseModel {
 
   get fileContent() {
     return this._data.fileContent;
+  }
+
+  get visible() {
+    return this._data.visible;
   }
 }
 

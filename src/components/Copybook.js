@@ -1,58 +1,44 @@
-import React from 'react';
+import {useEffect, useRef} from 'react';
 import {Button, Dropdown, Modal} from 'semantic-ui-react';
 import Loading from "./Loading";
 
-export default class Copybook extends React.Component {
-  code = React.createRef();
-  editor = React.createRef();
-  visible = false;
+export default function Copybook(props) {
+  const codeEl = useRef(null);
+  const editorEl = useRef(null);
 
-  constructor(props) {
-    super(props);
+  useEffect(() => {
+    renderPrettyPrint();
+  }, [props.copybookFileContent, props.copybookVisible]);
+
+  function handleClose() {
+    props.onCloseCopybook();
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.copybookFileContent != this.props.copybookFileContent
-      || (!this.visiable && this.props.copybookVisible)) {
-      this.renderPrettyPrint();
-      this.visible = true;
-    }
-  }
-
-  componentDidMount() {
-    this.renderPrettyPrint();
-  }
-
-  handleClose = () => {
-    this.visiable = false;
-    this.props.onCloseCopybook();
-  }
-
-  handleDropdownChange = (e, { searchQuery, value }) => {
-    if (value != this.props.copybookSelectedFile.path) {
-      this.props.onRequestCopybookFile(
-        this.props.copybookFileList.find(f => f.path === value)
+  function handleDropdownChange(e, { searchQuery, value }) {
+    if (value != props.copybookSelectedFile.path) {
+      props.onRequestCopybookFile(
+        props.copybookFileList.find(f => f.path === value)
       );
     }
   }
 
-  renderPrettyPrint = () => {
+  function renderPrettyPrint() {
     setTimeout(() => {
-      if (this.editor.current) {
-        this.editor.current.innerHTML = '';
+      if (editorEl.current) {
+        editorEl.current.innerHTML = '';
       }
-      if (this.code.current) {
-        this.code.current.classList.remove('prettyprinted');
+      if (codeEl.current) {
+        codeEl.current.classList.remove('prettyprinted');
         setTimeout(() => PR.prettyPrint(), 100);
       }
-    }, this.code.current ? 0 : 1000);
+    }, codeEl.current ? 0 : 1000);
   }
 
-  renderDropdownItem() {
-    if (!this.props.copybookFileList) {
+  function renderDropdownItem() {
+    if (!props.copybookFileList) {
       return null;
     }
-    return this.props.copybookFileList.map((file, idx) => {
+    return props.copybookFileList.map((file, idx) => {
       return {
         key: file.path,
         value: file.path,
@@ -61,47 +47,43 @@ export default class Copybook extends React.Component {
     });
   }
 
-  render() {
-    if (!this.props.copybookVisible
-      || !this.props.copybookFileList
-      || !this.props.copybookFileContent) {
-      return (
-        <Modal open={this.props.copybookVisible} onClose={this.handleClose}
-               centered={false} closeIcon className='copybook fix-modal' size='large'>
-          <Modal.Header>
-            <div className='copybook__title'>Daily Algorithm Copybook</div>
-          </Modal.Header>
-          <Modal.Content>
-            <Loading/>
-            <pre><code className='prettyprint' ref={this.code}></code></pre>
-          </Modal.Content>
-        </Modal>
-      );
-    }
-    const copybookSelectedFile = this.props.copybookSelectedFile;
+  if (!props.copybookVisible || !props.copybookFileList || !props.copybookFileContent) {
     return (
-      <Modal open={this.props.copybookVisible} onClose={this.handleClose}
-             centered={false} closeIcon className='copybook fix-modal' size='large'>
+      <Modal open={props.copybookVisible} onClose={handleClose}
+             centered={false} closeIcon className={props.className} size='large'>
         <Modal.Header>
-          <div className='copybook__title'>Daily Algorithm Copybook</div>
-          <Button size='tiny' as='a' basic
-                  href={this.props.copybookSelectedFile.link}
-                  target='_blank'>View In GitHub</Button>
-          <Dropdown
-            search
-            selection
-            onChange={this.handleDropdownChange}
-            value={copybookSelectedFile.path}
-            options={this.renderDropdownItem()}/>
+          <div className='title'>Daily Algorithm Copybook</div>
         </Modal.Header>
         <Modal.Content>
-          {this.props.requestingCopybook ? <Loading/> : ''}
-          <pre>
-            <code className='prettyprint' ref={this.code}>{this.props.copybookFileContent.content}</code>
-            <div className='copybook__editor' contentEditable={true} ref={this.editor}></div>
-          </pre>
+          <Loading/>
+          <pre><code className='prettyprint' ref={codeEl}></code></pre>
         </Modal.Content>
       </Modal>
-    )
+    );
   }
+
+  return (
+    <Modal open={props.copybookVisible} onClose={handleClose}
+           centered={false} closeIcon className={props.className} size='large'>
+      <Modal.Header>
+        <div className='title'>Daily Algorithm Copybook</div>
+        <Button size='tiny' as='a' basic
+                href={props.copybookSelectedFile.link}
+                target='_blank'>View In GitHub</Button>
+        <Dropdown
+          search
+          selection
+          onChange={handleDropdownChange}
+          value={props.copybookSelectedFile.path}
+          options={renderDropdownItem()}/>
+      </Modal.Header>
+      <Modal.Content>
+        {props.copybookRequesting ? <Loading/> : ''}
+        <pre>
+          <code className='prettyprint' ref={codeEl}>{props.copybookFileContent.content}</code>
+          <div className='editor' contentEditable={true} ref={editorEl}></div>
+        </pre>
+      </Modal.Content>
+    </Modal>
+  )
 }
