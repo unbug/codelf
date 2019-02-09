@@ -1,4 +1,4 @@
-import React from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {Dropdown, Icon, Input} from 'semantic-ui-react';
 
 // http://githut.info/
@@ -28,121 +28,108 @@ const topProgramLan = [
   {id: 42, language: 'ActionScript'}
 ];
 
-export default class SearchBar extends React.Component {
-  input = React.createRef();
-  select = React.createRef();
+export default function SearchBar(props) {
+  const inputEl = useRef(null);
+  const inputSize = useInputSize('huge');
+  const [state, setState] = useState({
+    lang: props && props.searchLang ? props.searchLang : [],
+    valChanged: false
+  });
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      lang: props && props.searchLang ? props.searchLang : [],
-      prevProps: props,
-      inputSize: 'huge',
-      inputChanged: false
-    }
-    window.addEventListener('resize', this.resizeInput, false)
+  function updateState(vals) {
+    setState(prevState => {
+      return {...prevState, ...vals};
+    });
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    // avoid calculating expensive derived data
-    if (prevState.prevProps === nextProps) {
-      return null
-    }
-    let newState = {
-      prevProps: nextProps // prevProps memoization
-    }
-    // derived state from props
-    if (prevState.prevProps.searchLang != nextProps.searchLang) {
-      newState.lang = nextProps.searchLang;
-    }
-    return newState;
+  function handleSearch() {
+    props.onSearch(inputEl.current.inputRef.value, state.lang);
+    inputEl.current.inputRef.blur();
+    updateState({valChanged: false});
   }
 
-  componentDidMount() {
-    this.resizeInput();
+  function handleRestLang() {
+    updateState({lang: [], valChanged: true});
   }
 
-  resizeInput = () => {
-    this.setState({inputSize: document.body.offsetWidth < 800 ? '' : 'huge'})
+  function handleSelectLang(id) {
+    updateState({lang: state.lang.concat(id).sort(), valChanged: true});
   }
 
-  handleSearch = () => {
-    this.setState({inputChanged: false});
-    this.props.onSearch(this.input.current.inputRef.value, this.state.lang);
-    this.input.current.inputRef.blur();
+  function handleDeselectLang(id) {
+    let lang = state.lang;
+    lang.splice(state.lang.indexOf(id), 1);
+    updateState({lang: lang.sort(), valChanged: true});
   }
 
-  handleRestLang = () => {
-    this.setState({lang: [], inputChanged: true});
+  function handleToggleSelectLang(id) {
+    state.lang.indexOf(id) === -1 ? handleSelectLang(id) : handleDeselectLang(id);
   }
 
-  handleSelectLang = id => {
-    this.setState({lang: this.state.lang.concat(id).sort(), inputChanged: true});
-  }
+  const langItems = topProgramLan.map(key => {
+    const active = state.lang.indexOf(key.id) !== -1;
+    return <Dropdown.Item key={key.id}
+                          active={active}
+                          onClick={() => handleToggleSelectLang(key.id)}>
+      <Icon name={active ? 'check circle outline' : 'circle outline'}/>{key.language}
+    </Dropdown.Item>;
+  });
 
-  handleDeselectLang = id => {
-    let lang = this.state.lang;
-    lang.splice(this.state.lang.indexOf(id), 1);
-    this.setState({lang: lang.sort(), inputChanged: true});
-  }
-
-  handleToggleSelectLang = id => {
-    this.state.lang.indexOf(id) === -1 ? this.handleSelectLang(id) : this.handleDeselectLang(id);
-  }
-
-  renderItems() {
-    return topProgramLan.map(key => {
-      const active = this.state.lang.indexOf(key.id) !== -1;
-      return <Dropdown.Item key={key.id}
-                            active={active}
-                            onClick={() => this.handleToggleSelectLang(key.id)}>
-        <Icon name={active ? 'check circle outline' : 'circle outline'}/>{key.language}
-      </Dropdown.Item>;
-    })
-  }
-
-  render() {
-    return (
-      <div className='search-bar'>
-        <div className='search-bar__desc'>
-          Search over GitHub, Bitbucket, GitLab to find real-world usage variable names
-        </div>
-        <form action="javascript:void(0);">
-        <Input ref={this.input}
-               onChange={() => this.setState({inputChanged: true})}
-               className='search-bar__input'
-               icon fluid placeholder={this.props.placeholder} size={this.state.inputSize}>
-          <Dropdown floating text='' icon='filter' className='search-bar__dropdown'>
-            <Dropdown.Menu>
-              <Dropdown.Item icon='undo' text='All 90 Languages (Reset)' onClick={this.handleRestLang}/>
-              <Dropdown.Menu scrolling className='fix-dropdown-menu'>
-                {this.renderItems()}
-              </Dropdown.Menu>
-            </Dropdown.Menu>
-          </Dropdown>
-
-          <input type='search' name='search' defaultValue={this.props.searchValue}
-                 onKeyPress={e => {
-                   e.key === 'Enter' && this.handleSearch()
-                 }}/>
-          <Icon name={(this.props.variableList.length && !this.state.inputChanged) ? 'search plus' : 'search'}
-                link onClick={() => this.handleSearch()}/>
-        </Input>
-        </form>
-        <div className='search-bar__plugins'>
-          Extensions:&nbsp;
-          <a href='https://github.com/unbug/codelf#codelf-for-vs-code'
-             target='_blank' rel='noopener noreferrer'>VS Code</a>,&nbsp;
-          <a className='text-muted' href='https://atom.io/packages/codelf'
-             target='_blank' rel='noopener noreferrer'>Atom</a>,&nbsp;
-          <a className='text-muted' href='https://github.com/unbug/codelf#codelf-for-sublime-text'
-             target='_blank' rel='noopener noreferrer'>Sublime</a>,&nbsp;
-          <a href='https://github.com/unbug/codelf/issues/24'
-             target='_blank' rel='noopener noreferrer'>WebStorm</a>,&nbsp;
-          <a href='https://github.com/unbug/codelf/issues/63'
-             target='_blank' rel='noopener noreferrer'>Alfred</a>
-        </div>
+  return (
+    <div className='search-bar'>
+      <div className='search-bar__desc'>
+        Search over GitHub, Bitbucket, GitLab to find real-world usage variable names
       </div>
-    )
+      <form action="javascript:void(0);">
+      <Input ref={inputEl}
+             onChange={() => updateState({valChanged: true})}
+             className='search-bar__input'
+             icon fluid placeholder={props.placeholder} size={inputSize}>
+        <Dropdown floating text='' icon='filter' className='search-bar__dropdown'>
+          <Dropdown.Menu>
+            <Dropdown.Item icon='undo' text='All 90 Languages (Reset)' onClick={handleRestLang}/>
+            <Dropdown.Menu scrolling className='fix-dropdown-menu'>
+              {langItems}
+            </Dropdown.Menu>
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <input type='search' name='search' defaultValue={props.searchValue}
+               onKeyPress={e => {
+                 e.key === 'Enter' && handleSearch()
+               }}/>
+        <Icon name={(props.variableList.length && !state.valChanged) ? 'search plus' : 'search'}
+              link onClick={() => handleSearch()}/>
+      </Input>
+      </form>
+      <div className='search-bar__plugins'>
+        Extensions:&nbsp;
+        <a href='https://github.com/unbug/codelf#codelf-for-vs-code'
+           target='_blank' rel='noopener noreferrer'>VS Code</a>,&nbsp;
+        <a className='text-muted' href='https://atom.io/packages/codelf'
+           target='_blank' rel='noopener noreferrer'>Atom</a>,&nbsp;
+        <a className='text-muted' href='https://github.com/unbug/codelf#codelf-for-sublime-text'
+           target='_blank' rel='noopener noreferrer'>Sublime</a>,&nbsp;
+        <a href='https://github.com/unbug/codelf/issues/24'
+           target='_blank' rel='noopener noreferrer'>WebStorm</a>,&nbsp;
+        <a href='https://github.com/unbug/codelf/issues/63'
+           target='_blank' rel='noopener noreferrer'>Alfred</a>
+      </div>
+    </div>
+  )
+}
+
+function useInputSize(val) {
+  const [size, setSize] = useState(val);
+
+  useEffect(() => {
+    window.addEventListener('resize', resizeInput, false);
+    return () => window.removeEventListener('resize', resizeInput, false);
+  }, []);// run an effect and clean it up only once (on mount and unmount), you can pass an empty array ([])
+
+  function resizeInput() {
+    setSize(document.body.offsetWidth < 800 ? '' : val);
   }
+
+  return size;
 }

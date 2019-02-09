@@ -33,7 +33,7 @@ function useSliderEffect(el) {
   useEffect(() => {
     const timer = setInterval(() => renderItem(el.current.children), 10000);
     return () => clearInterval(timer);
-  }, []); // pass [] to run an effect and clean it up only once
+  }, []); // run an effect and clean it up only once (on mount and unmount), you can pass an empty array ([])
 
   let active = 1;
   function renderItem(list) {
@@ -44,9 +44,6 @@ function useSliderEffect(el) {
         item.classList.remove('show');
       }
     });
-    active++;
-    if (active >= list.length) {
-      active = 0;
-    }
+    active = (active + 1) % list.length;
   }
 }

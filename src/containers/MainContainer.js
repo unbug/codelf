@@ -67,7 +67,7 @@ export default class MainContainer extends React.Component {
   }
 
   requestVariable = (val, lang) => {
-    const langChanged = lang ? (lang.join(',') != this.state.searchLang.join(',')) : this.state.searchLang != lang;
+    const langChanged = lang ? (lang.join(',') != this.state.searchLang.join(',')) : !!this.state.searchLang;
     val = decodeURIComponent(val);
     let page = this.state.page;
     if (val == this.state.searchValue && !langChanged) {
@@ -76,7 +76,7 @@ export default class MainContainer extends React.Component {
       page = 0;
     }
     this.setState({searchValue: val, requestingVariable: true});
-    SearchCodeModel.requestVariable(val, page,  lang);
+    SearchCodeModel.requestVariable(val, page,  lang || this.state.searchLang);
     AppModel.analytics('q=' + val);
     DDMSModel.postKeyWords(val);
     this.updateDocTitle(val);
@@ -154,7 +154,7 @@ export default class MainContainer extends React.Component {
       this.requestVariable(val, lang);
     } else  {
       this.setState({searchLang: lang});
-      HashHandler.set(val); // update window.location.hash
+      setTimeout(() => HashHandler.set(val)); // update window.location.hash
     }
   }
 
