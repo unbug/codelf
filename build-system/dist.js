@@ -37,7 +37,7 @@ gulp.task('dist:css', 'Compress css to dist.', () => {
 gulp.task('dist:js', 'Compress js to dist.', () => {
   return gulp.src(['./app/js/*.js'])
     .pipe(cachebust.references())
-    .pipe($.uglify())
+    .pipe($.if(['!./app/js/lib.js'], $.uglify()))
     .pipe(cachebust.resources())
     .pipe(gulp.dest(distPath + '/js/'))
     .pipe($.size({title: 'dist:js'}));
