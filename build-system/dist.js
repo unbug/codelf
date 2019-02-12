@@ -37,7 +37,7 @@ gulp.task('dist:css', 'Compress css to dist.', () => {
 gulp.task('dist:js', 'Compress js to dist.', () => {
   return gulp.src(['./app/js/*.js'])
     .pipe(cachebust.references())
-    .pipe($.if(['!./app/js/lib.js'], $.uglify()))
+    .pipe($.minify())
     .pipe(cachebust.resources())
     .pipe(gulp.dest(distPath + '/js/'))
     .pipe($.size({title: 'dist:js'}));
@@ -73,7 +73,7 @@ gulp.task('dist:serviceworkers', function (cb) {
         .pipe($.replace(/_NETWORK_ONLY_/g, swConfig.networkOnly.join(',\n')))
         .pipe($.replace(/_CACHE_ONLY_/g, swConfig.cacheOnly.join(',\n')))
         .pipe($.replace(/_EXCLUDED_/g, swConfig.excluded.join(',\n')))
-        .pipe($.uglifyEs.default())
+        .pipe($.minify())
         .pipe(gulp.dest(distPath))
         .on('end', cb);
     });

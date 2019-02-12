@@ -15,4 +15,11 @@ util.util = {
   replace: replace
 };
 
+util.minify = function (options) {
+  return util.babelMinify(Object.assign({
+    evaluate: false,
+    builtIns: false
+  }, options));
+};
+
 module.exports = util;
