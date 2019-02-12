@@ -12,7 +12,7 @@ gulp.task('default', (cb) => {
     $.util.colors.green('Building and watching for changes ...')
   );
   runSequence(
-    'clean', 'lint',
+    'lint',
     'build:fonts', 'build:extra', 'build:images', 'build:app-css', 'build:lib-js', 'build:lib-css',
     'watch', 'server', () => {
     cb();
