@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {Modal, Button, Dropdown, Label} from 'semantic-ui-react';
 import * as Tools from '../utils/Tools';
 import Loading from "./Loading";

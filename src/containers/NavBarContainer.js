@@ -1,3 +1,4 @@
+import React from 'react';
 import {Container, Icon, Popup} from 'semantic-ui-react';
 import CopybookModel from '../models/CopybookModel';
 

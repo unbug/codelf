@@ -1,3 +1,4 @@
+import React from 'react';
 import {Button, Label, Popup} from 'semantic-ui-react';
 import * as Tools from '../utils/Tools';
 

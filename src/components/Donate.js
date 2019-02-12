@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function Donate (props) {
   let text = <h4 className='lang'>Buy <a href='https://twitter.com/unbug' rel='noopener noreferrer' target='_blank'>@unbug</a> a drink</h4>;
   if (props.isZH) {

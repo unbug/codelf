@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {Icon} from 'semantic-ui-react';
 
 export default function NoticeContainer() {
