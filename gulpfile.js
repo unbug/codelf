@@ -6,7 +6,7 @@ const runSequence = require('run-sequence');
 const requireDir = require('require-dir');
 requireDir('./build-system');
 
-// Run tasks: clean, lint, build, docs, watch, server
+// Run tasks: lint, build, docs, watch, server
 gulp.task('default', (cb) => {
   $.util.log(
     $.util.colors.green('Building and watching for changes ...')
