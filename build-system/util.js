@@ -16,10 +16,15 @@ util.util = {
 };
 
 util.minify = function (options) {
-  return util.babelMinify(Object.assign({
-    evaluate: false,
-    builtIns: false
-  }, options));
+  return util.babelMinify(
+    Object.assign({
+      evaluate: false,
+      builtIns: false
+    }, options),
+    {
+      comments: false
+    }
+  );
 };
 
 module.exports = util;
