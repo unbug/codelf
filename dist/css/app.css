@@ -345,7 +345,7 @@ body.dark {
 
 @media screen and (min-width: 50rem) {
   .app .nav-bar-container {
-    top: -0.55rem;
+    top: -0.25rem;
   }
   .app .nav-bar-container .bd i {
     width: auto;
