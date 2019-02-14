@@ -1,16 +1,15 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import * as Tools from '../utils/Tools';
 import VariableItem from './VariableItem';
 
 const notFound = val => val && /59ce9297fba93aeb9d693a2f61922fb6|bfd876277827a33f49d363e8857977a0/g.test(Tools.MD5(val));
 const notFoundImg = '//user-images.githubusercontent.com/799578/50722775-1a9a1d00-110f-11e9-9bcc-efe5465a4ad5.jpg';
 const animationName = Math.random() > 0.5 ? 'zoomInDown' : 'zoomInUp';
-let lastPageLen = 0;
 
 export default function VariableList(props) {
-  const variableList = props.variableList;
-  lastPageLen = variableList.length < variableList ? 0 : variableList;
+  const [lastPageLen, setLastPageLen] = useState(0);
   const list = useMemo(() => { // same as "shouldComponentUpdate", only compute when "variableList" has changed
+    const variableList = props.variableList;
     const pageLen = variableList.length;
     let pages = [];
     if (notFound(props.searchValue)) {
@@ -38,9 +37,9 @@ export default function VariableList(props) {
         Array.prototype.unshift.apply(pages, variables)
       }
     });
-    lastPageLen = pageLen;
+    setLastPageLen(pageLen);
     return pages;
-  }, [variableList]);
+  }, [props.variableList]);
 
   return <div className='variable-list'>{list}</div>;
 }
