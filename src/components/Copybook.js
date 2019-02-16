@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useRef} from 'react';
 import {Button, Dropdown, Modal} from 'semantic-ui-react';
 import Loading from "./Loading";
 import useCodeHighlighting from './hooks/useCodeHighlighting';

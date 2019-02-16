@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 
 export default function useCodeHighlighting(watchedProps, keyword) {
-  const container = React.createRef(null);
+  const container = useRef(null);
   const mark = useRef(null);
   useEffect(() => {
     renderPrettyPrint();
