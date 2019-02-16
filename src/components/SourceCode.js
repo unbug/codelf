@@ -1,38 +1,14 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Modal, Button, Dropdown, Label} from 'semantic-ui-react';
 import * as Tools from '../utils/Tools';
 import Loading from "./Loading";
+import useCodeHighlighting from './hooks/useCodeHighlighting';
 
 export default function SourceCode(props) {
-  const codeEl = React.createRef();
-  let mark = null;
-
-  useEffect(() => {
-    renderPrettyPrint();
-  }, [props.sourceCode, props.sourceCodeVisible]);
+  const codeEl = useCodeHighlighting([props.sourceCode, props.sourceCodeVisible], props.sourceCodeVariable?.keyword);
 
   function handleClose() {
     props.onCloseSourceCode();
-  }
-
-  function renderPrettyPrint() {
-    setTimeout(() => {
-      if (codeEl.current) {
-        codeEl.current.classList.remove('prettyprinted');
-        setTimeout(() => PR.prettyPrint(
-          () => setTimeout(() =>renderHighLight(), 1000)
-        ), 100);
-      }
-    }, codeEl.current ? 0 : 1000);
-  }
-
-  function renderHighLight() {
-    if (mark) {mark.unmark()}
-    mark = new Mark(codeEl.current);
-    let idx = 0;
-    mark.mark(props.sourceCodeVariable.keyword, {each: el => {
-        el.setAttribute('tabindex',idx++);
-      }});
   }
 
   if (!props.sourceCodeVariable || !props.sourceCodeRepo) { return null; }

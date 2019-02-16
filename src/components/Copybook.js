@@ -1,14 +1,11 @@
 import React, {useEffect, useRef} from 'react';
 import {Button, Dropdown, Modal} from 'semantic-ui-react';
 import Loading from "./Loading";
+import useCodeHighlighting from './hooks/useCodeHighlighting';
 
 export default function Copybook(props) {
-  const codeEl = useRef(null);
+  const codeEl = useCodeHighlighting([props.copybookFileContent, props.copybookVisible]);
   const editorEl = useRef(null);
-
-  useEffect(() => {
-    renderPrettyPrint();
-  }, [props.copybookFileContent, props.copybookVisible]);
 
   function handleClose() {
     props.onCloseCopybook();
@@ -20,18 +17,6 @@ export default function Copybook(props) {
         props.copybookFileList.find(f => f.path === value)
       );
     }
-  }
-
-  function renderPrettyPrint() {
-    setTimeout(() => {
-      if (editorEl.current) {
-        editorEl.current.innerHTML = '';
-      }
-      if (codeEl.current) {
-        codeEl.current.classList.remove('prettyprinted');
-        setTimeout(() => PR.prettyPrint(), 100);
-      }
-    }, codeEl.current ? 0 : 1000);
   }
 
   function renderDropdownItem() {
