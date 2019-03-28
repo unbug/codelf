@@ -1,37 +1,59 @@
-import React from 'react';
+import React, {useEffect, useReducer} from 'react';
 import AppModel from '../models/AppModel';
 import CopybookModel from '../models/CopybookModel';
 import Copybook from '../components/Copybook';
 
-export default class CopybookContainer extends React.Component {
-  state = {
-    copybookRequesting: false,
-    copybookVisible: CopybookModel.visible,
-    copybookFileList: CopybookModel.fileList,
-    copybookSelectedFile: CopybookModel.selectedFile,
-    copybookFileContent: CopybookModel.fileContent,
+const actionTypes = {
+  UPDATE: 'update',
+};
+
+const initState = {
+  copybookRequesting: false,
+  copybookVisible: CopybookModel.visible,
+  copybookFileList: CopybookModel.fileList,
+  copybookSelectedFile: CopybookModel.selectedFile,
+  copybookFileContent: CopybookModel.fileContent,
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case actionTypes.UPDATE:
+      return {
+        ...state,
+        ...action.payload
+      };
+    default:
+      return state;
+  }
+}
+
+export default function CopybookContainer(props) {
+  const [state, dispatch] = useReducer(reducer, initState);
+
+  useEffect(() => {
+    CopybookModel.onUpdated(handleCopybookModelUpdate);
+    return () => CopybookModel.offUpdated(handleCopybookModelUpdate);
+  });
+
+  function setState(payload) {
+    dispatch({type: actionTypes.UPDATE, payload: payload});
   }
 
-  constructor(props) {
-    super(props);
-    CopybookModel.onUpdated(this.handleCopybookModelUpdate);
-  }
-
-  handleCopybookModelUpdate = (curr, prev, mutation) => {
+  function handleCopybookModelUpdate(curr, prev, mutation) {
     if (mutation.fileList) {
-      this.setState({
+      setState({
         copybookFileList: CopybookModel.fileList
       });
     }
     if (mutation.fileContent) {
-      this.setState({
+      setState({
         copybookRequesting: false,
         copybookSelectedFile: CopybookModel.selectedFile,
         copybookFileContent: CopybookModel.fileContent,
       });
     }
     if (mutation.visible) {
-      this.setState({
+      setState({
         copybookVisible: CopybookModel.visible,
       });
       if (CopybookModel.visible) {
@@ -40,20 +62,18 @@ export default class CopybookContainer extends React.Component {
     }
   }
 
-  handleCloseCopybook = () => {
-    CopybookModel.update({ visible: false });
+  function handleCloseCopybook() {
+    CopybookModel.update({visible: false});
   }
 
-  handleRequestCopybookFile = file => {
-    this.setState({ copybookRequesting: true });
+  function handleRequestCopybookFile(file) {
+    setState({copybookRequesting: true});
     CopybookModel.requestRepoFile(file);
     AppModel.analytics('copybook&q=read');
   }
 
-  render() {
-    return <Copybook {...this.state}
-                className='copybook-container fix-modal'
-                onRequestCopybookFile={this.handleRequestCopybookFile}
-                onCloseCopybook={this.handleCloseCopybook}/>;
-  }
+  return <Copybook {...state}
+                   className='copybook-container fix-modal'
+                   onRequestCopybookFile={handleRequestCopybookFile}
+                   onCloseCopybook={handleCloseCopybook}/>;
 }
