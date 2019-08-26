@@ -2,7 +2,9 @@
 
 Codelf(变量命名神器)
 =================
-  Search over projects from Github, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Project, GitLab to find real-world usage variable names.
+A search tool helps dev to solve the naming variable/function name problem.
+
+Search over projects from Github, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Project, GitLab to find real-world usage variable names.
   
   Also a daily Algorithm Copybook.
   
