@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import {Icon} from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 
 export default function NoticeContainer() {
   const listEl = useRef(null);
@@ -8,22 +8,22 @@ export default function NoticeContainer() {
   return (
     <div className='notice-container' ref={listEl}>
       <a className='animated fadeIn show' target='_blank' rel='noopener noreferrer'
-         href='https://github.com/unbug/snts'>
-        <Icon name='heartbeat'/> SAY NO TO SUICIDE PUBLIC LICENSE
+        href='https://www.yuque.com/?CODELF'>
+        [语雀] 阿里技术团队打造的专业云知识库
+      </a>
+      <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
+        href='https://github.com/unbug/snts'>
+        <Icon name='heartbeat' /> SAY NO TO SUICIDE PUBLIC LICENSE
       </a>
       <a className='animated fadeIn' target='_blank' rel='noopener noreferrer' href='//mihtool.com/'>
-        <Icon name='code'/> [MIHTool] iOS 上调试和优化页面的工具
+        <Icon name='code' /> [MIHTool] iOS 上调试和优化页面的工具
       </a>
       <a className='animated fadeIn' target='_blank' rel='noopener noreferrer' href='https://www.wasmrocks.com/'>
-        <Icon name='hand rock'/> WebAssembly Rocks
+        <Icon name='hand rock' /> WebAssembly Rocks
       </a>
       <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
-         href='https://github.com/unbug/react-native-train/blob/master/README.md'>
-        <Icon name='video'/> [开源] React Native 开发培训资料和视频
-      </a>
-      <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
-         href='https://www.zhihu.com/question/27097399/answer/78619944'>
-        [知乎] 编程的时候命名方法或变量词穷了怎么办？
+        href='https://github.com/unbug/react-native-train/blob/master/README.md'>
+        <Icon name='video' /> [开源] React Native 开发培训资料和视频
       </a>
     </div>
   )
