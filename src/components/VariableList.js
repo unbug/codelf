@@ -1,4 +1,4 @@
-import React, {useMemo, useRef} from 'react';
+import React, { useMemo, useRef } from 'react';
 import * as Tools from '../utils/Tools';
 import VariableItem from './VariableItem';
 
@@ -13,7 +13,7 @@ export default function VariableList(props) {
     const pageLen = variableList.length;
     let pages = [];
     if (notFound(props.searchValue)) {
-      pages.push(<img style={{maxWidth: '100%'}} src={notFoundImg}/>);
+      pages.push(<img style={{ maxWidth: '100%' }} src={notFoundImg} />);
     }
     variableList.forEach((list, i) => {
       const isLast = i === pageLen - 1 && lastPageLen.current != pageLen;
@@ -24,15 +24,15 @@ export default function VariableList(props) {
           style = {
             animationName: animationName,
             animationDelay: duration + 's',
-            animationDuration: Math.min(duration, 0.8) +  Math.random() + 's'
+            animationDuration: Math.min(duration, 0.8) + Math.random() + 's'
           };
         }
         return <VariableItem key={Tools.uuid()} variable={variable}
-                         onOpenSourceCode={props.onOpenSourceCode} style={style} className={className}/>
+          onOpenSourceCode={props.onOpenSourceCode} style={style} className={className} />
       });
       if (variables && variables.length) {
         if (pages.length) {
-          pages.unshift(<hr/>);
+          pages.unshift(<hr />);
         }
         Array.prototype.unshift.apply(pages, variables)
       }

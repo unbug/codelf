@@ -1,5 +1,5 @@
-import React, {useRef} from 'react';
-import {Button, Dropdown, Modal} from 'semantic-ui-react';
+import React, { useRef } from 'react';
+import { Button, Dropdown, Modal } from 'semantic-ui-react';
 import Loading from "./Loading";
 import useCodeHighlighting from './hooks/useCodeHighlighting';
 
@@ -35,12 +35,12 @@ export default function Copybook(props) {
   if (!props.copybookVisible || !props.copybookFileList || !props.copybookFileContent) {
     return (
       <Modal open={props.copybookVisible} onClose={handleClose}
-             centered={false} closeIcon className={props.className} size='large'>
+        centered={false} closeIcon className={props.className} size='large'>
         <Modal.Header>
           <div className='title'>Daily Algorithm Copybook</div>
         </Modal.Header>
         <Modal.Content>
-          <Loading/>
+          <Loading />
           <pre><code className='prettyprint' ref={codeEl}></code></pre>
         </Modal.Content>
       </Modal>
@@ -49,21 +49,21 @@ export default function Copybook(props) {
 
   return (
     <Modal open={props.copybookVisible} onClose={handleClose}
-           centered={false} closeIcon className={props.className} size='large'>
+      centered={false} closeIcon className={props.className} size='large'>
       <Modal.Header>
         <div className='title'>Daily Algorithm Copybook</div>
         <Button size='tiny' as='a' basic
-                href={props.copybookSelectedFile.link}
-                target='_blank'>View In GitHub</Button>
+          href={props.copybookSelectedFile.link}
+          target='_blank'>View In GitHub</Button>
         <Dropdown
           search
           selection
           onChange={handleDropdownChange}
           value={props.copybookSelectedFile.path}
-          options={renderDropdownItem()}/>
+          options={renderDropdownItem()} />
       </Modal.Header>
       <Modal.Content>
-        {props.copybookRequesting ? <Loading/> : ''}
+        {props.copybookRequesting ? <Loading /> : ''}
         <pre>
           <code className='prettyprint' ref={codeEl}>{props.copybookFileContent.content}</code>
           <div className='editor' contentEditable={true} ref={editorEl}></div>

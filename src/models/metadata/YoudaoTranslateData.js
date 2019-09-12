@@ -13,7 +13,7 @@ class YoudaoTranslateData {
   async request(val) {
     const cache = this._store.get(val);
     if (cache) {
-       return cache;
+      return cache;
     }
     /**
      * 特别重要，必读！
@@ -22,8 +22,8 @@ class YoudaoTranslateData {
      * 有道翻译 API 申请参看： http://fanyi.youdao.com/openapi?path=data-mode
      */
     const url = `//fanyi.youdao.com/openapi.do?callback=?&keyfrom=Codelf&key=2023743559&type=data&doctype=jsonp&version=1.1&q=${val}`;
-    const data = await JSONP(url, {callbackName: 'youdaoFanyiRequestCallback'});
-    try{
+    const data = await JSONP(url, { callbackName: 'youdaoFanyiRequestCallback' });
+    try {
       let suggestionStr = '';
       let tmp = [];
       let suggestion;
@@ -60,10 +60,10 @@ class YoudaoTranslateData {
             return inputArray.indexOf(key) == idx && !/^(a|an|the)$/ig.test(key);
           }).join(' ');
       }
-      let response = {suggestion, translation};
+      let response = { suggestion, translation };
       this._store.save(val, response);
       return response;
-    }catch (e) {
+    } catch (e) {
       return null;
     }
   }

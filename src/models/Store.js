@@ -1,4 +1,4 @@
-import LocalStorage, {SessionStorage} from '../utils/LocalStorage';
+import LocalStorage, { SessionStorage } from '../utils/LocalStorage';
 import * as Tools from '../utils/Tools';
 /**
  * Store data in memory cache.

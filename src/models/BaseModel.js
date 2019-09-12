@@ -34,7 +34,7 @@ class Mutation {
 class BaseModel extends EventEmitter {
   constructor() {
     super();
-    this.on('error', () => {});
+    this.on('error', () => { });
     this.setMaxListeners(99);
     this._updateEventName = 'update';
     this._data = {};
@@ -43,7 +43,7 @@ class BaseModel extends EventEmitter {
   set(data) {
     let prevData = Object.assign({}, this._data);
     this._data = data || {};
-    this.notify(prevData, Object.assign({}, prevData, data, {isReset: true}));
+    this.notify(prevData, Object.assign({}, prevData, data, { isReset: true }));
   }
 
   get() {

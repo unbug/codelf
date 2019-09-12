@@ -1,5 +1,5 @@
 
-function fn (str, reg) {
+function fn(str, reg) {
   if (str) {
     let data = {};
     str.replace(reg, function ($0, $1, $2, $3) {

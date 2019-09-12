@@ -46,7 +46,7 @@ module.exports = new function () {
     .addColumn('create', lf.Type.DATE_TIME)
     .addPrimaryKey(['id'], true);
 
-  win.on('DB:ready', function (ev,db) {
+  win.on('DB:ready', function (ev, db) {
     DB = db;
     Tables = {
       User: DB.getSchema().table('User'),
@@ -69,20 +69,20 @@ module.exports = new function () {
       });
       DB.select().from(Tables.User).where(Tables.User.name.eq(name))
         .exec().then(function (rows) {
-        !rows.length && DB.insertOrReplace().into(Tables.User).values([row])
-          .exec().then(function (res) {
-            curUser = res[0];
-            callback && callback();
-            win.trigger('DB:Table.User.onchange', {type: DBEventType.C});
-          });
-      });
+          !rows.length && DB.insertOrReplace().into(Tables.User).values([row])
+            .exec().then(function (res) {
+              curUser = res[0];
+              callback && callback();
+              win.trigger('DB:Table.User.onchange', { type: DBEventType.C });
+            });
+        });
     }
 
     this.updateSync = function (name) {
       DB.update(Tables.User).set(Tables.User.lastSync, new Date()).where(Tables.User.name.eq(name))
         .exec().then(function () {
-        win.trigger('DB:Table.User.onchange', {type: DBEventType.U});
-      });
+          win.trigger('DB:Table.User.onchange', { type: DBEventType.U });
+        });
     }
 
     this.delete = function (id, callback) {
@@ -90,14 +90,14 @@ module.exports = new function () {
         .from(Tables.Repo)
         .where(Tables.Repo.userId.eq(id))
         .exec().then(function () {
-        DB.delete()
-          .from(Tables.User)
-          .where(Tables.User.id.eq(id))
-          .exec().then(function (res) {
-          callback && callback(res);
-          win.trigger('DB:Table.User.onchange', {type: DBEventType.D});
+          DB.delete()
+            .from(Tables.User)
+            .where(Tables.User.id.eq(id))
+            .exec().then(function (res) {
+              callback && callback(res);
+              win.trigger('DB:Table.User.onchange', { type: DBEventType.D });
+            });
         });
-      });
     }
 
     this.getAll = function (callback) {
@@ -105,8 +105,8 @@ module.exports = new function () {
         .from(Tables.User)
         .orderBy(Tables.User.create, lf.Order.DESC)
         .exec().then(function (rows) {
-        callback && callback(rows);
-      });
+          callback && callback(rows);
+        });
     }
   };
 
@@ -123,51 +123,51 @@ module.exports = new function () {
       });
       DB.select().from(Tables.RepoGroup).where(Tables.RepoGroup.name.eq(name))
         .exec().then(function (rows) {
-        !rows.length && DB.insertOrReplace().into(Tables.RepoGroup).values([row])
-          .exec().then(function (res) {
-            win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.C});
-          });
-      });
+          !rows.length && DB.insertOrReplace().into(Tables.RepoGroup).values([row])
+            .exec().then(function (res) {
+              win.trigger('DB:Table.RepoGroup.onchange', { type: DBEventType.C });
+            });
+        });
     }
 
     this.addRopoId = function (id, repoId) {
       DB.select().from(Tables.RepoGroup).where(Tables.RepoGroup.id.eq(id))
         .exec().then(function (rows) {
-        if (rows && rows[0]) {
-          var ids = /string/i.test(typeof rows[0].repoIds)?
-            (rows[0].repoIds.length ? rows[0].repoIds.split(',') : []):
-            rows[0].repoIds;
-          if (ids.indexOf(repoId) == -1) {
-            ids.push(repoId);
+          if (rows && rows[0]) {
+            var ids = /string/i.test(typeof rows[0].repoIds) ?
+              (rows[0].repoIds.length ? rows[0].repoIds.split(',') : []) :
+              rows[0].repoIds;
+            if (ids.indexOf(repoId) == -1) {
+              ids.push(repoId);
+            }
+            DB.update(Tables.RepoGroup).set(Tables.RepoGroup.repoIds, ids).where(Tables.RepoGroup.id.eq(id))
+              .exec();
           }
-          DB.update(Tables.RepoGroup).set(Tables.RepoGroup.repoIds, ids).where(Tables.RepoGroup.id.eq(id))
-            .exec();
-        }
-      });
+        });
     }
 
     this.removeRopoId = function (id, repoId) {
       DB.select().from(Tables.RepoGroup).where(Tables.RepoGroup.id.eq(id))
         .exec().then(function (rows) {
-        if (rows && rows[0]) {
-          var ids = /string/i.test(typeof rows[0].repoIds)?
-                      (rows[0].repoIds.length ? rows[0].repoIds.split(',') : []):
-                      rows[0].repoIds,
-            idx = ids.indexOf(repoId);
+          if (rows && rows[0]) {
+            var ids = /string/i.test(typeof rows[0].repoIds) ?
+              (rows[0].repoIds.length ? rows[0].repoIds.split(',') : []) :
+              rows[0].repoIds,
+              idx = ids.indexOf(repoId);
 
-          if (idx != -1) {
-            ids.splice(idx, 1);
+            if (idx != -1) {
+              ids.splice(idx, 1);
+            }
+            DB.update(Tables.RepoGroup).set(Tables.RepoGroup.repoIds, ids).where(Tables.RepoGroup.id.eq(id))
+              .exec();
           }
-          DB.update(Tables.RepoGroup).set(Tables.RepoGroup.repoIds, ids).where(Tables.RepoGroup.id.eq(id))
-            .exec();
-        }
-      });
+        });
     }
     this.updateName = function (id, name) {
       DB.update(Tables.RepoGroup).set(Tables.RepoGroup.name, name).where(Tables.RepoGroup.id.eq(id))
         .exec().then(function () {
-        win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.U, fields: 'name'});
-      });
+          win.trigger('DB:Table.RepoGroup.onchange', { type: DBEventType.U, fields: 'name' });
+        });
     }
 
     this.delete = function (id, callback) {
@@ -175,25 +175,25 @@ module.exports = new function () {
         .from(Tables.RepoGroup)
         .where(Tables.RepoGroup.id.eq(id))
         .exec().then(function (res) {
-        callback && callback(res);
-        win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.D});
-      });
+          callback && callback(res);
+          win.trigger('DB:Table.RepoGroup.onchange', { type: DBEventType.D });
+        });
     }
 
     this.deleteAll = function (callback) {
       DB.delete()
         .from(Tables.RepoGroup)
         .exec().then(function (res) {
-        callback && callback(res);
-        win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.D});
-      });
+          callback && callback(res);
+          win.trigger('DB:Table.RepoGroup.onchange', { type: DBEventType.D });
+        });
     }
 
     this.addAll = function (data, callback) {
-      if(data){
-        this.deleteAll(function(){
+      if (data) {
+        this.deleteAll(function () {
           var rows = [];
-          data.forEach(function(key){
+          data.forEach(function (key) {
             rows.push(Tables.RepoGroup.createRow({
               'name': key.name,
               'repoIds': key.repoIds,
@@ -203,9 +203,9 @@ module.exports = new function () {
           });
           DB.insertOrReplace().into(Tables.RepoGroup).values(rows)
             .exec().then(function () {
-            callback && callback();
-            win.trigger('DB:Table.RepoGroup.onchange', {type: DBEventType.C});
-          });
+              callback && callback();
+              win.trigger('DB:Table.RepoGroup.onchange', { type: DBEventType.C });
+            });
         });
       }
     }
@@ -215,13 +215,13 @@ module.exports = new function () {
         .from(Tables.RepoGroup)
         .orderBy(Tables.RepoGroup.create, lf.Order.DESC)
         .exec().then(function (rows) {
-        callback && callback(rows);
-      });
+          callback && callback(rows);
+        });
     }
   };
 
   this.RepoTagTable = new function () {
-    this.addDefaultTags = function(callback){
+    this.addDefaultTags = function (callback) {
       var tags = [
         {
           name: 'Red',
@@ -254,27 +254,27 @@ module.exports = new function () {
       ];
       DB.select().from(Tables.RepoTag)
         .exec().then(function (rows) {
-        if(!rows.length){
-          var trows = [];
-          tags.forEach(function(key){
-            trows.push(Tables.RepoTag.createRow({
-              'name': key.name,
-              'color': key.color,
-              'repoIds': [],
-              'create': new Date()
-            }));
-          });
-          DB.insertOrReplace().into(Tables.RepoTag).values(trows)
-            .exec().then(function () {
+          if (!rows.length) {
+            var trows = [];
+            tags.forEach(function (key) {
+              trows.push(Tables.RepoTag.createRow({
+                'name': key.name,
+                'color': key.color,
+                'repoIds': [],
+                'create': new Date()
+              }));
+            });
+            DB.insertOrReplace().into(Tables.RepoTag).values(trows)
+              .exec().then(function () {
+                callback && callback();
+              });
+          } else {
             callback && callback();
-          });
-        }else{
-          callback && callback();
-        }
-      });
+          }
+        });
     }
 
-    this.add = function (name,color) {
+    this.add = function (name, color) {
       if (!name || !color) {
         return;
       }
@@ -286,54 +286,54 @@ module.exports = new function () {
       });
       DB.select().from(Tables.RepoTag).where(Tables.RepoTag.name.eq(name))
         .exec().then(function (rows) {
-        !rows.length && DB.insertOrReplace().into(Tables.RepoTag).values([row])
-          .exec().then(function () {
-            win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.C});
-          });
-      });
+          !rows.length && DB.insertOrReplace().into(Tables.RepoTag).values([row])
+            .exec().then(function () {
+              win.trigger('DB:Table.RepoTag.onchange', { type: DBEventType.C });
+            });
+        });
     }
 
-    this.addRopoId = function (id, repoId,callback) {
+    this.addRopoId = function (id, repoId, callback) {
       DB.select().from(Tables.RepoTag).where(Tables.RepoTag.id.eq(id))
         .exec().then(function (rows) {
-        if (rows && rows[0]) {
-          var ids = rows[0].repoIds;
-          if (ids.indexOf(repoId) == -1) {
-            ids.push(repoId);
+          if (rows && rows[0]) {
+            var ids = rows[0].repoIds;
+            if (ids.indexOf(repoId) == -1) {
+              ids.push(repoId);
+            }
+            DB.update(Tables.RepoTag).set(Tables.RepoTag.repoIds, ids).where(Tables.RepoTag.id.eq(id))
+              .exec().then(function () {
+                callback && callback();
+                win.trigger('DB:Table.RepoTag.onchange', { type: DBEventType.U, fileds: ['repoIds'] });
+              });
           }
-          DB.update(Tables.RepoTag).set(Tables.RepoTag.repoIds, ids).where(Tables.RepoTag.id.eq(id))
-            .exec().then(function(){
-              callback && callback();
-              win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.U, fileds: ['repoIds']});
-            });
-        }
-      });
+        });
     }
 
-    this.removeRopoId = function (id, repoId,callback) {
+    this.removeRopoId = function (id, repoId, callback) {
       DB.select().from(Tables.RepoTag).where(Tables.RepoTag.id.eq(id))
         .exec().then(function (rows) {
-        if (rows && rows[0]) {
-          var ids = rows[0].repoIds,
-            idx = ids.indexOf(repoId);
+          if (rows && rows[0]) {
+            var ids = rows[0].repoIds,
+              idx = ids.indexOf(repoId);
 
-          if (idx != -1) {
-            ids.splice(idx, 1);
+            if (idx != -1) {
+              ids.splice(idx, 1);
+            }
+            DB.update(Tables.RepoTag).set(Tables.RepoTag.repoIds, ids).where(Tables.RepoTag.id.eq(id))
+              .exec().then(function () {
+                callback && callback();
+                win.trigger('DB:Table.RepoTag.onchange', { type: DBEventType.U, fileds: ['repoIds'] });
+              });
           }
-          DB.update(Tables.RepoTag).set(Tables.RepoTag.repoIds, ids).where(Tables.RepoTag.id.eq(id))
-            .exec().then(function(){
-              callback && callback();
-              win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.U, fileds: ['repoIds']});
-            });
-        }
-      });
+        });
     }
 
     this.updateName = function (id, name) {
       DB.update(Tables.RepoTag).set(Tables.RepoTag.name, name).where(Tables.RepoTag.id.eq(id))
         .exec().then(function () {
-        win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.U, fields: 'name'});
-      });
+          win.trigger('DB:Table.RepoTag.onchange', { type: DBEventType.U, fields: 'name' });
+        });
     }
 
     this.delete = function (id, callback) {
@@ -342,7 +342,7 @@ module.exports = new function () {
         .where(Tables.RepoTag.id.eq(id))
         .exec().then(function (res) {
           callback && callback(res);
-          win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.D});
+          win.trigger('DB:Table.RepoTag.onchange', { type: DBEventType.D });
         });
     }
 
@@ -351,15 +351,15 @@ module.exports = new function () {
         .from(Tables.RepoTag)
         .exec().then(function (res) {
           callback && callback(res);
-          win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.D});
+          win.trigger('DB:Table.RepoTag.onchange', { type: DBEventType.D });
         });
     }
 
     this.addAll = function (data, callback) {
-      if(data){
-        this.deleteAll(function(){
+      if (data) {
+        this.deleteAll(function () {
           var rows = [];
-          data.forEach(function(key){
+          data.forEach(function (key) {
             rows.push(Tables.RepoTag.createRow({
               'name': key.name,
               'color': key.color,
@@ -370,7 +370,7 @@ module.exports = new function () {
           DB.insertOrReplace().into(Tables.RepoTag).values(rows)
             .exec().then(function () {
               callback && callback();
-              win.trigger('DB:Table.RepoTag.onchange', {type: DBEventType.C});
+              win.trigger('DB:Table.RepoTag.onchange', { type: DBEventType.C });
             });
         });
       }
@@ -381,8 +381,8 @@ module.exports = new function () {
         .from(Tables.RepoTag)
         .orderBy(Tables.RepoTag.create, lf.Order.DESC)
         .exec().then(function (rows) {
-        callback && callback(rows);
-      });
+          callback && callback(rows);
+        });
     }
   };
 
@@ -404,9 +404,9 @@ module.exports = new function () {
           });
           DB.insertOrReplace().into(Tables.Repo).values(rows)
             .exec().then(function () {
-            callback && callback();
-            win.trigger('DB:Table.Repo.onchange', {type: DBEventType.C});
-          });
+              callback && callback();
+              win.trigger('DB:Table.Repo.onchange', { type: DBEventType.C });
+            });
         });
       }
 
@@ -415,9 +415,9 @@ module.exports = new function () {
       } else {
         DB.select().from(Tables.User).where(Tables.User.name.eq(curUserName))
           .exec().then(function (rows) {
-          curUser = rows[0];
-          fn.call(this);
-        });
+            curUser = rows[0];
+            fn.call(this);
+          });
       }
     }
 
@@ -426,9 +426,9 @@ module.exports = new function () {
         .from(Tables.Repo)
         .where(Tables.Repo.id.eq(id))
         .exec().then(function (res) {
-        callback && callback(res);
-        win.trigger('DB:Table.Repo.onchange', {type: DBEventType.D});
-      });
+          callback && callback(res);
+          win.trigger('DB:Table.Repo.onchange', { type: DBEventType.D });
+        });
     }
 
     this.deleteAllByUserId = function (id, callback) {
@@ -436,17 +436,17 @@ module.exports = new function () {
         .from(Tables.Repo)
         .where(Tables.Repo.userId.eq(id))
         .exec().then(function (res) {
-        callback && callback(res);
-        win.trigger('DB:Table.Repo.onchange', {type: DBEventType.D});
-      });
+          callback && callback(res);
+          win.trigger('DB:Table.Repo.onchange', { type: DBEventType.D });
+        });
     }
 
     this.getAll = function (callback) {
       DB.select()
         .from(Tables.Repo)
         .exec().then(function (rows) {
-        callback && callback(rows);
-      });
+          callback && callback(rows);
+        });
     }
   };
 
@@ -466,7 +466,7 @@ module.exports = new function () {
         mainData = mainData.concat(data);
       }
     }
-    this.resetPage = function(){
+    this.resetPage = function () {
       page = 1;
       mainData = [];
     }
@@ -498,7 +498,7 @@ module.exports = new function () {
         mainData = mainData.concat(data);
       }
     }
-    this.resetPage = function(){
+    this.resetPage = function () {
       page = 1;
       mainData = [];
     }
@@ -559,15 +559,15 @@ module.exports = new function () {
     this.UserTable.updateSync(curUserName);
   }
 
-  this.syncRepoGroup = function (){
+  this.syncRepoGroup = function () {
 
   }
 
-  this.syncRepoTag = function (){
+  this.syncRepoTag = function () {
 
   }
 
-  this.arrayToObj = function (data,idName) {
+  this.arrayToObj = function (data, idName) {
     var d = {};
     idName = idName || 'id';
     data.forEach(function (key) {

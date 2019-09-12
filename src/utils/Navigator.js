@@ -13,7 +13,7 @@ const Navigator = (function () {
   }
 
   function getFrame(src, name) {
-    let  _frame = document.createElement('iframe');
+    let _frame = document.createElement('iframe');
     _frame.setAttribute('style', 'display:none;width:0;height:0;position: absolute;top:0;left:0;border:0;');
     _frame.setAttribute('height', '0px');
     _frame.setAttribute('width', '0px');
@@ -28,7 +28,7 @@ const Navigator = (function () {
   }
 
   function protocol(command, single, noframe) {
-    let  _frame, timer;
+    let _frame, timer;
     if (noframe) {
       window.location.href = command;
       return;
