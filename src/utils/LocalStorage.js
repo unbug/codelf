@@ -44,5 +44,5 @@ class Storage {
 const LocalStorage = new Storage(window.localStorage);
 const SessionStorage = new Storage(window.sessionStorage);
 
-export {SessionStorage};
+export { SessionStorage };
 export default LocalStorage;

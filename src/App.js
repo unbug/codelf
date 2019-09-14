@@ -8,12 +8,12 @@ import NavBarContainer from './containers/NavBarContainer';
 function App() {
   return (
     <>
-      <NavBarContainer/>
-      <MainContainer/>
-      <CopybookContainer/>
-      <NoticeContainer/>
+      <NavBarContainer />
+      <MainContainer />
+      <CopybookContainer />
+      <NoticeContainer />
     </>
   );
 }
 
-ReactDOM.render(<App/>, document.querySelector('.app'));
+ReactDOM.render(<App />, document.querySelector('.app'));

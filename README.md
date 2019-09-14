@@ -2,9 +2,9 @@
 
 CODELF(变量命名神器)
 =================
-A search tool helps dev to solve the naming variable/function name problem.
+  A search tool helps dev to solve the naming variable/function name problem.
 
-Search over projects from Github, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Project, GitLab to find real-world usage variable names.
+  Search over projects from Github, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Project, GitLab to find real-world usage variable names.
   
   Also a daily Algorithm Copybook.
   

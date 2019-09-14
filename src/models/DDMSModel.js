@@ -65,7 +65,7 @@ class DDMSModel extends BaseModel {
       window.afterPostBookmarkOrganizer = callback;
       FormHandler.asyncSubmit(formAction, {
         formid: '56fb7d9dade3a8e84dbacaf0',
-        success_url: Tools.thisPath+'ddms_frame_callback.html?frame_callback=afterPostBookmarkOrganizer',
+        success_url: Tools.thisPath + 'ddms_frame_callback.html?frame_callback=afterPostBookmarkOrganizer',
         data: data
       });
     }
@@ -76,7 +76,7 @@ class DDMSModel extends BaseModel {
       window.afterPostUpdateBookmarkOrganizer = callback;
       FormHandler.asyncSubmit(formDataAction, {
         id: id,
-        success_url: Tools.thisPath+'ddms_frame_callback.html?frame_callback=afterPostUpdateBookmarkOrganizer',
+        success_url: Tools.thisPath + 'ddms_frame_callback.html?frame_callback=afterPostUpdateBookmarkOrganizer',
         data: data
       });
     }

@@ -77,7 +77,7 @@ self.addEventListener('install', function (event) {
         // (https://slightlyoff.github.io/ServiceWorker/spec/service_worker/index.html#cross-origin-resources)
         // and it is not possible to determine whether an opaque response represents a success or failure
         // (https://github.com/whatwg/fetch/issues/14).
-        var request = new Request(url, {mode: 'no-cors'});
+        var request = new Request(url, { mode: 'no-cors' });
         return fetch(request).then(function (response) {
           if (response.status >= 400) {
             throw new Error('request for ' + urlToPrefetch +

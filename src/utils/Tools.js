@@ -87,4 +87,4 @@ const randomLabelColor = () => {
 import SparkMD5 from 'spark-md5';
 const MD5 = SparkMD5.hash;
 
-export {os, thisPage, thisPath, randomList, randomColor, InlineWebWorker, uuid, randomLabelColor, MD5}
+export { os, thisPage, thisPath, randomList, randomColor, InlineWebWorker, uuid, randomLabelColor, MD5 }

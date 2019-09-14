@@ -1,6 +1,6 @@
 'use strict';
 
-const gulp = require('gulp-help')(require('gulp'));
+const gulp = require('gulp');
 const browserSync = require('browser-sync').create();
 const $ = require('./util');
 const serveIndex = require('serve-index');
@@ -9,8 +9,8 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const webpack = require('webpack');
 const webpackConfig = require('../webpack.config.js');
 
-// start server with browserSync
-gulp.task('server', 'Starts a HTTP(s) server for debug.',  () => {
+// Starts a HTTP(s) server for debug.
+gulp.task('server', () => {
   return new Promise(resolve => {
     const compiler = webpack(webpackConfig.dev, () => {
       const config = {
@@ -31,7 +31,7 @@ gulp.task('server', 'Starts a HTTP(s) server for debug.',  () => {
           serveIndex('.'),
           webpackDevMiddleware(compiler, {
             publicPath: webpackConfig.dev.output.publicPath,
-            stats: {colors: true},
+            stats: { colors: true },
             writeToDisk: true,
             logTime: true,
             logLevel: 'error'

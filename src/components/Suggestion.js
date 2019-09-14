@@ -1,5 +1,5 @@
 import React from 'react';
-import {Label} from 'semantic-ui-react';
+import { Label } from 'semantic-ui-react';
 
 export default function Suggestion(props) {
   if (!props.suggestion || !props.suggestion.length) { return null; }

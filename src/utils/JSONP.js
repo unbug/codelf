@@ -8,7 +8,7 @@ const JSONP = (url, options) => {
     url = url.replace('=?', `=${callbackName}${options.nocache ? ('&_=' + Date.now()) : ''}`);
     const done = () => {
       window.clearTimeout(timer);
-      try {document.head.removeChild(script);} catch (e) {}
+      try { document.head.removeChild(script); } catch (e) { }
       window[callbackName] = null;
     };
     const onerror = () => {

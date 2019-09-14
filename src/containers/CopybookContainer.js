@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer} from 'react';
+import React, { useEffect, useReducer } from 'react';
 import AppModel from '../models/AppModel';
 import CopybookModel from '../models/CopybookModel';
 import Copybook from '../components/Copybook';
@@ -36,7 +36,7 @@ export default function CopybookContainer(props) {
   });
 
   function setState(payload) {
-    dispatch({type: actionTypes.UPDATE, payload: payload});
+    dispatch({ type: actionTypes.UPDATE, payload: payload });
   }
 
   function handleCopybookModelUpdate(curr, prev, mutation) {
@@ -63,17 +63,17 @@ export default function CopybookContainer(props) {
   }
 
   function handleCloseCopybook() {
-    CopybookModel.update({visible: false});
+    CopybookModel.update({ visible: false });
   }
 
   function handleRequestCopybookFile(file) {
-    setState({copybookRequesting: true});
+    setState({ copybookRequesting: true });
     CopybookModel.requestRepoFile(file);
     AppModel.analytics('copybook&q=read');
   }
 
   return <Copybook {...state}
-                   className='copybook-container fix-modal'
-                   onRequestCopybookFile={handleRequestCopybookFile}
-                   onCloseCopybook={handleCloseCopybook}/>;
+    className='copybook-container fix-modal'
+    onRequestCopybookFile={handleRequestCopybookFile}
+    onCloseCopybook={handleCloseCopybook} />;
 }

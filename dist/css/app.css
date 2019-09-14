@@ -137,8 +137,7 @@ body.dark {
   height: 97%;
   margin: 0 auto;
   overflow: hidden;
-  -webkit-transform: translate3d(0, 0, 0);
-          transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 
 .fix-modal.fix-modal.fix-modal.fix-modal.fix-modal.fix-modal.fix-modal.fix-modal > .content {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Label, Popup} from 'semantic-ui-react';
+import { Button, Label, Popup } from 'semantic-ui-react';
 import * as Tools from '../utils/Tools';
 
 export default function VariableItem(props) {
@@ -16,16 +16,16 @@ export default function VariableItem(props) {
   }
 
   return (
-    <Popup style={{padding: '0'}}
-           position='top center'
-           trigger={
-             <Label circular color={variable.color} className={props.className} style={props.style}>
-               {variable.keyword}
-             </Label>}
-           onMount={handlePopOnMount}
-           onUnmount={handlePopUnmount}
-           hoverable={true}>
-      <Button.Group vertical basic style={{border: 0}}>
+    <Popup style={{ padding: '0' }}
+      position='top center'
+      trigger={
+        <Label circular color={variable.color} className={props.className} style={props.style}>
+          {variable.keyword}
+        </Label>}
+      onMount={handlePopOnMount}
+      onUnmount={handlePopUnmount}
+      hoverable={true}>
+      <Button.Group vertical basic style={{ border: 0 }}>
         <Button compact as='a' href={`#${variable.keyword}`}>Search</Button>
         <Button compact as='a' href={variable.repoLink} target='_blank'>Repo</Button>
         <Button compact data-clipboard-text={variable.keyword} id={clipboardId}>Copy</Button>
