@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useCallback } from 'react';
 import { Container } from 'semantic-ui-react';
 import SearchBar from '../components/SearchBar';
 import TitleLogo from '../components/TitleLogo';
@@ -64,10 +64,45 @@ export default function MainContainer(props) {
     return () => SearchCodeModel.offUpdated(handleSearchCodeModelUpdate);
   });
 
+  const handleSearch = useCallback((val, lang) => {
+    if (val === null || val === undefined || state.variableRequesting) {
+      return;
+    }
+    val = val.trim().replace(/\s+/ig, ' '); // filter spaces
+    if (val.length < 1) {
+      return;
+    }
+    if (val == state.searchValue) {
+      requestVariable(val, lang);
+    } else {
+      setState({ searchLang: lang });
+      setTimeout(() => HashHandler.set(val)); // update window.location.hash
+    }
+  }, [state.searchValue, state.variableRequesting]);
+
+  const handleOpenSourceCode = useCallback((variable) => {
+    setState({ sourceCodeVariable: variable });
+    setTimeout(() => requestSourceCode(variable.repoList[0]), 0);
+  }, []);
+
+  function handleCloseSourceCode() {
+    setState({ sourceCodeVisible: false });
+  }
+
+  function handleRequestSourceCode(repo) {
+    requestSourceCode(repo);
+  }
+
+  function renderSloganImage() {
+    if (state.page > 0 || state.variableList.length) {
+      return '';
+    }
+    return <div className='slogan-image'><img src='images/twohardtings.jpg' /></div>;
+  }
+
   function setState(payload) {
     dispatch({ type: actionTypes.UPDATE, payload: payload });
   }
-
 
   function checkError(data) {
     if (state.variableRequesting) {
@@ -134,42 +169,6 @@ export default function MainContainer(props) {
         sourceCode: SearchCodeModel.sourceCode
       });
     }
-  }
-
-  function handleSearch(val, lang) {
-    if (val === null || val === undefined || state.variableRequesting) {
-      return;
-    }
-    val = val.trim().replace(/\s+/ig, ' '); // filter spaces
-    if (val.length < 1) {
-      return;
-    }
-    if (val == state.searchValue) {
-      requestVariable(val, lang);
-    } else {
-      setState({ searchLang: lang });
-      setTimeout(() => HashHandler.set(val)); // update window.location.hash
-    }
-  }
-
-  function handleOpenSourceCode(variable) {
-    setState({ sourceCodeVariable: variable });
-    setTimeout(() => requestSourceCode(variable.repoList[0]), 0);
-  }
-
-  function handleCloseSourceCode() {
-    setState({ sourceCodeVisible: false });
-  }
-
-  function handleRequestSourceCode(repo) {
-    requestSourceCode(repo);
-  }
-
-  function renderSloganImage() {
-    if (state.page > 0 || state.variableList.length) {
-      return '';
-    }
-    return <div className='slogan-image'><img src='images/twohardtings.jpg' /></div>;
   }
 
   return (
