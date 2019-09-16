@@ -32,7 +32,7 @@ export default function SearchBar(props) {
   const inputEl = useRef(null);
   const inputSize = useInputSize('huge');
   const [state, setState] = useState({
-    lang: props && props.searchLang ? props.searchLang : [],
+    lang: props.searchLang || [],
     valChanged: false
   });
 
