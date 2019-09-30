@@ -607,6 +607,11 @@ body.dark .app .main-container .search-bar__input:focus, body.dark .app .main-co
   box-shadow: #bbbbbb 0px 2px 8px !important;
 }
 
+.app .main-container .variable-list .label.animated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
 .app .main-container .variable-list hr {
   width: 70%;
   border-color: rgba(0, 0, 0, 0.16);
