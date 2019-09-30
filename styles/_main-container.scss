@@ -192,9 +192,12 @@
     .label {
       @extend .pointer-link;
       margin: 0.4rem 0.4rem 0 0;
-
       &:hover {
         box-shadow: $box-shadow;
+      }
+      &.animated {
+        transform: translateZ(0);
+        will-change: transform;
       }
     }
 
