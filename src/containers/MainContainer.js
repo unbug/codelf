@@ -26,6 +26,7 @@ const initState = {
   page: SearchCodeModel.page,
   variableList: SearchCodeModel.variableList,
   suggestion: SearchCodeModel.suggestion,
+  luckyKeyWords: DDMSModel.luckyKeyWords,
   sourceCodeRequesting: false,
   sourceCodeVisible: false,
   sourceCodeVariable: null,
@@ -63,6 +64,16 @@ export default function MainContainer(props) {
     SearchCodeModel.onUpdated(handleSearchCodeModelUpdate);
     return () => SearchCodeModel.offUpdated(handleSearchCodeModelUpdate);
   });
+
+  useEffect(() => {
+    function handleDDMSModelUpdate(curr, prev, mutation) {
+      if (mutation.luckyKeyWords) {
+        setState({ luckyKeyWords: curr.luckyKeyWords });
+      }
+    }
+    DDMSModel.onUpdated(handleDDMSModelUpdate);
+    return () => DDMSModel.offUpdated(handleDDMSModelUpdate);
+  }, []);
 
   const handleSearch = useCallback((val, lang) => {
     if (val === null || val === undefined || state.variableRequesting) {

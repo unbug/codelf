@@ -23,8 +23,25 @@ class DDMSModel extends BaseModel {
   constructor() {
     super();
     this._data = {
-      organizerSyncId: LocalStorage.getItem(persistOrganizerName)
+      organizerSyncId: LocalStorage.getItem(persistOrganizerName),
+      luckyKeyWords: []
     };
+    this.getLuckyKeyWords();
+  }
+
+  getLuckyKeyWords() {
+    JSONP(`${formAction}?callback=?&formid=56e58775ade3a8e84dbacadf`).then(res => {
+      if (res && res.code == 1) {
+        this.update({
+          luckyKeyWords: Tools.randomList([...new Set(res.data.reduce((cal, cur) => {
+            if (cur.data.keyword.length > 1) {
+              cal.push(cur.data.keyword);
+            }
+            return cal;
+          }, []))], 6)
+        });
+      }
+    });
   }
 
   postKeyWords(val) {
@@ -82,7 +99,7 @@ class DDMSModel extends BaseModel {
     }
   }
 
-  getBookmarkOrganizer = function (id, callback) {
+  getBookmarkOrganizer(id, callback) {
     JSONP(`${formDataAction}?callback=?&id=${id}`).then(data => {
       if (data) {
         callback && callback(data);
@@ -104,6 +121,10 @@ class DDMSModel extends BaseModel {
 
   get organizerSyncId() {
     return this._data.organizerSyncId || LocalStorage.getItem(persistOrganizerName);
+  }
+
+  get luckyKeyWords() {
+    return this._data.luckyKeyWords;
   }
 }
 

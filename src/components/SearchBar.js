@@ -94,12 +94,15 @@ export default function SearchBar(props) {
             </Dropdown.Menu>
           </Dropdown>
 
-          <input type='search' name='search' defaultValue={props.searchValue}
+          <input type='search' name='search' defaultValue={props.searchValue} list='search-data-list'
             onKeyPress={e => {
               e.key === 'Enter' && handleSearch()
             }} />
           <Icon name={(props.variableList.length && !state.valChanged) ? 'search plus' : 'search'}
             link onClick={handleSearch} />
+          <datalist id='search-data-list'>
+            {props.luckyKeyWords.map((item, i) => <option value={item} key={i} />)}
+          </datalist>
         </Input>
       </form>
       <div className='search-bar__plugins'>
