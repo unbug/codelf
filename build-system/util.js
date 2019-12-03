@@ -19,7 +19,8 @@ util.minify = function (options) {
   return util.babelMinify(
     Object.assign({
       evaluate: false,
-      builtIns: false
+      builtIns: false,
+      simplifyComparisons: false
     }, options),
     {
       comments: false
