@@ -3,7 +3,7 @@ import React from 'react';
 export default function Donate(props) {
   let text = <h4 className='lang'>Buy <a href='https://twitter.com/unbug' rel='noopener noreferrer' target='_blank'>@unbug</a> a drink</h4>;
   if (props.isZH) {
-    text = <h4 className='lang cn'>给作者 <a href='https://weibo.com/unbug/' rel='noopener noreferrer' target='_blank'>@听奏</a> 打赏个红包吧</h4>;
+    text = <h4 className='lang cn'>给<a href='https://weibo.com/unbug/' rel='noopener noreferrer' target='_blank'>穷困潦倒的作者</a>打赏个红包吧</h4>;
   }
   return (
     <div className='donate'>
