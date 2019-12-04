@@ -392,6 +392,57 @@ body.dark {
   padding-bottom: 0.4rem !important;
 }
 
+css-doodle {
+  position: fixed;
+  z-index: -1;
+  --color: @p(#FDFFFC, #2EC4B6, #E71D36, #FF9F1C);
+  --color-fade: var(--color)@repeat2(@p([0-9a-b]));
+  --noise: @svg-filter(
+      <svg>
+        <filter>
+          <feTurbulence type="fractalNoise" baseFrequency=".016" numOctaves="1" seed="@r(1000)" />
+          <feDisplacementMap in="SourceGraphic" scale="10" />
+        </filter>
+      </svg>
+    );
+  --rule: (
+      :doodle {
+        @grid: 12x1 / 100vw 100vh;
+        background-position: 50%;
+        filter: var(--noise);
+      }
+
+      @size: 100% 50%;
+      position: absolute; top: 25%;
+      transform: rotate(calc((@i() - 1) * 360deg / @size()));
+
+      :after {
+        --c: var(--color);
+        --s: @r(5);
+        content: '';
+        position: absolute;
+        @size: @r(40vmin, 61vmin) @r(12vmin, 17vmin);
+        border-left: @r(3px) solid @var(--c);
+        border-radius: 50vmin;
+        background:
+          radial-gradient(@var(--c) 50%, transparent 0%) 1vmin 42% / 3px 6px no-repeat,
+          radial-gradient(@var(--c) 50%, transparent 0%) 1vmin 58% / 3px 6px no-repeat,
+          @m20(linear-gradient(to right, @var(--c), transparent @r(50%, 80%)) 0 @r(100%) / @r(20%) 1px no-repeat),
+          linear-gradient(to right, @var(--c), transparent @r(50%, 80%)) 0 50% / @r(40%, 60%) 1px no-repeat,
+          linear-gradient(to right, rgba(255, 255, 255, .015), transparent);
+        transform: rotateY(0) scaleX(@var(--s)) translateZ(50vmin);
+        transform-origin: 0 50%;
+        will-change: transform;
+        animation: r @r(10s, 20s) linear infinite;
+        animation-delay: -@r(50s);
+      }
+
+      @keyframes r {
+        to { transform: rotateY(-1turn) scaleX(@var(--s)) translateZ(50vmin) }
+      }
+    );
+}
+
 .app .main-container {
   position: relative;
   display: -webkit-box;
