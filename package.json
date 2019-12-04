@@ -69,6 +69,7 @@
     "animate.css": "^3.7.2",
     "clipboard": "^2.0.4",
     "code-prettify": "^0.1.0",
+    "css-doodle": "^0.7.6",
     "events": "^3.0.0",
     "file-saver": "^2.0.2",
     "lodash": "^4.17.15",
