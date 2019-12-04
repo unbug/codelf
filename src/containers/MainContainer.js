@@ -12,6 +12,7 @@ import Suggestion from '../components/Suggestion';
 import SourceCode from '../components/SourceCode';
 import AppModel from '../models/AppModel';
 import DDMSModel from '../models/DDMSModel';
+import Doodle from '../components/Doodle';
 
 const actionTypes = {
   UPDATE: 'update',
@@ -111,6 +112,11 @@ export default function MainContainer(props) {
     return <div className='slogan-image'><img src='images/twohardtings.jpg' /></div>;
   }
 
+  function renderDoodle() {
+    if (!/鱼|fish/i.test(state.searchValue)) { return null; }
+    return <Doodle/>
+  }
+
   function setState(payload) {
     dispatch({ type: actionTypes.UPDATE, payload: payload });
   }
@@ -194,6 +200,7 @@ export default function MainContainer(props) {
       <SourceCode {...state}
         onRequestSourceCode={handleRequestSourceCode}
         onCloseSourceCode={handleCloseSourceCode} />
+      {renderDoodle()}
     </Container>
   )
 }
