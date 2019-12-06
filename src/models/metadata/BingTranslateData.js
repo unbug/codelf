@@ -22,10 +22,10 @@ class BingTranslateData {
   }
 
   async request(val) {
-    // const cache = this._store.get(val);
-    // if (cache) {
-    //   return cache;
-    // }
+    const cache = this._store.get(val);
+    if (cache) {
+      return cache;
+    }
 
     try {
       let res = await fetch(translateEndpoint, {
