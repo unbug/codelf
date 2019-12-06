@@ -28,8 +28,7 @@ class SearchCodeModel extends BaseModel {
       persistence: 'session',
       persistenceKey: AppModel.genPersistenceKey('variable_list_key')
     });
-    const translators = [YoudaoTranslateData, BingTranslateData];
-    this._translator = Tools.randomList(translators, 1)[0];
+    this._translator = new Date().getSeconds() % 3 > 0 ? YoudaoTranslateData : BingTranslateData;
   }
 
   //search code by query
