@@ -1,6 +1,7 @@
 import BaseModel from './BaseModel';
 import * as Tools from '../utils/Tools';
 import YoudaoTranslateData from './metadata/YoudaoTranslateData';
+import BingTranslateData from './metadata/BingTranslateData';
 import JSONP from '../utils/JSONP';
 import Store from './Store';
 import AppModel from './AppModel';
@@ -27,6 +28,8 @@ class SearchCodeModel extends BaseModel {
       persistence: 'session',
       persistenceKey: AppModel.genPersistenceKey('variable_list_key')
     });
+    const translators = [YoudaoTranslateData, BingTranslateData];
+    this._translator = Tools.randomList(translators, 1)[0];
   }
 
   //search code by query
@@ -44,7 +47,7 @@ class SearchCodeModel extends BaseModel {
     let isZH = this._isZH(val);
     if (isZH) {
       // translate by youdao
-      const translate = await YoudaoTranslateData.request(val);
+      const translate = await this._translator.request(val);
       if (translate) {
         q = translate.translation;
         suggestion = this._parseSuggestion(translate.suggestion, suggestion);
