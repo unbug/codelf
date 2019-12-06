@@ -113,8 +113,8 @@ export default function MainContainer(props) {
   }
 
   function renderDoodle() {
-    if (!/鱼|fish/i.test(state.searchValue)) { return null; }
-    return <Doodle/>
+    if (state.variableList.length == 0) { return null; }
+    return <Doodle text={state.searchValue} />
   }
 
   function setState(payload) {
