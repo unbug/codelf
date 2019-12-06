@@ -1,6 +1,7 @@
 import BaseModel from './BaseModel';
 import * as Tools from '../utils/Tools';
 import YoudaoTranslateData from './metadata/YoudaoTranslateData';
+import BaiduTranslateData from './metadata/BaiduTranslateData';
 import BingTranslateData from './metadata/BingTranslateData';
 import JSONP from '../utils/JSONP';
 import Store from './Store';
@@ -28,7 +29,8 @@ class SearchCodeModel extends BaseModel {
       persistence: 'session',
       persistenceKey: AppModel.genPersistenceKey('variable_list_key')
     });
-    this._translator = new Date().getSeconds() % 3 > 0 ? YoudaoTranslateData : BingTranslateData;
+    const translators = [YoudaoTranslateData, BaiduTranslateData, YoudaoTranslateData, YoudaoTranslateData, BingTranslateData];
+    this._translator = translators[new Date().getSeconds() % translators.length];
   }
 
   //search code by query
