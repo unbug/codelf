@@ -51,10 +51,16 @@ gulp.task('build:lib-css', () => {
     .pipe(gulp.dest('./app/css/'));
 });
 
-// Builds the app style.
+// Builds the images.
 gulp.task('build:images', () => {
   return gulp.src('./assets/images/**/*.*')
     .pipe(gulp.dest('./app/images/'));
+});
+
+// Builds the fonts.
+gulp.task('build:fonts', () => {
+  return gulp.src('./assets/fonts/**/*.*')
+    .pipe(gulp.dest('./app/fonts/'));
 });
 
 // Builds extra files.
@@ -68,4 +74,4 @@ gulp.task('build:extra', () => {
 });
 
 // Builds the app.
-gulp.task('build', gulp.parallel('build:extra', 'build:images', 'build:app-js', 'build:lib-css', 'build:app-css', 'build:lib-js'));
+gulp.task('build', gulp.parallel('build:extra', 'build:fonts', 'build:images', 'build:app-js', 'build:lib-css', 'build:app-css', 'build:lib-js'));
