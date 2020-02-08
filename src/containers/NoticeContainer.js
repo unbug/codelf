@@ -30,7 +30,7 @@ export default function NoticeContainer() {
             </div>
           }
           trigger={
-            <span>[内推] 字节跳动中国，美国，新加坡全职/校招/实习</span>
+            <span>[内推] 字节跳动中国，美国，新加坡社招/校招/实习</span>
           } />
       </a>
       {/* <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
