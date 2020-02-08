@@ -12,12 +12,25 @@ export default function NoticeContainer() {
         <Popup position='top center' hoverable={true} positionFixed={true}
           content={
             <div style={{textAlign: 'center'}}>
+              <b>字节跳动内推</b>
+              <div>请扫二维码或点链接</div>
+              <img src='https://user-images.githubusercontent.com/799578/74077638-6890fb00-4a5c-11ea-92b8-6ca218c060ef.png' height='154' />
+              <div>
+                <a target='_blank' rel='noopener noreferrer' href='https://job.toutiao.com/mobile/campus/invite/JXBD4CX/'>
+                  <Icon name='arrow alternate circle up' />2020校招内推<Icon name='arrow alternate circle up' />
+                </a>
+              </div>
+              <div>
+                <a target='_blank' rel='noopener noreferrer' href='https://job.toutiao.com/s/gKn4Ea'>
+                  <Icon name='arrow alternate circle down' />全部职位内推<Icon name='arrow alternate circle down' />
+                </a>
+              </div>
               <img src='https://user-images.githubusercontent.com/799578/73824613-67ca5000-4835-11ea-9f75-cd894405a8dd.jpeg' height='164'/>
-              <div>字节跳动职位开放：前端，后端，产品，运营，UX/UI，运维，QA，算法，数据挖掘，实习生等。请扫内推码或点链接</div>
+              <div>前端，后端，产品，运营，UX/UI，运维，QA，算法，数据挖掘，实习生等</div>
             </div>
           }
           trigger={
-            <span>[内推] 字节跳动中国，美国，新加坡全职/实习</span>
+            <span>[内推] 字节跳动中国，美国，新加坡全职/校招/实习</span>
           } />
       </a>
       {/* <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
