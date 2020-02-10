@@ -33,7 +33,7 @@ export default function NoticeContainer() {
                   </div>
                 </div>
               </div>
-              <div>前端，后端，产品，运营，UX/UI，运维，QA，算法，数据挖掘，实习生等</div>
+              <div>前端，后端，产品，运营，设计，交互，策划，算法，数据，DevOps，QA，IT，实习生等</div>
             </div>
           }
           trigger={
