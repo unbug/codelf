@@ -9,7 +9,7 @@ export default function NoticeContainer() {
     <div className='notice-container' ref={listEl} onMouseEnter={() => setDisable(true)} onMouseLeave={() => setDisable(false)}>
       <a className='animated fadeIn show' target='_blank' rel='noopener noreferrer'
         href='https://job.toutiao.com/s/gKn4Ea'>
-        <Popup position='top center' hoverable={true} positionFixed={true}
+        <Popup position='top center' hoverable={true} positionFixed={true} style={{maxWidth: '360px'}}
           content={
             <div style={{ textAlign: 'center', width: '320px' }}>
               <b>字节跳动内推, 请扫二维码或点链接</b>
