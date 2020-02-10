@@ -15,7 +15,7 @@ export default function NoticeContainer() {
               <b>字节跳动内推, 请扫二维码或点链接</b>
               <div style={{display: 'flex'}}>
                 <div style={{ flex: 1 }}>
-                  <img src='https://user-images.githubusercontent.com/799578/73824613-67ca5000-4835-11ea-9f75-cd894405a8dd.jpeg' height='92' />
+                  <img src='https://user-images.githubusercontent.com/799578/73824613-67ca5000-4835-11ea-9f75-cd894405a8dd.jpeg' height='90' />
                   <div>
                     <a target='_blank' rel='noopener noreferrer' href='https://job.toutiao.com/s/gKn4Ea'>全部职位内推</a>
                   </div>
@@ -33,11 +33,11 @@ export default function NoticeContainer() {
                   </div>
                 </div>
               </div>
-              <div>前端，后端，产品，运营，设计，交互，策划，算法，数据，DevOps，QA，IT，实习生等</div>
+              <small>前端，后端，产品，运营，设计，交互，策划，算法，数据，DevOps，QA，IT，实习生</small>
             </div>
           }
           trigger={
-            <span>[内推] 字节跳动中国，美国，新加坡社招/校招/实习</span>
+            <span><Icon name='send'/>[内推]字节跳动中国/美国/新加坡社招/校招/实习</span>
           } />
       </a>
       {/* <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
