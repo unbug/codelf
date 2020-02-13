@@ -15,7 +15,7 @@ export default function NoticeContainer() {
               <b>字节跳动内推, 请扫二维码或点链接</b>
               <div style={{display: 'flex'}}>
                 <div style={{ flex: 1 }}>
-                  <img src='https://user-images.githubusercontent.com/799578/73824613-67ca5000-4835-11ea-9f75-cd894405a8dd.jpeg' height='90' />
+                  <img src='https://user-images.githubusercontent.com/799578/74433067-aba70000-4e9a-11ea-93ae-32b2e10fc5fd.jpeg' height='90' />
                   <div>
                     <a target='_blank' rel='noopener noreferrer' href='https://job.toutiao.com/s/gKn4Ea'>全部职位内推</a>
                   </div>
