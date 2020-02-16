@@ -1,16 +1,16 @@
 import React from 'react';
 import { Container, Icon, Popup } from 'semantic-ui-react';
-import CopybookModel from '../models/CopybookModel';
+// import CopybookModel from '../models/CopybookModel';
 
 export default function NavBarContainer() {
   function handleOpenCopybook() {
-    CopybookModel.update({ visible: true });
+    // CopybookModel.update({ visible: true });
   }
 
   return (
     <Container className='nav-bar-container'>
       <div className='bd'>
-        <Popup
+        {/* <Popup
           hoverable={true}
           trigger={
             <div className='copybook-btn animated fadeInDown' onClick={handleOpenCopybook}>
@@ -18,7 +18,7 @@ export default function NavBarContainer() {
             </div>
           }>
           <Icon name='thumbs up outline' /> Daily algorithm copybook, learn algorithm easily!
-        </Popup>
+        </Popup> */}
         <Popup
           hoverable={true}
           trigger={
