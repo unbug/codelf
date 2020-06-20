@@ -45,7 +45,7 @@ export default function NoticeContainer() {
         [语雀] 阿里技术团队打造的专业云知识库
       </a> */}
       <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
-        href='https://tracking.gitads.io/?campaign=gitads&repo=testrepo&redirect=gitads.io'>
+        href='https://tracking.gitads.io/?campaign=gitads&repo=codelf&redirect=gitads.io'>
         <Icon name='dollar sign' /> 如何用你的 GitHub 每个月躺赚 $1000
       </a>
       <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
