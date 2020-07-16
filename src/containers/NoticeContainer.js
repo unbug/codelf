@@ -9,7 +9,7 @@ export default function NoticeContainer() {
     <div className='notice-container' ref={listEl} onMouseEnter={() => setDisable(true)} onMouseLeave={() => setDisable(false)}>
       <a className='animated fadeIn show' target='_blank' rel='noopener noreferrer'
         href='https://job.toutiao.com/s/gKn4Ea'>
-        <Popup open={activeIndex === 1} position='top center' hoverable={true} positionFixed={true} style={{ maxWidth: '360px' }}
+        <Popup /*open={activeIndex === 1}*/ position='top center' hoverable={true} positionFixed={true} style={{ maxWidth: '360px' }}
           content={
             <div style={{ textAlign: 'center', width: '320px' }}>
               <b>字节跳动内推, 请扫二维码或点链接</b>
@@ -44,10 +44,10 @@ export default function NoticeContainer() {
         href='https://www.yuque.com/?CODELF'>
         [语雀] 阿里技术团队打造的专业云知识库
       </a> */}
-      <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
+      {/* <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
         href='https://tracking.gitads.io/?repo=codelf'>
         <Icon name='yen sign' /> 如何用你的 GitHub 每个月躺赚 $1000
-      </a>
+      </a> */}
       <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
         href='https://github.com/unbug/snts'>
         <Icon name='heartbeat' /> SAY NO TO SUICIDE PUBLIC LICENSE
@@ -55,13 +55,13 @@ export default function NoticeContainer() {
       <a className='animated fadeIn' target='_blank' rel='noopener noreferrer' href='//mihtool.com/'>
         <Icon name='code' /> [MIHTool] iOS 上调试和优化页面的工具
       </a>
-      {/* <a className='animated fadeIn' target='_blank' rel='noopener noreferrer' href='https://www.wasmrocks.com/'>
+      <a className='animated fadeIn' target='_blank' rel='noopener noreferrer' href='https://www.wasmrocks.com/'>
         <Icon name='hand rock' /> WebAssembly Rocks
-      </a> */}
-      {/* <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
+      </a>
+      <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
         href='https://github.com/unbug/react-native-train/blob/master/README.md'>
         <Icon name='video' /> [开源] React Native 开发培训资料和视频
-      </a> */}
+      </a>
     </div>
   )
 }
