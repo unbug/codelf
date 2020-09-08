@@ -1,9 +1,3 @@
-  
->### GitAds
->[![GitAds](https://images.gitads.io/codelf)](https://tracking.gitads.io/?repo=codelf)
-  
-  <img src="https://user-images.githubusercontent.com/799578/50462941-8075fe80-09c3-11e9-89e7-af0cb7991406.png" width="80">
-
 
 CODELF(变量命名神器)
 =================
