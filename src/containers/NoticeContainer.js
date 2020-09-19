@@ -40,14 +40,6 @@ export default function NoticeContainer() {
             <span><Icon name='send' />[内推]字节跳动中国/美国/新加坡社招/校招/实习</span>
           } />
       </a>
-      {/* <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
-        href='https://www.yuque.com/?CODELF'>
-        [语雀] 阿里技术团队打造的专业云知识库
-      </a> */}
-      {/* <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
-        href='https://tracking.gitads.io/?repo=codelf'>
-        <Icon name='yen sign' /> 如何用你的 GitHub 每个月躺赚 $1000
-      </a> */}
       <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
         href='https://github.com/unbug/snts'>
         <Icon name='heartbeat' /> SAY NO TO SUICIDE PUBLIC LICENSE
