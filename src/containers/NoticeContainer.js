@@ -8,7 +8,7 @@ export default function NoticeContainer() {
   return (
     <div className='notice-container' ref={listEl} onMouseEnter={() => setDisable(true)} onMouseLeave={() => setDisable(false)}>
       <a className='animated fadeIn show' target='_blank' rel='noopener noreferrer'
-        href='https://github.com/unbug/snts'>
+        href='https://unbug.github.io'>
         <Icon name='newspaper' /> [Micropaper]一分钟读懂一篇论文
       </a>
       <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
