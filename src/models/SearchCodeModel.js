@@ -29,7 +29,7 @@ class SearchCodeModel extends BaseModel {
       persistence: 'session',
       persistenceKey: AppModel.genPersistenceKey('variable_list_key')
     });
-    const translators = [YoudaoTranslateData, YoudaoTranslateData, YoudaoTranslateData, BaiduTranslateData, BingTranslateData];
+    const translators = [BaiduTranslateData, BaiduTranslateData, BingTranslateData, YoudaoTranslateData, YoudaoTranslateData, BingTranslateData];
     this._translator = translators[new Date().getSeconds() % translators.length];
   }
 

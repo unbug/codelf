@@ -18,7 +18,7 @@ export default function NavBarContainer() {
             </div>
           }>
           <Icon name='thumbs up outline' /> Daily algorithm copybook, learn algorithm easily!
-        </Popup> */}
+        </Popup> 
         <Popup
           hoverable={true}
           trigger={
@@ -28,6 +28,7 @@ export default function NavBarContainer() {
           }>
           Sorry, GitHub stars organize tool currently is not available, <a href="https://github.com/unbug/codelf/projects/2" target='_blank' rel='noopener noreferrer'>new version</a> is coming soon :)
         </Popup>
+        */}
         <a href='https://github.com/unbug/codelf' className='github-corner animated fadeInDown'
           title='Star me on GitHub'
           target='_blank' rel='noopener noreferrer'>

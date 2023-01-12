@@ -8,6 +8,24 @@ export default function NoticeContainer() {
   return (
     <div className='notice-container' ref={listEl} onMouseEnter={() => setDisable(true)} onMouseLeave={() => setDisable(false)}>
       <a className='animated fadeIn show' target='_blank' rel='noopener noreferrer'
+        href='https://github.com/unbug/snts'>
+        <Icon name='newspaper' /> [Micropaper]一分钟读懂一篇论文
+      </a>
+      <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
+        href='https://github.com/unbug/snts'>
+        <Icon name='heartbeat' /> SAY NO TO SUICIDE PUBLIC LICENSE
+      </a>
+      <a className='animated fadeIn' target='_blank' rel='noopener noreferrer' href='//mihtool.com/'>
+        <Icon name='code' /> [MIHTool] iOS 上调试和优化页面的工具
+      </a>
+      <a className='animated fadeIn' target='_blank' rel='noopener noreferrer' href='https://www.wasmrocks.com/'>
+        <Icon name='hand rock' /> WebAssembly Rocks
+      </a>
+      <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
+        href='https://github.com/unbug/react-native-train/blob/master/README.md'>
+        <Icon name='video' /> [开源] React Native 开发培训资料和视频
+      </a>
+      <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
         href='https://job.toutiao.com/s/gKn4Ea'>
         <Popup /*open={activeIndex === 1}*/ position='top center' hoverable={true} positionFixed={true} style={{ maxWidth: '360px' }}
           content={
@@ -39,20 +57,6 @@ export default function NoticeContainer() {
           trigger={
             <span><Icon name='send' />[内推]字节跳动中国/美国/新加坡社招/校招/实习</span>
           } />
-      </a>
-      <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
-        href='https://github.com/unbug/snts'>
-        <Icon name='heartbeat' /> SAY NO TO SUICIDE PUBLIC LICENSE
-      </a>
-      <a className='animated fadeIn' target='_blank' rel='noopener noreferrer' href='//mihtool.com/'>
-        <Icon name='code' /> [MIHTool] iOS 上调试和优化页面的工具
-      </a>
-      <a className='animated fadeIn' target='_blank' rel='noopener noreferrer' href='https://www.wasmrocks.com/'>
-        <Icon name='hand rock' /> WebAssembly Rocks
-      </a>
-      <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
-        href='https://github.com/unbug/react-native-train/blob/master/README.md'>
-        <Icon name='video' /> [开源] React Native 开发培训资料和视频
       </a>
     </div>
   )
