@@ -29,6 +29,11 @@ export default function NavBarContainer() {
           Sorry, GitHub stars organize tool currently is not available, <a href="https://github.com/unbug/codelf/projects/2" target='_blank' rel='noopener noreferrer'>new version</a> is coming soon :)
         </Popup>
         */}
+        <a href='https://unbug.github.io' className='bookmark-btn animated fadeInDown'
+          title='一分钟读论文'
+          target='_blank' rel='noopener noreferrer'>
+          <Icon name='bookmark' />
+        </a>
         <a href='https://github.com/unbug/codelf' className='github-corner animated fadeInDown'
           title='Star me on GitHub'
           target='_blank' rel='noopener noreferrer'>
