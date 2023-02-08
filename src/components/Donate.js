@@ -23,7 +23,7 @@ export default function Donate(props) {
     <div className='donate'>
       <div className='hd'>{text}</div>
       <div className='bd'>
-        <img src='images/wechatpay.jpg' className='wechatpay' title='微信付款' />
+        <img src='images/wechatdonate.jpg' className='wechatpay' title='微信付款' />
         <img src='images/zhifubao.png' className='zhifubao' title='支付宝转账' />
         <form action='https://www.paypal.com/cgi-bin/webscr' method='post' target='_top'>
           <input type='hidden' name='cmd' value='_s-xclick' />
