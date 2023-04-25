@@ -4,7 +4,7 @@
 
 CODELF(变量命名神器)
 =================
-  A search tool helps dev to solve the naming things problem.
+  CODELF is a search tool that helps developers solve the problem of naming things.
 
   Search over projects from Github, Bitbucket, Google Code, Codeplex, Sourceforge, Fedora Project, GitLab to find real-world usage variable names.
   
