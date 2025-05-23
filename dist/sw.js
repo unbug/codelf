@@ -1,1 +1,249 @@
-function asyncGeneratorStep(a,b,c,d,e,f,g){try{var h=a[f](g),i=h.value}catch(a){return void c(a)}h.done?b(i):Promise.resolve(i).then(d,e)}function _asyncToGenerator(a){return function(){var b=this,c=arguments;return new Promise(function(d,e){function f(a){asyncGeneratorStep(h,d,e,f,g,"next",a)}function g(a){asyncGeneratorStep(h,d,e,f,g,"throw",a)}var h=a.apply(b,c);f(void 0)})}}var CACHE_VERSION="2023-02-10T14:15:46.873Z",CURRENT_CACHES={prefetch:"prefetch-cache-v"+CACHE_VERSION},INCLUDED=["searchcode.com","fanyi.youdao.com","api.cognitive.microsofttranslator.com","api.github.com"],CACHE_ONLY=["fanyi.youdao.com","api.cognitive.microsofttranslator.com","api.github.com"],NETWORK_ONLY=[],EXCLUDED=[];function matchLocation(a,b){return b.find(function(b){return-1!==a.indexOf(b)})}self.addEventListener("install",function(a){self.skipWaiting();var b=Date.now(),c=["./","opensearch.xml","css/app.css","css/app.f1364fce.css","css/lib.b0f67b98.css","css/lib.css","fonts/Dressedless_Three.svg","fonts/Dressedless_Three.ttf","fonts/FontAwesome.otf","fonts/LatoLatin-Bold.woff2","fonts/LatoLatin-BoldItalic.woff2","fonts/LatoLatin-Italic.woff2","fonts/LatoLatin-Regular.woff2","fonts/fontawesome-webfont.eot","fonts/fontawesome-webfont.svg","fonts/fontawesome-webfont.ttf","fonts/fontawesome-webfont.woff","fonts/fontawesome-webfont.woff2","images/codelf_logo.f4ae25bd.png","images/codelf_logo.png","images/paypal.69412e83.png","images/paypal.png","images/twohardtings.0db8462a.jpg","images/twohardtings.jpg","images/wechatdonate.3ba3a9d8.jpg","images/wechatdonate.jpg","images/wechatpay.5f11f80c.jpg","images/wechatpay.jpg","images/zhifubao.70c19370.png","images/zhifubao.png","js/app.792fa086.js","js/app.js","js/lib.5e430a5b.js","js/lib.js","css/themes/default/assets/fonts/brand-icons.eot","css/themes/default/assets/fonts/brand-icons.svg","css/themes/default/assets/fonts/brand-icons.ttf","css/themes/default/assets/fonts/brand-icons.woff","css/themes/default/assets/fonts/brand-icons.woff2","css/themes/default/assets/fonts/icons.eot","css/themes/default/assets/fonts/icons.otf","css/themes/default/assets/fonts/icons.svg","css/themes/default/assets/fonts/icons.ttf","css/themes/default/assets/fonts/icons.woff","css/themes/default/assets/fonts/icons.woff2","css/themes/default/assets/fonts/outline-icons.eot","css/themes/default/assets/fonts/outline-icons.svg","css/themes/default/assets/fonts/outline-icons.ttf","css/themes/default/assets/fonts/outline-icons.woff","css/themes/default/assets/fonts/outline-icons.woff2","css/themes/default/assets/images/flags.png"];console.log("Handling install event. Resources to prefetch:",c),a.waitUntil(caches.open(CURRENT_CACHES.prefetch).then(function(a){var d=c.map(function(c){var d=new URL(c,location.href);d.search+=(d.search?"&":"?")+"cache-bust="+b;var e=new Request(d,{mode:"no-cors"});return fetch(e).then(function(b){if(400<=b.status)throw new Error("request for "+c+" failed with status "+b.statusText);return a.put(c,b)})["catch"](function(a){console.error("Not caching "+c+" due to "+a)})});return Promise.all(d).then(function(){console.log("Pre-fetching complete.")})})["catch"](function(a){console.error("Pre-fetching failed:",a)}))}),self.addEventListener("activate",function(a){var b=Object.keys(CURRENT_CACHES).map(function(a){return CURRENT_CACHES[a]});a.waitUntil(caches.keys().then(function(a){return Promise.all(a.map(function(a){if(-1===b.indexOf(a))return console.log("Deleting out of date cache:",a),caches["delete"](a)}))}))}),self.addEventListener("fetch",function(a){console.log("Handling fetch event for",a.request.url);var b=new URL(a.request.url);"navigate"===a.request.mode?(console.log("request mode:",a.request.mode),a.respondWith(_asyncToGenerator(regeneratorRuntime.mark(function c(){var d,e,f;return regeneratorRuntime.wrap(function(c){for(;;)switch(c.prev=c.next){case 0:return d=b,d.search="",e=fetch(d),f=e.then(function(a){return a.clone()}),a.waitUntil(_asyncToGenerator(regeneratorRuntime.mark(function a(){var b;return regeneratorRuntime.wrap(function(a){for(;;)switch(a.prev=a.next){case 0:return a.next=2,caches.open(CURRENT_CACHES.prefetch);case 2:return b=a.sent,a.t0=b,a.t1=d,a.next=7,f;case 7:return a.t2=a.sent,a.next=10,a.t0.put.call(a.t0,a.t1,a.t2);case 10:case"end":return a.stop();}},a)}))()),c.next=7,caches.match(d);case 7:if(c.t0=c.sent,c.t0){c.next=10;break}c.t0=e;case 10:return c.abrupt("return",c.t0);case 11:case"end":return c.stop();}},c)}))())):matchLocation(b.href,INCLUDED)&&!matchLocation(b.href,EXCLUDED)&&/get/i.test(a.request.method)?matchLocation(b.href,NETWORK_ONLY)?(console.log("network-falling-back-to-caches:",a.request.url),a.respondWith(caches.open(CURRENT_CACHES.prefetch).then(function(b){return fetch(a.request).then(function(c){return b.put(a.request,c.clone()),c})["catch"](function(){return b.match(a.request).then(function(a){return a})})}))):matchLocation(b.href,CACHE_ONLY)?(console.log("cache-falling-back-to-network:",a.request.url),a.respondWith(caches.open(CURRENT_CACHES.prefetch).then(function(b){return b.match(a.request).then(function(c){return c||fetch(a.request).then(function(c){return b.put(a.request,c.clone()),c})})}))):(console.log("cache-then-network:",a.request.url),a.respondWith(caches.open(CURRENT_CACHES.prefetch).then(function(b){return b.match(a.request).then(function(c){var d=fetch(a.request).then(function(c){return b.put(a.request,c.clone()),c});return c||d})}))):b.origin==location.origin&&(console.log("request origin:",b.origin),a.respondWith(caches.match(a.request).then(function(b){return b?(console.log("Found response in cache:",b),b):(console.log("No response found in cache. About to fetch from network..."),fetch(a.request).then(function(a){return console.log("Response from network is:",a),a})["catch"](function(a){throw console.error("Fetching failed:",a),a}))})))}),"storage"in navigator&&"estimate"in navigator.storage&&navigator.storage.estimate().then(function(a){console.log("Using ".concat(a.usage," out of ").concat(a.quota," bytes."))});
+/*
+ Copyright 2014 Google Inc. All Rights Reserved.
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ http://www.apache.org/licenses/LICENSE-2.0
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+// While overkill for this specific sample in which there is only one cache,
+// this is one best practice that can be followed in general to keep track of
+// multiple caches used by a given service worker, and keep them all versioned.
+// It maps a shorthand identifier for a cache to a specific, versioned cache name.
+
+// Note that since global state is discarded in between service worker restarts, these
+// variables will be reinitialized each time the service worker handles an event, and you
+// should not attempt to change their values inside an event handler. (Treat them as constants.)
+
+// If at any point you want to force pages that use this service worker to start using a fresh
+// cache, then increment the CACHE_VERSION value. It will kick off the service worker update
+// flow and the old cache(s) will be purged as part of the activate event handler when the
+// updated service worker is activated.
+var CACHE_VERSION = '_BUILD_VERSION_';
+var CURRENT_CACHES = {
+  prefetch: 'prefetch-cache-v' + CACHE_VERSION
+};
+
+var INCLUDED = [_INCLUDED_];
+
+var CACHE_ONLY = [_CACHE_ONLY_];
+
+var NETWORK_ONLY = [_NETWORK_ONLY_];
+
+var EXCLUDED = [_EXCLUDED_];
+
+function matchLocation(url, caches) {
+  return caches.find(function (l) {
+    return url.indexOf(l) !== -1;
+  });
+}
+
+self.addEventListener('install', function (event) {
+  self.skipWaiting(); // make new service worker activate ASAP
+  var now = Date.now();
+
+  var urlsToPrefetch = [_FILES_];
+
+  // All of these logging statements should be visible via the "Inspect" interface
+  // for the relevant SW accessed via chrome://serviceworker-internals
+  console.log('Handling install event. Resources to prefetch:', urlsToPrefetch);
+
+  event.waitUntil(
+    caches.open(CURRENT_CACHES.prefetch).then(function (cache) {
+      var cachePromises = urlsToPrefetch.map(function (urlToPrefetch) {
+        // This constructs a new URL object using the service worker's script location as the base
+        // for relative URLs.
+        var url = new URL(urlToPrefetch, location.href);
+        // Append a cache-bust=TIMESTAMP URL parameter to each URL's query string.
+        // This is particularly important when precaching resources that are later used in the
+        // fetch handler as responses directly, without consulting the network (i.e. cache-first).
+        // If we were to get back a response from the HTTP browser cache for this precaching request
+        // then that stale response would be used indefinitely, or at least until the next time
+        // the service worker script changes triggering the install flow.
+        url.search += (url.search ? '&' : '?') + 'cache-bust=' + now;
+
+        // It's very important to use {mode: 'no-cors'} if there is any chance that
+        // the resources being fetched are served off of a server that doesn't support
+        // CORS (http://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
+        // In this example, www.chromium.org doesn't support CORS, and the fetch()
+        // would fail if the default mode of 'cors' was used for the fetch() request.
+        // The drawback of hardcoding {mode: 'no-cors'} is that the response from all
+        // cross-origin hosts will always be opaque
+        // (https://slightlyoff.github.io/ServiceWorker/spec/service_worker/index.html#cross-origin-resources)
+        // and it is not possible to determine whether an opaque response represents a success or failure
+        // (https://github.com/whatwg/fetch/issues/14).
+        var request = new Request(url, { mode: 'no-cors' });
+        return fetch(request).then(function (response) {
+          if (response.status >= 400) {
+            throw new Error('request for ' + urlToPrefetch +
+              ' failed with status ' + response.statusText);
+          }
+
+          // Use the original URL without the cache-busting parameter as the key for cache.put().
+          return cache.put(urlToPrefetch, response);
+        }).catch(function (error) {
+          console.error('Not caching ' + urlToPrefetch + ' due to ' + error);
+        });
+      });
+
+      return Promise.all(cachePromises).then(function () {
+        console.log('Pre-fetching complete.');
+      });
+    }).catch(function (error) {
+      console.error('Pre-fetching failed:', error);
+    })
+  );
+});
+
+self.addEventListener('activate', function (event) {
+  // Delete all caches that aren't named in CURRENT_CACHES.
+  // While there is only one cache in this example, the same logic will handle the case where
+  // there are multiple versioned caches.
+  var expectedCacheNames = Object.keys(CURRENT_CACHES).map(function (key) {
+    return CURRENT_CACHES[key];
+  });
+
+  event.waitUntil(
+    caches.keys().then(function (cacheNames) {
+      return Promise.all(
+        cacheNames.map(function (cacheName) {
+          if (expectedCacheNames.indexOf(cacheName) === -1) {
+            // If this cache name isn't present in the array of "expected" cache names, then delete it.
+            console.log('Deleting out of date cache:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
+
+self.addEventListener('fetch', function (event) {
+  console.log('Handling fetch event for', event.request.url);
+  var requestURL = new URL(event.request.url);
+  // https://developers.google.com/web/fundamentals/primers/service-workers/high-performance-loading
+  if (event.request.mode === 'navigate') {
+    console.log('request mode:', event.request.mode);
+    // See /web/fundamentals/getting-started/primers/async-functions
+    // for an async/await primer.
+    event.respondWith(async function () {
+      // Optional: Normalize the incoming URL by removing query parameters.
+      // Instead of https://example.com/page?key=value,
+      // use https://example.com/page when reading and writing to the cache.
+      // For static HTML documents, it's unlikely your query parameters will
+      // affect the HTML returned. But if you do use query parameters that
+      // uniquely determine your HTML, modify this code to retain them.
+      const normalizedUrl = requestURL;
+      normalizedUrl.search = '';
+
+      // Create promises for both the network response,
+      // and a copy of the response that can be used in the cache.
+      const fetchResponseP = fetch(normalizedUrl);
+      const fetchResponseCloneP = fetchResponseP.then(r => r.clone());
+
+      // event.waitUntil() ensures that the service worker is kept alive
+      // long enough to complete the cache update.
+      event.waitUntil(async function () {
+        const cache = await caches.open(CURRENT_CACHES.prefetch);
+        await cache.put(normalizedUrl, await fetchResponseCloneP);
+      }());
+
+      // Prefer the cached response, falling back to the fetch response.
+      return (await caches.match(normalizedUrl)) || fetchResponseP;
+    }());
+  } else if (
+    matchLocation(requestURL.href, INCLUDED)
+    && !matchLocation(requestURL.href, EXCLUDED)
+    && /get/i.test(event.request.method)
+  ) {
+    if (matchLocation(requestURL.href, NETWORK_ONLY)) {
+      console.log('network-falling-back-to-caches:', event.request.url);
+      // https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#network-falling-back-to-cache
+      event.respondWith(
+        caches.open(CURRENT_CACHES.prefetch).then(function (cache) {
+          return fetch(event.request).then(function (networkResponse) {
+            // save to cache
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          }).catch(function () {
+            return cache.match(event.request).then(function (response) {
+              return response;
+            });
+          });
+        })
+      );
+    } else if (matchLocation(requestURL.href, CACHE_ONLY)) {
+      console.log('cache-falling-back-to-network:', event.request.url);
+      // https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-falling-back-to-network
+      event.respondWith(
+        caches.open(CURRENT_CACHES.prefetch).then(function (cache) {
+          return cache.match(event.request).then(function (response) {
+            return response || fetch(event.request).then(function (networkResponse) {
+              // save to cache
+              cache.put(event.request, networkResponse.clone());
+              return networkResponse;
+            });
+          });
+        })
+      );
+    } else {
+      console.log('cache-then-network:', event.request.url);
+      // https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/#cache-then-network
+      event.respondWith(
+        caches.open(CURRENT_CACHES.prefetch).then(function (cache) {
+          return cache.match(event.request).then(function (response) {
+            var fetchPromise = fetch(event.request).then(function (networkResponse) {
+              // save to cache
+              cache.put(event.request, networkResponse.clone());
+              return networkResponse;
+            });
+            return response || fetchPromise;
+          });
+        })
+      );
+    }
+  } else if (requestURL.origin == location.origin) {
+    console.log('request origin:', requestURL.origin);
+    event.respondWith(
+      // caches.match() will look for a cache entry in all of the caches available to the service worker.
+      // It's an alternative to first opening a specific named cache and then matching on that.
+      caches.match(event.request).then(function (response) {
+        if (response) {
+          console.log('Found response in cache:', response);
+
+          return response;
+        }
+
+        console.log('No response found in cache. About to fetch from network...');
+
+        // event.request will always have the proper mode set ('cors, 'no-cors', etc.) so we don't
+        // have to hardcode 'no-cors' like we do when fetch()ing in the install handler.
+        return fetch(event.request).then(function (response) {
+          console.log('Response from network is:', response);
+
+          return response;
+        }).catch(function (error) {
+          // This catch() will handle exceptions thrown from the fetch() operation.
+          // Note that a HTTP error response (e.g. 404) will NOT trigger an exception.
+          // It will return a normal response object that has the appropriate error code set.
+          console.error('Fetching failed:', error);
+
+          throw error;
+        });
+      })
+    );
+  }
+});
+if ('storage' in navigator && 'estimate' in navigator.storage) {
+  navigator.storage.estimate().then(estimate => {
+    console.log(`Using ${estimate.usage} out of ${estimate.quota} bytes.`);
+  });
+}
+
+// debug with chrome
+// /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --user-data-dir=/tmp/foo --ignore-certificate-errors --unsafely-treat-insecure-origin-as-secure=https://localhost:1123
