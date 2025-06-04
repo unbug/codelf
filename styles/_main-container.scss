@@ -110,8 +110,11 @@
     }
 
     &__input {
+      height: 56px;
+      font-size: 1.3em;
       background: #F1F3F4;
       border-radius: 5rem;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.04);
       transition: box-shadow 350ms $anim-cubic-bezier;
 
       &:focus, &:active, &:hover {
@@ -119,6 +122,7 @@
       }
 
       input {
+        height: 56px !important;
         background: #F1F3F4;
         border-radius: 5rem;
         border: 0 !important;
@@ -129,7 +133,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: -0.4rem;
+      margin-top: -0.2rem;
       margin-left: 1rem;
 
       i {
@@ -165,6 +169,8 @@
   #{$dark-theme} {
     .search-bar {
       &__input {
+        box-shadow: 0 2px 4px 0 rgba(255, 255, 255, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        
         &:focus, &:active, &:hover {
           box-shadow: $box-shadow;
         }
