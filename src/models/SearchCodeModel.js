@@ -3,6 +3,7 @@ import * as Tools from '../utils/Tools';
 import YoudaoTranslateData from './metadata/YoudaoTranslateData';
 import BaiduTranslateData from './metadata/BaiduTranslateData';
 import BingTranslateData from './metadata/BingTranslateData';
+import DeepSeekData from './metadata/DeepSeekData';
 import JSONP from '../utils/JSONP';
 import Store from './Store';
 import AppModel from './AppModel';
@@ -18,6 +19,7 @@ class SearchCodeModel extends BaseModel {
       isZH: false,
       searchValue: null,
       searchLang: SessionStorage.getItem(SEARCH_LANG_KEY),
+      searchSource: SessionStorage.getItem(Configs.SEARCH_SOURCE_STORAGE) || Configs.SEARCH_SOURCES.SEARCHCODE,
       page: 0,
       variableList: [],
       suggestion: [],
@@ -34,9 +36,12 @@ class SearchCodeModel extends BaseModel {
   }
 
   //search code by query
-  async requestVariable(val, page, lang) {
+  async requestVariable(val, page, lang, searchSource) {
     lang = lang || this.searchLang;
+    searchSource = searchSource || this.searchSource;
     SessionStorage.setItem(SEARCH_LANG_KEY, lang); // persist lang
+    SessionStorage.setItem(Configs.SEARCH_SOURCE_STORAGE, searchSource); // persist search source
+    
     if (val !== undefined && val !== null) {
       val = val.trim().replace(/\s+/ig, ' '); // filter spaces
     }
@@ -59,19 +64,46 @@ class SearchCodeModel extends BaseModel {
           page: page,
           variableList: [...this.variableList, []],
           searchLang: lang,
+          searchSource: searchSource,
           suggestion: suggestion,
           isZH: isZH || this.isZH
         });
       }
     }
-    const cacheId = Tools.MD5(q + page + (lang && lang.length ? lang.join(',') : ''));
+    
+    const cacheId = Tools.MD5(q + page + (lang && lang.length ? lang.join(',') : '') + searchSource);
     const cache = this._variableListStore.get(cacheId);
     if (cache) {
       this.update(cache);
       return;
     }
+
+    // Route to appropriate search provider
+    if (searchSource === Configs.SEARCH_SOURCES.DEEPSEEK) {
+      await this._searchWithDeepSeek(val, q, page, lang, suggestion, isZH, cacheId);
+    } else {
+      await this._searchWithSearchCode(val, q, page, lang, suggestion, isZH, cacheId);
+    }
+  }
+
+  //get source code by id
+  requestSourceCode(id) {
+    const cache = this._sourceCodeStore.get(id);
+    if (cache) {
+      this.update({ sourceCode: cache });
+      return;
+    }
+    id && fetch('https://searchcode.com/api/result/' + id + '/')
+      .then(res => res.json())
+      .then(data => {
+        this._sourceCodeStore.save(id, data.code);
+        this.update({ sourceCode: data.code });
+      });
+  }
+
+  // Search with searchcode.com (original implementation)
+  async _searchWithSearchCode(val, q, page, lang, suggestion, isZH, cacheId) {
     // multiple val separate with '+'
-    // const url = `//searchcode.com/api/codesearch_I/?q=${q.replace(' ', '+')}&p=${page}&per_page=42${lang.length ? ('&lan=' + lang.join(',')) : ''}`;
     const langParams = lang.length ? ('&lan=' + lang.join(',').split(',').join('&lan=')) : '';
     const qParams = q.replace(' ', '+');
     const url = `//searchcode.com/api/jsonp_codesearch_I/?callback=?&q=${qParams}&p=${page}&per_page=42${langParams}`;
@@ -81,6 +113,7 @@ class SearchCodeModel extends BaseModel {
         page: page,
         variableList: [...this._data.variableList, this._parseVariableList(data.results, q)],
         searchLang: lang,
+        searchSource: this.searchSource,
         suggestion: suggestion,
         isZH: isZH || this.isZH
       };
@@ -99,6 +132,7 @@ class SearchCodeModel extends BaseModel {
               page: page,
               variableList: [...this.variableList, []],
               searchLang: lang,
+              searchSource: this.searchSource,
               suggestion: suggestion,
               isZH: isZH || this.isZH
             });
@@ -106,19 +140,35 @@ class SearchCodeModel extends BaseModel {
       });
   }
 
-  //get source code by id
-  requestSourceCode(id) {
-    const cache = this._sourceCodeStore.get(id);
-    if (cache) {
-      this.update({ sourceCode: cache });
-      return;
-    }
-    id && fetch('https://searchcode.com/api/result/' + id + '/')
-      .then(res => res.json())
-      .then(data => {
-        this._sourceCodeStore.save(id, data.code);
-        this.update({ sourceCode: data.code });
+  // Search with DeepSeek API
+  async _searchWithDeepSeek(val, q, page, lang, suggestion, isZH, cacheId) {
+    try {
+      const data = await DeepSeekData.searchCode(q, page, lang);
+      const cdata = {
+        searchValue: val,
+        page: page,
+        variableList: [...this._data.variableList, this._parseVariableList(data.results, q)],
+        searchLang: lang,
+        searchSource: this.searchSource,
+        suggestion: suggestion,
+        isZH: isZH || this.isZH
+      };
+      this.update(cdata);
+      this._variableListStore.save(cacheId, cdata);
+    } catch (error) {
+      console.error('DeepSeek search failed:', error);
+      // Fallback to empty results with error indicator
+      this.update({
+        searchValue: val,
+        page: page,
+        variableList: [...this.variableList, []],
+        searchLang: lang,
+        searchSource: this.searchSource,
+        suggestion: suggestion,
+        isZH: isZH || this.isZH,
+        error: error.message
       });
+    }
   }
 
   getKeyWordReg(keyword) {
@@ -220,6 +270,10 @@ class SearchCodeModel extends BaseModel {
     return this._data.searchLang || SessionStorage.getItem(SEARCH_LANG_KEY) || [];
   }
 
+  get searchSource() {
+    return this._data.searchSource || SessionStorage.getItem(Configs.SEARCH_SOURCE_STORAGE) || Configs.SEARCH_SOURCES.SEARCHCODE;
+  }
+
   get page() {
     return this._data.page;
   }
@@ -238,6 +292,27 @@ class SearchCodeModel extends BaseModel {
 
   get sourceCode() {
     return this._data.sourceCode;
+  }
+
+  // DeepSeek configuration methods
+  setDeepSeekApiKey(apiKey) {
+    DeepSeekData.setApiKey(apiKey);
+  }
+
+  getDeepSeekApiKey() {
+    return DeepSeekData.getApiKey();
+  }
+
+  isDeepSeekConfigured() {
+    return DeepSeekData.isConfigured();
+  }
+
+  setSearchSource(source) {
+    if (Object.values(Configs.SEARCH_SOURCES).includes(source)) {
+      this._data.searchSource = source;
+      SessionStorage.setItem(Configs.SEARCH_SOURCE_STORAGE, source);
+      this.update({ searchSource: source });
+    }
   }
 }
 

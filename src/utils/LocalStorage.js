@@ -39,10 +39,18 @@ class Storage {
       // todo
     }
   }
+
+  removeItem(key) {
+    try {
+      this._store.removeItem(key);
+    } catch (e) {
+      // todo
+    }
+  }
 }
 
 const LocalStorage = new Storage(window.localStorage);
 const SessionStorage = new Storage(window.sessionStorage);
 
-export { SessionStorage };
+export { SessionStorage, LocalStorage };
 export default LocalStorage;

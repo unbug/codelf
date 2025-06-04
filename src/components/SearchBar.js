@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Dropdown, Icon, Input } from 'semantic-ui-react';
+import { Dropdown, Icon, Input, Modal, Button, Form } from 'semantic-ui-react';
+import * as Configs from '../constants/Configs';
 
 // http://githut.info/
 const topProgramLan = [
@@ -28,12 +29,21 @@ const topProgramLan = [
   { id: 42, language: 'ActionScript' }
 ];
 
+// Search source options
+const searchSources = [
+  { key: Configs.SEARCH_SOURCES.SEARCHCODE, text: 'SearchCode', value: Configs.SEARCH_SOURCES.SEARCHCODE },
+  { key: Configs.SEARCH_SOURCES.DEEPSEEK, text: 'DeepSeek AI', value: Configs.SEARCH_SOURCES.DEEPSEEK }
+];
+
 export default function SearchBar(props) {
   const inputEl = useRef(null);
   const inputSize = useInputSize('huge');
   const [state, setState] = useState({
     lang: props.searchLang || [],
-    valChanged: false
+    searchSource: props.searchSource || Configs.SEARCH_SOURCES.SEARCHCODE,
+    valChanged: false,
+    showDeepSeekModal: false,
+    deepSeekApiKey: props.deepSeekApiKey || ''
   });
 
   function updateState(vals) {
@@ -43,7 +53,7 @@ export default function SearchBar(props) {
   }
 
   function handleSearch() {
-    props.onSearch(inputEl.current.inputRef.current.value, state.lang);
+    props.onSearch(inputEl.current.inputRef.current.value, state.lang, state.searchSource);
     inputEl.current.inputRef.current.blur();
     updateState({ valChanged: false });
   }
@@ -66,6 +76,27 @@ export default function SearchBar(props) {
     state.lang.indexOf(id) === -1 ? handleSelectLang(id) : handleDeselectLang(id);
   }
 
+  function handleSearchSourceChange(e, { value }) {
+    if (value === Configs.SEARCH_SOURCES.DEEPSEEK && !props.isDeepSeekConfigured) {
+      updateState({ showDeepSeekModal: true });
+      return;
+    }
+    updateState({ searchSource: value, valChanged: true });
+    props.onSearchSourceChange && props.onSearchSourceChange(value);
+  }
+
+  function handleDeepSeekApiKeySubmit() {
+    if (state.deepSeekApiKey.trim()) {
+      props.onDeepSeekApiKeyChange && props.onDeepSeekApiKeyChange(state.deepSeekApiKey.trim());
+      updateState({ 
+        showDeepSeekModal: false, 
+        searchSource: Configs.SEARCH_SOURCES.DEEPSEEK,
+        valChanged: true 
+      });
+      props.onSearchSourceChange && props.onSearchSourceChange(Configs.SEARCH_SOURCES.DEEPSEEK);
+    }
+  }
+
   const langItems = topProgramLan.map(key => {
     const active = state.lang.indexOf(key.id) !== -1;
     return <Dropdown.Item key={key.id}
@@ -79,6 +110,17 @@ export default function SearchBar(props) {
     <div className='search-bar'>
       <div className='search-bar__desc'>
         Search over GitHub, Bitbucket, GitLab to find real-world usage variable names
+      </div>
+      <div className='search-bar__controls'>
+        <Dropdown
+          placeholder='Search Source'
+          fluid
+          selection
+          options={searchSources}
+          value={state.searchSource}
+          onChange={handleSearchSourceChange}
+          style={{ marginBottom: '10px', maxWidth: '200px' }}
+        />
       </div>
       <form action="javascript:void(0);">
         <Input ref={inputEl}
@@ -118,6 +160,46 @@ export default function SearchBar(props) {
         <a href='https://github.com/unbug/codelf/issues/63'
           target='_blank' rel='noopener noreferrer'>Alfred</a>
       </div>
+
+      {/* DeepSeek API Key Configuration Modal */}
+      <Modal
+        open={state.showDeepSeekModal}
+        onClose={() => updateState({ showDeepSeekModal: false })}
+        size='small'
+      >
+        <Modal.Header>Configure DeepSeek API</Modal.Header>
+        <Modal.Content>
+          <Form>
+            <Form.Field>
+              <label>DeepSeek API Key</label>
+              <input
+                type='password'
+                placeholder='Enter your DeepSeek API key'
+                value={state.deepSeekApiKey}
+                onChange={(e) => updateState({ deepSeekApiKey: e.target.value })}
+              />
+            </Form.Field>
+            <p>
+              <small>
+                You need a DeepSeek API key to use DeepSeek search. 
+                Get your API key from <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener noreferrer">DeepSeek Platform</a>.
+              </small>
+            </p>
+          </Form>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button onClick={() => updateState({ showDeepSeekModal: false })}>
+            Cancel
+          </Button>
+          <Button 
+            primary 
+            onClick={handleDeepSeekApiKeySubmit}
+            disabled={!state.deepSeekApiKey.trim()}
+          >
+            Save & Use DeepSeek
+          </Button>
+        </Modal.Actions>
+      </Modal>
     </div>
   )
 }

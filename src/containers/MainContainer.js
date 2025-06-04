@@ -24,6 +24,7 @@ const initState = {
   variableRequesting: false,
   searchValue: SearchCodeModel.searchValue,
   searchLang: SearchCodeModel.searchLang,
+  searchSource: SearchCodeModel.searchSource,
   page: SearchCodeModel.page,
   variableList: SearchCodeModel.variableList,
   suggestion: SearchCodeModel.suggestion,
@@ -32,6 +33,8 @@ const initState = {
   sourceCodeVisible: false,
   sourceCodeVariable: null,
   sourceCodeRepo: null,
+  deepSeekApiKey: SearchCodeModel.getDeepSeekApiKey(),
+  isDeepSeekConfigured: SearchCodeModel.isDeepSeekConfigured(),
 };
 
 function reducer(state, action) {
@@ -76,7 +79,7 @@ export default function MainContainer(props) {
     return () => DDMSModel.offUpdated(handleDDMSModelUpdate);
   }, []);
 
-  const handleSearch = useCallback((val, lang) => {
+  const handleSearch = useCallback((val, lang, searchSource) => {
     if (val === null || val === undefined || state.variableRequesting) {
       return;
     }
@@ -85,12 +88,25 @@ export default function MainContainer(props) {
       return;
     }
     if (val == state.searchValue) {
-      requestVariable(val, lang);
+      requestVariable(val, lang, searchSource);
     } else {
-      setState({ searchLang: lang });
+      setState({ searchLang: lang, searchSource: searchSource });
       setTimeout(() => HashHandler.set(val)); // update window.location.hash
     }
   }, [state.searchValue, state.variableRequesting]);
+
+  const handleSearchSourceChange = useCallback((searchSource) => {
+    setState({ searchSource: searchSource });
+    SearchCodeModel.setSearchSource(searchSource);
+  }, []);
+
+  const handleDeepSeekApiKeyChange = useCallback((apiKey) => {
+    SearchCodeModel.setDeepSeekApiKey(apiKey);
+    setState({ 
+      deepSeekApiKey: apiKey,
+      isDeepSeekConfigured: SearchCodeModel.isDeepSeekConfigured()
+    });
+  }, []);
 
   const handleOpenSourceCode = useCallback((variable) => {
     setState({ sourceCodeVariable: variable });
@@ -131,18 +147,19 @@ export default function MainContainer(props) {
     return false;
   }
 
-  function requestVariable(val, lang) {
+  function requestVariable(val, lang, searchSource) {
     const langChanged = lang ? (lang.join(',') != state.searchLang.join(',')) : !!state.searchLang;
+    const sourceChanged = searchSource && searchSource !== state.searchSource;
     val = decodeURIComponent(val);
     let page = state.page;
-    if (val == state.searchValue && !langChanged) {
+    if (val == state.searchValue && !langChanged && !sourceChanged) {
       page += 1;
     } else {
       page = 0;
     }
     setState({ searchValue: val, variableRequesting: true });
-    SearchCodeModel.requestVariable(val, page, lang || state.searchLang);
-    AppModel.analytics('q=' + val);
+    SearchCodeModel.requestVariable(val, page, lang || state.searchLang, searchSource || state.searchSource);
+    AppModel.analytics('q=' + val + (searchSource ? '&source=' + searchSource : ''));
     DDMSModel.postKeyWords(val);
     updateDocTitle(val);
   }
@@ -175,6 +192,7 @@ export default function MainContainer(props) {
         variableRequesting: !mutation.variableList,
         searchValue: SearchCodeModel.searchValue,
         searchLang: SearchCodeModel.searchLang,
+        searchSource: SearchCodeModel.searchSource,
         page: SearchCodeModel.page,
         variableList: SearchCodeModel.variableList,
         suggestion: SearchCodeModel.suggestion
@@ -186,12 +204,23 @@ export default function MainContainer(props) {
         sourceCode: SearchCodeModel.sourceCode
       });
     }
+    if (mutation.searchSource) {
+      setState({
+        searchSource: SearchCodeModel.searchSource
+      });
+    }
   }
 
   return (
     <Container className='main-container'>
       <TitleLogo />
-      <SearchBar placeholder='AI 人工智能' {...state} onSearch={handleSearch} />
+      <SearchBar 
+        placeholder='AI 人工智能' 
+        {...state} 
+        onSearch={handleSearch} 
+        onSearchSourceChange={handleSearchSourceChange}
+        onDeepSeekApiKeyChange={handleDeepSeekApiKeyChange}
+      />
       <Suggestion {...state} />
       {state.variableRequesting ? <Loading /> : (state.isError ? <SearchError /> : '')}
       {renderSloganImage()}

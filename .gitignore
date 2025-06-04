@@ -29,3 +29,6 @@ app/css
 app/js
 app/images
 app/fonts
+
+# Test files
+test-*.js

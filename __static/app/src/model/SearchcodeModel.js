@@ -19,7 +19,9 @@ module.exports = new function () {
     .addPrimaryKey(['id'], true);
 
   var persistLangsName = 'codelf_langs_selected';
+  var persistSearchSourceName = 'codelf_search_source';
   var langs = Util.localStorage.get(persistLangsName), langQuery;
+  var searchSource = Util.localStorage.get(persistSearchSourceName) || 'searchcode';
   var page = 0;
   var lastVal;
   var cacheSourceCodes = {};
@@ -41,6 +43,15 @@ module.exports = new function () {
 
   this.getLang = function () {
     return langs;
+  }
+
+  this.setSearchSource = function (val) {
+    searchSource = val || 'searchcode';
+    Util.localStorage.set(persistSearchSourceName, searchSource);
+  }
+
+  this.getSearchSource = function () {
+    return searchSource;
   }
 
   function genLangQuery(val) {

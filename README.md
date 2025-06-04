@@ -18,6 +18,34 @@ CODELF(变量命名神器)
   
   ![image](https://user-images.githubusercontent.com/799578/51435509-a2595d00-1cb3-11e9-8f4e-85ecbc3a2325.png)
 
+DeepSeek AI Search Integration
+=================
+
+CODELF now supports DeepSeek AI for intelligent code search alongside the traditional SearchCode.com results.
+
+### Configuration
+
+1. Visit [DeepSeek Platform](https://platform.deepseek.com/api_keys) to get your API key
+2. In CODELF, click the search source dropdown and select "DeepSeek AI"
+3. Enter your API key when prompted
+4. Start searching with AI-powered code suggestions
+
+### Features
+
+- **AI-Powered Search**: Get intelligent code suggestions based on your search terms
+- **Multiple Language Support**: Search across different programming languages
+- **Real-world Examples**: Find practical variable naming examples from AI analysis
+- **Seamless Integration**: Switch between SearchCode.com and DeepSeek seamlessly
+
+### Benefits
+
+- More contextual and relevant code suggestions
+- Better understanding of your search intent
+- Complementary results to traditional code search
+- Support for natural language queries
+
+*Note: DeepSeek search requires an API key and is subject to DeepSeek's usage policies and rate limits.*
+
 WIKI
 =================
 [简体中文](https://github.com/unbug/codelf/wiki)
