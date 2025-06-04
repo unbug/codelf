@@ -1,0 +1,54 @@
+/* CSS Custom Properties for Theme System */
+
+:root {
+  /* Light Theme (Default) */
+  --bg-primary: #{$vscode-light-bg};
+  --bg-secondary: #{$vscode-light-sidebar};
+  --bg-input: #{$vscode-light-input-bg};
+  --bg-hover: #{$vscode-light-hover};
+  
+  --text-primary: #{$vscode-light-text};
+  --text-secondary: #{$vscode-light-text-muted};
+  --text-active: #{$vscode-light-text-active};
+  
+  --border-primary: #{$vscode-light-border};
+  --shadow-primary: rgba(0, 0, 0, 0.1);
+  --shadow-focus: rgba(0, 102, 204, 0.2);
+  
+  --accent-primary: #{$vscode-light-blue};
+  --accent-focus: #{$vscode-light-focus};
+  --accent-selection: #{$vscode-light-selection};
+  
+  --error-color: #d73a49;
+  --warning-color: #e36209;
+  --success-color: #28a745;
+}
+
+body.dark {
+  /* Dark Theme */
+  --bg-primary: #{$vscode-dark-bg};
+  --bg-secondary: #{$vscode-dark-sidebar};
+  --bg-input: #{$vscode-dark-input-bg};
+  --bg-hover: #{$vscode-dark-hover};
+  
+  --text-primary: #{$vscode-dark-text};
+  --text-secondary: #{$vscode-dark-text-muted};
+  --text-active: #{$vscode-dark-text-active};
+  
+  --border-primary: #{$vscode-dark-border};
+  --shadow-primary: rgba(0, 0, 0, 0.3);
+  --shadow-focus: rgba(14, 99, 156, 0.4);
+  
+  --accent-primary: #{$vscode-dark-blue};
+  --accent-focus: #{$vscode-dark-focus};
+  --accent-selection: #{$vscode-dark-selection};
+  
+  --error-color: #{$vscode-dark-error};
+  --warning-color: #{$vscode-dark-warning};
+  --success-color: #{$vscode-dark-success};
+}
+
+/* Theme transition for smooth switching */
+* {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}

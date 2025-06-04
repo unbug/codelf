@@ -1,10 +1,10 @@
 .main-container {
-  $dark-theme: 'body.dark &';
   position: relative;
   display: flex;
   align-items: center;
   flex-direction: column;
   padding-bottom: 3rem;
+  
   .title {
     text-align: center;
     margin-top: 5rem;
@@ -110,18 +110,23 @@
     }
 
     &__input {
-      background: #F1F3F4;
+      background: var(--bg-input);
       border-radius: 5rem;
       transition: box-shadow 350ms $anim-cubic-bezier;
 
       &:focus, &:active, &:hover {
-        box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 3px 8px 0 var(--shadow-focus);
       }
 
       input {
-        background: #F1F3F4;
+        background: var(--bg-input);
         border-radius: 5rem;
         border: 0 !important;
+        color: var(--text-primary);
+        
+        &::placeholder {
+          color: var(--text-secondary);
+        }
       }
     }
 
@@ -162,16 +167,6 @@
     }
   }
 
-  #{$dark-theme} {
-    .search-bar {
-      &__input {
-        &:focus, &:active, &:hover {
-          box-shadow: $box-shadow;
-        }
-      }
-    }
-  }
-
   .suggestion {
     padding-bottom: 2rem;
     max-width: 100%;
@@ -179,8 +174,10 @@
       min-width: 43rem;
     }
     a {
+      color: var(--accent-primary);
       &:hover {
         text-decoration: underline;
+        color: var(--accent-focus);
       }
     }
   }
@@ -192,8 +189,13 @@
     .label {
       @extend .pointer-link;
       margin: 0.4rem 0.4rem 0 0;
+      background-color: var(--bg-hover);
+      color: var(--text-primary);
+      border: 1px solid var(--border-primary);
+      
       &:hover {
-        box-shadow: $box-shadow;
+        box-shadow: 0 2px 8px var(--shadow-primary);
+        background-color: var(--accent-selection);
       }
       &.animated {
         transform: translateZ(0);
@@ -203,7 +205,7 @@
 
     hr {
       width: 70%;
-      border-color: rgba(0, 0, 0, .16);
+      border-color: var(--border-primary);
       margin-top: 1rem;
     }
   }

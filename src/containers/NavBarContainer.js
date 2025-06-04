@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Icon, Popup } from 'semantic-ui-react';
+import ThemeToggle from '../components/ThemeToggle';
 // import CopybookModel from '../models/CopybookModel';
 
 export default function NavBarContainer() {
@@ -29,6 +30,7 @@ export default function NavBarContainer() {
           Sorry, GitHub stars organize tool currently is not available, <a href="https://github.com/unbug/codelf/projects/2" target='_blank' rel='noopener noreferrer'>new version</a> is coming soon :)
         </Popup>
         */}
+        <ThemeToggle />
         <a href='https://unbug.github.io' className='bookmark-btn animated fadeInDown'
           title='一分钟读论文'
           target='_blank' rel='noopener noreferrer'>

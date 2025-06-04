@@ -23,10 +23,65 @@
       margin: 0 !important;
       font-size: 2rem;
       color: #70B7FD;
+      transition: color 0.2s ease;
       &:hover,&:active{
         color: #59AAF9;
       }
     }
+    
+    // Theme toggle button styles
+    .theme-toggle-wrapper {
+      display: inline-block;
+      margin-right: 0.4rem;
+      position: relative;
+      
+      .theme-toggle-btn {
+        display: inline-block;
+        cursor: pointer;
+        position: relative;
+        i {
+          color: var(--text-secondary);
+          transition: color 0.2s ease;
+          &:hover {
+            color: var(--accent-primary);
+          }
+        }
+      }
+      
+      .theme-dropdown {
+        .menu {
+          background: var(--bg-primary);
+          border: 1px solid var(--border-primary);
+          box-shadow: 0 4px 16px var(--shadow-primary);
+          
+          .item {
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            
+            &:hover {
+              background: var(--bg-hover);
+              color: var(--text-active);
+            }
+            
+            &.selected {
+              background: var(--accent-selection);
+              color: var(--text-active);
+            }
+          }
+        }
+      }
+    }
+    
+    // Dark theme icon colors
+    body.dark & {
+      i {
+        color: var(--text-secondary);
+        &:hover, &:active {
+          color: var(--accent-primary);
+        }
+      }
+    }
+    
     .github-corner {
       margin-top: -0.2rem;
       i {
@@ -38,7 +93,7 @@
     }
     $anim-delay: 150ms;
     $anim-duration: 500ms;
-    @for $i from 1 through 5 {
+    @for $i from 1 through 6 { // Updated to 6 to include theme toggle
       >*:nth-child(#{$i}) {
         animation-duration: $anim-duration;
         animation-delay: 500 + $anim-delay*($i - 1);

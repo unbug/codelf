@@ -9,6 +9,7 @@
   .hd {
     padding-bottom: .8rem;
     text-align: center;
+    color: var(--text-primary);
   }
 
   .bd {
@@ -22,7 +23,8 @@
   .paypal {
     margin: 0 0.5rem;
     width: 5rem;
-    background: #fff;
+    background: var(--bg-primary);
     border-radius: 0.1rem;
+    border: 1px solid var(--border-primary);
   }
 }

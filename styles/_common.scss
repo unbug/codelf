@@ -13,13 +13,9 @@ html, body {
 }
 
 body {
-  background: #fff;
-  color: #373a3c;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   transition: all 350ms $anim-cubic-bezier;
-  &.dark {
-    background: $dark;
-    color: #fff;
-  }
 }
 
 /*

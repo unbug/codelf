@@ -12,6 +12,8 @@ CODELF(变量命名神器)
   
   Also a GitHub stars, repositories tagger and organizer tool.
 
+  ✨ **New**: VS Code-inspired dark theme with automatic system theme detection! Toggle between light, dark, and auto modes.
+
   >There are only two hard things in Computer Science: cache invalidation and naming things.-- Phil Karlton
   >
   >![twohardtings](https://user-images.githubusercontent.com/799578/50462942-8075fe80-09c3-11e9-9c7f-b38d495b925d.jpg)

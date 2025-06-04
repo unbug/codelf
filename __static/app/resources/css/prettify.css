@@ -2,6 +2,11 @@
   color: #000
 }
 
+/* Dark theme code highlighting */
+body.dark .pln {
+  color: #cccccc;
+}
+
 @media screen {
   .str {
     color: #080
@@ -27,6 +32,31 @@
     color: #660
   }
 
+  /* Dark theme syntax highlighting */
+  body.dark .str {
+    color: #ce9178; /* VS Code string color */
+  }
+
+  body.dark .kwd {
+    color: #569cd6; /* VS Code keyword color */
+  }
+
+  body.dark .com {
+    color: #6a9955; /* VS Code comment color */
+  }
+
+  body.dark .typ {
+    color: #4ec9b0; /* VS Code type color */
+  }
+
+  body.dark .lit {
+    color: #b5cea8; /* VS Code literal color */
+  }
+
+  body.dark .pun, body.dark .opn, body.dark .clo {
+    color: #cccccc; /* VS Code punctuation color */
+  }
+
   .tag {
     color: #008
   }
@@ -45,6 +75,27 @@
 
   .fun {
     color: red
+  }
+
+  /* Dark theme additional syntax highlighting */
+  body.dark .tag {
+    color: #569cd6; /* VS Code tag color */
+  }
+
+  body.dark .atn {
+    color: #9cdcfe; /* VS Code attribute name color */
+  }
+
+  body.dark .atv {
+    color: #ce9178; /* VS Code attribute value color */
+  }
+
+  body.dark .dec, body.dark .var {
+    color: #9cdcfe; /* VS Code declaration/variable color */
+  }
+
+  body.dark .fun {
+    color: #dcdcaa; /* VS Code function color */
   }
 }
 
@@ -92,7 +143,14 @@
 
 pre.prettyprint {
   padding: 2px;
-  border: 1px solid #888
+  border: 1px solid #888;
+  background: #f8f8f8;
+}
+
+body.dark pre.prettyprint {
+  background: #1e1e1e;
+  border: 1px solid #3e3e3e;
+  color: #cccccc;
 }
 
 ol.linenums {
@@ -106,4 +164,8 @@ li.L0, li.L1, li.L2, li.L3, li.L5, li.L6, li.L7, li.L8 {
 
 li.L1, li.L3, li.L5, li.L7, li.L9 {
   background: #eee
+}
+
+body.dark li.L1, body.dark li.L3, body.dark li.L5, body.dark li.L7, body.dark li.L9 {
+  background: #2d2d30;
 }

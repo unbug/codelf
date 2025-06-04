@@ -2,8 +2,49 @@
 $anim-cubic-bezier: cubic-bezier(0.4, 0, 0.2, 1);
 $anim-default-time: 0.6s;
 
-/* color */
+/* VS Code Dark Theme Colors */
+// Background colors
+$vscode-dark-bg: #1e1e1e;
+$vscode-dark-sidebar: #252526;
+$vscode-dark-input-bg: #3c3c3c;
+$vscode-dark-hover: #2a2d2e;
+$vscode-dark-border: #3e3e3e;
+
+// Text colors
+$vscode-dark-text: #cccccc;
+$vscode-dark-text-muted: #969696;
+$vscode-dark-text-active: #ffffff;
+
+// Accent colors
+$vscode-dark-blue: #007acc;
+$vscode-dark-focus: #0e639c;
+$vscode-dark-selection: #264f78;
+
+// Status colors
+$vscode-dark-error: #f48771;
+$vscode-dark-warning: #ddb76d;
+$vscode-dark-success: #89d185;
+
+/* Light Theme Colors */
+// Background colors
+$vscode-light-bg: #ffffff;
+$vscode-light-sidebar: #f3f3f3;
+$vscode-light-input-bg: #ffffff;
+$vscode-light-hover: #e8e8e8;
+$vscode-light-border: #d4d4d4;
+
+// Text colors
+$vscode-light-text: #373a3c;
+$vscode-light-text-muted: #6c6c6c;
+$vscode-light-text-active: #000000;
+
+// Accent colors
+$vscode-light-blue: #0066cc;
+$vscode-light-focus: #005a9e;
+$vscode-light-selection: #add6ff;
+
+/* Legacy colors (keeping for compatibility) */
 $box-shadow: rgb(187,187,187) 0px 2px 8px !important;
-$dark: #272b38;
+$dark: $vscode-dark-bg; // Updated to use VS Code dark color
 
 /* dimensions */

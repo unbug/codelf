@@ -1,0 +1,164 @@
+/* Semantic UI Dark Theme Overrides */
+
+/* Dropdown menus */
+body.dark .ui.dropdown .menu {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  box-shadow: 0 2px 8px var(--shadow-primary);
+}
+
+body.dark .ui.dropdown .menu > .item {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-top: 1px solid var(--border-primary);
+}
+
+body.dark .ui.dropdown .menu > .item:hover {
+  background: var(--bg-hover);
+  color: var(--text-active);
+}
+
+body.dark .ui.dropdown .menu > .item.selected {
+  background: var(--accent-selection);
+  color: var(--text-active);
+}
+
+/* Modals */
+body.dark .ui.modal {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  box-shadow: 0 8px 32px var(--shadow-primary);
+}
+
+body.dark .ui.modal > .header {
+  background: var(--bg-secondary);
+  color: var(--text-active);
+  border-bottom: 1px solid var(--border-primary);
+}
+
+body.dark .ui.modal > .content {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Buttons */
+body.dark .ui.button {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+}
+
+body.dark .ui.button:hover {
+  background: var(--accent-selection);
+  color: var(--text-active);
+}
+
+body.dark .ui.primary.button {
+  background: var(--accent-primary);
+  color: white;
+}
+
+body.dark .ui.primary.button:hover {
+  background: var(--accent-focus);
+}
+
+/* Input fields */
+body.dark .ui.input input {
+  background: var(--bg-input);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+}
+
+body.dark .ui.input input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px var(--accent-selection);
+}
+
+/* Labels */
+body.dark .ui.label {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+}
+
+/* Popups */
+body.dark .ui.popup {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+  box-shadow: 0 4px 16px var(--shadow-primary);
+}
+
+body.dark .ui.popup:before {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+}
+
+/* Form elements */
+body.dark .ui.form .field > label {
+  color: var(--text-primary);
+}
+
+body.dark .ui.form textarea,
+body.dark .ui.form input[type="text"],
+body.dark .ui.form input[type="email"],
+body.dark .ui.form input[type="search"],
+body.dark .ui.form input[type="password"] {
+  background: var(--bg-input);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+}
+
+body.dark .ui.form textarea:focus,
+body.dark .ui.form input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px var(--accent-selection);
+}
+
+/* Menu */
+body.dark .ui.menu {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+}
+
+body.dark .ui.menu .item {
+  color: var(--text-primary);
+}
+
+body.dark .ui.menu .item:hover {
+  background: var(--bg-hover);
+  color: var(--text-active);
+}
+
+/* Checkbox */
+body.dark .ui.checkbox input:checked ~ label:before {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+body.dark .ui.checkbox label {
+  color: var(--text-primary);
+}
+
+/* Segment */
+body.dark .ui.segment {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+}
+
+/* Dimmer */
+body.dark .ui.dimmer {
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+/* Message */
+body.dark .ui.message {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+}
+
+body.dark .ui.message .header {
+  color: var(--text-active);
+}

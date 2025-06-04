@@ -29,10 +29,10 @@
 
 .hidden-link {
   &#{&} {
-    color: #000;
+    color: var(--text-primary);
   }
   &#{&}:hover {
-    color: #1e70bf;
+    color: var(--accent-primary);
   }
 }
 
@@ -63,7 +63,7 @@
     .close.icon {
       top: 0.5rem;
       right: 0.5rem;
-      color: rgba(0,0,0,.87);
+      color: var(--text-secondary);
     }
     &#{&} > .content {
       height: auto;

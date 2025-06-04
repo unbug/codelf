@@ -1,21 +1,38 @@
 @at-root {
   .source-code {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    
     &#{&}> .header {
       padding: 0.8rem 1rem;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-primary);
     }
     > .content {
+      background: var(--bg-primary);
+      
       pre {
         display: inline-block;
         margin: 0;
         padding: 0;
+        background: var(--bg-input);
+        color: var(--text-primary);
       }
       code {
         display: inline-block;
-        color: #000;
+        color: var(--text-primary);
+        background: var(--bg-input);
       }
     }
     &#{&} .ui.dropdown .menu>.item {
       padding: 0.4rem 0 0 0.4rem !important;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      
+      &:hover {
+        background: var(--bg-hover);
+      }
+      
       &:last-child {
         padding-bottom: 0.4rem !important;
       }
