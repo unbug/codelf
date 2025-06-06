@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Dropdown, Icon, Input } from 'semantic-ui-react';
+import SearchEngineSelector from './SearchEngineSelector';
+import { SEARCH_ENGINES } from '../constants/Configs';
 
 // http://githut.info/
 const topProgramLan = [
@@ -33,6 +35,7 @@ export default function SearchBar(props) {
   const inputSize = useInputSize('huge');
   const [state, setState] = useState({
     lang: props.searchLang || [],
+    searchEngine: props.searchEngine || SEARCH_ENGINES.SEARCHCODE,
     valChanged: false
   });
 
@@ -43,7 +46,7 @@ export default function SearchBar(props) {
   }
 
   function handleSearch() {
-    props.onSearch(inputEl.current.inputRef.current.value, state.lang);
+    props.onSearch(inputEl.current.inputRef.current.value, state.lang, state.searchEngine);
     inputEl.current.inputRef.current.blur();
     updateState({ valChanged: false });
   }
@@ -66,6 +69,11 @@ export default function SearchBar(props) {
     state.lang.indexOf(id) === -1 ? handleSelectLang(id) : handleDeselectLang(id);
   }
 
+  function handleSearchEngineChange(engine) {
+    updateState({ searchEngine: engine, valChanged: true });
+    props.onSearchEngineChange && props.onSearchEngineChange(engine);
+  }
+
   const langItems = topProgramLan.map(key => {
     const active = state.lang.indexOf(key.id) !== -1;
     return <Dropdown.Item key={key.id}
@@ -80,6 +88,15 @@ export default function SearchBar(props) {
       <div className='search-bar__desc'>
         Search over GitHub, Bitbucket, GitLab to find real-world usage variable names
       </div>
+      
+      {/* Search Engine Selector */}
+      <div className='search-bar__engine-selector'>
+        <SearchEngineSelector 
+          currentEngine={state.searchEngine}
+          onSearchEngineChange={handleSearchEngineChange}
+        />
+      </div>
+      
       <form action="javascript:void(0);">
         <Input ref={inputEl}
           onChange={() => updateState({ valChanged: true })}

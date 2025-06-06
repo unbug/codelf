@@ -24,6 +24,7 @@ const initState = {
   variableRequesting: false,
   searchValue: SearchCodeModel.searchValue,
   searchLang: SearchCodeModel.searchLang,
+  searchEngine: SearchCodeModel.searchEngine,
   page: SearchCodeModel.page,
   variableList: SearchCodeModel.variableList,
   suggestion: SearchCodeModel.suggestion,
@@ -76,7 +77,7 @@ export default function MainContainer(props) {
     return () => DDMSModel.offUpdated(handleDDMSModelUpdate);
   }, []);
 
-  const handleSearch = useCallback((val, lang) => {
+  const handleSearch = useCallback((val, lang, searchEngine) => {
     if (val === null || val === undefined || state.variableRequesting) {
       return;
     }
@@ -85,12 +86,17 @@ export default function MainContainer(props) {
       return;
     }
     if (val == state.searchValue) {
-      requestVariable(val, lang);
+      requestVariable(val, lang, searchEngine);
     } else {
-      setState({ searchLang: lang });
+      setState({ searchLang: lang, searchEngine: searchEngine });
       setTimeout(() => HashHandler.set(val)); // update window.location.hash
     }
   }, [state.searchValue, state.variableRequesting]);
+
+  const handleSearchEngineChange = useCallback((searchEngine) => {
+    SearchCodeModel.setSearchEngine(searchEngine);
+    setState({ searchEngine: searchEngine });
+  }, []);
 
   const handleOpenSourceCode = useCallback((variable) => {
     setState({ sourceCodeVariable: variable });
@@ -131,17 +137,18 @@ export default function MainContainer(props) {
     return false;
   }
 
-  function requestVariable(val, lang) {
+  function requestVariable(val, lang, searchEngine) {
     const langChanged = lang ? (lang.join(',') != state.searchLang.join(',')) : !!state.searchLang;
+    const engineChanged = searchEngine && searchEngine !== state.searchEngine;
     val = decodeURIComponent(val);
     let page = state.page;
-    if (val == state.searchValue && !langChanged) {
+    if (val == state.searchValue && !langChanged && !engineChanged) {
       page += 1;
     } else {
       page = 0;
     }
     setState({ searchValue: val, variableRequesting: true });
-    SearchCodeModel.requestVariable(val, page, lang || state.searchLang);
+    SearchCodeModel.requestVariable(val, page, lang || state.searchLang, searchEngine || state.searchEngine);
     AppModel.analytics('q=' + val);
     DDMSModel.postKeyWords(val);
     updateDocTitle(val);
@@ -175,6 +182,7 @@ export default function MainContainer(props) {
         variableRequesting: !mutation.variableList,
         searchValue: SearchCodeModel.searchValue,
         searchLang: SearchCodeModel.searchLang,
+        searchEngine: SearchCodeModel.searchEngine,
         page: SearchCodeModel.page,
         variableList: SearchCodeModel.variableList,
         suggestion: SearchCodeModel.suggestion
@@ -191,7 +199,9 @@ export default function MainContainer(props) {
   return (
     <Container className='main-container'>
       <TitleLogo />
-      <SearchBar placeholder='AI 人工智能' {...state} onSearch={handleSearch} />
+      <SearchBar placeholder='AI 人工智能' {...state} 
+        onSearch={handleSearch} 
+        onSearchEngineChange={handleSearchEngineChange} />
       <Suggestion {...state} />
       {state.variableRequesting ? <Loading /> : (state.isError ? <SearchError /> : '')}
       {renderSloganImage()}

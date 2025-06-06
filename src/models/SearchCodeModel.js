@@ -3,6 +3,7 @@ import * as Tools from '../utils/Tools';
 import YoudaoTranslateData from './metadata/YoudaoTranslateData';
 import BaiduTranslateData from './metadata/BaiduTranslateData';
 import BingTranslateData from './metadata/BingTranslateData';
+import DeepSeekSearchData from './metadata/DeepSeekSearchData';
 import JSONP from '../utils/JSONP';
 import Store from './Store';
 import AppModel from './AppModel';
@@ -10,6 +11,7 @@ import { SessionStorage } from '../utils/LocalStorage';
 import * as Configs from '../constants/Configs';
 
 const SEARCH_LANG_KEY = `${Configs.APP_NANE}_search_lang_key`;
+const SEARCH_ENGINE_KEY = `${Configs.APP_NANE}_search_engine_key`;
 
 class SearchCodeModel extends BaseModel {
   constructor() {
@@ -18,6 +20,7 @@ class SearchCodeModel extends BaseModel {
       isZH: false,
       searchValue: null,
       searchLang: SessionStorage.getItem(SEARCH_LANG_KEY),
+      searchEngine: SessionStorage.getItem(SEARCH_ENGINE_KEY) || Configs.SEARCH_ENGINES.SEARCHCODE,
       page: 0,
       variableList: [],
       suggestion: [],
@@ -34,15 +37,101 @@ class SearchCodeModel extends BaseModel {
   }
 
   //search code by query
-  async requestVariable(val, page, lang) {
+  async requestVariable(val, page, lang, searchEngine) {
     lang = lang || this.searchLang;
-    SessionStorage.setItem(SEARCH_LANG_KEY, lang); // persist lang
+    searchEngine = searchEngine || this.searchEngine;
+    
+    // Persist search preferences
+    SessionStorage.setItem(SEARCH_LANG_KEY, lang);
+    SessionStorage.setItem(SEARCH_ENGINE_KEY, searchEngine);
+    
     if (val !== undefined && val !== null) {
       val = val.trim().replace(/\s+/ig, ' '); // filter spaces
     }
     if (val.length < 1) {
       return;
     }
+
+    // Route to appropriate search engine
+    if (searchEngine === Configs.SEARCH_ENGINES.DEEPSEEK) {
+      return this._searchWithDeepSeek(val, page, lang);
+    } else {
+      return this._searchWithSearchCode(val, page, lang);
+    }
+  }
+
+  /**
+   * Search using DeepSeek AI
+   * @private
+   */
+  async _searchWithDeepSeek(val, page, lang) {
+    let q = val;
+    let suggestion = this._parseSuggestion(val.split(' '));
+    let isZH = this._isZH(val);
+
+    // Translate Chinese queries if needed
+    if (isZH) {
+      const translate = await this._translator.request(val);
+      if (translate) {
+        q = translate.translation;
+        suggestion = this._parseSuggestion(translate.suggestion, suggestion);
+        suggestion = this._parseSuggestion(q.split(' '), suggestion);
+      } else {
+        this.update({
+          searchValue: val,
+          page: page,
+          variableList: [...this.variableList, []],
+          searchLang: lang,
+          searchEngine: Configs.SEARCH_ENGINES.DEEPSEEK,
+          suggestion: suggestion,
+          isZH: isZH || this.isZH
+        });
+        return;
+      }
+    }
+
+    try {
+      // Call DeepSeek search API
+      const searchResults = await DeepSeekSearchData.search(q, page, lang);
+      
+      // Parse results into the expected format
+      const variables = this._parseDeepSeekResults(searchResults.results, q);
+      
+      const cdata = {
+        searchValue: val,
+        page: page,
+        variableList: [...this._data.variableList, variables],
+        searchLang: lang,
+        searchEngine: Configs.SEARCH_ENGINES.DEEPSEEK,
+        suggestion: suggestion,
+        isZH: isZH || this.isZH
+      };
+      
+      this.update(cdata);
+    } catch (error) {
+      console.error('DeepSeek search failed:', error);
+      this.update({
+        searchValue: val,
+        page: page,
+        variableList: [...this.variableList, []],
+        searchLang: lang,
+        searchEngine: Configs.SEARCH_ENGINES.DEEPSEEK,
+        suggestion: suggestion,
+        isZH: isZH || this.isZH
+      });
+    }
+  }
+
+  /**
+   * Search using SearchCode.com (original implementation)
+   * @private
+   */
+  async _searchWithSearchCode(val, page, lang) {
+  /**
+   * Search using SearchCode.com (original implementation)
+   * @private
+   */
+  async _searchWithSearchCode(val, page, lang) {
     let q = val;
     let suggestion = this._parseSuggestion(val.split(' '));
     let isZH = this._isZH(val);
@@ -59,6 +148,7 @@ class SearchCodeModel extends BaseModel {
           page: page,
           variableList: [...this.variableList, []],
           searchLang: lang,
+          searchEngine: this.searchEngine,
           suggestion: suggestion,
           isZH: isZH || this.isZH
         });
@@ -81,6 +171,7 @@ class SearchCodeModel extends BaseModel {
         page: page,
         variableList: [...this._data.variableList, this._parseVariableList(data.results, q)],
         searchLang: lang,
+        searchEngine: this.searchEngine,
         suggestion: suggestion,
         isZH: isZH || this.isZH
       };
@@ -99,11 +190,50 @@ class SearchCodeModel extends BaseModel {
               page: page,
               variableList: [...this.variableList, []],
               searchLang: lang,
+              searchEngine: this.searchEngine,
               suggestion: suggestion,
               isZH: isZH || this.isZH
             });
           });
       });
+  }
+
+  /**
+   * Parse DeepSeek AI search results into app format
+   * @private
+   */
+  _parseDeepSeekResults(results, keywords) {
+    let variables = [];
+    
+    results.forEach(res => {
+      // Create a mock repo URL for DeepSeek results
+      const repoUrl = res.repo || 'https://github.com/deepseek-ai/examples';
+      
+      // Extract variable name from the result
+      const keyword = res.keyword || res.id || 'aiVariable';
+      
+      // Create variable entry
+      const variable = {
+        keyword: keyword,
+        repoLink: repoUrl,
+        repoLang: res.language || 'javascript',
+        color: Tools.randomLabelColor()
+      };
+      
+      // Update repo mapping for this variable
+      this._updateVariableRepoMapping(keyword, {
+        id: res.id,
+        repo: repoUrl,
+        language: res.language || 'javascript',
+        lines: res.lines || {}
+      });
+      
+      variable.repoList = this._getVariableRepoMapping(keyword);
+      variables.push(variable);
+    });
+    
+    return variables;
+  }
   }
 
   //get source code by id
@@ -220,6 +350,10 @@ class SearchCodeModel extends BaseModel {
     return this._data.searchLang || SessionStorage.getItem(SEARCH_LANG_KEY) || [];
   }
 
+  get searchEngine() {
+    return this._data.searchEngine || SessionStorage.getItem(SEARCH_ENGINE_KEY) || Configs.SEARCH_ENGINES.SEARCHCODE;
+  }
+
   get page() {
     return this._data.page;
   }
@@ -238,6 +372,16 @@ class SearchCodeModel extends BaseModel {
 
   get sourceCode() {
     return this._data.sourceCode;
+  }
+
+  /**
+   * Set the current search engine
+   * @param {string} engine - Search engine to use (from SEARCH_ENGINES constants)
+   */
+  setSearchEngine(engine) {
+    this._data.searchEngine = engine;
+    SessionStorage.setItem(SEARCH_ENGINE_KEY, engine);
+    this.update({ searchEngine: engine });
   }
 }
 

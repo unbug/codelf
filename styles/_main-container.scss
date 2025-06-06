@@ -160,6 +160,35 @@
         font-size: 1rem;
       }
     }
+
+    &__engine-selector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      gap: 0.5rem;
+
+      .search-engine-dropdown {
+        min-width: 200px;
+        
+        .dropdown.icon {
+          opacity: 0.7;
+        }
+        
+        .text {
+          font-weight: 500;
+        }
+      }
+
+      .engine-settings-btn {
+        opacity: 0.7;
+        transition: opacity 0.2s ease;
+        
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
   }
 
   #{$dark-theme} {
