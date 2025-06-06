@@ -1,11 +1,11 @@
 import React from 'react';
-import { Container, Icon, Popup } from 'semantic-ui-react';
+import { Container, Icon } from 'semantic-ui-react';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitch from '../components/LanguageSwitch';
 // import CopybookModel from '../models/CopybookModel';
 
 export default function NavBarContainer() {
-  function handleOpenCopybook() {
-    // CopybookModel.update({ visible: true });
-  }
+  const { t } = useTranslation();
 
   return (
     <Container className='nav-bar-container'>
@@ -29,13 +29,14 @@ export default function NavBarContainer() {
           Sorry, GitHub stars organize tool currently is not available, <a href="https://github.com/unbug/codelf/projects/2" target='_blank' rel='noopener noreferrer'>new version</a> is coming soon :)
         </Popup>
         */}
+        <LanguageSwitch />
         <a href='https://unbug.github.io' className='bookmark-btn animated fadeInDown'
-          title='一分钟读论文'
+          title={t('navbar.bookmark')}
           target='_blank' rel='noopener noreferrer'>
           <Icon name='bookmark' />
         </a>
         <a href='https://github.com/unbug/codelf' className='github-corner animated fadeInDown'
-          title='Star me on GitHub'
+          title={t('navbar.starMe')}
           target='_blank' rel='noopener noreferrer'>
           <Icon name='github square' />
         </a>

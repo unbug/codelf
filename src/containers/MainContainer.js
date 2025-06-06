@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer, useCallback } from 'react';
 import { Container } from 'semantic-ui-react';
+import { useTranslation } from 'react-i18next';
 import SearchBar from '../components/SearchBar';
 import TitleLogo from '../components/TitleLogo';
 import SearchCodeModel from '../models/SearchCodeModel';
@@ -48,6 +49,7 @@ function reducer(state, action) {
 
 
 export default function MainContainer(props) {
+  const { t } = useTranslation();
   const [state, dispatch] = useReducer(reducer, initState);
 
   useEffect(() => {
@@ -191,7 +193,7 @@ export default function MainContainer(props) {
   return (
     <Container className='main-container'>
       <TitleLogo />
-      <SearchBar placeholder='AI 人工智能' {...state} onSearch={handleSearch} />
+      <SearchBar placeholder={t('searchBar.placeholder')} {...state} onSearch={handleSearch} />
       <Suggestion {...state} />
       {state.variableRequesting ? <Loading /> : (state.isError ? <SearchError /> : '')}
       {renderSloganImage()}

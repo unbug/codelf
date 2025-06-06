@@ -1,10 +1,12 @@
 import React from 'react';
 import { Modal, Button, Dropdown, Label } from 'semantic-ui-react';
+import { useTranslation } from 'react-i18next';
 import * as Tools from '../utils/Tools';
 import Loading from "./Loading";
 import useCodeHighlighting from './hooks/useCodeHighlighting';
 
 export default function SourceCode(props) {
+  const { t } = useTranslation();
   const codeEl = useCodeHighlighting([props.sourceCode, props.sourceCodeVisible], props.sourceCodeVariable ?.keyword);
 
   function handleClose() {
@@ -14,15 +16,15 @@ export default function SourceCode(props) {
   if (!props.sourceCodeVariable || !props.sourceCodeRepo) { return null; }
   const sourceCodeVariable = props.sourceCodeVariable;
   const dropText = (
-    <div>All Codes <Label size='mini' circular color={sourceCodeVariable.color}>
+    <div>{t('variable.codes')} <Label size='mini' circular color={sourceCodeVariable.color}>
       {sourceCodeVariable.repoList.length}
     </Label></div>
   );
   const dropdownItems = props.sourceCodeVariable && props.sourceCodeVariable.repoList.map(repo => {
     return (
       <Dropdown.Item key={Tools.uuid()}>
-        <Button size='mini' onClick={() => props.onRequestSourceCode(repo)}>Codes</Button>
-        <Button size='mini' as='a' href={repo.repo} target='_blank'>Repo</Button>
+        <Button size='mini' onClick={() => props.onRequestSourceCode(repo)}>{t('variable.codes')}</Button>
+        <Button size='mini' as='a' href={repo.repo} target='_blank'>{t('variable.repo')}</Button>
         <Label size='mini' circular color={Tools.randomLabelColor()}>{repo.language}</Label>
       </Dropdown.Item>
     )
@@ -39,7 +41,7 @@ export default function SourceCode(props) {
             </Dropdown.Menu>
           </Dropdown.Menu>
         </Dropdown>
-        <Button size='mini' as='a' href={props.sourceCodeRepo.repo} target='_blank'>Repo</Button>
+        <Button size='mini' as='a' href={props.sourceCodeRepo.repo} target='_blank'>{t('variable.repo')}</Button>
       </Modal.Header>
       <Modal.Content>
         {props.sourceCodeRequesting ? <Loading /> : ''}

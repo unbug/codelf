@@ -1,5 +1,6 @@
 import 'whatwg-fetch';
 import ReactDOM from 'react-dom';
+import './i18n'; // Initialize i18n
 import MainContainer from './containers/MainContainer';
 // import CopybookContainer from './containers/CopybookContainer';
 import NoticeContainer from './containers/NoticeContainer';

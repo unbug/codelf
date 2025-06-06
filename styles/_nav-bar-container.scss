@@ -36,9 +36,22 @@
     .copybook-btn {
       display: none;
     }
+    // Language switcher styles
+    .language-switch {
+      color: #70B7FD;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      &:hover {
+        color: #59AAF9;
+      }
+      i {
+        font-size: 1.2rem !important;
+        margin-right: 0.3rem !important;
+      }
+    }
     $anim-delay: 150ms;
     $anim-duration: 500ms;
-    @for $i from 1 through 5 {
+    @for $i from 1 through 6 {
       >*:nth-child(#{$i}) {
         animation-duration: $anim-duration;
         animation-delay: 500 + $anim-delay*($i - 1);
@@ -60,6 +73,13 @@
         margin-top: -0.2rem;
         i {
           font-size: 3.3rem;
+        }
+      }
+      .language-switch {
+        margin-top: 1rem;
+        font-size: 1rem;
+        i {
+          font-size: 1.5rem !important;
         }
       }
     }

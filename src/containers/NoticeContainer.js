@@ -1,29 +1,31 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Icon, Popup } from 'semantic-ui-react';
+import { useTranslation } from 'react-i18next';
 
 export default function NoticeContainer() {
+  const { t } = useTranslation();
   const listEl = useRef(null);
-  const [activeIndex, setDisable] = useSliderEffect(listEl);
+  const [, setDisable] = useSliderEffect(listEl);
 
   return (
     <div className='notice-container' ref={listEl} onMouseEnter={() => setDisable(true)} onMouseLeave={() => setDisable(false)}>
       <a className='animated fadeIn show' target='_blank' rel='noopener noreferrer'
         href='https://unbug.github.io'>
-        <Icon name='newspaper' /> [Micropaper]一分钟读懂一篇论文
+        <Icon name='newspaper' /> {t('notices.micropaper')}
       </a>
       <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
         href='https://github.com/unbug/snts'>
-        <Icon name='heartbeat' /> SAY NO TO SUICIDE PUBLIC LICENSE
+        <Icon name='heartbeat' /> {t('notices.suicide')}
       </a>
       <a className='animated fadeIn' target='_blank' rel='noopener noreferrer' href='//mihtool.com/'>
-        <Icon name='code' /> [MIHTool] iOS 上调试和优化页面的工具
+        <Icon name='code' /> {t('notices.mihtool')}
       </a>
       <a className='animated fadeIn' target='_blank' rel='noopener noreferrer' href='https://www.wasmrocks.com/'>
-        <Icon name='hand rock' /> WebAssembly Rocks
+        <Icon name='hand rock' /> {t('notices.wasmRocks')}
       </a>
       <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
         href='https://github.com/unbug/react-native-train/blob/master/README.md'>
-        <Icon name='video' /> [开源] React Native 开发培训资料和视频
+        <Icon name='video' /> {t('notices.reactNative')}
       </a>
       <a className='animated fadeIn' target='_blank' rel='noopener noreferrer'
         href='https://job.toutiao.com/s/gKn4Ea'>
@@ -55,7 +57,7 @@ export default function NoticeContainer() {
             </div>
           }
           trigger={
-            <span><Icon name='send' />[内推]字节跳动中国/美国/新加坡社招/校招/实习</span>
+            <span><Icon name='send' />{t('notices.bytedance')}</span>
           } />
       </a>
     </div>

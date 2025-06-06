@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Dropdown, Icon, Input } from 'semantic-ui-react';
+import { useTranslation } from 'react-i18next';
 
 // http://githut.info/
 const topProgramLan = [
@@ -29,6 +30,7 @@ const topProgramLan = [
 ];
 
 export default function SearchBar(props) {
+  const { t } = useTranslation();
   const inputEl = useRef(null);
   const inputSize = useInputSize('huge');
   const [state, setState] = useState({
@@ -78,16 +80,16 @@ export default function SearchBar(props) {
   return (
     <div className='search-bar'>
       <div className='search-bar__desc'>
-        Search over GitHub, Bitbucket, GitLab to find real-world usage variable names
+        {t('searchBar.description')}
       </div>
       <form action="javascript:void(0);">
         <Input ref={inputEl}
           onChange={() => updateState({ valChanged: true })}
           className='search-bar__input'
-          icon fluid placeholder={props.placeholder} size={inputSize}>
+          icon fluid placeholder={t('searchBar.placeholder')} size={inputSize}>
           <Dropdown floating text='' icon='filter' className='search-bar__dropdown'>
             <Dropdown.Menu>
-              <Dropdown.Item icon='undo' text='All 90 Languages (Reset)' onClick={handleRestLang} />
+              <Dropdown.Item icon='undo' text={t('searchBar.allLanguages')} onClick={handleRestLang} />
               <Dropdown.Menu scrolling className='fix-dropdown-menu'>
                 {langItems}
               </Dropdown.Menu>
@@ -106,7 +108,7 @@ export default function SearchBar(props) {
         </Input>
       </form>
       <div className='search-bar__plugins'>
-        Extensions:&nbsp;
+        {t('searchBar.extensions')}&nbsp;
         <a href='https://github.com/unbug/codelf#codelf-for-vs-code'
           target='_blank' rel='noopener noreferrer'>VS Code</a>,&nbsp;
         <a className='text-muted' href='https://atom.io/packages/codelf'

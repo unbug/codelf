@@ -1,0 +1,47 @@
+{
+  "searchBar": {
+    "description": "Rechercher sur GitHub, Bitbucket, GitLab pour trouver des usages réels de noms de variables",
+    "placeholder": "IA Intelligence Artificielle",
+    "allLanguages": "Tous les 90 langages (Réinitialiser)",
+    "extensions": "Extensions:",
+    "filter": "Filtrer les langages"
+  },
+  "search": {
+    "button": "Rechercher",
+    "loading": "Recherche en cours...",
+    "noResults": "Rien trouvé, veuillez essayer la recherche rapide ou revenir plus tard :)",
+    "quickSearch": "Recherche rapide",
+    "helpText": "Vous pouvez également obtenir de l'aide sur https://github.com/unbug/codelf/issues."
+  },
+  "variable": {
+    "search": "Rechercher",
+    "repo": "Dépôt",
+    "copy": "Copier",
+    "codes": "Codes"
+  },
+  "navbar": {
+    "starMe": "Étoile-moi sur GitHub",
+    "bookmark": "一分钟读论文",
+    "language": "Langue"
+  },
+  "notices": {
+    "micropaper": "[Micropaper]一分钟读懂一篇论文",
+    "suicide": "DITES NON À LA SUICIDE PUBLIC LICENSE",
+    "mihtool": "[MIHTool] Outil iOS pour déboguer et optimiser les pages",
+    "wasmRocks": "WebAssembly est génial",
+    "reactNative": "[Open Source] Matériels de formation et vidéos pour le développement React Native",
+    "bytedance": "[Recommandation]ByteDance Chine/États-Unis/Singapour recrutement social/campus/stage"
+  },
+  "donate": {
+    "title": "Offrez-moi un café",
+    "description": "Si ce projet vous a aidé, veuillez envisager de faire un don pour le soutenir."
+  },
+  "sourceCode": {
+    "title": "Code source",
+    "close": "Fermer",
+    "repository": "Dépôt"
+  },
+  "suggestion": {
+    "title": "Suggestions"
+  }
+}
