@@ -67,7 +67,7 @@ Plugins
 
 Apps
 =================
-[Codelf Chrome App](https://chrome.google.com/webstore/detail/codelf-best-github-stars/jnmjaglhmmcplekpfnblniiammmdpaan)
+[Codelf Chrome App](https://chromewebstore.google.com/detail/codelf-best-github-stars/jnmjaglhmmcplekpfnblniiammmdpaan)
 
   
 Find me
